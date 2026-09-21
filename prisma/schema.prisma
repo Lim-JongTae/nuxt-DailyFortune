@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// 주역 64괘 정보
+model IChingHexagram {
+  id           Int      @id // 괘 번호 (1 ~ 64)
+  nameHanji    String   @map("name_hanji")
+  nameKorean   String   @map("name_korean")
+  summary      String
+  meaning      String
+  generalFate  String   @map("general_fate")
+  businessFate String   @map("business_fate")
+  loveFate     String   @map("love_fate")
+  wealthFate   String   @map("wealth_fate")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("iching_hexagrams")
+}
+
+// 천간 (갑, 을, 병...) 성향 정보
+model SajuIlgan {
+  id        String   @id @default(uuid())
+  stem      String   @unique // 천간 (갑, 을, 병...)
+  element   String   // 오행 (목, 화, 토...)
+  tendency  String   // 성향 및 특징
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("saju_ilgans")
+}
+
+// 십신 (비견, 겁재...) 관계 정보
+model SajuShipsin {
+  id        String   @id @default(uuid())
+  name      String   @unique // 십신 명칭 (비견, 겁재...)
+  meaning   String   // 기본 의미 및 작용
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("saju_shipsins")
+}
+
+// 12지간 (자, 축, 인...) 성향 정보
+model SajuJiji {
+  id          String   @id @default(uuid())
+  name        String   @unique // 지지 (자, 축, 인...)
+  animal      String   // 동물 (쥐, 소, 호랑이...)
+  element     String   // 오행 (수, 토, 목...)
+  description String   // 성향 및 특징
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("saju_jijis")
+}
+
+// 어뷰징 및 쿼터 방지 IP 사용 제한 기록
+model FortuneRateLimit {
+  id        String   @id @default(uuid())
+  ip        String
+  type      String   // "saju" | "iching"
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([ip, type, createdAt])
+  @@map("fortune_rate_limits")
+}

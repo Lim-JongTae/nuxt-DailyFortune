@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  --bg-canvas: #f8fafc;
+  --bg-card: #ffffff;
+  --text-primary: #0f172a;
+  --text-muted: #475569;
+  --border-card: rgba(203, 213, 225, 0.8);
+  --gold-accent: #d97706;
+  --seal-red: #B23A2E;
+}
+
+.dark {
+  --bg-canvas: #0F1226;
+  --bg-card: #181C38;
+  --text-primary: #dfe0fd;
+  --text-muted: #d1c5b3;
+  --border-card: rgba(232, 193, 112, 0.22);
+  --gold-accent: #FFDE9E;
+}
+
+/* Base Body Transition */
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Subtle Hanji texture and starry atmosphere */
+.bg-celestial-canvas {
+  background-color: var(--bg-canvas);
+  transition: background-color 0.3s ease;
+}
+
+.dark .bg-celestial-canvas {
+  background-image: 
+    radial-gradient(ellipse 65% 50% at 50% 0%, rgba(232, 193, 112, 0.12) 0%, transparent 60%),
+    radial-gradient(circle 400px at 15% 25%, rgba(67, 69, 93, 0.25) 0%, transparent 70%),
+    radial-gradient(circle 500px at 85% 65%, rgba(40, 46, 83, 0.3) 0%, transparent 75%);
+}
+
+/* Vermilion Seal Badge styling */
+.seal-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--seal-red);
+  color: #FFFFFF;
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 700;
+  border: 1px solid rgba(255, 222, 158, 0.4);
+  box-shadow: 0 0 8px rgba(178, 58, 46, 0.3);
+  border-radius: 4px;
+  letter-spacing: -0.05em;
+}
+
+/* Celestial glowing borders & gold hover */
+.gold-filament-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .gold-filament-card {
+  box-shadow: 0 12px 36px -6px rgba(9, 13, 32, 0.8), 0 0 20px 1px rgba(232, 193, 112, 0.05);
+}
+
+.gold-filament-card:hover {
+  border-color: var(--gold-accent);
+  box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.1);
+  transform: translateY(-2px);
+}
+
+.dark .gold-filament-card:hover {
+  box-shadow: 0 16px 44px -4px rgba(9, 13, 32, 0.9), 0 0 28px 3px rgba(232, 193, 112, 0.15);
+}
+
+/* Hexagram line styling */
+.trigram-line {
+  height: 7px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+.trigram-solid {
+  background: linear-gradient(90deg, #d97706 0%, #b45309 100%);
+  box-shadow: 0 0 6px rgba(217, 119, 6, 0.25);
+}
+.dark .trigram-solid {
+  background: linear-gradient(90deg, #E8C170 0%, #FFDF9E 100%);
+  box-shadow: 0 0 10px rgba(232, 193, 112, 0.35);
+}
+
+.trigram-broken-segment {
+  background: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+.dark .trigram-broken-segment {
+  background: #303349;
+  border: 1px solid rgba(165, 166, 194, 0.2);
+}
+
+/* Font Families */
+.font-serif-kr {
+  font-family: 'Noto Serif KR', serif;
+}
+.font-sans-kr {
+  font-family: 'Noto Sans KR', sans-serif;
+}
