@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
-import { getGanzhiOfDay, getHourBranch, getShipsin } from '../../utils/saju'
+import { getGanzhiOfDay, getHourBranch, getShipsin, getGanzhiOfYear } from '../../utils/saju'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -14,13 +14,14 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // 0. Rate limiting check (Cookie-based & IP-based)
+    // 0. Rate limiting check (Cookie-based & IP-based) - 개발 환경에서는 제한 해제
+    const isDev = process.env.NODE_ENV !== 'production'
     const limitDurationMs = 12 * 60 * 60 * 1000 // 12시간 제한
     const cookieName = 'fortune_last_saju'
     const lastRequestCookie = getCookie(event, cookieName)
     const now = Date.now()
 
-    if (lastRequestCookie) {
+    if (!isDev && lastRequestCookie) {
       const timeDiff = now - Number(lastRequestCookie)
       if (timeDiff < limitDurationMs) {
         const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
@@ -32,28 +33,32 @@ export default defineEventHandler(async (event) => {
     }
 
     const clientIp = getRequestIP(event, { xForwardedFor: true }) || '127.0.0.1'
-    const dbLimit = await prisma.fortuneRateLimit.findFirst({
-      where: {
-        ip: clientIp,
-        type: 'saju',
-        createdAt: {
-          gte: new Date(now - limitDurationMs)
+    if (!isDev) {
+      const dbLimit = await prisma.fortuneRateLimit.findFirst({
+        where: {
+          ip: clientIp,
+          type: 'saju',
+          createdAt: {
+            gte: new Date(now - limitDurationMs)
+          }
         }
-      }
-    })
-
-    if (dbLimit) {
-      const timeDiff = now - dbLimit.createdAt.getTime()
-      const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
-      throw createError({
-        statusCode: 429,
-        statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 사주 운세를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
       })
+
+      if (dbLimit) {
+        const timeDiff = now - dbLimit.createdAt.getTime()
+        const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
+        throw createError({
+          statusCode: 429,
+          statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 사주 운세를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
+        })
+      }
     }
 
-    // 1. 사용자 사주 계산 (일간 계산)
+    // 1. 사용자 사주 계산 (일간 및 출생 연도 간지/띠 계산)
     const userSaju = getGanzhiOfDay(birthDate)
     const birthHourBranch = getHourBranch(birthTime)
+    const birthYearNum = parseInt(birthDate.split('-')[0] || '2000', 10)
+    const userYearSaju = getGanzhiOfYear(birthYearNum)
 
     // 2. 오늘의 일진 계산 (KST 기준 날짜 계산)
     const nowUtc = new Date().getTime()
@@ -175,7 +180,11 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
         birthGanzhi: userSaju.fullName,
         ilgan: userSaju.stem,
         ilganElement: ilganData?.element,
-        siji: birthHourBranch
+        siji: birthHourBranch,
+        yearGanzhi: userYearSaju.fullName,
+        animal: userYearSaju.animal,
+        zodiacName: userYearSaju.zodiacName,
+        birthYear: birthYearNum
       },
       todaySaju: {
         ganzhi: todaySaju.fullName,

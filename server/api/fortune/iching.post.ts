@@ -6,13 +6,14 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event) || {}
     const { worry } = body
 
-    // 0. Rate limiting check (Cookie-based & IP-based)
+    // 0. Rate limiting check (Cookie-based & IP-based) - 개발 환경에서는 제한 해제
+    const isDev = process.env.NODE_ENV !== 'production'
     const limitDurationMs = 12 * 60 * 60 * 1000 // 12시간 제한
     const cookieName = 'fortune_last_iching'
     const lastRequestCookie = getCookie(event, cookieName)
     const now = Date.now()
 
-    if (lastRequestCookie) {
+    if (!isDev && lastRequestCookie) {
       const timeDiff = now - Number(lastRequestCookie)
       if (timeDiff < limitDurationMs) {
         const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
@@ -24,23 +25,25 @@ export default defineEventHandler(async (event) => {
     }
 
     const clientIp = getRequestIP(event, { xForwardedFor: true }) || '127.0.0.1'
-    const dbLimit = await prisma.fortuneRateLimit.findFirst({
-      where: {
-        ip: clientIp,
-        type: 'iching',
-        createdAt: {
-          gte: new Date(now - limitDurationMs)
+    if (!isDev) {
+      const dbLimit = await prisma.fortuneRateLimit.findFirst({
+        where: {
+          ip: clientIp,
+          type: 'iching',
+          createdAt: {
+            gte: new Date(now - limitDurationMs)
+          }
         }
-      }
-    })
-
-    if (dbLimit) {
-      const timeDiff = now - dbLimit.createdAt.getTime()
-      const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
-      throw createError({
-        statusCode: 429,
-        statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 주역 괘를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
       })
+
+      if (dbLimit) {
+        const timeDiff = now - dbLimit.createdAt.getTime()
+        const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
+        throw createError({
+          statusCode: 429,
+          statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 주역 괘를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
+        })
+      }
     }
 
     const hexagramId = Number(body.hexagramId) || Math.floor(Math.random() * 64) + 1
@@ -151,6 +154,11 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
         nameHanji: hexagram.nameHanji,
         nameKorean: hexagram.nameKorean,
         summary: hexagram.summary,
+        meaning: hexagram.meaning,
+        generalFate: hexagram.generalFate,
+        businessFate: hexagram.businessFate,
+        loveFate: hexagram.loveFate,
+        wealthFate: hexagram.wealthFate,
         lineNumber
       },
       aiInterpretation,

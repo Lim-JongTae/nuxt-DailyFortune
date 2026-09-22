@@ -53,11 +53,11 @@ const dismissPrompt = () => {
     <Transition name="slide-up">
       <div 
         v-if="showPrompt && !isInstalled"
-        class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 p-4 rounded-2xl bg-slate-900/95 dark:bg-[#16192e]/95 backdrop-blur-md border border-amber-500/40 shadow-2xl text-white flex flex-col gap-3 transition-all"
+        class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 p-4 rounded-2xl bg-[#16192e]/95 backdrop-blur-md border border-amber-500/40 shadow-2xl text-white flex flex-col gap-3 transition-all"
       >
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-700 p-0.5 shadow-md shrink-0 flex items-center justify-center">
+            <div class="w-10 h-10 rounded-xl bg-linear-to-br from-amber-400 to-amber-700 p-0.5 shadow-md shrink-0 flex items-center justify-center">
               <img src="/icon-192x192.png" alt="일일운세 앱 아이콘" class="w-full h-full rounded-[10px] object-cover" />
             </div>
             <div>
@@ -87,7 +87,7 @@ const dismissPrompt = () => {
           </button>
           <button 
             @click="installPWA"
-            class="flex-1 py-2 px-3 rounded-xl text-xs font-bold text-[#3d2c00] bg-gradient-to-r from-[#FFDF9E] to-[#E8C170] hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-1.5"
+            class="flex-1 py-2 px-3 rounded-xl text-xs font-bold text-[#3d2c00] bg-linear-to-r from-[#FFDF9E] to-[#E8C170] hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-1.5"
           >
             <UIcon name="i-heroicons-arrow-down-tray" class="w-4 h-4" />
             앱 설치하기

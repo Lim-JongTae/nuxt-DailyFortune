@@ -90,3 +90,33 @@ export function getShipsin(birthStemIdx: number, todayStemIdx: number): string {
     return isSamePolarity ? "편인" : "정인";
   }
 }
+
+/**
+ * 특정 연도(YYYY)의 연주(년주) 및 12지신 띠를 계산합니다.
+ */
+export function getGanzhiOfYear(year: number): GanzhiResult & { animal: string; zodiacName: string } {
+  const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"];
+  const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"];
+  const animals = ["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"];
+
+  let stemIdx = (year - 4) % 10;
+  if (stemIdx < 0) stemIdx += 10;
+
+  let branchIdx = (year - 4) % 12;
+  if (branchIdx < 0) branchIdx += 12;
+
+  const stem = stems[stemIdx]!;
+  const branch = branches[branchIdx]!;
+  const animal = animals[branchIdx]!;
+  const fullName = stem + branch;
+
+  return {
+    stem,
+    branch,
+    stemIdx,
+    branchIdx,
+    fullName,
+    animal,
+    zodiacName: `${fullName}년 ${animal}띠`
+  };
+}

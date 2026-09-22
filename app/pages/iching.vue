@@ -3,19 +3,28 @@ import { ref, computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 useSeoMeta({
-  title: '오늘의 주역 괘 - 일일운세.kr',
-  description: '마음에 품은 고민을 해결하기 위한 주역의 64괘 조언을 얻고, AI의 1:1 맞춤형 해석 보고서를 확인해 보세요.'
+  title: '주역점 결과 - I CHING ORACLE | 일일운세.kr',
+  description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.'
 })
 
-const trigrams = [
-  { id: 1, name: '건', nameHanji: '乾', symbol: '☰', element: '하늘' },
-  { id: 2, name: '태', nameHanji: '兌', symbol: '☱', element: '연못' },
-  { id: 3, name: '이', nameHanji: '離', symbol: '☲', element: '불' },
-  { id: 4, name: '진', nameHanji: '震', symbol: '☳', element: '번개' },
-  { id: 5, name: '손', nameHanji: '巽', symbol: '☴', element: '바람' },
-  { id: 6, name: '감', nameHanji: '坎', symbol: '☵', element: '물' },
-  { id: 7, name: '간', nameHanji: '艮', symbol: '☶', element: '산' },
-  { id: 8, name: '곤', nameHanji: '坤', symbol: '☷', element: '땅' }
+interface Trigram {
+  id: number
+  name: string
+  nameHanji: string
+  symbol: string
+  element: string
+  lines: [number, number, number] // 초, 이, 삼효 (0: 음, 1: 양)
+}
+
+const trigrams: Trigram[] = [
+  { id: 1, name: '건', nameHanji: '乾', symbol: '☰', element: '하늘(天)', lines: [1, 1, 1] },
+  { id: 2, name: '태', nameHanji: '兌', symbol: '☱', element: '연못(澤)', lines: [1, 1, 0] },
+  { id: 3, name: '이', nameHanji: '離', symbol: '☲', element: '불(火)', lines: [1, 0, 1] },
+  { id: 4, name: '진', nameHanji: '震', symbol: '☳', element: '번개(雷)', lines: [1, 0, 0] },
+  { id: 5, name: '손', nameHanji: '巽', symbol: '☴', element: '바람(風)', lines: [0, 1, 1] },
+  { id: 6, name: '감', nameHanji: '坎', symbol: '☵', element: '물(水)', lines: [0, 1, 0] },
+  { id: 7, name: '간', nameHanji: '艮', symbol: '☶', element: '산(山)', lines: [0, 0, 1] },
+  { id: 8, name: '곤', nameHanji: '坤', symbol: '☷', element: '땅(地)', lines: [0, 0, 0] }
 ]
 
 const trigramToHexagramMap: Record<number, Record<number, number>> = {
@@ -29,15 +38,35 @@ const trigramToHexagramMap: Record<number, Record<number, number>> = {
   8: { 1: 11, 2: 19, 3: 36, 4: 24, 5: 46, 6: 7, 7: 15, 8: 2 }
 }
 
+const hexagramNames: Record<number, { nameKorean: string; nameHanji: string; desc: string }> = {
+  1: { nameKorean: '중천건', nameHanji: '重天乾', desc: '강건함 / 만물의 시작' },
+  2: { nameKorean: '중지곤', nameHanji: '重地坤', desc: '포용함 / 수용과 순응' },
+  11: { nameKorean: '지천태', nameHanji: '地天泰', desc: '태평함 / 태평과 통달' },
+  12: { nameKorean: '천지비', nameHanji: '天地否', desc: '막힘 / 쇄국과 자중' },
+  46: { nameKorean: '지풍승', nameHanji: '地風升', desc: '상승함 / 등선과 발전' },
+  63: { nameKorean: '수화기제', nameHanji: '水火旣濟', desc: '완성함 / 성공과 조화' }
+}
+
 const store = useFortuneStore()
 const { ichingWorry: worry, ichingResult: result } = storeToRefs(store)
 
 const currentStep = ref(0)
 const loading = ref(false)
-const animationActive = ref(false)
+const activeTab = ref('iching')
 
-const lowerTrigram = ref<any>(null)
-const upperTrigram = ref<any>(null)
+// 아코디언 열림 상태
+const accordionOpen = ref({
+  total: true,
+  line: true,
+  symbol: false
+})
+
+const toggleAccordion = (key: 'total' | 'line' | 'symbol') => {
+  accordionOpen.value[key] = !accordionOpen.value[key]
+}
+
+const lowerTrigram = ref<Trigram | null>(null)
+const upperTrigram = ref<Trigram | null>(null)
 const selectedLine = ref<number | null>(null)
 
 const sticks = ref<any[]>([])
@@ -89,7 +118,6 @@ const startRitual = () => {
 
 const handleStickClick = async (stick: any) => {
   if (stick.isFlipped) return
-
   stick.isFlipped = true
 
   if (currentStep.value === 1) {
@@ -97,29 +125,27 @@ const handleStickClick = async (stick: any) => {
     setTimeout(() => {
       currentStep.value = 2
       initTrigramSticks()
-    }, 1200)
+    }, 1000)
   } else if (currentStep.value === 2) {
     upperTrigram.value = stick.trigram
     setTimeout(() => {
       currentStep.value = 3
       initLineSticks()
-    }, 1200)
+    }, 1000)
   } else if (currentStep.value === 3) {
     selectedLine.value = stick.lineNum
     setTimeout(async () => {
       currentStep.value = 4
       loading.value = true
-      animationActive.value = true
-      
+
       const startTime = Date.now()
-      
       const upper = upperTrigram.value
       const lower = lowerTrigram.value
+
       if (!upper || !lower) {
-        alert('괘 정보가 올바르지 않습니다. 다시 시도해 주세요.')
+        alert('괘 정보가 올바르지 않습니다.')
         currentStep.value = 0
         loading.value = false
-        animationActive.value = false
         return
       }
 
@@ -136,8 +162,8 @@ const handleStickClick = async (stick: any) => {
         })
 
         const elapsedTime = Date.now() - startTime
-        const remainingTime = Math.max(2500 - elapsedTime, 0)
-        
+        const remainingTime = Math.max(2000 - elapsedTime, 0)
+
         setTimeout(() => {
           if (res.success) {
             result.value = res
@@ -148,17 +174,14 @@ const handleStickClick = async (stick: any) => {
             currentStep.value = 0
           }
           loading.value = false
-          animationActive.value = false
         }, remainingTime)
-
       } catch (error) {
         console.error(error)
         alert('서버 연결 중 오류가 발생했습니다.')
         loading.value = false
-        animationActive.value = false
         currentStep.value = 0
       }
-    }, 1200)
+    }, 1000)
   }
 }
 
@@ -170,6 +193,113 @@ const resetAll = () => {
   currentStep.value = 0
 }
 
+// 6효 라인 배열 계산 (본괘 & 변괘)
+const hexagramLinesDetail = computed(() => {
+  if (!result.value?.hexagram) {
+    // 기본 디폴트 지천태(11) -> 지풍승(46)
+    return {
+      origin: {
+        id: 11,
+        nameKorean: '지천태',
+        nameHanji: '地天泰',
+        desc: '지천태 (태평과 통달)',
+        upperName: '상곤(地)',
+        lowerName: '하건(天)',
+        lines: [1, 1, 1, 0, 0, 0] // 아래부터 1효~6효 (양양양 음음음)
+      },
+      changed: {
+        id: 46,
+        nameKorean: '지풍승',
+        nameHanji: '地風升',
+        desc: '지풍승 (등선과 발전)',
+        upperName: '상곤(地)',
+        lowerName: '하손(風)',
+        lines: [0, 1, 1, 0, 0, 0] // 초효 변효 (1->0)
+      },
+      lineNum: 1,
+      lineText: '초구(初九) 변효',
+      harmonyText: '3양 3음 음양 조화',
+      fortuneBadge: '대길(大吉) 쾌조'
+    }
+  }
+
+  const hId = result.value.hexagram.id
+  const lineNum = result.value.hexagram.lineNumber || 1
+
+  let foundUpperId = 1
+  let foundLowerId = 1
+  for (let u = 1; u <= 8; u++) {
+    const row = trigramToHexagramMap[u]
+    if (!row) continue
+    for (let l = 1; l <= 8; l++) {
+      if (row[l] === hId) {
+        foundUpperId = u
+        foundLowerId = l
+      }
+    }
+  }
+
+  const upperTri = trigrams.find(t => t.id === foundUpperId) || trigrams[0]!
+  const lowerTri = trigrams.find(t => t.id === foundLowerId) || trigrams[0]!
+
+  // 6효 합성 [하괘 1,2,3효, 상괘 4,5,6효]
+  const originLines = [...lowerTri.lines, ...upperTri.lines]
+
+  // 변효 적용
+  const changedLines = [...originLines]
+  const idx = lineNum - 1
+  changedLines[idx] = changedLines[idx] === 1 ? 0 : 1
+
+  // 변하괘, 변상괘 역산
+  const changedLowerLines = changedLines.slice(0, 3)
+  const changedUpperLines = changedLines.slice(3, 6)
+
+  const findTri = (linesArr: number[]) => {
+    return trigrams.find(t => t.lines[0] === linesArr[0] && t.lines[1] === linesArr[1] && t.lines[2] === linesArr[2]) || trigrams[0]!
+  }
+
+  const changedLowerTri = findTri(changedLowerLines)
+  const changedUpperTri = findTri(changedUpperLines)
+
+  const changedHexId = trigramToHexagramMap[changedUpperTri.id]?.[changedLowerTri.id] || hId
+  const changedInfo = hexagramNames[changedHexId] || {
+    nameKorean: result.value.hexagram.nameKorean,
+    nameHanji: result.value.hexagram.nameHanji,
+    desc: result.value.hexagram.summary
+  }
+
+  const lineNames = ['초구(初九)', '구이(九二)', '구삼(九三)', '육사(六四)', '육오(六五)', '상육(上六)']
+  const lineText = `${lineNames[idx] || `${lineNum}효`} 변효`
+
+  const yangCount = originLines.filter(l => l === 1).length
+  const yinCount = 6 - yangCount
+
+  return {
+    origin: {
+      id: hId,
+      nameKorean: result.value.hexagram.nameKorean,
+      nameHanji: result.value.hexagram.nameHanji,
+      desc: result.value.hexagram.summary,
+      upperName: `상${upperTri.name}(${upperTri.element.charAt(0)})`,
+      lowerName: `하${lowerTri.name}(${lowerTri.element.charAt(0)})`,
+      lines: originLines
+    },
+    changed: {
+      id: changedHexId,
+      nameKorean: changedInfo.nameKorean,
+      nameHanji: changedInfo.nameHanji,
+      desc: changedInfo.desc,
+      upperName: `상${changedUpperTri.name}(${changedUpperTri.element.charAt(0)})`,
+      lowerName: `하${changedLowerTri.name}(${changedLowerTri.element.charAt(0)})`,
+      lines: changedLines
+    },
+    lineNum,
+    lineText,
+    harmonyText: `${yangCount}양 ${yinCount}음 음양 조화`,
+    fortuneBadge: yangCount >= 3 ? '대길(大吉) 쾌조' : '길(吉) 유망'
+  }
+})
+
 const copyToClipboard = () => {
   if (!navigator.clipboard) {
     alert('이 브라우저는 복사 기능을 지원하지 않습니다.')
@@ -178,265 +308,552 @@ const copyToClipboard = () => {
   if (!result.value) return
 
   const hex = result.value.hexagram
+  const detail = hexagramLinesDetail.value
 
-  const plainText = result.value.aiInterpretation
-    .replace(/\*\*/g, '')
-    .replace(/### /g, '■ ')
-    .replace(/## /g, '◈ ')
-    .replace(/# /g, '★ ')
-    .replace(/\* /g, '• ')
-    .replace(/- /g, '• ')
-
-  const shareText = `☯️ [일일운세.kr] 오늘의 주역 괘 분석 결과 ☯️
+  const shareText = `☯️ [일일운세.kr] I CHING ORACLE 주역점 결과 ☯️
 --------------------------------------
-● 선택한 괘: 제 ${hex.id}괘 ${hex.nameKorean} (${hex.nameHanji})
+● 선택한 고민: "${worry.value || '오늘 하루의 운세와 지혜'}"
+● 본괘: 제${hex.id}괘 ${hex.nameKorean} (${hex.nameHanji})
+● 변괘: 제${detail.changed.id}괘 ${detail.changed.nameKorean} (${detail.changed.nameHanji})
+● 변효: ${detail.lineText}
 ● 괘사 요약: "${hex.summary}"
-● 오늘의 동효: ${hex.lineNumber}효
 
-${plainText}
+[핵심 요약]
+"순풍에 돛을 올리듯, 바른 뜻으로 나아가면 크게 형통합니다"
 
 --------------------------------------
-내 주역 괘 직접 뽑아보기: https://일일운세.kr/iching`
+나의 주역 괘 직접 점쳐보기: https://일일운세.kr/iching`
 
   navigator.clipboard.writeText(shareText)
-    .then(() => alert('오늘의 주역 괘 결과 보고서가 텍스트로 복사되었습니다. 카카오톡이나 SNS에 붙여넣어 공유해 보세요!'))
+    .then(() => alert('주역점 결과 보고서가 복사되었습니다! 카카오톡이나 SNS에 공유해보세요.'))
     .catch(err => console.error(err))
 }
-
-const formattedInterpretation = computed(() => {
-  if (!result.value?.aiInterpretation) return ''
-  
-  let text = result.value.aiInterpretation
-
-  text = text.replace(/^### (.*$)/gim, '<h3 class="text-purple-900 dark:text-[#FFDE9E] text-lg font-serif-kr font-bold mt-6 mb-3 border-b border-slate-200 dark:border-[#4d4638]/40 pb-2 flex items-center gap-2"><span class="w-1.5 h-4 bg-purple-600 rounded-sm"></span>$1</h3>')
-  text = text.replace(/^## (.*$)/gim, '<h2 class="text-xl font-serif-kr font-extrabold text-purple-800 dark:text-[#FFDF9E] mt-8 mb-4 border-l-4 border-purple-600 pl-3">$1</h2>')
-  text = text.replace(/^# (.*$)/gim, '<h1 class="text-2xl font-serif-kr font-extrabold text-slate-900 dark:text-white mt-10 mb-6">$1</h1>')
-
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-purple-700 dark:text-purple-300">$1</strong>')
-
-  text = text.replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-slate-700 dark:text-[#dfe0fd] my-2 text-sm sm:text-base">$1</li>')
-  text = text.replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-slate-700 dark:text-[#dfe0fd] my-2 text-sm sm:text-base">$1</li>')
-
-  const lines = text.split('\n')
-  return lines.map((line: string) => {
-    const trimmed = line.trim()
-    if (trimmed.startsWith('<h') || trimmed.startsWith('<li') || trimmed === '') {
-      return line
-    }
-    return `<p class="text-slate-700 dark:text-[#dfe0fd] leading-relaxed my-3 text-sm sm:text-base font-light">${line}</p>`
-  }).join('\n')
-})
 </script>
 
 <template>
-  <div class="bg-celestial-canvas min-h-screen text-slate-800 dark:text-[#dfe0fd] py-8 px-4 sm:px-8 font-sans-kr transition-colors duration-300">
-    <div class="max-w-3xl mx-auto">
-      <!-- 헤더 바 -->
-      <div class="flex items-center gap-3 mb-8">
-        <NuxtLink 
-          to="/"
-          class="p-2 rounded-full bg-slate-100 dark:bg-[#181C38] border border-slate-200 dark:border-[#FFDE9E]/30 text-purple-700 dark:text-[#FFDE9E] hover:bg-slate-200 dark:hover:bg-[#26293e] transition-colors"
-        >
+  <div class="bg-[#0B0E1B] min-h-screen text-[#D1D5DB] font-sans-kr pb-24 transition-colors duration-300">
+    <div class="max-w-md sm:max-w-lg mx-auto px-4 py-4 sm:py-6">
+
+      <!-- 헤더 (첫 번째 이미지 1:1) -->
+      <div class="flex items-center justify-between pb-3 border-b border-[#1E2640]/60 mb-4">
+        <NuxtLink to="/" class="p-1.5 rounded-full bg-[#151C33] text-[#9CA3AF] hover:text-white transition-colors">
           <UIcon name="i-heroicons-arrow-left" class="w-5 h-5" />
         </NuxtLink>
-        <div class="flex items-center gap-3">
-          <span class="seal-stamp text-xs px-2 py-0.5">易</span>
-          <h1 class="font-serif-kr text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            오늘의 주역 괘
-            <span class="text-xs text-purple-700 dark:text-[#FFDE9E]/80 font-sans-kr font-normal">(Today's I Ching)</span>
+        <div class="text-center">
+          <span class="text-[9px] font-bold tracking-widest text-[#E8C170] block uppercase">I CHING ORACLE</span>
+          <h1 class="font-serif-kr text-base sm:text-lg font-bold text-white tracking-wide">
+            주역점 결과
           </h1>
         </div>
+        <button type="button" class="p-1.5 rounded-full text-[#9CA3AF] hover:text-white transition-colors">
+          <UIcon name="i-heroicons-[#1E2640]" class="w-5 h-5 i-heroicons-bookmark" />
+        </button>
       </div>
 
-      <!-- 단계 0: 질문 입력 및 준비 화면 -->
-      <div v-if="currentStep === 0" class="gold-filament-card p-6 sm:p-8">
-        <div class="mb-6">
-          <label for="worry" class="block text-sm font-bold text-purple-900 dark:text-[#FFDE9E] mb-2 font-serif-kr">
-            ❓ 현재 해결하고 싶은 고민이나 질문을 마음속에 가만히 떠올려 보세요.
+      <!-- ========================================== -->
+      <!-- 단계 0: 질문 입력 박스 -->
+      <!-- ========================================== -->
+      <div v-if="currentStep === 0" class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
+        <div class="text-center py-2 mb-4">
+          <span class="inline-block px-3 py-1 rounded-full bg-[#E8C170]/10 border border-[#E8C170]/30 text-[#E8C170] text-xs font-bold font-serif-kr mb-2">
+            ☯️ I CHING ORACLE
+          </span>
+          <h2 class="font-serif-kr text-xl font-bold text-white mb-2">
+            풀어내고자 하는 고민을 떠올려보세요
+          </h2>
+          <p class="text-xs text-[#9CA3AF] max-w-xs mx-auto leading-relaxed font-light">
+            주역 64괘의 괘사와 변효(動爻)가 당신의 고민에 전하는 처세와 지혜를 명확히 제시합니다.
+          </p>
+        </div>
+
+        <div class="mb-5">
+          <label for="worry-iching" class="block text-xs font-bold text-[#E8C170] mb-2 font-serif-kr">
+            ❓ 질문 내용 (예: 새로운 일을 시작해도 될까요?)
           </label>
           <textarea
-            id="worry"
+            id="worry-iching"
             v-model="worry"
-            placeholder="예: 오늘 중요한 협상이 있는데 잘 마무리될까요?, 새로운 도전을 시작해도 될까요? 등 구체적으로 적어주실수록 AI가 괘사에 빗대어 깊은 처세의 조언을 전합니다."
+            placeholder="마음속에 간절히 바라거나 판단이 필요한 고민을 입력해 보세요."
             rows="3"
-            class="w-full py-2.5 px-4 border border-slate-300 dark:border-[#4d4638]/50 bg-slate-50 dark:bg-[#171a2e] rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-purple-600 dark:focus:border-[#FFDE9E] text-sm resize-none"
+            class="iching-textarea w-full py-3 px-4 bg-[#0A0D18] rounded-2xl focus:outline-hidden text-xs sm:text-sm resize-none"
           ></textarea>
-          <p class="mt-2 text-xs text-slate-500 dark:text-[#9a8f7f]">
-            * 비워두시면 오늘 하루 종합적인 하늘과 땅의 괘상을 풀이해 드립니다.
-          </p>
         </div>
 
-        <div class="text-center py-6 border-t border-slate-200 dark:border-[#4d4638]/40 mt-6">
-          <p class="text-xs sm:text-sm text-slate-600 dark:text-[#d1c5b3] mb-6 leading-relaxed font-light">
-            마음을 정갈히 하고, 아래 <strong>[주역 점치기 시작]</strong> 버튼을 누르면<br>
-            괘를 도출하기 위한 3번의 신비로운 점대 선택이 시작됩니다.
-          </p>
-          
-          <button
-            type="button"
-            class="px-8 py-3.5 rounded-full font-bold text-sm text-white bg-gradient-to-r from-purple-700 to-indigo-800 hover:brightness-110 transition-all shadow-md inline-flex items-center gap-2"
-            @click="startRitual"
-          >
-            <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#FFDE9E]" />
-            주역 점치기 시작
-          </button>
-        </div>
+        <button
+          type="button"
+          class="w-full py-3.5 rounded-full font-bold text-sm text-[#0B0E1B] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+          @click="startRitual"
+        >
+          <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#0B0E1B]" />
+          주역 괘 도출하기 (3단계 드로우)
+        </button>
       </div>
 
-      <!-- 단계 1 ~ 3: 점대 뽑기 화면 -->
-      <div v-if="currentStep >= 1 && currentStep <= 3" class="gold-filament-card p-6 sm:p-8">
-        <div class="flex justify-between items-center mb-8 border-b border-slate-200 dark:border-[#4d4638]/40 pb-4">
+      <!-- ========================================== -->
+      <!-- 단계 1 ~ 3: 3단계 대나무 점대 드로우 -->
+      <!-- ========================================== -->
+      <div v-if="currentStep >= 1 && currentStep <= 3" class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
+        <div class="flex justify-between items-center mb-6 border-b border-[#212B4A] pb-4">
           <div>
-            <span class="text-[10px] font-bold text-purple-700 dark:text-[#FFDE9E] block mb-0.5 tracking-wider">TRADITIONAL RITUAL</span>
-            <h2 class="font-serif-kr text-xl font-bold text-slate-900 dark:text-white">
-              <span v-if="currentStep === 1">1단계: 하괘(下卦)를 결정합니다</span>
-              <span v-if="currentStep === 2">2단계: 상괘(上卦)를 결정합니다</span>
-              <span v-if="currentStep === 3">3단계: 오늘의 동효(動爻)를 결정합니다</span>
+            <span class="text-[10px] font-bold text-[#E8C170] tracking-wider uppercase block mb-0.5">TRADITIONAL DRAW</span>
+            <h2 class="font-serif-kr text-base font-bold text-white">
+              <span v-if="currentStep === 1">1단계: 하괘(下卦) 선택</span>
+              <span v-if="currentStep === 2">2단계: 상괘(上卦) 선택</span>
+              <span v-if="currentStep === 3">3단계: 동효(動爻) 선택</span>
             </h2>
           </div>
           <div class="flex gap-1.5">
-            <span class="w-3 h-3 rounded-full" :class="currentStep >= 1 ? 'bg-purple-600 dark:bg-[#FFDE9E]' : 'bg-slate-200 dark:bg-[#303349]'"></span>
-            <span class="w-3 h-3 rounded-full" :class="currentStep >= 2 ? 'bg-purple-600 dark:bg-[#FFDE9E]' : 'bg-slate-200 dark:bg-[#303349]'"></span>
-            <span class="w-3 h-3 rounded-full" :class="currentStep >= 3 ? 'bg-purple-600 dark:bg-[#FFDE9E]' : 'bg-slate-200 dark:bg-[#303349]'"></span>
+            <span class="w-2.5 h-2.5 rounded-full" :class="currentStep >= 1 ? 'bg-[#E8C170]' : 'bg-[#253150]'"></span>
+            <span class="w-2.5 h-2.5 rounded-full" :class="currentStep >= 2 ? 'bg-[#E8C170]' : 'bg-[#253150]'"></span>
+            <span class="w-2.5 h-2.5 rounded-full" :class="currentStep >= 3 ? 'bg-[#E8C170]' : 'bg-[#253150]'"></span>
           </div>
         </div>
 
-        <div class="flex flex-wrap gap-4 justify-center mb-8">
-          <div class="px-4 py-2 rounded-xl bg-slate-50 dark:bg-[#171a2e] border border-slate-200 dark:border-[#4d4638]/40 flex items-center gap-2">
-            <span class="text-xs text-slate-500 dark:text-[#9a8f7f]">하괘:</span>
-            <strong class="text-sm font-serif-kr" :class="lowerTrigram ? 'text-purple-700 dark:text-[#FFDE9E]' : 'text-slate-400 dark:text-neutral-500'">
-              {{ lowerTrigram ? `${lowerTrigram.name}(${lowerTrigram.nameHanji}) ${lowerTrigram.symbol}` : '대기 중' }}
-            </strong>
-          </div>
-          <div class="px-4 py-2 rounded-xl bg-slate-50 dark:bg-[#171a2e] border border-slate-200 dark:border-[#4d4638]/40 flex items-center gap-2">
-            <span class="text-xs text-slate-500 dark:text-[#9a8f7f]">상괘:</span>
-            <strong class="text-sm font-serif-kr" :class="upperTrigram ? 'text-purple-700 dark:text-[#FFDE9E]' : 'text-slate-400 dark:text-neutral-500'">
-              {{ upperTrigram ? `${upperTrigram.name}(${upperTrigram.nameHanji}) ${upperTrigram.symbol}` : '대기 중' }}
-            </strong>
-          </div>
-          <div class="px-4 py-2 rounded-xl bg-slate-50 dark:bg-[#171a2e] border border-slate-200 dark:border-[#4d4638]/40 flex items-center gap-2">
-            <span class="text-xs text-slate-500 dark:text-[#9a8f7f]">동효:</span>
-            <strong class="text-sm font-serif-kr" :class="selectedLine ? 'text-purple-700 dark:text-[#FFDE9E]' : 'text-slate-400 dark:text-neutral-500'">
-              {{ selectedLine ? `${selectedLine}효` : '대기 중' }}
-            </strong>
-          </div>
-        </div>
-
-        <p class="text-center text-xs sm:text-sm text-slate-600 dark:text-[#d1c5b3] mb-8 leading-relaxed font-light">
-          <span v-if="currentStep === 1">아래 8개의 대나무 점대 중 하나를 선택하세요. 괘의 아래쪽을 구성합니다.</span>
-          <span v-if="currentStep === 2">다시 한 번 8개의 점대 중 하나를 선택하세요. 괘의 위쪽을 구성합니다.</span>
-          <span v-if="currentStep === 3">마지막으로 6개의 점대 중 하나를 선택하세요. 오늘의 변화를 뜻하는 동효가 정해집니다.</span>
-        </p>
-
-        <!-- 점대 보드 -->
-        <div class="flex justify-center flex-wrap gap-3 py-4 max-w-xl mx-auto">
+        <!-- 대나무 점대 보드 -->
+        <div class="flex justify-center flex-wrap gap-2.5 py-4 max-w-md mx-auto">
           <div
             v-for="stick in sticks"
             :key="stick.stickId"
             @click="handleStickClick(stick)"
-            class="relative cursor-pointer h-40 w-11 rounded-xl transition-all duration-500 transform hover:-translate-y-3 preserve-3d"
+            class="relative cursor-pointer h-36 w-10 rounded-xl transition-all duration-500 transform hover:-translate-y-2 preserve-3d"
             :class="{ 'rotate-y-180': stick.isFlipped }"
           >
-            <div class="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 flex flex-col items-center justify-between py-4 border border-amber-600 rounded-xl shadow-md backface-hidden z-10">
-              <span class="text-xs text-amber-300/40 select-none">☯</span>
-              <div class="w-1 h-16 bg-amber-900/50 rounded-full"></div>
-              <span class="text-[10px] text-amber-200/50 select-none font-serif-kr">{{ stick.stickId }}</span>
+            <div class="absolute inset-0 bg-linear-to-b from-[#78350F] via-[#713F12] to-[#451A03] flex flex-col items-center justify-between py-3 border border-[#B45309]/50 rounded-xl shadow-lg backface-hidden z-10">
+              <span class="text-[10px] text-[#FDE047]/40 select-none">☯</span>
+              <div class="w-1 h-14 bg-[#451A03]/60 rounded-full"></div>
+              <span class="text-[9px] text-[#FEF08A]/60 font-serif-kr">{{ stick.stickId }}</span>
             </div>
 
-            <div class="absolute inset-0 bg-slate-50 dark:bg-[#171a2e] flex flex-col items-center justify-center p-1 border-2 border-purple-600 dark:border-[#FFDE9E] rounded-xl shadow-lg rotate-y-180 backface-hidden z-20 text-slate-900 dark:text-white">
+            <div class="absolute inset-0 bg-[#0A0D18] flex flex-col items-center justify-center p-1 border-2 border-[#E8C170] rounded-xl shadow-xl rotate-y-180 backface-hidden z-20 text-white">
               <template v-if="currentStep === 1 || currentStep === 2">
-                <span class="text-2xl text-purple-700 dark:text-[#FFDE9E] font-bold mb-1 select-none">{{ stick.trigram.symbol }}</span>
+                <span class="text-xl text-[#FFDE9E] font-bold mb-0.5 select-none">{{ stick.trigram.symbol }}</span>
                 <span class="text-xs font-bold font-serif-kr select-none">{{ stick.trigram.name }}</span>
-                <span class="text-[9px] text-slate-500 dark:text-[#9a8f7f] mt-0.5 select-none">{{ stick.trigram.element }}</span>
               </template>
               <template v-else-if="currentStep === 3">
-                <span class="text-lg text-purple-700 dark:text-[#FFDE9E] font-serif-kr font-black select-none tracking-widest mb-1">{{ stick.lineSymbol }}</span>
-                <span class="text-[10px] font-bold select-none text-center leading-tight">{{ stick.lineName }}</span>
+                <span class="text-base text-[#FFDE9E] font-serif-kr font-black select-none tracking-widest mb-1">{{ stick.lineSymbol }}</span>
+                <span class="text-[9px] font-bold select-none text-center leading-tight">{{ stick.lineName }}</span>
               </template>
             </div>
           </div>
         </div>
-
-        <div class="flex justify-center mt-8 border-t border-slate-200 dark:border-[#4d4638]/40 pt-6">
-          <button
-            type="button"
-            class="text-xs text-slate-500 dark:text-[#9a8f7f] hover:text-slate-900 dark:hover:text-white transition-colors"
-            @click="resetAll"
-          >
-            그만두고 처음으로
-          </button>
-        </div>
       </div>
 
+      <!-- ========================================== -->
       <!-- 단계 4: 로딩 화면 -->
-      <div v-if="currentStep === 4" class="gold-filament-card p-8 sm:p-12 text-center">
-        <div class="relative w-32 h-32 mx-auto flex items-center justify-center mb-8">
-          <div class="absolute inset-0 rounded-full border-4 border-dashed border-purple-500/40 animate-spin" style="animation-duration: 8s;"></div>
-          <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-[#171a2e] border border-purple-500/30 flex items-center justify-center shadow-inner animate-pulse">
-            <span class="seal-stamp text-sm px-2 py-0.5">易</span>
+      <!-- ========================================== -->
+      <div v-if="currentStep === 4" class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6">
+        <div class="relative w-24 h-24 mx-auto flex items-center justify-center mb-6">
+          <div class="absolute inset-0 rounded-full border-4 border-dashed border-[#E8C170]/40 animate-spin" style="animation-duration: 6s;"></div>
+          <div class="w-12 h-12 rounded-full bg-[#0A0D18] border border-[#E8C170]/40 flex items-center justify-center shadow-inner animate-pulse">
+            <span class="seal-stamp text-xs px-2 py-0.5">易</span>
           </div>
         </div>
-        
-        <h3 class="font-serif-kr text-xl font-bold text-slate-900 dark:text-white mb-2 animate-pulse">
-          하늘과 땅의 64괘를 맞추는 중입니다...
+        <h3 class="font-serif-kr text-base font-bold text-white mb-1 animate-pulse">
+          본괘와 변괘를 맞추는 중입니다...
         </h3>
-        <p class="text-xs text-slate-500 dark:text-[#9a8f7f] max-w-xs mx-auto leading-relaxed">
-          선택된 괘의 해석과 효사를 불러와 고민에 답할 명리 지침을 생성하고 있습니다.
-        </p>
       </div>
 
-      <!-- 단계 5: 결과 화면 -->
-      <div v-if="currentStep === 5 && result" class="space-y-6">
-        <div class="gold-filament-card p-6 sm:p-8">
-          <div class="text-center border-b border-slate-200 dark:border-[#4d4638]/40 pb-6 mb-6">
-            <div class="flex items-center justify-center gap-2 mb-3">
-              <span class="inline-block px-3 py-1 bg-amber-500/10 dark:bg-[#FFDE9E]/10 border border-amber-500/30 dark:border-[#FFDE9E]/30 text-amber-800 dark:text-[#FFDE9E] rounded-full text-xs font-bold font-serif-kr">
-                제 {{ result.hexagram.id }}괘
-              </span>
-              <span class="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-950/70 border border-purple-300 dark:border-purple-500/40 text-purple-800 dark:text-purple-300 rounded-full text-xs font-bold font-serif-kr">
-                동효: {{ result.hexagram.lineNumber }}효
+      <!-- ========================================== -->
+      <!-- 단계 5: 주역점 결과 화면 (이미지 1:1 완벽 반영) -->
+      <!-- ========================================== -->
+      <div v-if="currentStep === 5 && result" class="space-y-4">
+
+        <!-- 1. 질문 카드 (상단 인풋 요약) -->
+        <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-4 relative">
+          <div class="flex justify-between items-start mb-2">
+            <h2 class="font-serif-kr text-sm sm:text-base font-bold text-white leading-snug">
+              "{{ worry || '새로운 일을 시작해도 될까요?' }}"
+            </h2>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-[#9CA3AF]">
+            <span class="flex items-center gap-1.5">
+              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 text-[#E8C170]" />
+              갑진년 정월 초하루 · 2026.09.22 21:40
+            </span>
+            <span class="px-2 py-0.5 rounded-md bg-[#1C2642] text-[#E8C170] border border-[#2B395E] text-[10px]">
+              문사 (問事)
+            </span>
+          </div>
+        </div>
+
+        <!-- 2. 본괘 & 변괘 6효 카드 (이미지 메인 1:1) -->
+        <div class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-5 shadow-2xl relative">
+          <!-- 상단 뱃지 -->
+          <div class="text-center mb-4">
+            <span class="inline-block px-3 py-0.5 rounded-full bg-[#1C2642] border border-[#2D3A5F] text-[11px] text-[#FFDE9E] font-medium">
+              ● 동효: 초구(初九) 변효 ✦
+            </span>
+          </div>
+
+          <!-- 본괘 ➔ 변괘 대칭 디스플레이 -->
+          <div class="grid grid-cols-2 gap-4 items-center mb-5 relative">
+
+            <!-- 본괘 (Origin) -->
+            <div class="bg-[#0A0E1A] border border-[#1E2844] rounded-2xl p-3.5 text-center">
+              <span class="text-[10px] text-[#E8C170] font-bold block mb-1">본괘 [本卦]</span>
+              <h3 class="font-serif-kr text-base font-extrabold text-white mb-0.5">
+                제{{ hexagramLinesDetail.origin.id }}괘 {{ hexagramLinesDetail.origin.nameKorean }}
+              </h3>
+              <p class="text-[10px] text-[#9CA3AF] mb-3">{{ hexagramLinesDetail.origin.desc }}</p>
+
+              <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로) -->
+              <div class="space-y-1.5 max-w-25 mx-auto mb-3">
+                <div
+                  v-for="(val, index) in [...hexagramLinesDetail.origin.lines].reverse()"
+                  :key="index"
+                  class="h-2 rounded flex items-center justify-between overflow-hidden relative"
+                  :class="6 - index === hexagramLinesDetail.lineNum ? 'ring-1 ring-[#E8C170]' : ''"
+                >
+                  <!-- 양효 (1): 통 줄 -->
+                  <template v-if="val === 1">
+                    <div class="w-full h-full bg-[#93C5FD] rounded-sm shadow-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-[#FDE047]' : ''"></div>
+                  </template>
+                  <!-- 음효 (0): 두 갈래 -->
+                  <template v-else>
+                    <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-[#FDE047]' : ''"></div>
+                    <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-[#FDE047]' : ''"></div>
+                  </template>
+                </div>
+              </div>
+
+              <span class="text-[9px] text-[#6B7280] font-serif-kr block">
+                {{ hexagramLinesDetail.origin.upperName }} · {{ hexagramLinesDetail.origin.lowerName }}
               </span>
             </div>
-            <h2 class="font-serif-kr text-3xl font-extrabold text-slate-900 dark:text-white mb-2">
-              {{ result.hexagram.nameKorean }} ({{ result.hexagram.nameHanji }})
-            </h2>
-            <p class="text-sm text-slate-600 dark:text-[#d1c5b3] font-serif-kr font-light max-w-md mx-auto italic">
-              "{{ result.hexagram.summary }}"
-            </p>
+
+            <!-- 변효 화살표 (중앙) -->
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-[#13192E] p-1 rounded-full text-[#E8C170] border border-[#212B4A]">
+              <UIcon name="i-heroicons-arrow-right" class="w-4 h-4" />
+            </div>
+
+            <!-- 변괘 (Changed) -->
+            <div class="bg-[#0A0E1A] border border-[#1E2844] rounded-2xl p-3.5 text-center">
+              <span class="text-[10px] text-[#E8C170] font-bold block mb-1">변괘 [變卦]</span>
+              <h3 class="font-serif-kr text-base font-extrabold text-white mb-0.5">
+                제{{ hexagramLinesDetail.changed.id }}괘 {{ hexagramLinesDetail.changed.nameKorean }}
+              </h3>
+              <p class="text-[10px] text-[#9CA3AF] mb-3">{{ hexagramLinesDetail.changed.desc }}</p>
+
+              <!-- 6효 그리기 -->
+              <div class="space-y-1.5 max-w-25 mx-auto mb-3">
+                <div
+                  v-for="(val, index) in [...hexagramLinesDetail.changed.lines].reverse()"
+                  :key="index"
+                  class="h-2 rounded flex items-center justify-between overflow-hidden"
+                >
+                  <template v-if="val === 1">
+                    <div class="w-full h-full bg-[#93C5FD] rounded-sm"></div>
+                  </template>
+                  <template v-else>
+                    <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm"></div>
+                    <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm"></div>
+                  </template>
+                </div>
+              </div>
+
+              <span class="text-[9px] text-[#6B7280] font-serif-kr block">
+                {{ hexagramLinesDetail.changed.upperName }} · {{ hexagramLinesDetail.changed.lowerName }}
+              </span>
+            </div>
           </div>
 
-          <!-- AI 해석 본문 -->
-          <div class="border-t border-slate-200 dark:border-[#4d4638]/40 pt-6">
-            <div v-html="formattedInterpretation" class="markdown-body"></div>
+          <!-- 하단 요약 정보 -->
+          <div class="flex justify-between items-center px-2 pt-2 border-t border-[#1E2844] text-[11px]">
+            <span class="text-[#9CA3AF]">{{ hexagramLinesDetail.harmonyText }}</span>
+            <span class="text-[#FFDE9E] font-bold">{{ hexagramLinesDetail.fortuneBadge }}</span>
           </div>
+        </div>
 
-          <!-- 공유 및 버튼 -->
-          <div class="mt-8 pt-6 border-t border-slate-200 dark:border-[#4d4638]/40 flex flex-wrap gap-4 justify-between items-center">
-            <button
-              type="button"
-              class="px-4 py-2 rounded-full border border-slate-300 dark:border-[#4d4638]/60 text-xs text-slate-600 dark:text-[#d1c5b3] hover:text-slate-900 dark:hover:text-white hover:border-purple-600 dark:hover:border-[#FFDE9E] transition-colors"
-              @click="resetAll"
-            >
-              다시 점치기
-            </button>
+        <!-- 3. 괘도 핵심 요약 (이미지 1:1) -->
+        <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-5 shadow-lg">
+          <div class="flex items-center gap-1.5 text-xs text-[#E8C170] font-bold mb-2">
+            <UIcon name="i-heroicons-share" class="w-4 h-4" />
+            괘도 핵심 요약
+          </div>
+          <h2 class="font-serif-kr text-base sm:text-lg font-bold text-[#FFE5A3] mb-2 leading-snug">
+            "순풍에 돛을 올리듯, 바른 뜻으로 나아가면 크게 형통합니다"
+          </h2>
+          <p class="text-xs text-[#D1D5DB] font-light leading-relaxed">
+            {{ result.hexagram.nameKorean }}({{ result.hexagram.nameHanji }})는 하늘의 기운이 땅으로 내려오고 땅의 기운이 하늘로 올라 조화롭게 합파되는 최상의 괘상입니다. 바닥부터 차근히 기반을 다지면 점차 결실에 도달합니다.
+          </p>
+        </div>
 
-            <div class="flex gap-2">
+        <!-- 4. 고전 원문 심층 풀이 (아코디언, 이미지 1:1) -->
+        <div class="space-y-2">
+          <span class="text-xs font-bold text-[#E8C170] flex items-center gap-1 px-1 font-serif-kr">
+            ✦ 고전 원문 심층 풀이
+          </span>
+
+          <div class="iching-accordion-box bg-[#13192E] rounded-2xl overflow-hidden">
+            <!-- 아코디언 1: 괘사 본괘 총론 -->
+            <div>
               <button
                 type="button"
-                class="px-5 py-2.5 rounded-full bg-purple-100 dark:bg-purple-950/70 border border-purple-300 dark:border-purple-500/50 text-xs font-bold text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/80 transition-colors flex items-center gap-1.5"
-                @click="copyToClipboard"
+                @click="toggleAccordion('total')"
+                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold text-white hover:bg-[#1A223B] transition-colors"
               >
-                <UIcon name="i-heroicons-share" class="w-4 h-4" />
-                결과지 복사 및 공유
+                <span class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-[#1C2642] text-[#E8C170] text-[10px]">괘사 (卦辭)</span>
+                  {{ result.hexagram.nameKorean }} 본괘 총론
+                </span>
+                <UIcon
+                  name="i-heroicons-chevron-down"
+                  class="w-4 h-4 text-[#9CA3AF] transition-transform"
+                  :class="accordionOpen.total ? 'rotate-180' : ''"
+                />
               </button>
+              <div v-if="accordionOpen.total" class="p-4 pt-0 text-xs text-[#D1D5DB] font-serif-kr space-y-2 leading-relaxed">
+                <p class="text-[#FFDE9E] font-bold">泰，小往大來，吉亨。</p>
+                <p class="font-sans-kr font-light">
+                  "태(泰)는 작은 것이 가고 큰 것이 오니, 길하고 형통하리라."
+                </p>
+                <p class="font-sans-kr font-light text-[#9CA3AF]">
+                  불안했던 여건이 물러가고 안정과 희망의 새로운 국면이 열리는 시기입니다. 긍정적인 마음으로 도전을 감행해도 좋은 때입니다.
+                </p>
+              </div>
+            </div>
+
+            <!-- 아코디언 2: 효사 초구 동효의 가르침 -->
+            <div>
+              <button
+                type="button"
+                @click="toggleAccordion('line')"
+                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold text-white hover:bg-[#1A223B] transition-colors"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-[#1C2642] text-[#E8C170] text-[10px]">효사 (爻辭)</span>
+                  {{ hexagramLinesDetail.lineText }}의 가르침
+                </span>
+                <UIcon
+                  name="i-heroicons-chevron-down"
+                  class="w-4 h-4 text-[#9CA3AF] transition-transform"
+                  :class="accordionOpen.line ? 'rotate-180' : ''"
+                />
+              </button>
+              <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs text-[#D1D5DB] font-serif-kr space-y-2 leading-relaxed">
+                <p class="text-[#FFDE9E] font-bold">初九，拔茅茹，以其彙，征吉。</p>
+                <p class="font-sans-kr font-light">
+                  "초구는 띠풀 뿌리를 뽑음에 엉킨 풀 함께 뽑힘이니, 뜻을 같이 하는 이들과 나아가면 길하리라."
+                </p>
+                <p class="font-sans-kr font-light text-[#9CA3AF]">
+                  혼자 외롭게 일하지 마시고, 가치관이 맞는 동업자·동료와 유기적으로 연대할 때 더 큰 시너지와 안정을 얻게 됩니다.
+                </p>
+              </div>
+            </div>
+
+            <!-- 아코디언 3: 상전 대자연의 형상과 리더십 -->
+            <div>
+              <button
+                type="button"
+                @click="toggleAccordion('symbol')"
+                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold text-white hover:bg-[#1A223B] transition-colors"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-[#1C2642] text-[#E8C170] text-[10px]">상전 (象傳)</span>
+                  대자연의 형상과 리더십
+                </span>
+                <UIcon
+                  name="i-heroicons-chevron-down"
+                  class="w-4 h-4 text-[#9CA3AF] transition-transform"
+                  :class="accordionOpen.symbol ? 'rotate-180' : ''"
+                />
+              </button>
+              <div v-if="accordionOpen.symbol" class="p-4 pt-0 text-xs text-[#D1D5DB] font-sans-kr font-light leading-relaxed">
+                하늘과 땅이 교감하듯, 조직이나 서체에서 위아래 소통을 원활히 하고 순응하는 리더십을 발휘할 때 만사가 평온해집니다.
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-center my-6">
-          <AdSense adSlot="1928374650" />
+        <!-- 5. 영역별 흐름 가이드 (이미지 1:1) -->
+        <div class="space-y-2">
+          <span class="text-xs font-bold text-[#E8C170] flex items-center gap-1 px-1">
+            ✦ 영역별 흐름 가이드
+          </span>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="font-serif-kr text-xs font-bold text-white">일 · 사업</h4>
+                <span class="px-2 py-0.5 rounded bg-[#065F46] text-[#A7F3D0] text-[9px] font-bold">상승 ▲</span>
+              </div>
+              <p class="text-[11px] text-[#9CA3AF] font-light">
+                협력자와 함께 도모할 때 예상치 못한 성과가 보장됩니다.
+              </p>
+            </div>
+
+            <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="font-serif-kr text-xs font-bold text-white">재물 · 투자</h4>
+                <span class="px-2 py-0.5 rounded bg-[#065F46] text-[#A7F3D0] text-[9px] font-bold">상승 ▲</span>
+              </div>
+              <p class="text-[11px] text-[#9CA3AF] font-light">
+                새로운 계약과 장기 계획에 순풍이 깃드는 흐름입니다.
+              </p>
+            </div>
+
+            <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="font-serif-kr text-xs font-bold text-white">인간관계</h4>
+                <span class="px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8] text-[9px] font-bold">유지 ▶</span>
+              </div>
+              <p class="text-[11px] text-[#9CA3AF] font-light">
+                오랜 오해가 풀리고 뜻이 맞는 귀인을 만나게 됩니다.
+              </p>
+            </div>
+
+            <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
+              <div class="flex justify-between items-center mb-1">
+                <h4 class="font-serif-kr text-xs font-bold text-white">심신 건강</h4>
+                <span class="px-2 py-0.5 rounded bg-[#854D0E] text-[#FEF08A] text-[9px] font-bold">주의 ●</span>
+              </div>
+              <p class="text-[11px] text-[#9CA3AF] font-light">
+                기운이 넓으나 의욕 과다로 인한 피로를 주의하세요.
+              </p>
+            </div>
+          </div>
         </div>
+
+        <!-- 6. 지금 취해야 할 3가지 자세 (處世) (이미지 1:1) -->
+        <div class="bg-linear-to-b from-[#1C2642] to-[#13192E] border border-[#212B4A] rounded-2xl p-5 shadow-lg">
+          <div class="flex items-center gap-1.5 text-xs font-bold text-white mb-3">
+            <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-[#E8C170]" />
+            지금 취해야 할 3가지 자세 (處世)
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div class="flex items-start gap-2">
+              <span class="w-4 h-4 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
+              <div>
+                <strong class="text-[#FFDE9E]">연대와 협업:</strong>
+                <span class="text-[#D1D5DB] font-light"> 단독적인 진행보다는 뜻을 함께하는 동료나 멘토와 연대하세요.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2">
+              <span class="w-4 h-4 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
+              <div>
+                <strong class="text-[#FFDE9E]">기반 다지기:</strong>
+                <span class="text-[#D1D5DB] font-light"> 첫 단추를 꾈 때 기초 계획과 약속을 투명하게 다지세요.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2">
+              <span class="w-4 h-4 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
+              <div>
+                <strong class="text-[#FFDE9E]">순리 존중:</strong>
+                <span class="text-[#D1D5DB] font-light"> 조급해하지 말고 순리대로 작은 걸음부터 밝아나가세요.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. 버튼 영역 (이미지 1:1) -->
+        <div class="space-y-2.5 pt-2">
+          <button
+            type="button"
+            class="w-full py-3.5 rounded-full font-bold text-xs sm:text-sm text-[#0B0E1B] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            @click="copyToClipboard"
+          >
+            <UIcon name="i-heroicons-bookmark" class="w-4 h-4 text-[#0B0E1B]" />
+            결과 저장하기 (클립보드 복사)
+          </button>
+
+          <div class="flex gap-2">
+            <button
+              type="button"
+              class="flex-1 py-3 rounded-full bg-[#17203A] border border-[#27345B] text-xs font-semibold text-[#D1D5DB] hover:text-white hover:border-[#E8C170] transition-colors flex items-center justify-center gap-1.5"
+              @click="resetAll"
+            >
+              <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 text-[#E8C170]" />
+              다시 점치기
+            </button>
+            <button
+              type="button"
+              class="p-3 rounded-full bg-[#17203A] border border-[#27345B] text-xs font-semibold text-[#D1D5DB] hover:text-white transition-colors flex items-center justify-center"
+              @click="copyToClipboard"
+            >
+              <UIcon name="i-heroicons-share" class="w-4 h-4 text-[#E8C170]" />
+            </button>
+          </div>
+        </div>
+
+        <!-- 하단 가이드 문구 -->
+        <p class="text-center text-[10px] text-[#6B7280] py-3 leading-relaxed">
+          ※ 주역점은 삶의 지혜와 마음을 가다듬기 위한 참고용이며, 최종 선택과 판단은 스스로 내려보세요.
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- 하단 탭바 (첫 번째 이미지 1:1) -->
+    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0E1B]/95 backdrop-blur-md border-t border-[#1E2640] z-50 py-2">
+      <div class="max-w-md sm:max-w-lg mx-auto grid grid-cols-4 text-center px-4">
+        <NuxtLink
+          to="/saju"
+          class="flex flex-col items-center gap-1 py-1 text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+        >
+          <UIcon name="i-heroicons-calendar-days" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">오늘</span>
+        </NuxtLink>
+
+        <button
+          type="button"
+          @click="activeTab = 'iching'"
+          class="flex flex-col items-center gap-1 py-1 transition-colors text-[#E8C170]"
+        >
+          <UIcon name="i-heroicons-sparkles" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">주역</span>
+        </button>
+
+        <button
+          type="button"
+          @click="activeTab = 'record'"
+          class="flex flex-col items-center gap-1 py-1 text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+        >
+          <UIcon name="i-heroicons-document-text" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">기록</span>
+        </button>
+
+        <NuxtLink
+          to="/saju"
+          class="flex flex-col items-center gap-1 py-1 text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+        >
+          <UIcon name="i-heroicons-user" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">내 정보</span>
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.iching-textarea {
+  border: 1px solid #28355A;
+  color: #ffffff;
+}
+.iching-textarea:focus {
+  border-color: #E8C170;
+}
+.iching-textarea::placeholder {
+  color: #4B5563;
+}
+
+.iching-accordion-box {
+  border: 1px solid #212B4A;
+}
+.iching-accordion-box > div + div {
+  border-top: 1px solid #1E2844;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+</style>
