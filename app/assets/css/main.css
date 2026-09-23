@@ -11,6 +11,24 @@
   --border-card: rgba(203, 213, 225, 0.8);
   --gold-accent: #d97706;
   --seal-red: #B23A2E;
+
+  /* Fortune Page Theme */
+  --fortune-bg: #FBF0F6;
+  --fortune-card: #FFFFFF;
+  --fortune-card-deep: #FFF5FA;
+  --fortune-card-inner: #FFF0F6;
+  --fortune-border: rgba(210, 165, 185, 0.35);
+  --fortune-border-strong: rgba(210, 165, 185, 0.55);
+  --fortune-text: #1a1035;
+  --fortune-text-muted: #6B5A72;
+  --fortune-text-soft: #8B7A92;
+  --fortune-gold: #9A5C00;
+  --fortune-gold-light: #C4820A;
+  --fortune-btn-soft: #F5E0ED;
+  --fortune-btn-soft-border: rgba(210, 165, 185, 0.5);
+  --fortune-input-bg: #FFF0F5;
+  --fortune-chip: #F8E8F3;
+  --fortune-chip-border: rgba(210, 165, 185, 0.45);
 }
 
 .dark {
@@ -20,6 +38,24 @@
   --text-muted: #d1c5b3;
   --border-card: rgba(232, 193, 112, 0.22);
   --gold-accent: #FFDE9E;
+
+  /* Fortune Page Theme (Dark) */
+  --fortune-bg: #0B0F1D;
+  --fortune-card: #151C33;
+  --fortune-card-deep: #13192E;
+  --fortune-card-inner: #0E1325;
+  --fortune-border: #232E4A;
+  --fortune-border-strong: #1E2942;
+  --fortune-text: #E2E8F0;
+  --fortune-text-muted: #94A3B8;
+  --fortune-text-soft: #64748B;
+  --fortune-gold: #E8C170;
+  --fortune-gold-light: #FFDE9E;
+  --fortune-btn-soft: #151C33;
+  --fortune-btn-soft-border: #253150;
+  --fortune-input-bg: #0A0D18;
+  --fortune-chip: #151C33;
+  --fortune-chip-border: #253150;
 }
 
 /* Base Body Transition */
@@ -110,4 +146,189 @@ body {
 }
 .font-sans-kr {
   font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* ===================================================
+   Fortune Page Theme Utilities (Saju / IChing Pages)
+   라이트모드: 분홍 파스텔 / 다크모드: 진한 네이비
+   =================================================== */
+
+/* 페이지 루트 배경 */
+.pg-bg {
+  background-color: var(--fortune-bg);
+  color: var(--fortune-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 메인 카드 (흰색 / 다크 네이비) */
+.pg-card {
+  background-color: var(--fortune-card) !important;
+  border-color: var(--fortune-border) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 딥 카드 (약간 더 어두운/연한 내부 카드) */
+.pg-card-deep {
+  background-color: var(--fortune-card-deep) !important;
+  border-color: var(--fortune-border) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 인너 카드 (가장 안쪽 셀) */
+.pg-card-inner {
+  background-color: var(--fortune-card-inner) !important;
+  border-color: var(--fortune-border-strong) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 테두리 */
+.pg-border {
+  border-color: var(--fortune-border) !important;
+}
+.pg-border-strong {
+  border-color: var(--fortune-border-strong) !important;
+}
+
+/* 텍스트 */
+.pg-text {
+  color: var(--fortune-text) !important;
+}
+.pg-text-muted {
+  color: var(--fortune-text-muted) !important;
+}
+.pg-text-soft {
+  color: var(--fortune-text-soft) !important;
+}
+.pg-text-gold {
+  color: var(--fortune-gold) !important;
+}
+.pg-text-gold-light {
+  color: var(--fortune-gold-light) !important;
+}
+
+/* 입력 필드 */
+.pg-input {
+  background-color: var(--fortune-input-bg) !important;
+  color: var(--fortune-text) !important;
+  border-color: var(--fortune-border-strong) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 소프트 버튼/칩 (띠 목록 등) */
+.pg-chip {
+  background-color: var(--fortune-chip) !important;
+  border-color: var(--fortune-chip-border) !important;
+  color: var(--fortune-text-muted) !important;
+  transition: background-color 0.3s ease;
+}
+
+/* 뒤로가기 버튼 */
+.pg-back-btn {
+  background-color: var(--fortune-btn-soft) !important;
+  color: var(--fortune-text-muted) !important;
+  transition: background-color 0.3s ease;
+}
+.pg-back-btn:hover {
+  color: var(--fortune-text) !important;
+}
+
+/* no-scrollbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ========================================
+   라이트모드 전역 보정 (Light mode global fixes)
+   ======================================== */
+
+/* 황금/포인트 색상 - 라이트/다크 공통 변수 */
+.pg-accent {
+  color: var(--fortune-gold) !important;
+}
+
+/* markdown-body 테마 색상 및 타이포그래피 보정 */
+.pg-bg .markdown-body {
+  color: #1F2937;
+  background-color: transparent;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.dark .pg-bg .markdown-body {
+  color: #F8FAFC;
+}
+.pg-bg .markdown-body h1,
+.pg-bg .markdown-body h2,
+.pg-bg .markdown-body h3 {
+  font-family: 'Noto Serif KR', serif;
+}
+.pg-bg .markdown-body strong {
+  color: var(--fortune-gold);
+}
+.pg-bg .markdown-body p {
+  color: #1F2937;
+  line-height: 1.75;
+}
+.dark .pg-bg .markdown-body p {
+  color: #F8FAFC;
+}
+.pg-bg .markdown-body li {
+  color: #1F2937;
+  line-height: 1.65;
+}
+.dark .pg-bg .markdown-body li {
+  color: #F8FAFC;
+}
+.pg-bg .markdown-body hr {
+  border: 0;
+  border-top: 1px solid var(--fortune-border-strong);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+
+/* 천기 음양 회전 및 둥둥 뜨는 플로팅 애니메이션 */
+@keyframes celestialFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.animate-celestial-float {
+  animation: celestialFloat 6s ease-in-out infinite;
+}
+
+/* 점선 원 오행 오로라 색상 변환 애니메이션 */
+@keyframes celestialColorShift {
+  0%, 100% {
+    stroke: #D97706;
+  }
+  25% {
+    stroke: #10B981;
+  }
+  50% {
+    stroke: #F43F5E;
+  }
+  75% {
+    stroke: #3B82F6;
+  }
+}
+
+.dark @keyframes celestialColorShift {
+  0%, 100% {
+    stroke: #FFDE9E;
+  }
+  25% {
+    stroke: #34D399;
+  }
+  50% {
+    stroke: #FB7185;
+  }
+  75% {
+    stroke: #60A5FA;
+  }
+}
+
+.animate-celestial-color {
+  animation: celestialColorShift 12s ease-in-out infinite;
 }

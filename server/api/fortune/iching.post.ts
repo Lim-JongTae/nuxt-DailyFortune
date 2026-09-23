@@ -60,13 +60,8 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const geminiApiKey = process.env.GEMINI_API_KEY
-
-    let aiInterpretation = ''
-    let isAiGenerated = false
-
-    if (geminiApiKey) {
-      const prompt = `당신은 주역(I Ching)과 명리학에 정통한 고결한 역학자입니다. 
+    // 5. AI 모델 호출 (Claude / Gemini 통합)
+    const prompt = `당신은 주역(I Ching)과 명리학에 정통한 고결한 역학자입니다. 
 사용자가 직접 점대를 뽑아 조합한 주역 괘의 괘사와 효사 정보를 바탕으로, 사용자의 고민에 대해 깊이 있는 해설과 행동 지침을 조언해 주어야 합니다.
 어조는 신뢰감을 주며 따뜻하고 정중한 높임말을 사용하고, 너무 미신적인 단정보다는 지혜로운 조언 형태로 답해주십시오.
 
@@ -92,32 +87,7 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
 
 주의: 답변이 중간에 뚝 끊기지 않도록 문장을 반드시 완결하고, 마크다운 문법의 끝을 맞춰주십시오.`
 
-      try {
-        const response: any = await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
-          method: 'POST',
-          body: {
-            contents: [
-              {
-                parts: [
-                  { text: prompt }
-                ]
-              }
-            ],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 8192
-            }
-          }
-        })
-
-        if (response?.candidates?.[0]?.content?.parts?.[0]?.text) {
-          aiInterpretation = response.candidates[0].content.parts[0].text
-          isAiGenerated = true
-        }
-      } catch (apiError) {
-        console.error('Gemini API Error:', apiError)
-      }
-    }
+    let { text: aiInterpretation, isAiGenerated } = await callAiModel(prompt)
 
     if (!isAiGenerated) {
       aiInterpretation = `**[AI 해석 알림]** API 연결에 일시적인 제한이 있어 데이터베이스 원천 자료를 토대로 해석을 제공합니다.

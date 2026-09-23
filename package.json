@@ -31,6 +31,7 @@
     "@iconify-json/heroicons": "^1.2.3",
     "@iconify-json/lucide": "^1.2.135",
     "@vite-pwa/nuxt": "^1.1.1",
+    "nuxtseo-layer-devtools": "^5.3.16",
     "prisma": "6.19.2",
     "tsx": "^4.23.15"
   }

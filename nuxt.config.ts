@@ -23,19 +23,19 @@ export default defineNuxtConfig({
       start_url: '/',
       icons: [
         {
-          src: '/icon-192x192.png',
+          src: '/pwa-rounded-192.png',
           sizes: '192x192',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/icon-512x512.png',
+          src: '/pwa-rounded-512.png',
           sizes: '512x512',
           type: 'image/png',
           purpose: 'any'
         },
         {
-          src: '/icon-512x512.png',
+          src: '/pwa-rounded-512.png',
           sizes: '512x512',
           type: 'image/png',
           purpose: 'maskable'
@@ -51,9 +51,7 @@ export default defineNuxtConfig({
     },
     devOptions: {
       enabled: true,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\//],
-      type: 'module'
+      suppressWarnings: true
     }
   },
   app: {
@@ -65,8 +63,8 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-title', content: '일일운세' }
       ],
       link: [
-        { rel: 'apple-touch-icon', href: '/icon-192x192.png' },
-        { rel: 'icon', type: 'image/png', href: '/icon-192x192.png' }
+        { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
+        { rel: 'icon', type: 'image/png', href: '/favicon-badge.png' }
       ]
     }
   },

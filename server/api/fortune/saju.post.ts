@@ -86,14 +86,8 @@ export default defineEventHandler(async (event) => {
       }) : null
     ])
 
-    // 5. Gemini API 호출 준비
-    const geminiApiKey = process.env.GEMINI_API_KEY
-
-    let aiInterpretation = ''
-    let isAiGenerated = false
-
-    if (geminiApiKey) {
-      const prompt = `당신은 사주명리학(Four Pillars of Destiny)에 정통한 고결한 역학자입니다. 
+    // 5. AI 모델 호출 (Claude / Gemini 통합)
+    const prompt = `당신은 사주명리학(Four Pillars of Destiny)에 정통한 고결한 역학자입니다. 
 사용자의 사주 정보와 오늘의 일진 정보, 그리고 이들의 관계성인 '십신(Shipsin)'에 대한 명리학적 텍스트를 바탕으로, 사용자의 고민에 대해 깊이 있는 해설과 행동 지침을 조언해 주어야 합니다.
 어조는 신뢰감을 주며 따뜻하고 정중한 높임말을 사용하고, 너무 미신적인 단정보다는 지혜로운 조언 형태로 답해주십시오.
 
@@ -114,37 +108,51 @@ export default defineEventHandler(async (event) => {
 [사용자의 고민]
 ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합니다."}
 
-답변은 마크다운(Markdown) 형식으로 작성하여 가독성을 높여주세요. 아래 단계를 포함해 작성해 주세요:
-1. 사용자의 태어난 성향(일간 및 일지/지간 조화)에 대한 격려와 오늘 일진과의 조화 요약
-2. 고민에 대한 직접적인 조언과 해결책 (오늘 흐르는 십신의 작용과 엮어서 자연스럽게 풀어주세요)
-3. 오늘의 종합 운세 점수 (0~100점) 및 행운을 높여주는 키워드(예: 행운의 색상, 행운의 방향, 마음가짐) 제안
+답변은 반드시 맨 첫 부분에 아래와 동일한 구조의 JSON 블록(\`\`\`json ... \`\`\`)을 포함하고, 그 바로 뒤에 마크다운 종합 분석 보고서를 이어서 작성해 주십시오:
 
-주의: 답변이 중간에 뚝 끊기지 않도록 문장을 반드시 완결하고, 마크다운 문법의 끝을 맞춰주십시오.`
+\`\`\`json
+{
+  "headline": "오늘 하루를 관통하는 메인 총평 한 줄 (큰따옴표 없이 25자 내외)",
+  "headlineSub": "총평을 부연 조언하는 따뜻한 1~2문장",
+  "categories": {
+    "wealth": { "score": 85, "summary": "재물운 동적 1줄 요약 (20자 이내)" },
+    "love": { "score": 92, "summary": "애정운 동적 1줄 요약 (20자 이내)" },
+    "health": { "score": 78, "summary": "건강운 동적 1줄 요약 (20자 이내)" },
+    "business": { "score": 90, "summary": "직업·학업운 동적 1줄 요약 (20자 이내)" }
+  },
+  "timeFlow": {
+    "peakText": "오늘 가장 상승하는 시간대 요약 (예: 오후가 절정)",
+    "morning": { "desc": "오전(08~12시) 기운 1줄 설명", "stars": "★★★★☆" },
+    "afternoon": { "desc": "오후(12~18시) 기운 1줄 설명", "stars": "★★★★★" },
+    "evening": { "desc": "저녁(18~24시) 기운 1줄 설명", "stars": "★★★★☆" }
+  },
+  "luckyItems": {
+    "colorName": "행운의 색상명 (예: 청록빛 옥색)",
+    "colorHex": "해당 색상의 헥사코드 (예: #10B981)",
+    "number": "행운의 숫자 (예: 7 과 18)",
+    "direction": "행운의 방위 (예: 남동쪽 (풍요))"
+  },
+  "wisdom": "마음에 새기는 오늘의 지혜/화두 1문장"
+}
+\`\`\`
 
+종합 분석 보고서 작성 지침:
+1. 사용자의 태어난 성향과 오늘 일진과의 조화 요약
+2. 고민에 대한 직접적인 조언과 해결책
+3. 마크다운의 문두 문법을 정상 적용하고 문장을 명확히 완결해 주세요.`
+
+    let { text: aiInterpretation, isAiGenerated } = await callAiModel(prompt)
+
+    let parsedData: any = null
+    if (isAiGenerated && aiInterpretation) {
       try {
-        const response: any = await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
-          method: 'POST',
-          body: {
-            contents: [
-              {
-                parts: [
-                  { text: prompt }
-                ]
-              }
-            ],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 8192
-            }
-          }
-        })
-
-        if (response?.candidates?.[0]?.content?.parts?.[0]?.text) {
-          aiInterpretation = response.candidates[0].content.parts[0].text
-          isAiGenerated = true
+        const jsonMatch = aiInterpretation.match(/```json\s*([\s\S]*?)\s*```/)
+        if (jsonMatch && jsonMatch[1]) {
+          parsedData = JSON.parse(jsonMatch[1])
+          aiInterpretation = aiInterpretation.replace(/```json\s*[\s\S]*?\s*```/, '').trim()
         }
-      } catch (apiError) {
-        console.error('Gemini API Error (Saju):', apiError)
+      } catch (e) {
+        console.warn('JSON parsing from AI response failed:', e)
       }
     }
 
@@ -190,6 +198,7 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
         ganzhi: todaySaju.fullName,
         shipsin: shipsinName
       },
+      parsedData,
       aiInterpretation,
       isAiGenerated
     }

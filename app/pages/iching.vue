@@ -4,7 +4,12 @@ import { storeToRefs } from 'pinia'
 
 useSeoMeta({
   title: '주역점 결과 - I CHING ORACLE | 일일운세.kr',
-  description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.'
+  description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
+  ogTitle: '주역점 결과 - I CHING ORACLE | 일일운세.kr',
+  ogDescription: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image',
+  twitterImage: '/og-image.png'
 })
 
 interface Trigram {
@@ -39,12 +44,70 @@ const trigramToHexagramMap: Record<number, Record<number, number>> = {
 }
 
 const hexagramNames: Record<number, { nameKorean: string; nameHanji: string; desc: string }> = {
-  1: { nameKorean: '중천건', nameHanji: '重天乾', desc: '강건함 / 만물의 시작' },
-  2: { nameKorean: '중지곤', nameHanji: '重地坤', desc: '포용함 / 수용과 순응' },
-  11: { nameKorean: '지천태', nameHanji: '地天泰', desc: '태평함 / 태평과 통달' },
-  12: { nameKorean: '천지비', nameHanji: '天地否', desc: '막힘 / 쇄국과 자중' },
-  46: { nameKorean: '지풍승', nameHanji: '地風升', desc: '상승함 / 등선과 발전' },
-  63: { nameKorean: '수화기제', nameHanji: '水火旣濟', desc: '완성함 / 성공과 조화' }
+  1: { nameKorean: '중천건', nameHanji: '乾爲天', desc: '강건함 / 만물의 시작' },
+  2: { nameKorean: '중지곤', nameHanji: '坤爲地', desc: '포용함 / 수용과 순응' },
+  3: { nameKorean: '수뢰준', nameHanji: '水雷屯', desc: '시련의 시작 / 기초 다지기' },
+  4: { nameKorean: '산수몽', nameHanji: '山水蒙', desc: '미숙함 / 배움과 자문' },
+  5: { nameKorean: '수천수', nameHanji: '水天需', desc: '여유로운 기다림 / 때를 도모함' },
+  6: { nameKorean: '천수송', nameHanji: '天水訟', desc: '시비와 다툼 / 타협과 양보' },
+  7: { nameKorean: '지수사', nameHanji: '地水師', desc: '엄중한 결단 / 대중 지휘' },
+  8: { nameKorean: '수지비', nameHanji: '水地比', desc: '조화와 친밀 / 상생과 협력' },
+  9: { nameKorean: '풍천소축', nameHanji: '風天小畜', desc: '소소한 축적 / 조심스러운 준비' },
+  10: { nameKorean: '천택리', nameHanji: '天澤履', desc: '예의범절 / 조심스러운 행보' },
+  11: { nameKorean: '지천태', nameHanji: '地天泰', desc: '태평성대 / 만사 형통' },
+  12: { nameKorean: '천지비', nameHanji: '天地否', desc: '소통 단절 / 자중과 쇄국' },
+  13: { nameKorean: '천화동인', nameHanji: '天火同人', desc: '동료와의 협력 / 위대한 단결' },
+  14: { nameKorean: '화천대유', nameHanji: '火天大有', desc: '크게 소유함 / 풍요의 전성기' },
+  15: { nameKorean: '지산겸', nameHanji: '地山謙', desc: '겸손의 덕 / 자신을 낮춤' },
+  16: { nameKorean: '뇌지예', nameHanji: '雷地豫', desc: '기쁨과 예비 / 즐거운 대비' },
+  17: { nameKorean: '택뢰수', nameHanji: '澤雷隨', desc: '대세 순응 / 순리에 따름' },
+  18: { nameKorean: '산풍고', nameHanji: '山風蠱', desc: '폐단 개혁 / 쇄신과 보수' },
+  19: { nameKorean: '지택림', nameHanji: '地澤臨', desc: '기회의 도래 / 군림과 관용' },
+  20: { nameKorean: '풍지관', nameHanji: '風地觀', desc: '정세 관망 / 성찰과 깊은 관찰' },
+  21: { nameKorean: '화뢰서합', nameHanji: '火雷噬嗑', desc: '장애 단죄 / 결단력과 돌파' },
+  22: { nameKorean: '산화비', nameHanji: '山火賁', desc: '화려한 장식 / 외양의 내실화' },
+  23: { nameKorean: '산지박', nameHanji: '山地剝', desc: '쇠락과 침체 / 은신과 내실' },
+  24: { nameKorean: '지뢰복', nameHanji: '地雷復', desc: '희망의 회복 / 새로운 출발' },
+  25: { nameKorean: '천뢰무망', nameHanji: '天雷無妄', desc: '순리 순응 / 인위적 욕심 비움' },
+  26: { nameKorean: '산천대축', nameHanji: '山天大畜', desc: '역량 비축 / 학문과 힘의 축적' },
+  27: { nameKorean: '산뢰이', nameHanji: '山雷頤', desc: '몸과 마음의 수양 / 언행 자제' },
+  28: { nameKorean: '택풍대과', nameHanji: '澤風大過', desc: '막중한 책임 / 고난 극복' },
+  29: { nameKorean: '중수감', nameHanji: '重水坎', desc: '겹친 험난함 / 자중과 신중' },
+  30: { nameKorean: '중화리', nameHanji: '重火離', desc: '타오르는 불길 / 명석함과 안착' },
+  31: { nameKorean: '택산함', nameHanji: '澤山咸', desc: '호감과 만남 / 마음의 교감' },
+  32: { nameKorean: '뇌풍항', nameHanji: '雷風恒', desc: '한결같은 지조 / 지속적인 노력' },
+  33: { nameKorean: '천산둔', nameHanji: '天山遯', desc: '한 걸음 물러섬 / 양보와 피함' },
+  34: { nameKorean: '뇌천대장', nameHanji: '雷天大壯', desc: '장대한 기세 / 경거망동 경계' },
+  35: { nameKorean: '화지진', nameHanji: '火地晉', desc: '솟구치는 기운 / 적극적 전진' },
+  36: { nameKorean: '지화명이', nameHanji: '地火明夷', desc: '빛의 은구 / 어둠 속 인내' },
+  37: { nameKorean: '풍화가인', nameHanji: '風火家人', desc: '가화만사성 / 내부의 안정' },
+  38: { nameKorean: '화택규', nameHanji: '火澤睽', desc: '뜻의 분열 / 대립과 구설 경계' },
+  39: { nameKorean: '수산건', nameHanji: '水山蹇', desc: '얼어붙은 난관 / 멈춤과 지혜' },
+  40: { nameKorean: '뇌수해', nameHanji: '雷水解', desc: '매듭의 풀림 / 해소와 봄날' },
+  41: { nameKorean: '산택손', nameHanji: '山澤損', desc: '절제와 희생 / 덜어내어 채움' },
+  42: { nameKorean: '풍뢰익', nameHanji: '風雷益', desc: '실질적 이득 / 번영과 도약' },
+  43: { nameKorean: '택천쾌', nameHanji: '澤天夬', desc: '결연한 단판 / 단호한 결단' },
+  44: { nameKorean: '천풍구', nameHanji: '天風姤', desc: '예기치 못한 인연 / 뜻밖의 만남' },
+  45: { nameKorean: '택지췌', nameHanji: '澤地萃', desc: '인재와 재물 결집 / 번창함' },
+  46: { nameKorean: '지풍승', nameHanji: '地風升', desc: '싹을 틔우는 상승 / 도약과 성장' },
+  47: { nameKorean: '택수곤', nameHanji: '澤水困', desc: '곤경과 막힘 / 자금/상황 차단' },
+  48: { nameKorean: '수풍정', nameHanji: '水風井', desc: '마르지 않는 샘물 / 지속적 공유' },
+  49: { nameKorean: '택화혁', nameHanji: '澤火革', desc: '판도 개혁 / 체제와 혁신' },
+  50: { nameKorean: '화풍정', nameHanji: '火風鼎', desc: '새로운 안착 / 솥을 거는 번창' },
+  51: { nameKorean: '중뢰진', nameHanji: '重雷震', desc: '두 번의 천둥 / 스스로의 각성' },
+  52: { nameKorean: '중산간', nameHanji: '重山艮', desc: '첩첩산중 / 멈추어 서는 고요' },
+  53: { nameKorean: '풍산점', nameHanji: '風山漸', desc: '점진적 성숙 / 단계별 발전' },
+  54: { nameKorean: '뇌택귀매', nameHanji: '雷澤歸妹', desc: '절차 무시 경계 / 급한 결정 자제' },
+  55: { nameKorean: '뇌화풍', nameHanji: '雷火豊', desc: '최절정의 풍요 / 몰락 그늘 경계' },
+  56: { nameKorean: '화산려', nameHanji: '火山旅', desc: '외로운 나그네 / 겸손한 처신' },
+  57: { nameKorean: '중풍손', nameHanji: '重風巽', desc: '부드러운 유연성 / 침투와 적응' },
+  58: { nameKorean: '중택태', nameHanji: '重澤兌', desc: '즐거운 화합 / 다정한 소통' },
+  59: { nameKorean: '풍수환', nameHanji: '風水渙', desc: '걱정의 산화 / 해묵은 앙금 해소' },
+  60: { nameKorean: '수택절', nameHanji: '水澤節', desc: '적절한 절제 / 규범과 도리' },
+  61: { nameKorean: '풍택중부', nameHanji: '風澤中孚', desc: '맑은 신뢰 / 진심 어린 믿음' },
+  62: { nameKorean: '뇌산소과', nameHanji: '雷山小過', desc: '낮게 내림 / 소소한 과오 넘김' },
+  63: { nameKorean: '수화기제', nameHanji: '水火旣濟', desc: '만사 완성 / 쇠퇴 대비' },
+  64: { nameKorean: '화수미제', nameHanji: '火水未濟', desc: '미완의 상태 / 새로운 도전 희망' }
 }
 
 const store = useFortuneStore()
@@ -300,6 +363,33 @@ const hexagramLinesDetail = computed(() => {
   }
 })
 
+// KST(한국 표준시) 기준 날짜 및 시간 계산
+const formattedKstDateTime = computed(() => {
+  const now = new Date()
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000)
+  const kst = new Date(utc + (9 * 60 * 60 * 1000))
+
+  const year = kst.getFullYear()
+  const month = String(kst.getMonth() + 1).padStart(2, '0')
+  const date = String(kst.getDate()).padStart(2, '0')
+  const hours = String(kst.getHours()).padStart(2, '0')
+  const minutes = String(kst.getMinutes()).padStart(2, '0')
+
+  const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
+  const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
+  const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
+  const dayOfWeek = dayNames[kst.getDay()]!
+  
+  let stemIdx = (year - 4) % 10
+  if (stemIdx < 0) stemIdx += 10
+  let branchIdx = (year - 4) % 12
+  if (branchIdx < 0) branchIdx += 12
+
+  const yearGanzhi = `${stems[stemIdx]}${branches[branchIdx]}년`
+
+  return `${yearGanzhi} ${month}월 ${date}일 ${dayOfWeek} · ${year}.${month}.${date} ${hours}:${minutes}`
+})
+
 const copyToClipboard = () => {
   if (!navigator.clipboard) {
     alert('이 브라우저는 복사 기능을 지원하지 않습니다.')
@@ -331,17 +421,17 @@ const copyToClipboard = () => {
 </script>
 
 <template>
-  <div class="bg-[#0B0E1B] min-h-screen text-[#D1D5DB] font-sans-kr pb-24 transition-colors duration-300">
+  <div class="pg-bg min-h-screen font-sans-kr pb-24 transition-colors duration-300">
     <div class="max-w-md sm:max-w-lg mx-auto px-4 py-4 sm:py-6">
 
       <!-- 헤더 (첫 번째 이미지 1:1) -->
-      <div class="flex items-center justify-between pb-3 border-b border-[#1E2640]/60 mb-4">
-        <NuxtLink to="/" class="p-1.5 rounded-full bg-[#151C33] text-[#9CA3AF] hover:text-white transition-colors">
+      <div class="flex items-center justify-between pb-3 border-b pg-border mb-4">
+        <NuxtLink to="/" class="p-1.5 rounded-full pg-back-btn transition-colors">
           <UIcon name="i-heroicons-arrow-left" class="w-5 h-5" />
         </NuxtLink>
         <div class="text-center">
           <span class="text-[9px] font-bold tracking-widest text-[#E8C170] block uppercase">I CHING ORACLE</span>
-          <h1 class="font-serif-kr text-base sm:text-lg font-bold text-white tracking-wide">
+          <h1 class="font-serif-kr text-base sm:text-lg font-bold pg-text tracking-wide">
             주역점 결과
           </h1>
         </div>
@@ -353,12 +443,12 @@ const copyToClipboard = () => {
       <!-- ========================================== -->
       <!-- 단계 0: 질문 입력 박스 -->
       <!-- ========================================== -->
-      <div v-if="currentStep === 0" class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
+      <div v-if="currentStep === 0" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
         <div class="text-center py-2 mb-4">
           <span class="inline-block px-3 py-1 rounded-full bg-[#E8C170]/10 border border-[#E8C170]/30 text-[#E8C170] text-xs font-bold font-serif-kr mb-2">
             ☯️ I CHING ORACLE
           </span>
-          <h2 class="font-serif-kr text-xl font-bold text-white mb-2">
+          <h2 class="font-serif-kr text-xl font-bold pg-text mb-2">
             풀어내고자 하는 고민을 떠올려보세요
           </h2>
           <p class="text-xs text-[#9CA3AF] max-w-xs mx-auto leading-relaxed font-light">
@@ -392,11 +482,11 @@ const copyToClipboard = () => {
       <!-- ========================================== -->
       <!-- 단계 1 ~ 3: 3단계 대나무 점대 드로우 -->
       <!-- ========================================== -->
-      <div v-if="currentStep >= 1 && currentStep <= 3" class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
+      <div v-if="currentStep >= 1 && currentStep <= 3" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
         <div class="flex justify-between items-center mb-6 border-b border-[#212B4A] pb-4">
           <div>
             <span class="text-[10px] font-bold text-[#E8C170] tracking-wider uppercase block mb-0.5">TRADITIONAL DRAW</span>
-            <h2 class="font-serif-kr text-base font-bold text-white">
+            <h2 class="font-serif-kr text-base font-bold pg-text">
               <span v-if="currentStep === 1">1단계: 하괘(下卦) 선택</span>
               <span v-if="currentStep === 2">2단계: 상괘(上卦) 선택</span>
               <span v-if="currentStep === 3">3단계: 동효(動爻) 선택</span>
@@ -441,14 +531,14 @@ const copyToClipboard = () => {
       <!-- ========================================== -->
       <!-- 단계 4: 로딩 화면 -->
       <!-- ========================================== -->
-      <div v-if="currentStep === 4" class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6">
+      <div v-if="currentStep === 4" class="pg-card border rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6">
         <div class="relative w-24 h-24 mx-auto flex items-center justify-center mb-6">
           <div class="absolute inset-0 rounded-full border-4 border-dashed border-[#E8C170]/40 animate-spin" style="animation-duration: 6s;"></div>
           <div class="w-12 h-12 rounded-full bg-[#0A0D18] border border-[#E8C170]/40 flex items-center justify-center shadow-inner animate-pulse">
             <span class="seal-stamp text-xs px-2 py-0.5">易</span>
           </div>
         </div>
-        <h3 class="font-serif-kr text-base font-bold text-white mb-1 animate-pulse">
+        <h3 class="font-serif-kr text-base font-bold pg-text mb-1 animate-pulse">
           본괘와 변괘를 맞추는 중입니다...
         </h3>
       </div>
@@ -459,29 +549,29 @@ const copyToClipboard = () => {
       <div v-if="currentStep === 5 && result" class="space-y-4">
 
         <!-- 1. 질문 카드 (상단 인풋 요약) -->
-        <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-4 relative">
+        <div class="pg-card border rounded-2xl p-4 relative">
           <div class="flex justify-between items-start mb-2">
-            <h2 class="font-serif-kr text-sm sm:text-base font-bold text-white leading-snug">
+            <h2 class="font-serif-kr text-sm sm:text-base font-bold pg-text leading-snug">
               "{{ worry || '새로운 일을 시작해도 될까요?' }}"
             </h2>
           </div>
-          <div class="flex items-center justify-between text-[11px] text-[#9CA3AF]">
+          <div class="flex items-center justify-between text-[12px] text-[#9CA3AF]">
             <span class="flex items-center gap-1.5">
               <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 text-[#E8C170]" />
-              갑진년 정월 초하루 · 2026.09.22 21:40
+              {{ formattedKstDateTime }}
             </span>
-            <span class="px-2 py-0.5 rounded-md bg-[#1C2642] text-[#E8C170] border border-[#2B395E] text-[10px]">
+            <span class="px-2 py-0.5 rounded-md bg-[#1C2642] text-[#E8C170] border border-[#2B395E] text-[11px]">
               문사 (問事)
             </span>
           </div>
         </div>
 
         <!-- 2. 본괘 & 변괘 6효 카드 (이미지 메인 1:1) -->
-        <div class="bg-[#13192E] border border-[#212B4A] rounded-3xl p-5 shadow-2xl relative">
+        <div class="pg-card border rounded-3xl p-5 shadow-2xl relative">
           <!-- 상단 뱃지 -->
           <div class="text-center mb-4">
             <span class="inline-block px-3 py-0.5 rounded-full bg-[#1C2642] border border-[#2D3A5F] text-[11px] text-[#FFDE9E] font-medium">
-              ● 동효: 초구(初九) 변효 ✦
+              ● 동효: {{ hexagramLinesDetail.lineText }} ✦
             </span>
           </div>
 
@@ -489,12 +579,12 @@ const copyToClipboard = () => {
           <div class="grid grid-cols-2 gap-4 items-center mb-5 relative">
 
             <!-- 본괘 (Origin) -->
-            <div class="bg-[#0A0E1A] border border-[#1E2844] rounded-2xl p-3.5 text-center">
-              <span class="text-[10px] text-[#E8C170] font-bold block mb-1">본괘 [本卦]</span>
-              <h3 class="font-serif-kr text-base font-extrabold text-white mb-0.5">
+            <div class="pg-card-inner border rounded-2xl p-3.5 text-center">
+              <span class="text-[11px] text-[#E8C170] font-bold block mb-1">본괘 [本卦]</span>
+              <h3 class="font-serif-kr text-base font-extrabold pg-text mb-0.5">
                 제{{ hexagramLinesDetail.origin.id }}괘 {{ hexagramLinesDetail.origin.nameKorean }}
               </h3>
-              <p class="text-[10px] text-[#9CA3AF] mb-3">{{ hexagramLinesDetail.origin.desc }}</p>
+              <p class="text-[11px] text-[#9CA3AF] mb-3">{{ hexagramLinesDetail.origin.desc }}</p>
 
               <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로) -->
               <div class="space-y-1.5 max-w-25 mx-auto mb-3">
@@ -516,7 +606,7 @@ const copyToClipboard = () => {
                 </div>
               </div>
 
-              <span class="text-[9px] text-[#6B7280] font-serif-kr block">
+              <span class="text-[11px] text-[#a9adb4] font-serif-kr block">
                 {{ hexagramLinesDetail.origin.upperName }} · {{ hexagramLinesDetail.origin.lowerName }}
               </span>
             </div>
@@ -527,12 +617,12 @@ const copyToClipboard = () => {
             </div>
 
             <!-- 변괘 (Changed) -->
-            <div class="bg-[#0A0E1A] border border-[#1E2844] rounded-2xl p-3.5 text-center">
-              <span class="text-[10px] text-[#E8C170] font-bold block mb-1">변괘 [變卦]</span>
-              <h3 class="font-serif-kr text-base font-extrabold text-white mb-0.5">
+            <div class="pg-card-inner border rounded-2xl p-3.5 text-center">
+              <span class="text-[11px] text-[#E8C170] font-bold block mb-1">변괘 [變卦]</span>
+              <h3 class="font-serif-kr text-base font-extrabold pg-text mb-0.5">
                 제{{ hexagramLinesDetail.changed.id }}괘 {{ hexagramLinesDetail.changed.nameKorean }}
               </h3>
-              <p class="text-[10px] text-[#9CA3AF] mb-3">{{ hexagramLinesDetail.changed.desc }}</p>
+              <p class="text-[11px] text-[#9CA3AF] mb-3">{{ hexagramLinesDetail.changed.desc }}</p>
 
               <!-- 6효 그리기 -->
               <div class="space-y-1.5 max-w-25 mx-auto mb-3">
@@ -551,7 +641,7 @@ const copyToClipboard = () => {
                 </div>
               </div>
 
-              <span class="text-[9px] text-[#6B7280] font-serif-kr block">
+              <span class="text-[11px] text-[#a9adb4] font-serif-kr block">
                 {{ hexagramLinesDetail.changed.upperName }} · {{ hexagramLinesDetail.changed.lowerName }}
               </span>
             </div>
@@ -564,27 +654,39 @@ const copyToClipboard = () => {
           </div>
         </div>
 
-        <!-- 3. 괘도 핵심 요약 (이미지 1:1) -->
-        <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-5 shadow-lg">
+        <!-- 3. AI 주역 지혜 보고서 (Claude / Gemini AI 총평) -->
+        <div v-if="result.aiInterpretation" class="pg-card border rounded-2xl p-5 shadow-lg space-y-3">
+          <div class="flex items-center gap-2 text-xs text-[#E8C170] font-bold pb-2 border-b border-[#212B4A]">
+            <UIcon name="i-heroicons-sparkles" class="w-4 h-4 text-[#E8C170]" />
+            <span>AI 주역 맞춤 지혜 조언</span>
+            <span v-if="result.isAiGenerated" class="ml-auto text-[10px] px-2 py-0.5 rounded bg-[#10B981]/20 text-[#10B981] font-normal">AI 실시간 분석</span>
+          </div>
+          <div class="prose prose-invert max-w-none text-xs text-[#D1D5DB] leading-relaxed font-light whitespace-pre-line">
+            {{ result.aiInterpretation }}
+          </div>
+        </div>
+
+        <!-- 4. 괘도 핵심 요약 -->
+        <div class="pg-card border rounded-2xl p-5 shadow-lg">
           <div class="flex items-center gap-1.5 text-xs text-[#E8C170] font-bold mb-2">
             <UIcon name="i-heroicons-share" class="w-4 h-4" />
             괘도 핵심 요약
           </div>
           <h2 class="font-serif-kr text-base sm:text-lg font-bold text-[#FFE5A3] mb-2 leading-snug">
-            "순풍에 돛을 올리듯, 바른 뜻으로 나아가면 크게 형통합니다"
+            "{{ result.hexagram.summary }}"
           </h2>
           <p class="text-xs text-[#D1D5DB] font-light leading-relaxed">
-            {{ result.hexagram.nameKorean }}({{ result.hexagram.nameHanji }})는 하늘의 기운이 땅으로 내려오고 땅의 기운이 하늘로 올라 조화롭게 합파되는 최상의 괘상입니다. 바닥부터 차근히 기반을 다지면 점차 결실에 도달합니다.
+            {{ result.hexagram.nameKorean }}({{ result.hexagram.nameHanji }}) - {{ result.hexagram.meaning }}
           </p>
         </div>
 
-        <!-- 4. 고전 원문 심층 풀이 (아코디언, 이미지 1:1) -->
+        <!-- 5. 고전 원문 심층 풀이 (아코디언) -->
         <div class="space-y-2">
           <span class="text-xs font-bold text-[#E8C170] flex items-center gap-1 px-1 font-serif-kr">
             ✦ 고전 원문 심층 풀이
           </span>
 
-          <div class="iching-accordion-box bg-[#13192E] rounded-2xl overflow-hidden">
+          <div class="iching-accordion-box pg-card rounded-2xl overflow-hidden">
             <!-- 아코디언 1: 괘사 본괘 총론 -->
             <div>
               <button
@@ -603,17 +705,17 @@ const copyToClipboard = () => {
                 />
               </button>
               <div v-if="accordionOpen.total" class="p-4 pt-0 text-xs text-[#D1D5DB] font-serif-kr space-y-2 leading-relaxed">
-                <p class="text-[#FFDE9E] font-bold">泰，小往大來，吉亨。</p>
+                <p class="text-[#FFDE9E] font-bold">{{ result.hexagram.nameHanji }} - {{ result.hexagram.nameKorean }}</p>
                 <p class="font-sans-kr font-light">
-                  "태(泰)는 작은 것이 가고 큰 것이 오니, 길하고 형통하리라."
+                  "{{ result.hexagram.summary }}"
                 </p>
                 <p class="font-sans-kr font-light text-[#9CA3AF]">
-                  불안했던 여건이 물러가고 안정과 희망의 새로운 국면이 열리는 시기입니다. 긍정적인 마음으로 도전을 감행해도 좋은 때입니다.
+                  {{ result.hexagram.meaning }}
                 </p>
               </div>
             </div>
 
-            <!-- 아코디언 2: 효사 초구 동효의 가르침 -->
+            <!-- 아코디언 2: 효사 동효의 가르침 -->
             <div>
               <button
                 type="button"
@@ -631,12 +733,12 @@ const copyToClipboard = () => {
                 />
               </button>
               <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs text-[#D1D5DB] font-serif-kr space-y-2 leading-relaxed">
-                <p class="text-[#FFDE9E] font-bold">初九，拔茅茹，以其彙，征吉。</p>
+                <p class="text-[#FFDE9E] font-bold">● 동효: {{ hexagramLinesDetail.lineText }}</p>
                 <p class="font-sans-kr font-light">
-                  "초구는 띠풀 뿌리를 뽑음에 엉킨 풀 함께 뽑힘이니, 뜻을 같이 하는 이들과 나아가면 길하리라."
+                  "{{ hexagramLinesDetail.lineText }}가 움직여 {{ hexagramLinesDetail.changed.nameKorean }}({{ hexagramLinesDetail.changed.nameHanji }}) 괘의 기운으로 변화합니다."
                 </p>
                 <p class="font-sans-kr font-light text-[#9CA3AF]">
-                  혼자 외롭게 일하지 마시고, 가치관이 맞는 동업자·동료와 유기적으로 연대할 때 더 큰 시너지와 안정을 얻게 됩니다.
+                  {{ hexagramLinesDetail.changed.desc }}
                 </p>
               </div>
             </div>
@@ -659,13 +761,13 @@ const copyToClipboard = () => {
                 />
               </button>
               <div v-if="accordionOpen.symbol" class="p-4 pt-0 text-xs text-[#D1D5DB] font-sans-kr font-light leading-relaxed">
-                하늘과 땅이 교감하듯, 조직이나 서체에서 위아래 소통을 원활히 하고 순응하는 리더십을 발휘할 때 만사가 평온해집니다.
+                {{ hexagramLinesDetail.origin.upperName }}와 {{ hexagramLinesDetail.origin.lowerName }}가 상응하는 형상으로, {{ result.hexagram.generalFate }}
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 5. 영역별 흐름 가이드 (이미지 1:1) -->
+        <!-- 6. 영역별 흐름 가이드 -->
         <div class="space-y-2">
           <span class="text-xs font-bold text-[#E8C170] flex items-center gap-1 px-1">
             ✦ 영역별 흐름 가이드
@@ -675,48 +777,48 @@ const copyToClipboard = () => {
             <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
               <div class="flex justify-between items-center mb-1">
                 <h4 class="font-serif-kr text-xs font-bold text-white">일 · 사업</h4>
-                <span class="px-2 py-0.5 rounded bg-[#065F46] text-[#A7F3D0] text-[9px] font-bold">상승 ▲</span>
+                <span class="px-2 py-0.5 rounded bg-[#065F46] text-[#A7F3D0] text-[9px] font-bold">길함 ▲</span>
               </div>
               <p class="text-[11px] text-[#9CA3AF] font-light">
-                협력자와 함께 도모할 때 예상치 못한 성과가 보장됩니다.
+                {{ result.hexagram.businessFate }}
               </p>
             </div>
 
             <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
               <div class="flex justify-between items-center mb-1">
                 <h4 class="font-serif-kr text-xs font-bold text-white">재물 · 투자</h4>
-                <span class="px-2 py-0.5 rounded bg-[#065F46] text-[#A7F3D0] text-[9px] font-bold">상승 ▲</span>
+                <span class="px-2 py-0.5 rounded bg-[#065F46] text-[#A7F3D0] text-[9px] font-bold">안정 ▲</span>
               </div>
               <p class="text-[11px] text-[#9CA3AF] font-light">
-                새로운 계약과 장기 계획에 순풍이 깃드는 흐름입니다.
+                {{ result.hexagram.wealthFate }}
               </p>
             </div>
 
             <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
               <div class="flex justify-between items-center mb-1">
                 <h4 class="font-serif-kr text-xs font-bold text-white">인간관계</h4>
-                <span class="px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8] text-[9px] font-bold">유지 ▶</span>
+                <span class="px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8] text-[9px] font-bold">화합 ▶</span>
               </div>
               <p class="text-[11px] text-[#9CA3AF] font-light">
-                오랜 오해가 풀리고 뜻이 맞는 귀인을 만나게 됩니다.
+                {{ result.hexagram.loveFate }}
               </p>
             </div>
 
             <div class="bg-[#13192E] border border-[#212B4A] rounded-2xl p-3.5">
               <div class="flex justify-between items-center mb-1">
-                <h4 class="font-serif-kr text-xs font-bold text-white">심신 건강</h4>
-                <span class="px-2 py-0.5 rounded bg-[#854D0E] text-[#FEF08A] text-[9px] font-bold">주의 ●</span>
+                <h4 class="font-serif-kr text-xs font-bold text-white">종합 운세</h4>
+                <span class="px-2 py-0.5 rounded bg-[#854D0E] text-[#FEF08A] text-[9px] font-bold">조언 ●</span>
               </div>
               <p class="text-[11px] text-[#9CA3AF] font-light">
-                기운이 넓으나 의욕 과다로 인한 피로를 주의하세요.
+                {{ result.hexagram.generalFate }}
               </p>
             </div>
           </div>
         </div>
 
-        <!-- 6. 지금 취해야 할 3가지 자세 (處世) (이미지 1:1) -->
-        <div class="bg-linear-to-b from-[#1C2642] to-[#13192E] border border-[#212B4A] rounded-2xl p-5 shadow-lg">
-          <div class="flex items-center gap-1.5 text-xs font-bold text-white mb-3">
+        <!-- 7. 지금 취해야 할 3가지 자세 (處世) -->
+        <div class="bg-linear-to-b from-[var(--fortune-card)] to-[var(--fortune-card-deep)] border pg-border rounded-2xl p-5 shadow-lg">
+          <div class="flex items-center gap-1.5 text-xs font-bold pg-text mb-3">
             <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-[#E8C170]" />
             지금 취해야 할 3가지 자세 (處世)
           </div>
@@ -725,24 +827,24 @@ const copyToClipboard = () => {
             <div class="flex items-start gap-2">
               <span class="w-4 h-4 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
               <div>
-                <strong class="text-[#FFDE9E]">연대와 협업:</strong>
-                <span class="text-[#D1D5DB] font-light"> 단독적인 진행보다는 뜻을 함께하는 동료나 멘토와 연대하세요.</span>
+                <strong class="text-[#FFDE9E]">본괘의 지혜:</strong>
+                <span class="text-[#D1D5DB] font-light"> {{ result.hexagram.nameKorean }} 괘의 뜻을 되새겨 차분하게 중심을 잡으세요.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-2">
               <span class="w-4 h-4 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
               <div>
-                <strong class="text-[#FFDE9E]">기반 다지기:</strong>
-                <span class="text-[#D1D5DB] font-light"> 첫 단추를 꾈 때 기초 계획과 약속을 투명하게 다지세요.</span>
+                <strong class="text-[#FFDE9E]">동효의 조언:</strong>
+                <span class="text-[#D1D5DB] font-light"> {{ hexagramLinesDetail.lineText }}가 움직여 변화하는 기운에 맞춰 유연하게 순응하세요.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-2">
               <span class="w-4 h-4 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
               <div>
-                <strong class="text-[#FFDE9E]">순리 존중:</strong>
-                <span class="text-[#D1D5DB] font-light"> 조급해하지 말고 순리대로 작은 걸음부터 밝아나가세요.</span>
+                <strong class="text-[#FFDE9E]">변괘의 방향:</strong>
+                <span class="text-[#D1D5DB] font-light"> 결국 {{ hexagramLinesDetail.changed.nameKorean }} 괘상처럼 {{ hexagramLinesDetail.changed.desc }}의 결실로 지혜롭게 나아가게 됩니다.</span>
               </div>
             </div>
           </div>
@@ -760,9 +862,9 @@ const copyToClipboard = () => {
           </button>
 
           <div class="flex gap-2">
-            <button
+          <button
               type="button"
-              class="flex-1 py-3 rounded-full bg-[#17203A] border border-[#27345B] text-xs font-semibold text-[#D1D5DB] hover:text-white hover:border-[#E8C170] transition-colors flex items-center justify-center gap-1.5"
+              class="flex-1 py-3 rounded-full pg-card border text-xs font-semibold pg-text-muted hover:pg-text hover:border-[#E8C170] transition-colors flex items-center justify-center gap-1.5"
               @click="resetAll"
             >
               <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 text-[#E8C170]" />
@@ -788,7 +890,7 @@ const copyToClipboard = () => {
     </div>
 
     <!-- 하단 탭바 (첫 번째 이미지 1:1) -->
-    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0E1B]/95 backdrop-blur-md border-t border-[#1E2640] z-50 py-2">
+    <div class="fixed bottom-0 left-0 right-0 bg-[var(--fortune-bg)]/95 backdrop-blur-md border-t pg-border z-50 py-2">
       <div class="max-w-md sm:max-w-lg mx-auto grid grid-cols-4 text-center px-4">
         <NuxtLink
           to="/saju"
@@ -830,21 +932,23 @@ const copyToClipboard = () => {
 
 <style scoped>
 .iching-textarea {
-  border: 1px solid #28355A;
-  color: #ffffff;
+  border: 1px solid var(--fortune-border-strong);
+  color: var(--fortune-text);
+  background-color: var(--fortune-input-bg);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 .iching-textarea:focus {
-  border-color: #E8C170;
+  border-color: var(--fortune-gold);
 }
 .iching-textarea::placeholder {
-  color: #4B5563;
+  color: var(--fortune-text-soft);
 }
 
 .iching-accordion-box {
-  border: 1px solid #212B4A;
+  border: 1px solid var(--fortune-border);
 }
 .iching-accordion-box > div + div {
-  border-top: 1px solid #1E2844;
+  border-top: 1px solid var(--fortune-border);
 }
 
 .preserve-3d {

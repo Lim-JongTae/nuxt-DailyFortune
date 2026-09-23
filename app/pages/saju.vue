@@ -2,10 +2,16 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
+import { getGanzhiOfDay, getGanzhiOfYear, getTodayLunarDateString } from '~/utils/saju'
 
 useSeoMeta({
   title: '일일 사주명리 - 오늘의 운세 | 일일운세.kr',
-  description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.'
+  description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
+  ogTitle: '일일 사주명리 - 오늘의 운세 | 일일운세.kr',
+  ogDescription: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image',
+  twitterImage: '/og-image.png'
 })
 
 const store = useFortuneStore()
@@ -216,9 +222,24 @@ const startSajuFortune = async () => {
   }
 }
 
-const onNotifyReservation = () => {
-  if (typeof window !== 'undefined') {
-    window.alert('내일 새벽 운세 알림이 등록되었습니다!')
+const deferredPrompt = ref<any>(null)
+
+const onInstallPWA = async () => {
+  if (deferredPrompt.value) {
+    deferredPrompt.value.prompt()
+    const choice = await deferredPrompt.value.userChoice
+    if (choice?.outcome === 'accepted') {
+      deferredPrompt.value = null
+    }
+  } else {
+    if (typeof window !== 'undefined') {
+      const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+      if (isiOS) {
+        alert('Safari 하단 공유 메뉴[↑]에서 "홈 화면에 추가"를 누르시면 모바일 앱으로 즉시 설치됩니다.')
+      } else {
+        alert('브라우저 우측 상단 메뉴[⋮]에서 "홈 화면에 추가" 또는 "앱 설치"를 선택하시면 앱 아이콘으로 설치됩니다.')
+      }
+    }
   }
 }
 
@@ -266,19 +287,21 @@ const sajuScores = computed(() => {
     }
   }
 
+  const parsedCat = result.value.parsedData?.categories
   const ilgan = result.value.userSaju?.ilgan || '갑'
   const charCode = ilgan.charCodeAt(0)
-  const totalScore = Math.min(98, Math.max(72, (charCode % 20) + 78))
+  
+  const wealthScore = parsedCat?.wealth?.score ?? Math.min(98, Math.max(70, ((charCode * 3) % 20) + 78))
+  const loveScore = parsedCat?.love?.score ?? Math.min(98, Math.max(70, ((charCode * 7) % 20) + 80))
+  const healthScore = parsedCat?.health?.score ?? Math.min(98, Math.max(70, ((charCode * 5) % 20) + 72))
+  const businessScore = parsedCat?.business?.score ?? Math.min(98, Math.max(70, ((charCode * 9) % 20) + 80))
+
+  const totalScore = Math.round((wealthScore + loveScore + healthScore + businessScore) / 4)
 
   let rankText = '상위 8% 길(吉)'
   if (totalScore >= 90) rankText = '상위 3% 대길(大吉)'
   else if (totalScore >= 85) rankText = '상위 4% 대길(大吉)'
   else if (totalScore >= 80) rankText = '상위 10% 중길(中吉)'
-
-  const wealthScore = Math.min(98, Math.max(70, ((charCode * 3) % 20) + 78))
-  const loveScore = Math.min(98, Math.max(70, ((charCode * 7) % 20) + 80))
-  const healthScore = Math.min(98, Math.max(70, ((charCode * 5) % 20) + 72))
-  const businessScore = Math.min(98, Math.max(70, ((charCode * 9) % 20) + 80))
 
   const strokeDash = Math.round(283 * (1 - totalScore / 100))
 
@@ -293,62 +316,186 @@ const sajuScores = computed(() => {
   }
 })
 
+const sajuDynamicData = computed(() => {
+  const parsed = result.value?.parsedData
+
+  return {
+    headline: sanitizeKoreanText(parsed?.headline) || "오늘은 작은 인연이 큰 기회가 됩니다",
+    headlineSub: sanitizeKoreanText(parsed?.headlineSub) || "마음속에 품고 있던 오랜 계획을 소심스레 꺼내어보세요. 귀인의 따스한 조언에 순풍이 되어줄 것입니다.",
+    categories: {
+      wealth: {
+        score: sajuScores.value.wealthScore,
+        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || "뜻밖의 소소한 이득이 찾아옵니다."
+      },
+      love: {
+        score: sajuScores.value.loveScore,
+        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || "마음을 터놓는 대화가 깊은 신뢰를 만듭니다."
+      },
+      health: {
+        score: sajuScores.value.healthScore,
+        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || "가벼운 산책과 충분한 수분 섭취가 필요합니다."
+      },
+      business: {
+        score: sajuScores.value.businessScore,
+        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || "집중력이 발휘되어 막혔던 문제가 풀립니다."
+      }
+    },
+    timeFlow: {
+      peakText: sanitizeKoreanText(parsed?.timeFlow?.peakText) || "오후가 절정",
+      morning: {
+        desc: sanitizeKoreanText(parsed?.timeFlow?.morning?.desc) || "차분한 준비의 시간",
+        stars: parsed?.timeFlow?.morning?.stars || "★★★★☆"
+      },
+      afternoon: {
+        desc: sanitizeKoreanText(parsed?.timeFlow?.afternoon?.desc) || "오늘의 최고조 상승운",
+        stars: parsed?.timeFlow?.afternoon?.stars || "★★★★★"
+      },
+      evening: {
+        desc: sanitizeKoreanText(parsed?.timeFlow?.evening?.desc) || "편안한 휴식과 정리",
+        stars: parsed?.timeFlow?.evening?.stars || "★★★★☆"
+      }
+    },
+    luckyItems: {
+      colorName: sanitizeKoreanText(parsed?.luckyItems?.colorName) || "청록빛 옥색",
+      colorHex: parsed?.luckyItems?.colorHex || "#10B981",
+      number: sanitizeKoreanText(parsed?.luckyItems?.number) || "7 과 18",
+      direction: sanitizeKoreanText(parsed?.luckyItems?.direction) || "남동쪽 (풍요)"
+    },
+    wisdom: sanitizeKoreanText(parsed?.wisdom) || "바람이 불지 않을 때 바람개비를 돌리는 방법은, 내가 앞으로 달려가는 것이다."
+  }
+})
+
+const isAnimated = ref(false)
+const animatedScores = ref({
+  totalScore: 0,
+  wealthScore: 0,
+  loveScore: 0,
+  healthScore: 0,
+  businessScore: 0
+})
+
+const triggerScoreAnimation = () => {
+  isAnimated.value = false
+  animatedScores.value = {
+    totalScore: 0,
+    wealthScore: 0,
+    loveScore: 0,
+    healthScore: 0,
+    businessScore: 0
+  }
+
+  setTimeout(() => {
+    isAnimated.value = true
+    const duration = 2000
+    const start = performance.now()
+    const target = sajuScores.value
+
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const easeOut = 1 - Math.pow(1 - progress, 3)
+
+      animatedScores.value.totalScore = Math.round(target.totalScore * easeOut)
+      animatedScores.value.wealthScore = Math.round(target.wealthScore * easeOut)
+      animatedScores.value.loveScore = Math.round(target.loveScore * easeOut)
+      animatedScores.value.healthScore = Math.round(target.healthScore * easeOut)
+      animatedScores.value.businessScore = Math.round(target.businessScore * easeOut)
+
+      if (progress < 1) {
+        requestAnimationFrame(step)
+      }
+    }
+    requestAnimationFrame(step)
+  }, 100)
+}
+
+watch(result, () => {
+  if (result.value) {
+    triggerScoreAnimation()
+  }
+}, { immediate: true })
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
+      e.preventDefault()
+      deferredPrompt.value = e
+    })
+  }
+
+  if (result.value) {
+    triggerScoreAnimation()
+  }
+})
+
+const { formatMarkdown } = useMarkdownFormatter()
+
 const formattedInterpretation = computed(() => {
-  if (!result.value?.aiInterpretation) return ''
+  return formatMarkdown(result.value?.aiInterpretation)
+})
 
-  let text = result.value.aiInterpretation
+// 오늘 날짜 및 일진 헤더 동적 계산 (KST 기준)
+const todayHeaderInfo = computed(() => {
+  const now = new Date()
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000)
+  const kst = new Date(utc + (9 * 60 * 60 * 1000))
 
-  text = text.replace(/^### (.*$)/gim, '<h3 class="text-[#FFDE9E] text-base sm:text-lg font-serif-kr font-bold mt-6 mb-3 border-b border-[#2D3958] pb-2 flex items-center gap-2"><span class="w-1.5 h-4 bg-[#E8C170] rounded-sm"></span>$1</h3>')
-  text = text.replace(/^## (.*$)/gim, '<h2 class="text-lg sm:text-xl font-serif-kr font-extrabold text-[#FFE5A3] mt-7 mb-3 border-l-4 border-[#E8C170] pl-3">$1</h2>')
-  text = text.replace(/^# (.*$)/gim, '<h1 class="text-xl sm:text-2xl font-serif-kr font-extrabold text-white mt-8 mb-4">$1</h1>')
+  const year = kst.getFullYear()
+  const month = kst.getMonth() + 1
+  const date = kst.getDate()
+  
+  const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
+  const dayOfWeek = dayNames[kst.getDay()]!
 
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-[#FFDE9E]">$1</strong>')
-  text = text.replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-[#CBD5E1] my-1.5 text-xs sm:text-sm">$1</li>')
+  const todayStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`
+  const todaySaju = getGanzhiOfDay(todayStr)
+  const yearSaju = getGanzhiOfYear(year)
 
-  const lines = text.split('\n')
-  return lines.map((line: string) => {
-    const trimmed = line.trim()
-    if (trimmed.startsWith('<h') || trimmed.startsWith('<li') || trimmed === '') return line
-    return `<p class="text-[#CBD5E1] leading-relaxed my-2 text-xs sm:text-sm font-light">${line}</p>`
-  }).join('\n')
+  return {
+    yearTitle: `${yearSaju.fullName}년 (${todaySaju.fullName}일)`,
+    dateSubTitle: `${year}년 ${month}월 ${date}일 ${dayOfWeek} · 오늘의 일진`
+  }
+})
+
+const todayLunarText = computed(() => {
+  return getTodayLunarDateString()
 })
 </script>
 
 <template>
-  <div class="bg-[#0B0F1D] min-h-screen text-[#E2E8F0] font-sans-kr pb-24 transition-colors duration-300">
+  <div class="pg-bg min-h-screen font-sans-kr pb-24 transition-colors duration-300">
     <div class="max-w-md sm:max-w-lg mx-auto px-4 py-4 sm:py-6">
 
       <!-- 1. 최상단 날짜 & 헤더 바 (이미지 2 1:1 완벽 반영) -->
-      <div class="flex items-center justify-between py-2 border-b border-[#1E2942]/60 mb-4">
+      <div class="flex items-center justify-between py-2 border-b pg-border mb-4">
         <div class="flex items-center gap-2">
-          <NuxtLink to="/" class="p-1.5 rounded-full bg-[#161F38] text-[#94A3B8] hover:text-white transition-colors">
+          <NuxtLink to="/" class="p-1.5 rounded-full pg-back-btn transition-colors">
             <UIcon name="i-heroicons-arrow-left" class="w-4 h-4" />
           </NuxtLink>
           <div>
             <div class="flex items-center gap-1.5">
-              <h1 class="font-serif-kr text-base sm:text-lg font-bold text-white tracking-tight">
-                갑진년 정월 초하루날
+              <h1 class="font-serif-kr text-base sm:text-lg font-bold pg-text tracking-tight">
+                {{ todayHeaderInfo.yearTitle }}
               </h1>
-              <span class="text-[#E8C170] text-xs font-bold">+</span>
+              <span class="text-xs font-bold" style="color: var(--fortune-gold);">+</span>
             </div>
-            <p class="text-[11px] text-[#94A3B8] font-light">
-              9월 21일 월요일 · 음력 8월 10일
+            <p class="text-[11px] pg-text-muted font-light">
+              {{ todayHeaderInfo.dateSubTitle }}
             </p>
           </div>
         </div>
 
-        <button type="button" class="p-2 rounded-full text-[#94A3B8] hover:text-white transition-colors">
+        <button type="button" class="p-2 rounded-full pg-text-muted hover:opacity-80 transition-colors">
           <UIcon name="i-heroicons-cog-6-tooth" class="w-5 h-5" />
         </button>
       </div>
 
       <!-- 서브 헤더 탭 / 명식 바 -->
-      <div class="flex items-center justify-between text-xs text-[#94A3B8] mb-3 px-1 font-medium">
+      <div class="flex items-center justify-between text-xs pg-text-muted mb-3 px-1 font-medium">
         <span class="flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#E8C170]"></span>
+          <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--fortune-gold);"></span>
           십이지신 및 명식
         </span>
-        <button type="button" @click="store.clearSaju()" class="text-xs text-[#E8C170]/80 hover:text-[#E8C170] underline underline-offset-2">
+        <button type="button" @click="store.clearSaju()" class="text-xs pg-text-gold hover:pg-text-gold-light underline underline-offset-2">
           내 사주 변경
         </button>
       </div>
@@ -358,7 +505,8 @@ const formattedInterpretation = computed(() => {
         <!-- 동적 계산된 내 띠 칩 (가장 앞에 강조 표시) -->
         <button
           type="button"
-          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all bg-linear-to-r from-[#FFE5A3]/25 to-[#E8C170]/35 border border-[#E8C170] text-[#FFDE9E] shadow-sm font-bold"
+          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all border shadow-sm font-bold"
+          style="background: linear-gradient(to right, rgba(255, 229, 163, 0.25), rgba(232, 193, 112, 0.35)); border-color: var(--fortune-gold); color: var(--fortune-gold-light);"
         >
           <span>{{ userZodiacInfo.animal }}</span>
           <span>{{ userZodiacInfo.zodiacName }}</span>
@@ -369,7 +517,7 @@ const formattedInterpretation = computed(() => {
           v-for="z in zodiacZhi.filter(item => item.branchIdx !== userZodiacInfo.branchIdx)"
           :key="z.branchIdx"
           type="button"
-          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all bg-[#151C33] border border-[#253150] text-[#94A3B8] hover:border-[#3B4C78]"
+          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all pg-chip border"
         >
           <span>{{ z.animal }}</span>
           <span>{{ z.name }}</span>
@@ -379,15 +527,15 @@ const formattedInterpretation = computed(() => {
       <!-- ========================================== -->
       <!-- 생년월일시 입력 폼 (결과가 없을 때) -->
       <!-- ========================================== -->
-      <div v-if="!result && !loading" class="bg-[#151C33] border border-[#232E4A] rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
+      <div v-if="!result && !loading" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
         <div class="text-center py-2 mb-4">
-          <span class="inline-block px-3 py-1 rounded-full bg-[#E8C170]/10 border border-[#E8C170]/30 text-[#E8C170] text-xs font-bold font-serif-kr mb-2">
+          <span class="inline-block px-3 py-1 rounded-full bg-[var(--fortune-gold)]/10 border border-[var(--fortune-gold)]/30 pg-text-gold text-xs font-bold font-serif-kr mb-2">
             🔮 일일 사주명리
           </span>
-          <h2 class="font-serif-kr text-xl sm:text-2xl font-bold text-white mb-2">
+          <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text mb-2">
             오늘 나의 명식과 일진 분석
           </h2>
-          <p class="text-xs text-[#94A3B8] max-w-xs mx-auto leading-relaxed font-light">
+          <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-light">
             태어난 연월일시를 입력하면 본인의 일간(日干)과 오늘 일진의 십신 상호작용을 정밀 계산합니다.
           </p>
         </div>
@@ -395,12 +543,12 @@ const formattedInterpretation = computed(() => {
         <div class="space-y-4">
           <!-- 성별 선택 -->
           <div>
-            <label class="block text-xs font-bold text-[#E8C170] mb-2 font-serif-kr">성별</label>
+            <label class="block text-xs font-bold pg-text-gold mb-2 font-serif-kr">성별</label>
             <div class="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 class="py-2.5 rounded-xl border text-xs font-bold transition-all"
-                :class="gender === 'male' ? 'bg-[#1C2646] border-[#E8C170] text-[#FFDE9E]' : 'bg-[#0E1325] border-[#232E4A] text-[#94A3B8]'"
+                :class="gender === 'male' ? 'pg-card-deep border-[var(--fortune-gold)] pg-text-gold-light' : 'pg-card-inner pg-border pg-text-muted'"
                 @click="gender = 'male'"
               >
                 남성 (陽)
@@ -408,7 +556,7 @@ const formattedInterpretation = computed(() => {
               <button
                 type="button"
                 class="py-2.5 rounded-xl border text-xs font-bold transition-all"
-                :class="gender === 'female' ? 'bg-[#1C2646] border-[#E8C170] text-[#FFDE9E]' : 'bg-[#0E1325] border-[#232E4A] text-[#94A3B8]'"
+                :class="gender === 'female' ? 'pg-card-deep border-[var(--fortune-gold)] pg-text-gold-light' : 'pg-card-inner pg-border pg-text-muted'"
                 @click="gender = 'female'"
               >
                 여성 (陰)
@@ -418,7 +566,7 @@ const formattedInterpretation = computed(() => {
 
           <!-- 태어난 날짜 -->
           <div>
-            <label class="block text-xs font-bold text-[#E8C170] mb-2 font-serif-kr">태어난 날짜 (양력 기준)</label>
+            <label class="block text-xs font-bold pg-text-gold mb-2 font-serif-kr">태어난 날짜 (양력 기준)</label>
             <div class="flex gap-2">
               <input
                 v-model="birthYear"
@@ -444,8 +592,8 @@ const formattedInterpretation = computed(() => {
           <!-- 태어난 시간 -->
           <div>
             <div class="flex justify-between items-center mb-2">
-              <label class="block text-xs font-bold text-[#E8C170] font-serif-kr">태어난 시각</label>
-              <label class="flex items-center gap-1.5 text-xs text-[#94A3B8] cursor-pointer">
+              <label class="block text-xs font-bold pg-text-gold font-serif-kr">태어난 시각</label>
+              <label class="flex items-center gap-1.5 text-xs pg-text-muted cursor-pointer">
                 <input type="checkbox" v-model="noTime" class="rounded border-[#2D3958] text-[#E8C170]" />
                 시간 모름
               </label>
@@ -460,7 +608,7 @@ const formattedInterpretation = computed(() => {
 
           <!-- 고민 질문 -->
           <div>
-            <label for="worry-saju" class="block text-xs font-bold text-[#E8C170] mb-2 font-serif-kr">
+            <label for="worry-saju" class="block text-xs font-bold pg-text-gold mb-2 font-serif-kr">
               오늘의 특정 고민이나 운세 질문 (선택)
             </label>
             <textarea
@@ -484,14 +632,14 @@ const formattedInterpretation = computed(() => {
       </div>
 
       <!-- 로딩 화면 -->
-      <div v-if="loading" class="bg-[#151C33] border border-[#232E4A] rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6">
+      <div v-if="loading" class="pg-card border rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6">
         <div class="relative w-28 h-28 mx-auto flex items-center justify-center mb-6">
-          <div class="absolute inset-0 rounded-full border-4 border-dashed border-[#E8C170]/40 animate-spin" style="animation-duration: 7s;"></div>
-          <div class="w-14 h-14 rounded-full bg-[#0E1325] border border-[#E8C170]/40 flex items-center justify-center shadow-inner animate-pulse">
+          <div class="absolute inset-0 rounded-full border-4 border-dashed animate-spin" style="border-color: var(--fortune-gold); opacity: 0.4; animation-duration: 7s;"></div>
+          <div class="w-14 h-14 rounded-full pg-card-deep border flex items-center justify-center shadow-inner animate-pulse" style="border-color: var(--fortune-gold); opacity: 0.4;">
             <span class="seal-stamp text-xs px-2 py-0.5">命</span>
           </div>
         </div>
-        <h3 class="font-serif-kr text-lg font-bold text-white mb-2 animate-pulse">
+        <h3 class="font-serif-kr text-lg font-bold pg-text mb-2 animate-pulse">
           천간지지의 기운을 분석하는 중입니다...
         </h3>
       </div>
@@ -501,45 +649,45 @@ const formattedInterpretation = computed(() => {
       <div v-if="result" class="space-y-4">
 
         <!-- 1. 내 명식 요약 지표 (1965년생 을사년 뱀띠 연동) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#151C33] border border-[#232E4A] rounded-2xl p-3 text-center text-xs">
-          <div class="bg-[#0E1325] p-2 rounded-xl border border-[#1E2942]">
-            <span class="text-[10px] text-[#94A3B8] block mb-0.5">내 출생년도 / 띠</span>
-            <strong class="text-xs text-[#FFDE9E] font-serif-kr block truncate">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pg-card border rounded-2xl p-3 text-center text-xs">
+          <div class="pg-card-inner p-2 rounded-xl border">
+            <span class="text-[10px] pg-text-soft block mb-0.5">내 출생년도 / 띠</span>
+            <strong class="text-xs pg-text-gold-light font-serif-kr block truncate">
               {{ result.userSaju?.zodiacName || userZodiacInfo.zodiacName }}
             </strong>
           </div>
-          <div class="bg-[#0E1325] p-2 rounded-xl border border-[#1E2942]">
-            <span class="text-[10px] text-[#94A3B8] block mb-0.5">내 일간(태어난 날)</span>
-            <strong class="text-xs text-white font-serif-kr block">
+          <div class="pg-card-inner p-2 rounded-xl border">
+            <span class="text-[10px] pg-text-soft block mb-0.5">내 일간(태어난 날)</span>
+            <strong class="text-xs pg-text font-serif-kr block">
               {{ result.userSaju?.ilgan }} ({{ result.userSaju?.ilganElement }})
             </strong>
           </div>
-          <div class="bg-[#0E1325] p-2 rounded-xl border border-[#1E2942]">
-            <span class="text-[10px] text-[#94A3B8] block mb-0.5">태어난 시지</span>
-            <strong class="text-xs text-white font-serif-kr block">
+          <div class="pg-card-inner p-2 rounded-xl border">
+            <span class="text-[10px] pg-text-soft block mb-0.5">태어난 시지</span>
+            <strong class="text-xs pg-text font-serif-kr block">
               {{ result.userSaju?.siji }}시
             </strong>
           </div>
-          <div class="bg-[#0E1325] p-2 rounded-xl border border-[#1E2942]">
-            <span class="text-[10px] text-[#94A3B8] block mb-0.5">오늘의 일진</span>
-            <strong class="text-xs text-[#E8C170] font-serif-kr block">
+          <div class="pg-card-inner p-2 rounded-xl border">
+            <span class="text-[10px] pg-text-soft block mb-0.5">오늘의 일진</span>
+            <strong class="text-xs pg-text-gold font-serif-kr block">
               {{ result.todaySaju?.ganzhi }}일 ({{ result.todaySaju?.shipsin }})
             </strong>
           </div>
         </div>
 
         <!-- 2. 중앙 종합 점수 & 원형 게이지 링 카드 -->
-        <div class="bg-[#151C33] border border-[#232E4A] rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl">
+        <div class="pg-card border rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl">
           <!-- 상단 뱃지 -->
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1C2646] border border-[#2D3B66] text-[11px] font-semibold text-[#FFDE9E] mb-5">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#E8C170]"></span>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-deep pg-border text-[11px] font-semibold pg-text-gold-light mb-5">
+            <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--fortune-gold);"></span>
             오늘의 천기누설 · 총평 ✦
           </div>
 
           <!-- 원형 프로그레스 게이지 (Score Circle Gauge) -->
           <div class="relative w-44 h-44 mx-auto mb-5 flex items-center justify-center">
             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="transparent" stroke="#1E2846" stroke-width="6" />
+              <circle cx="50" cy="50" r="45" fill="transparent" stroke="currentColor" stroke-width="6" class="pg-text-soft opacity-20" />
               <circle
                 cx="50"
                 cy="50"
@@ -549,8 +697,8 @@ const formattedInterpretation = computed(() => {
                 stroke-width="6"
                 stroke-linecap="round"
                 :stroke-dasharray="283"
-                :stroke-dashoffset="sajuScores.strokeDash"
-                class="transition-all duration-1000 ease-out"
+                :stroke-dashoffset="isAnimated ? sajuScores.strokeDash : 283"
+                class="transition-all duration-[2000ms] ease-out"
               />
               <defs>
                 <linearGradient id="goldGradientSaju" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -562,194 +710,197 @@ const formattedInterpretation = computed(() => {
             </svg>
 
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span class="text-[11px] text-[#94A3B8] font-light mb-0.5">운세 지수</span>
+              <span class="text-[12px] pg-text-soft font-bold mb-0.5">운세 지수</span>
               <div class="flex items-baseline gap-0.5">
-                <span class="text-3xl font-extrabold font-serif-kr text-white tracking-tight">
-                  {{ sajuScores.totalScore }}
+                <span class="text-3xl font-extrabold font-serif-kr pg-text tracking-tight">
+                  {{ animatedScores.totalScore }}
                 </span>
-                <span class="text-xs text-[#E8C170] font-bold">점</span>
+                <span class="text-xs pg-text-gold font-bold">점</span>
               </div>
-              <span class="mt-1 text-[10px] px-2 py-0.5 rounded-full bg-[#1C2646] text-[#FFDE9E] border border-[#2D3958]">
+              <span class="mt-1 text-[10px] px-2 py-0.5 rounded-full pg-card-inner pg-text-gold-bold border pg-border">
                 {{ sajuScores.rankText }}
               </span>
             </div>
           </div>
 
           <!-- 메인 총평 문구 -->
-          <h2 class="font-serif-kr text-xl sm:text-2xl font-bold text-[#FFE5A3] mb-2 leading-snug">
-            "오늘은 작은 인연이 큰 기회가 됩니다"
+          <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text-gold mb-2 leading-snug">
+            "{{ sajuDynamicData.headline }}"
           </h2>
-          <p class="text-xs text-[#CBD5E1] font-light max-w-sm mx-auto leading-relaxed">
-            마음속에 품고 있던 오랜 계획을 소심스레 꺼내어보세요. 귀인의 따스한 조언에 순풍이 되어줄 것입니다.
+          <p class="text-xs pg-text-muted font-light max-w-sm mx-auto leading-relaxed">
+            {{ sajuDynamicData.headlineSub }}
           </p>
         </div>
 
         <!-- 3. 영역별 세부 운세 2x2 Grid (이미지 2 1:1) -->
         <div class="space-y-2.5">
           <div class="flex justify-between items-center px-1">
-            <h3 class="font-serif-kr text-sm font-bold text-white flex items-center gap-1.5">
-              <span class="text-[#E8C170]">✦</span> 영역별 세부 운세
+            <h3 class="font-serif-kr text-sm font-bold pg-text flex items-center gap-1.5">
+              <span class="pg-text-gold">✦</span> 영역별 세부 운세
             </h3>
-            <span class="text-[11px] text-[#64748B]">모범 조율 분석</span>
+            <span class="text-[11px] pg-text-soft">모범 조율 분석</span>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <!-- 재물운 -->
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-4 flex flex-col justify-between">
+            <div class="pg-card border rounded-2xl p-4 flex flex-col justify-between">
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">💰</span>
-                  <span class="text-xs font-bold text-[#E8C170]">{{ sajuScores.wealthScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.wealthScore }} 점</span>
                 </div>
-                <h4 class="font-serif-kr text-xs font-bold text-white mb-1">재물운</h4>
-                <p class="text-[11px] text-[#94A3B8] font-light line-clamp-2">
-                  뜻밖의 소소한 이득이 찾아옵니다.
+                <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">재물운</h4>
+                <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
+                  {{ sajuDynamicData.categories.wealth.summary }}
                 </p>
               </div>
-              <div class="w-full bg-[#0E1325] h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full" :style="{ width: `${sajuScores.wealthScore}%` }"></div>
+              <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.wealthScore}%` : '0%' }"></div>
               </div>
             </div>
 
             <!-- 애정운 -->
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-4 flex flex-col justify-between">
+            <div class="pg-card border rounded-2xl p-4 flex flex-col justify-between">
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">🕊️</span>
-                  <span class="text-xs font-bold text-[#E8C170]">{{ sajuScores.loveScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.loveScore }} 점</span>
                 </div>
-                <h4 class="font-serif-kr text-xs font-bold text-white mb-1">애정운</h4>
-                <p class="text-[11px] text-[#94A3B8] font-light line-clamp-2">
-                  마음을 터놓는 대화가 깊은 신뢰를 만듭니다.
+                <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">애정운</h4>
+                <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
+                  {{ sajuDynamicData.categories.love.summary }}
                 </p>
               </div>
-              <div class="w-full bg-[#0E1325] h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full" :style="{ width: `${sajuScores.loveScore}%` }"></div>
+              <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.loveScore}%` : '0%' }"></div>
               </div>
             </div>
 
             <!-- 건강운 -->
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-4 flex flex-col justify-between">
+            <div class="pg-card border rounded-2xl p-4 flex flex-col justify-between">
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">🌿</span>
-                  <span class="text-xs font-bold text-[#E8C170]">{{ sajuScores.healthScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.healthScore }} 점</span>
                 </div>
-                <h4 class="font-serif-kr text-xs font-bold text-white mb-1">건강운</h4>
-                <p class="text-[11px] text-[#94A3B8] font-light line-clamp-2">
-                  가벼운 산책과 충분한 수분 섭취가 필요합니다.
+                <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">건강운</h4>
+                <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
+                  {{ sajuDynamicData.categories.health.summary }}
                 </p>
               </div>
-              <div class="w-full bg-[#0E1325] h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full" :style="{ width: `${sajuScores.healthScore}%` }"></div>
+              <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.healthScore}%` : '0%' }"></div>
               </div>
             </div>
 
             <!-- 직업·학업 -->
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-4 flex flex-col justify-between">
+            <div class="pg-card border rounded-2xl p-4 flex flex-col justify-between">
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">📜</span>
-                  <span class="text-xs font-bold text-[#E8C170]">{{ sajuScores.businessScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.businessScore }} 점</span>
                 </div>
-                <h4 class="font-serif-kr text-xs font-bold text-white mb-1">직업·학업</h4>
-                <p class="text-[11px] text-[#94A3B8] font-light line-clamp-2">
-                  집중력이 발휘되어 막혔던 문제가 풀립니다.
+                <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">직업·학업</h4>
+                <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
+                  {{ sajuDynamicData.categories.business.summary }}
                 </p>
               </div>
-              <div class="w-full bg-[#0E1325] h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full" :style="{ width: `${sajuScores.businessScore}%` }"></div>
+              <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.businessScore}%` : '0%' }"></div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- 4. 시간대별 일진(日辰) 흐름 (이미지 2 1:1) -->
-        <div class="bg-[#151C33] border border-[#232E4A] rounded-3xl p-5 shadow-lg">
+        <div class="pg-card border rounded-3xl p-5 shadow-lg">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-serif-kr text-xs font-bold text-white flex items-center gap-1.5">
-              <UIcon name="i-heroicons-clock" class="w-4 h-4 text-[#E8C170]" />
+            <h3 class="font-serif-kr text-xs font-bold pg-text flex items-center gap-1.5">
+              <UIcon name="i-heroicons-clock" class="w-4 h-4 pg-text-gold" />
               시간대별 일진(日辰) 흐름
             </h3>
-            <span class="text-[11px] text-[#E8C170]">오후가 절정</span>
+            <span class="text-[11px] pg-text-gold">{{ sajuDynamicData.timeFlow.peakText }}</span>
           </div>
 
           <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="bg-[#0E1325] border border-[#232E4A] rounded-2xl p-3">
-              <span class="text-[10px] text-[#94A3B8] block mb-0.5">오전</span>
-              <span class="text-[10px] text-[#64748B] block mb-1">08:00~12:00</span>
-              <div class="text-[#E8C170] text-xs font-bold mb-1">★★★★☆</div>
-              <span class="text-[10px] text-[#CBD5E1] font-light">차분한 준비의 시간</span>
+            <div class="pg-card-inner border rounded-2xl p-3">
+              <span class="text-[10px] pg-text-muted block mb-0.5">오전</span>
+              <span class="text-[10px] pg-text-soft block mb-1">08:00~12:00</span>
+              <div class="pg-text-gold text-xs font-bold mb-1">{{ sajuDynamicData.timeFlow.morning.stars }}</div>
+              <span class="text-[10px] pg-text-muted font-light">{{ sajuDynamicData.timeFlow.morning.desc }}</span>
             </div>
 
-            <div class="bg-[#1A2544] border border-[#E8C170]/60 rounded-2xl p-3 relative shadow-md">
-              <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 bg-[#E8C170] text-[#0F1226] text-[9px] font-bold rounded-full">
+            <div class="pg-card-deep border pg-border-strong rounded-2xl p-3 relative shadow-md">
+              <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[9px] font-bold rounded-full bg-emerald-200 text-emerald-900 border border-emerald-300/60 dark:bg-[var(--fortune-gold)] dark:text-[#0F1226] dark:border-transparent transition-colors">
                 절정
               </span>
-              <span class="text-[10px] text-[#FFDE9E] block mb-0.5">오후</span>
-              <span class="text-[10px] text-[#94A3B8] block mb-1">12:00~18:00</span>
-              <div class="text-[#E8C170] text-xs font-bold mb-1">★★★★★</div>
-              <span class="text-[10px] text-[#FFE5A3] font-medium">오늘의 최고조 상승운</span>
+              <span class="text-[10px] pg-text-gold block mb-0.5">오후</span>
+              <span class="text-[10px] pg-text-soft block mb-1">12:00~18:00</span>
+              <div class="pg-text-gold text-xs font-bold mb-1">{{ sajuDynamicData.timeFlow.afternoon.stars }}</div>
+              <span class="text-[10px] pg-text-gold font-medium">{{ sajuDynamicData.timeFlow.afternoon.desc }}</span>
             </div>
 
-            <div class="bg-[#0E1325] border border-[#232E4A] rounded-2xl p-3">
-              <span class="text-[10px] text-[#94A3B8] block mb-0.5">저녁</span>
-              <span class="text-[10px] text-[#64748B] block mb-1">18:00~24:00</span>
-              <div class="text-[#E8C170] text-xs font-bold mb-1">★★★★☆</div>
-              <span class="text-[10px] text-[#CBD5E1] font-light">편안한 휴식과 정리</span>
+            <div class="pg-card-inner border rounded-2xl p-3">
+              <span class="text-[10px] pg-text-muted block mb-0.5">저녁</span>
+              <span class="text-[10px] pg-text-soft block mb-1">18:00~24:00</span>
+              <div class="pg-text-gold text-xs font-bold mb-1">{{ sajuDynamicData.timeFlow.evening.stars }}</div>
+              <span class="text-[10px] pg-text-muted font-light">{{ sajuDynamicData.timeFlow.evening.desc }}</span>
             </div>
           </div>
         </div>
 
         <!-- 5. 오늘의 조력 기운 (이미지 2 1:1) -->
         <div class="space-y-2">
-          <span class="text-xs font-bold text-[#94A3B8] flex items-center gap-1 px-1">
+          <span class="text-xs font-bold pg-text-muted flex items-center gap-1 px-1">
             <UIcon name="i-heroicons-chevron-left" class="w-3.5 h-3.5" />
             오늘의 조력 기운
           </span>
 
           <div class="grid grid-cols-3 gap-2.5">
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-3 text-center">
-              <span class="text-[10px] text-[#94A3B8] block mb-2">행운의 색</span>
-              <div class="w-8 h-8 rounded-full bg-[#10B981] mx-auto mb-2 border border-white/20 shadow-md"></div>
-              <span class="text-xs font-bold text-white block truncate">청록빛 옥색</span>
+            <div class="pg-card border rounded-2xl p-3 text-center">
+              <span class="text-[10px] pg-text-soft block mb-2">행운의 색</span>
+              <div class="w-8 h-8 rounded-full mx-auto mb-2 border border-white/20 shadow-md" :style="{ backgroundColor: sajuDynamicData.luckyItems.colorHex }"></div>
+              <span class="text-xs font-bold pg-text block truncate">{{ sajuDynamicData.luckyItems.colorName }}</span>
             </div>
 
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-3 text-center">
-              <span class="text-[10px] text-[#94A3B8] block mb-2">행운의 수</span>
-              <div class="w-8 h-8 rounded-full bg-[#1C2646] border border-[#2D3958] mx-auto mb-2 flex items-center justify-center text-[#E8C170] text-xs font-bold">
+            <div class="pg-card border rounded-2xl p-3 text-center">
+              <span class="text-[10px] pg-text-soft block mb-2">행운의 수</span>
+              <div class="w-8 h-8 rounded-full pg-card-deep pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold text-xs font-bold">
                 #
               </div>
-              <span class="text-xs font-bold text-[#FFDE9E] block truncate">7 과 18</span>
+              <span class="text-xs font-bold pg-text-gold-light block truncate">{{ sajuDynamicData.luckyItems.number }}</span>
             </div>
 
-            <div class="bg-[#151C33] border border-[#232E4A] rounded-2xl p-3 text-center">
-              <span class="text-[10px] text-[#94A3B8] block mb-2">행운의 방위</span>
-              <div class="w-8 h-8 rounded-full bg-[#1C2646] border border-[#2D3958] mx-auto mb-2 flex items-center justify-center text-[#E8C170]">
-                <UIcon name="i-heroicons-compass" class="w-4 h-4" />
+            <div class="pg-card border rounded-2xl p-3 text-center">
+              <span class="text-[10px] pg-text-soft block mb-2">행운의 방위</span>
+              <div class="w-8 h-8 rounded-full pg-card-deep border pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold shadow-xs">
+                <svg class="w-6 h-6 text-[var(--fortune-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+                  <polygon points="16.24,7.76 13.8,13.8 7.76,16.24 10.2,10.2" stroke="currentColor" stroke-width="1.2" fill="currentColor" />
+                </svg>
               </div>
-              <span class="text-xs font-bold text-white block truncate">남동쪽 (풍요)</span>
+              <span class="text-xs font-bold pg-text block truncate">{{ sajuDynamicData.luckyItems.direction }}</span>
             </div>
           </div>
         </div>
 
         <!-- 6. 오늘의 지혜 카드 (이미지 2 1:1) -->
-        <div class="bg-linear-to-b from-[#1C2646] to-[#151C33] border border-[#E8C170]/40 rounded-2xl p-5 shadow-lg">
-          <span class="text-xs font-bold text-[#E8C170] flex items-center gap-1 mb-2 font-serif-kr">
+        <div class="pg-card-deep border pg-border-strong rounded-2xl p-5 shadow-lg">
+          <span class="text-xs font-bold pg-text-gold flex items-center gap-1 mb-2 font-serif-kr">
             ◆ 오늘의 지혜
           </span>
-          <p class="font-serif-kr text-sm text-white italic leading-relaxed mb-3">
-            "바람이 불지 않을 때 바람개비를 돌리는 방법은, 내가 앞으로 달려가는 것이다."
+          <p class="font-serif-kr text-sm pg-text italic leading-relaxed mb-3">
+            "{{ sajuDynamicData.wisdom }}"
           </p>
-          <p class="text-right text-[11px] text-[#94A3B8] font-serif-kr">
+          <p class="text-right text-[11px] pg-text-soft font-serif-kr">
             — 마음에 새기는 화두
           </p>
         </div>
 
         <!-- 7. 세부 AI 보고서 본문 -->
-        <div class="bg-[#151C33] border border-[#232E4A] rounded-3xl p-5 sm:p-6 shadow-xl">
-          <h3 class="font-serif-kr text-base font-bold text-white mb-4 border-b border-[#232E4A] pb-3 flex items-center gap-2">
-            <UIcon name="i-heroicons-document-text" class="w-5 h-5 text-[#E8C170]" />
+        <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl">
+          <h3 class="font-serif-kr text-base font-bold pg-text mb-4 border-b pg-border pb-3 flex items-center gap-2">
+            <UIcon name="i-heroicons-document-text" class="w-5 h-5 pg-text-gold" />
             AI 맞춤 사주명리 보고서
           </h3>
           <div v-html="formattedInterpretation" class="markdown-body"></div>
@@ -769,26 +920,26 @@ const formattedInterpretation = computed(() => {
           <div class="grid grid-cols-2 gap-2">
             <button
               type="button"
-              class="py-3 rounded-full bg-[#182038] border border-[#2D3A5E] text-xs font-semibold text-[#CBD5E1] hover:text-white hover:border-[#E8C170] transition-colors flex items-center justify-center gap-1.5"
-              @click="onNotifyReservation"
+              class="py-3 rounded-full pg-card border text-xs font-semibold pg-text-muted hover:pg-text transition-colors flex items-center justify-center gap-1.5 pg-hover-gold"
+              @click="onInstallPWA"
             >
-              <UIcon name="i-heroicons-bell" class="w-4 h-4 text-[#E8C170]" />
-              내일 새벽 운세 알림 예약
+              <UIcon name="i-heroicons-device-phone-mobile" class="w-4 h-4 pg-text-gold" />
+              홈 화면에 앱 추가
             </button>
             <button
               type="button"
-              class="py-3 rounded-full bg-[#182038] border border-[#2D3A5E] text-xs font-semibold text-[#CBD5E1] hover:text-white hover:border-[#E8C170] transition-colors flex items-center justify-center gap-1.5"
+              class="py-3 rounded-full pg-card border text-xs font-semibold pg-text-muted hover:pg-text transition-colors flex items-center justify-center gap-1.5 pg-hover-gold"
               @click="store.clearSaju()"
             >
-              <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 text-[#E8C170]" />
+              <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
               내 사주 다시 입력
             </button>
           </div>
         </div>
 
         <div class="text-center py-3">
-          <p class="text-[11px] text-[#64748B]">
-            선천적 기운 계산 완료 · 陰曆 八月 朔日
+          <p class="text-[11px] pg-text-soft">
+            선천적 기운 계산 완료 · {{ todayLunarText }}
           </p>
         </div>
 
@@ -801,12 +952,12 @@ const formattedInterpretation = computed(() => {
     </div>
 
     <!-- 9. 하단 탭바 (이미지 2 1:1) -->
-    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0F1D]/95 backdrop-blur-md border-t border-[#1E2942] z-50 py-2">
+    <div class="fixed bottom-0 left-0 right-0 pg-bg backdrop-blur-md border-t pg-border z-50 py-2" style="background-color: var(--fortune-bg); opacity: 0.95;">
       <div class="max-w-md sm:max-w-lg mx-auto grid grid-cols-4 text-center px-4">
         <button
           type="button"
           @click="activeTab = 'today'"
-          class="flex flex-col items-center gap-1 py-1 transition-colors text-[#E8C170]"
+          class="flex flex-col items-center gap-1 py-1 transition-colors pg-text-gold"
         >
           <UIcon name="i-heroicons-calendar-days" class="w-5 h-5" />
           <span class="text-[10px] font-medium">오늘</span>
@@ -815,7 +966,7 @@ const formattedInterpretation = computed(() => {
         <button
           type="button"
           @click="activeTab = 'weekly'"
-          class="flex flex-col items-center gap-1 py-1 text-[#64748B] hover:text-[#94A3B8] transition-colors"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
           <UIcon name="i-heroicons-calendar" class="w-5 h-5" />
           <span class="text-[10px] font-medium">주간</span>
@@ -824,7 +975,7 @@ const formattedInterpretation = computed(() => {
         <button
           type="button"
           @click="activeTab = 'monthly'"
-          class="flex flex-col items-center gap-1 py-1 text-[#64748B] hover:text-[#94A3B8] transition-colors"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
           <UIcon name="i-heroicons-calendar" class="w-5 h-5" />
           <span class="text-[10px] font-medium">월간</span>
@@ -832,7 +983,7 @@ const formattedInterpretation = computed(() => {
 
         <NuxtLink
           to="/saju"
-          class="flex flex-col items-center gap-1 py-1 text-[#64748B] hover:text-[#94A3B8] transition-colors"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
           <UIcon name="i-heroicons-user" class="w-5 h-5" />
           <span class="text-[10px] font-medium">내 정보</span>
@@ -844,13 +995,17 @@ const formattedInterpretation = computed(() => {
 
 <style scoped>
 .saju-input {
-  border: 1px solid #2D3958;
-  background-color: #0E1325;
-  color: #ffffff;
+  border: 1px solid var(--fortune-border-strong);
+  background-color: var(--fortune-input-bg);
+  color: var(--fortune-text);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 .saju-input:focus {
-  border-color: #E8C170;
+  border-color: var(--fortune-gold);
   outline: none;
+}
+.saju-input::placeholder {
+  color: var(--fortune-text-soft);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -859,5 +1014,8 @@ const formattedInterpretation = computed(() => {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.pg-hover-gold:hover {
+  border-color: var(--fortune-gold);
 }
 </style>

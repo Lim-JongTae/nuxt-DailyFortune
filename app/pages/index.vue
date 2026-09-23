@@ -11,7 +11,9 @@ useSeoMeta({
   ogDescription: fortuneDesc,
   ogType: 'website',
   ogUrl: pageUrl,
-  twitterCard: 'summary_large_image'
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image',
+  twitterImage: '/og-image.png'
 })
 
 useHead({
@@ -28,8 +30,8 @@ useHead({
       <section class="relative pt-6 pb-12 text-center flex flex-col items-center overflow-hidden">
         <!-- Ambient Starry Grid & Rings -->
         <div class="absolute inset-0 pointer-events-none opacity-30 flex items-center justify-center">
-          <div class="w-[600px] h-[600px] rounded-full border border-amber-600/20 dark:border-[#FFDE9E]/10"></div>
-          <div class="absolute w-[450px] h-[450px] rounded-full border border-dashed border-amber-600/25 dark:border-[#FFDE9E]/15 animate-spin" style="animation-duration: 120s;"></div>
+          <div class="w-150 h-150 rounded-full border border-amber-600/20 dark:border-[#FFDE9E]/10"></div>
+          <div class="absolute w-112.5 h-112.5 rounded-full border border-dashed border-amber-600/25 dark:border-[#FFDE9E]/15 animate-spin" style="animation-duration: 120s;"></div>
         </div>
 
         <div class="relative z-10 max-w-3xl mx-auto">
@@ -49,21 +51,48 @@ useHead({
             생년월일로 짚어보는 하루의 에너지와 오행의 균형, 그리고 64괘의 괘상이 전하는 오늘 하루의 깊은 처세와 지혜를 마주합니다.
           </p>
 
-          <!-- Yin-Yang Celestial Ring Graphic -->
-          <div class="relative w-36 h-36 mx-auto my-2 flex items-center justify-center">
+          <!-- Yin-Yang Celestial Ring Graphic (신비로운 동적 천기 회전 애니메이션) -->
+          <div class="relative w-36 h-36 mx-auto my-3 flex items-center justify-center animate-celestial-float">
             <svg class="w-full h-full text-amber-600 dark:text-[#FFDE9E]" fill="none" viewBox="0 0 160 160">
-              <circle cx="80" cy="80" r="74" stroke="currentColor" stroke-dasharray="4 6" stroke-opacity="0.3" stroke-width="1.2"></circle>
-              <path d="M80 10 A70 70 0 0 1 80 150 A35 35 0 0 1 80 80 A35 35 0 0 0 80 10 Z" fill="rgba(217, 119, 6, 0.08)" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.5"></path>
-              <!-- Five Elements Celestial Dots -->
-              <circle cx="48" cy="48" fill="#16a34a" fill-opacity="0.8" r="4.5"></circle>
-              <circle cx="34" cy="80" fill="#dc2626" fill-opacity="0.8" r="4.5"></circle>
-              <circle cx="48" cy="112" fill="#d97706" fill-opacity="0.8" r="4.5"></circle>
-              <!-- Hexagram Lines -->
+              <!-- 천천히 360도 회전하는 외곽 점선 링 (g 태그로 회전과 색상 변화 애니메이션 분리) -->
+              <g class="animate-spin origin-center" style="animation-duration: 35s; transform-origin: 80px 80px;">
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="74"
+                  stroke="currentColor"
+                  stroke-dasharray="4 6"
+                  stroke-opacity="0.4"
+                  stroke-width="1.5"
+                  class="animate-celestial-color"
+                ></circle>
+              </g>
+              
+              <!-- 은은하게 숨쉬듯 움직이는 음양(陰陽) 태극 곡선 -->
+              <path
+                d="M80 10 A70 70 0 0 1 80 150 A35 35 0 0 1 80 80 A35 35 0 0 0 80 10 Z"
+                fill="rgba(217, 119, 6, 0.1)"
+                stroke="currentColor"
+                stroke-opacity="0.4"
+                stroke-width="1.5"
+                class="animate-pulse origin-center"
+                style="animation-duration: 5s;"
+              ></path>
+              
+              <!-- 오행(五行)의 반짝이는 기운 도트 -->
+              <circle cx="48" cy="48" fill="#16a34a" fill-opacity="0.9" r="4.5" class="animate-pulse" style="animation-duration: 3s;"></circle>
+              <circle cx="34" cy="80" fill="#dc2626" fill-opacity="0.9" r="4.5" class="animate-pulse" style="animation-duration: 4s;"></circle>
+              <circle cx="48" cy="112" fill="#d97706" fill-opacity="0.9" r="4.5" class="animate-pulse" style="animation-duration: 3.5s;"></circle>
+              
+              <!-- 주역(周易) 괘상 선 -->
               <line stroke="currentColor" stroke-linecap="round" stroke-width="2.5" x1="96" x2="124" y1="52" y2="52"></line>
               <line stroke="#94a3b8" stroke-linecap="round" stroke-width="2" x1="96" x2="108" y1="64" y2="64"></line>
               <line stroke="#94a3b8" stroke-linecap="round" stroke-width="2" x1="112" x2="124" y1="64" y2="64"></line>
               <line stroke="currentColor" stroke-linecap="round" stroke-width="2.5" x1="96" x2="124" y1="76" y2="76"></line>
-              <circle class="animate-pulse" cx="80" cy="80" fill="#b45309" r="3.5"></circle>
+              
+              <!-- 중앙 천지(天地) 조화 파동 빛점 -->
+              <circle cx="80" cy="80" fill="#b45309" r="5" class="animate-ping origin-center opacity-70" style="animation-duration: 3s;"></circle>
+              <circle cx="80" cy="80" fill="#b45309" r="3.5"></circle>
             </svg>
           </div>
 
@@ -171,7 +200,7 @@ useHead({
 
           <!-- CTA Button (z-10) -->
           <div class="mt-8 relative z-10">
-            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-[#402d00] bg-gradient-to-r from-[#FFDF9E] to-[#E8C170] hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-amber-500/20">
+            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-[#402d00] bg-linear-to-r from-[#FFDF9E] to-[#E8C170] hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-amber-500/20">
               오늘의 사주 보러가기
               <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -240,7 +269,7 @@ useHead({
 
           <!-- CTA Button (z-10) -->
           <div class="mt-8 relative z-10">
-            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-white bg-gradient-to-r from-purple-700 to-indigo-800 hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-purple-900/30">
+            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-white bg-linear-to-r from-purple-700 to-indigo-800 hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-purple-900/30">
               주역 괘 뽑으러가기
               <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
