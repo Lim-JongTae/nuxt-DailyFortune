@@ -332,3 +332,23 @@ body {
 .animate-celestial-color {
   animation: celestialColorShift 12s ease-in-out infinite;
 }
+
+/* 오행 5대 기운 숨쉬는 점 애니메이션 (크기 조절 + 색상 연했다 진했다 Glow 효과) */
+@keyframes elementPulse {
+  0%, 100% {
+    transform: scale(0.7);
+    opacity: 0.35;
+    filter: brightness(0.8);
+    box-shadow: 0 0 2px currentColor;
+  }
+  50% {
+    transform: scale(1.65);
+    opacity: 1;
+    filter: brightness(1.35);
+    box-shadow: 0 0 12px currentColor, 0 0 18px currentColor;
+  }
+}
+
+.animate-element-pulse {
+  animation: elementPulse 3.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

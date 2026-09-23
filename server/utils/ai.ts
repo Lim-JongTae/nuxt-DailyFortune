@@ -1,7 +1,7 @@
 export async function callAiModel(prompt: string): Promise<{ text: string; isAiGenerated: boolean }> {
   const claudeEndPoint = (process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com').replace(/\/$/, '')
   const claudeApiKey = process.env.CLAUDE_API_KEY
-  const claudeModel = process.env.CLAUDE_MODEL || 'claude-fable-5'
+  const claudeModel = process.env.CLAUDE_MODEL || 'claude-sonnet-5'
   const geminiApiKey = process.env.GEMINI_API_KEY
 
   // 1. Claude API (aiapiflow.com 프록시 기반 Anthropic Messages API) 시도

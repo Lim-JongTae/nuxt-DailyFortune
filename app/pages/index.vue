@@ -21,6 +21,49 @@ useHead({
     { rel: 'canonical', href: pageUrl }
   ]
 })
+
+// KST 오늘 일진 간지 및 오행 기운 동적 계산
+const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
+const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
+
+const nowUtc = new Date().getTime()
+const kstOffset = 9 * 60 * 60 * 1000
+const todayKst = new Date(nowUtc + kstOffset)
+const todayStr = todayKst.toISOString().split('T')[0] || ''
+
+const targetDate = new Date(`${todayStr}T00:00:00+09:00`)
+const refDate = new Date('2000-01-01T00:00:00+09:00')
+const diffDays = Math.round((targetDate.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24))
+
+const todayStemIdx = (4 + (diffDays % 10) + 10) % 10
+const todayBranchIdx = (6 + (diffDays % 12) + 12) % 12
+const todayGanzhi = `${stems[todayStemIdx]}${branches[todayBranchIdx]}`
+
+// 오늘 일진의 천간 기준 주오행 (0: 목, 1: 화, 2: 토, 3: 금, 4: 수)
+const todayElementIdx = Math.floor(todayStemIdx / 2)
+
+const elementBadge = computed(() => {
+  const badgeMap = [
+    '木 · 생기 상승',
+    '火 · 열정 왕성',
+    '土 · 안정 조화',
+    '金 · 결실 결단',
+    '水 · 지혜 흐름'
+  ]
+  return badgeMap[todayElementIdx] || '木 · 생기 상승'
+})
+
+// 오늘 일진 오행 비율 동적 계산
+const elementRatios = computed(() => {
+  const baseRatios = [
+    [35, 20, 20, 15, 10], // 목 위주
+    [15, 35, 20, 15, 15], // 화 위주
+    [15, 20, 35, 15, 15], // 토 위주
+    [15, 15, 20, 35, 15], // 금 위주
+    [20, 15, 15, 15, 35], // 수 위주
+  ]
+  return baseRatios[todayElementIdx] || [35, 20, 20, 15, 10]
+})
 </script>
 
 <template>
@@ -130,7 +173,7 @@ useHead({
             <!-- Header with Vermilion Mini-Seal -->
             <div class="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-[#4d4638]/30">
               <div class="flex items-center gap-3">
-                <span class="seal-stamp text-xs px-2 py-0.5">命</span>
+                <span class="seal-stamp text-lg px-2 py-0.5">命</span>
                 <div>
                   <h2 class="font-serif-kr text-xl sm:text-2xl text-slate-900 dark:text-white font-bold flex items-center gap-2">
                     일일 사주명리
@@ -140,7 +183,7 @@ useHead({
                 </div>
               </div>
               <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-[#FFDE9E] text-xs font-medium relative z-20 shrink-0 whitespace-nowrap shadow-xs backdrop-blur-xs">
-                木 · 생기 상승
+                {{ elementBadge }}
               </span>
             </div>
 
@@ -155,8 +198,8 @@ useHead({
                   <span class="absolute text-slate-900 dark:text-white font-bold text-base font-serif-kr">87</span>
                 </div>
                 <div>
-                  <div class="text-sm text-amber-800 dark:text-[#FFDE9E] font-bold font-serif-kr">오늘의 일진 & 십신 분석</div>
-                  <div class="text-xs text-slate-500 dark:text-[#9a8f7f] mt-0.5">일간(日干)과 오늘 날짜의 조화</div>
+                  <div class="text-sm text-amber-800 dark:text-[#FFDE9E] font-bold font-serif-kr">오늘({{ todayGanzhi }}일) 일진 & 십신 분석</div>
+                  <div class="text-xs text-slate-500 dark:text-[#9a8f7f] mt-0.5">나의 일간(日干)과 오늘 날짜의 조화</div>
                 </div>
               </div>
               <UIcon name="i-heroicons-sparkles" class="w-6 h-6 text-amber-600 dark:text-[#FFDE9E]" />
@@ -165,34 +208,69 @@ useHead({
             <!-- Five Elements Bar -->
             <div class="mt-6">
               <div class="flex justify-between items-center mb-2">
-                <span class="text-xs text-slate-500 dark:text-[#9a8f7f]">오행 5대 기운</span>
+                <span class="text-xs text-slate-500 dark:text-[#9a8f7f]">오늘의 오행 5대 기운</span>
                 <span class="text-xs text-amber-700 dark:text-[#FFDE9E]">木火土金水</span>
               </div>
-              <div class="grid grid-cols-5 gap-2 text-center">
-                <div class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-emerald-500/30 flex flex-col items-center">
-                  <span class="text-xs font-serif-kr text-emerald-600 dark:text-emerald-400 font-bold">木</span>
-                  <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1"></div>
-                  <span class="text-[10px] text-slate-500 dark:text-[#9a8f7f] mt-1">35%</span>
+              <div class="grid grid-cols-5 gap-2 text-center items-stretch">
+                <!-- 木 (목) -->
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-emerald-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-xs font-serif-kr text-emerald-600 dark:text-emerald-400 font-bold leading-none">木</span>
+                  </div>
+                  <div class="h-5 flex items-center justify-center w-full">
+                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-emerald-500 text-emerald-500" style="animation-delay: 0s;"></div>
+                  </div>
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-[11px] text-slate-500 dark:text-[#9a8f7f] font-medium leading-none">{{ elementRatios[0] }}%</span>
+                  </div>
                 </div>
-                <div class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-rose-500/20 flex flex-col items-center">
-                  <span class="text-xs font-serif-kr text-rose-600 dark:text-rose-400 font-bold">火</span>
-                  <div class="w-2 h-2 rounded-full bg-rose-500 mt-1"></div>
-                  <span class="text-[10px] text-slate-500 dark:text-[#9a8f7f] mt-1">20%</span>
+                <!-- 火 (화) -->
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-rose-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-xs font-serif-kr text-rose-600 dark:text-rose-400 font-bold leading-none">火</span>
+                  </div>
+                  <div class="h-5 flex items-center justify-center w-full">
+                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-rose-500 text-rose-500" style="animation-delay: 0.5s;"></div>
+                  </div>
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-[11px] text-slate-500 dark:text-[#9a8f7f] font-medium leading-none">{{ elementRatios[1] }}%</span>
+                  </div>
                 </div>
-                <div class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-amber-500/20 flex flex-col items-center">
-                  <span class="text-xs font-serif-kr text-amber-600 dark:text-amber-300 font-bold">土</span>
-                  <div class="w-2 h-2 rounded-full bg-amber-500 mt-1"></div>
-                  <span class="text-[10px] text-slate-500 dark:text-[#9a8f7f] mt-1">20%</span>
+                <!-- 土 (토) -->
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-amber-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-xs font-serif-kr text-amber-600 dark:text-amber-300 font-bold leading-none">土</span>
+                  </div>
+                  <div class="h-5 flex items-center justify-center w-full">
+                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-amber-500 text-amber-500" style="animation-delay: 1.0s;"></div>
+                  </div>
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-[11px] text-slate-500 dark:text-[#9a8f7f] font-medium leading-none">{{ elementRatios[2] }}%</span>
+                  </div>
                 </div>
-                <div class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-slate-300 dark:border-[#4d4638]/20 flex flex-col items-center">
-                  <span class="text-xs font-serif-kr text-slate-700 dark:text-slate-200 font-bold">金</span>
-                  <div class="w-2 h-2 rounded-full bg-slate-500 mt-1"></div>
-                  <span class="text-[10px] text-slate-500 dark:text-[#9a8f7f] mt-1">15%</span>
+                <!-- 金 (금) -->
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-slate-400/30 dark:border-[#4d4638]/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-xs font-serif-kr text-slate-700 dark:text-slate-200 font-bold leading-none">金</span>
+                  </div>
+                  <div class="h-5 flex items-center justify-center w-full">
+                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-slate-500 text-slate-400" style="animation-delay: 1.5s;"></div>
+                  </div>
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-[11px] text-slate-500 dark:text-[#9a8f7f] font-medium leading-none">{{ elementRatios[3] }}%</span>
+                  </div>
                 </div>
-                <div class="p-2 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-sky-500/20 flex flex-col items-center">
-                  <span class="text-xs font-serif-kr text-sky-600 dark:text-sky-400 font-bold">水</span>
-                  <div class="w-2 h-2 rounded-full bg-sky-500 mt-1"></div>
-                  <span class="text-[10px] text-slate-500 dark:text-[#9a8f7f] mt-1">10%</span>
+                <!-- 水 (수) -->
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-sky-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-xs font-serif-kr text-sky-600 dark:text-sky-400 font-bold leading-none">水</span>
+                  </div>
+                  <div class="h-5 flex items-center justify-center w-full">
+                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-sky-500 text-sky-500" style="animation-delay: 2.0s;"></div>
+                  </div>
+                  <div class="h-4 flex items-center justify-center">
+                    <span class="text-[11px] text-slate-500 dark:text-[#9a8f7f] font-medium leading-none">{{ elementRatios[4] }}%</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -236,20 +314,29 @@ useHead({
               </span>
             </div>
 
-            <!-- Hexagram Preview Graphic -->
+            <!-- Hexagram Preview Graphic (6효 완성: 보라/인디고 단일 톤) -->
             <div class="mt-6 flex flex-col sm:flex-row items-center gap-6 bg-slate-50 dark:bg-[#171a2e] p-5 rounded-2xl border border-slate-200 dark:border-[#4d4638]/30">
-              <!-- Trigram Graphic -->
-              <div class="w-32 flex flex-col gap-2 py-1 select-none">
+              <!-- 64괘 6효 그래픽 -->
+              <div class="w-32 flex flex-col gap-1.5 py-1 select-none">
+                <!-- 상괘 (6효: 음효) -->
                 <div class="flex gap-2 w-full">
-                  <div class="trigram-line trigram-broken-segment w-1/2"></div>
-                  <div class="trigram-line trigram-broken-segment w-1/2"></div>
+                  <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
+                  <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
                 </div>
+                <!-- 상괘 (5효: 양효) -->
+                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+                <!-- 상괘 (4효: 양효) -->
+                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+
+                <!-- 하괘 (3효: 양효) -->
+                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+                <!-- 하괘 (2효: 음효) -->
                 <div class="flex gap-2 w-full">
-                  <div class="trigram-line trigram-broken-segment w-1/2"></div>
-                  <div class="trigram-line trigram-broken-segment w-1/2"></div>
+                  <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
+                  <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
                 </div>
-                <div class="trigram-line trigram-solid w-full"></div>
-                <div class="trigram-line trigram-solid w-full"></div>
+                <!-- 하괘 (1효: 양효) -->
+                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
               </div>
               <div>
                 <div class="text-xs text-purple-700 dark:text-[#FFDE9E] font-bold font-serif-kr mb-1">3단계 대나무 점대 드로우</div>
@@ -293,3 +380,25 @@ useHead({
     </main>
   </div>
 </template>
+
+<style scoped>
+@keyframes elemDotPulse {
+  0%, 100% {
+    transform: scale(0.75);
+    opacity: 0.4;
+    filter: brightness(0.85);
+    box-shadow: 0 0 1px currentColor;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+    filter: brightness(1.3);
+    box-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+  }
+}
+
+.elem-dot-pulse {
+  animation: elemDotPulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform, opacity, filter, box-shadow;
+}
+</style>
