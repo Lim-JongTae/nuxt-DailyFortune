@@ -27,9 +27,12 @@ export const useMarkdownFormatter = () => {
     // 0. 깨진 한글 텍스트 사전 자동 정제
     let text = sanitizeKoreanText(rawText)
 
-    // 1. JSON 코드 블록 등 잔여 찌꺼기 및 문두 인용구(>) 제거
-    text = text.replace(/```json\s*[\s\S]*?\s*```/g, '').trim()
+    // 1. JSON 코드 블록 등 잔여 찌꺼기 및 문두 인용구(>) 제거 (닫힌 것 및 닫히지 않은 찌꺼기 포함)
+    text = text.replace(/```json\s*[\s\S]*?\s*```/gi, '').trim()
+    text = text.replace(/```json\s*[\s\S]*/gi, '').trim()
+    text = text.replace(/^\s*\{[\s\S]*?"categories"[\s\S]*?\}\s*/gi, '').trim()
     text = text.replace(/```[\s\S]*?```/g, '').trim()
+    text = text.replace(/^```json\s*/gi, '').replace(/^```\s*/g, '').replace(/```$/g, '').trim()
     text = text.replace(/^>\s*/gim, '')
 
     // 2. 수평선 (---, ***, ___) -> 세련된 구분선 HR로 변환

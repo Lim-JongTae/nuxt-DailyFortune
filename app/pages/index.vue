@@ -175,9 +175,9 @@ const elementRatios = computed(() => {
               <div class="flex items-center gap-3">
                 <span class="seal-stamp text-lg px-2 py-0.5">命</span>
                 <div>
-                  <h2 class="font-serif-kr text-xl sm:text-2xl text-slate-900 dark:text-white font-bold flex items-center gap-2">
+                  <h2 class="font-serif-kr text-xl sm:text-sm text-slate-900 dark:text-white font-bold flex items-center gap-2">
                     일일 사주명리
-                    <span class="text-xs text-amber-700 dark:text-[#FFDE9E]/80 font-sans-kr font-normal">(Daily Saju)</span>
+                    <span class="text-xs text-amber-700 dark:text-[#FFDE9E]/80 font-sans-kr font-normal"></span>
                   </h2>
                   <p class="text-xs text-slate-500 dark:text-[#d1c5b3] mt-0.5">나의 천간지지와 오행 흐름</p>
                 </div>

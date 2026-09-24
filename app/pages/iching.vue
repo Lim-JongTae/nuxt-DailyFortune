@@ -510,7 +510,7 @@ const copyToClipboard = () => {
   const hex = result.value.hexagram
   const detail = hexagramLinesDetail.value
 
-  const shareText = `☯️ [일일운세.kr] I CHING ORACLE 주역점 결과 ☯️
+  const shareText = `☯️ [sajuapp.co.kr] I CHING ORACLE 주역점 결과 ☯️
 --------------------------------------
 ● 선택한 고민: "${worry.value || '오늘 하루의 운세와 지혜'}"
 ● 본괘: 제${hex.id}괘 ${hex.nameKorean} (${hex.nameHanji})
@@ -522,12 +522,17 @@ const copyToClipboard = () => {
 "순풍에 돛을 올리듯, 바른 뜻으로 나아가면 크게 형통합니다"
 
 --------------------------------------
-나의 주역 괘 직접 점쳐보기: https://일일운세.kr/iching`
+나의 주역 괘 직접 점쳐보기: https://sajuapp.co.kr/iching`
 
   navigator.clipboard.writeText(shareText)
     .then(() => alert('주역점 결과 보고서가 복사되었습니다! 카카오톡이나 SNS에 공유해보세요.'))
     .catch(err => console.error(err))
 }
+
+const { formatMarkdown } = useMarkdownFormatter()
+const formattedInterpretation = computed(() => {
+  return formatMarkdown(result.value?.aiInterpretation)
+})
 </script>
 
 <template>

@@ -141,19 +141,50 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
 2. 고민에 대한 직접적인 조언과 해결책
 3. 마크다운의 문두 문법을 정상 적용하고 문장을 명확히 완결해 주세요.`
 
-    let { text: aiInterpretation, isAiGenerated } = await callAiModel(prompt)
+    let { text: rawAiText, isAiGenerated } = await callAiModel(prompt)
 
     let parsedData: any = null
-    if (isAiGenerated && aiInterpretation) {
-      try {
-        const jsonMatch = aiInterpretation.match(/```json\s*([\s\S]*?)\s*```/)
-        if (jsonMatch && jsonMatch[1]) {
-          parsedData = JSON.parse(jsonMatch[1])
-          aiInterpretation = aiInterpretation.replace(/```json\s*[\s\S]*?\s*```/, '').trim()
+    let aiInterpretation = ''
+
+    if (isAiGenerated && rawAiText) {
+      // 1. 닫힌 ```json ... ``` 코드블록 파싱 시도
+      const closedMatch = rawAiText.match(/```json\s*([\s\S]*?)\s*```/)
+      if (closedMatch && closedMatch[1]) {
+        try {
+          parsedData = JSON.parse(closedMatch[1])
+        } catch (e) {
+          console.warn('JSON.parse failed on closed block:', e)
         }
-      } catch (e) {
-        console.warn('JSON parsing from AI response failed:', e)
+        aiInterpretation = rawAiText.replace(/```json\s*[\s\S]*?\s*```/, '').trim()
+      } else {
+        // 2. 미완성/열린 ```json ... 코드블록 처리
+        const unclosedMatch = rawAiText.match(/```json\s*([\s\S]*)/)
+        if (unclosedMatch && unclosedMatch[1]) {
+          const jsonStr = unclosedMatch[1].split(/^(?=#|###|####|\*\*|\n\n)/m)[0] || ''
+          try {
+            parsedData = JSON.parse(jsonStr)
+          } catch (e) {
+            console.warn('JSON.parse failed on unclosed block:', e)
+          }
+          aiInterpretation = rawAiText.replace(/```json\s*[\s\S]*/, '').trim()
+        } else {
+          // 3. 순수 JSON 객체 { ... } 로 시작하는 경우
+          const rawMatch = rawAiText.match(/^\s*(\{[\s\S]*?\})\s*(\n\n|#|$)/)
+          if (rawMatch && rawMatch[1]) {
+            try {
+              parsedData = JSON.parse(rawMatch[1])
+            } catch (e) {
+              console.warn('JSON.parse failed on raw object:', e)
+            }
+            aiInterpretation = rawAiText.replace(/^\s*\{[\s\S]*?\}/, '').trim()
+          } else {
+            aiInterpretation = rawAiText.trim()
+          }
+        }
       }
+
+      // 잔여 ``` 마크다운 찌꺼기 완벽 정제
+      aiInterpretation = aiInterpretation.replace(/^```json\s*/i, '').replace(/```$/i, '').trim()
     }
 
     if (!isAiGenerated) {

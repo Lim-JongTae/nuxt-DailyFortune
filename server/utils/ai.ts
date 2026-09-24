@@ -16,7 +16,8 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
     }
   }
 
-  const timeout = Number(process.env.AI_API_TIMEOUT_MS) || 15000 // 15s default
+  const timeout = Number(process.env.AI_API_TIMEOUT_MS) || 30000 // 30s default
+  const maxTokens = Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 4096
 
   // 1. Claude API (aiapiflow.com proxy) attempt
   if (claudeApiKey) {
@@ -31,8 +32,7 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
         },
         body: {
           model: claudeModel,
-          // Reduce max tokens to speed up response
-          max_tokens: Number(process.env.CLAUDE_MAX_TOKENS) || 2048,
+          max_tokens: maxTokens,
           messages: [
             { role: 'user', content: prompt }
           ]
@@ -62,8 +62,7 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
           ],
           generationConfig: {
             temperature: 0.7,
-            // Reduce max output tokens for faster generation
-            maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 2048
+            maxOutputTokens: maxTokens
           }
         }
       }, timeout)
