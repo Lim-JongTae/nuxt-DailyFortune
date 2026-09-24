@@ -11,9 +11,9 @@ useSeoMeta({
   ogDescription: fortuneDesc,
   ogType: 'website',
   ogUrl: pageUrl,
-  ogImage: '/og-image.png',
+  ogImage: '/seo-1-edut.png',
   twitterCard: 'summary_large_image',
-  twitterImage: '/og-image.png'
+  twitterImage: '/seo-1-edut.png'
 })
 
 useHead({

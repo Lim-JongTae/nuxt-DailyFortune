@@ -67,7 +67,12 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#0F1226' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-        { name: 'apple-mobile-web-app-title', content: '일일운세' }
+        { name: 'apple-mobile-web-app-title', content: '일일운세' },
+        { property: 'og:image', content: 'https://sajuapp.co.kr/seo-1-edut.png' },
+        { property: 'og:image:secure_url', content: 'https://sajuapp.co.kr/seo-1-edut.png' },
+        { property: 'og:image:type', content: 'image/png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://sajuapp.co.kr/seo-1-edut.png' }
       ],
       link: [
         { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
