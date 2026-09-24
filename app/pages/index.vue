@@ -64,6 +64,43 @@ const elementRatios = computed(() => {
   ]
   return baseRatios[todayElementIdx] || [35, 20, 20, 15, 10]
 })
+
+// 오늘 사주 운세 점수 (0% / 0도 -> 88% / 88점 카운트업 & 게이지 그리기 애니메이션)
+const animatedScore = ref(0)
+const strokeDashoffset = ref(100) // 100 = 0% (0도)
+const targetScore = 88
+
+onMounted(() => {
+  // 150ms 지연 후 0도(0%)에서 시작하여 88%까지 부드럽게 채워짐
+  setTimeout(() => {
+    let startTime: number | null = null
+    const duration = 1400 // 1.4초 동안 0도에서 88%까지 차오름
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / duration, 1)
+
+      // easeOutCubic 이징
+      const easeOutProgress = 1 - Math.pow(1 - progress, 3)
+
+      // 0점 -> 88점
+      animatedScore.value = Math.floor(easeOutProgress * targetScore)
+
+      // 100(0%) -> 12(88%)
+      strokeDashoffset.value = 100 - (easeOutProgress * targetScore)
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
+      } else {
+        animatedScore.value = targetScore
+        strokeDashoffset.value = 100 - targetScore // 12
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, 150)
+})
 </script>
 
 <template>
@@ -85,7 +122,7 @@ const elementRatios = computed(() => {
           </div>
 
           <!-- Grand Serif Headline -->
-          <h1 class="font-serif-kr text-3xl sm:text-5xl text-slate-900 dark:text-white font-extrabold mb-6 tracking-tight leading-tight">
+          <h1 class="font-serif-kr text-lg sm:text-2xl md:text-3xl lg:text-5xl text-slate-900 dark:text-white font-extrabold mb-4 sm:mb-6 tracking-tight leading-snug">
             오늘의 흐름을 <span class="text-amber-700 dark:text-[#FFDE9E] font-serif-kr">사주</span>와 <span class="text-amber-700 dark:text-[#FFDE9E] font-serif-kr">주역</span>으로 읽어보세요
           </h1>
 
@@ -158,9 +195,9 @@ const elementRatios = computed(() => {
 
       <!-- 2. DUAL CORE ENTRY CARDS -->
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-        <!-- ================= CARD A: 일일 사주명리 ================= -->
         <NuxtLink 
           to="/saju"
+          @click="navigateTo('/saju')"
           class="gold-filament-card p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group cursor-pointer"
         >
           <!-- Background Watermark (z-0) -->
@@ -171,18 +208,17 @@ const elementRatios = computed(() => {
           <!-- Foreground Content (z-10) -->
           <div class="relative z-10">
             <!-- Header with Vermilion Mini-Seal -->
-            <div class="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-[#4d4638]/30">
-              <div class="flex items-center gap-3">
-                <span class="seal-stamp text-lg px-2 py-0.5">命</span>
-                <div>
-                  <h2 class="font-serif-kr text-xl sm:text-sm text-slate-900 dark:text-white font-bold flex items-center gap-2">
+            <div class="flex items-center justify-between pb-4 sm:pb-5 border-b border-slate-200 dark:border-[#4d4638]/30 gap-2">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <span class="seal-stamp text-base sm:text-lg px-2 py-0.5 shrink-0">命</span>
+                <div class="min-w-0">
+                  <h2 class="font-serif-kr text-base sm:text-xl lg:text-2xl text-slate-900 dark:text-white font-bold whitespace-nowrap">
                     일일 사주명리
-                    <span class="text-xs text-amber-700 dark:text-[#FFDE9E]/80 font-sans-kr font-normal"></span>
                   </h2>
-                  <p class="text-xs text-slate-500 dark:text-[#d1c5b3] mt-0.5">나의 천간지지와 오행 흐름</p>
+                  <p class="text-[11px] sm:text-xs text-slate-500 dark:text-[#d1c5b3] mt-0.5 truncate">나의 천간지지와 오행 흐름</p>
                 </div>
               </div>
-              <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-[#FFDE9E] text-xs font-medium relative z-20 shrink-0 whitespace-nowrap shadow-xs backdrop-blur-xs">
+              <span class="inline-flex items-center px-2 sm:px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-[#FFDE9E] text-[11px] sm:text-xs font-medium relative z-10 shrink-0 whitespace-nowrap shadow-xs backdrop-blur-xs">
                 {{ elementBadge }}
               </span>
             </div>
@@ -190,19 +226,19 @@ const elementRatios = computed(() => {
             <!-- Score Preview -->
             <div class="mt-6 flex items-center justify-between bg-slate-50 dark:bg-[#171a2e] p-4 rounded-2xl border border-slate-200 dark:border-[#4d4638]/30">
               <div class="flex items-center gap-4">
-                <div class="relative w-14 h-14 flex items-center justify-center">
-                  <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                    <path class="text-slate-200 dark:text-[#303349]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
-                    <path class="text-amber-600 dark:text-[#FFDE9E]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="87, 100" stroke-linecap="round" stroke-width="3.5"></path>
+                <div class="relative w-14 h-14 flex items-center justify-center rounded-full score-glow-ring">
+                  <svg class="w-full h-full -rotate-90 origin-center" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3.5" class="text-slate-200 dark:text-[#303349]" />
+                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3.5" stroke-dasharray="100" :stroke-dashoffset="strokeDashoffset" stroke-linecap="round" class="text-amber-600 dark:text-[#FFDE9E]" />
                   </svg>
-                  <span class="absolute text-slate-900 dark:text-white font-bold text-base font-serif-kr">87</span>
+                  <span class="absolute text-slate-900 dark:text-white font-bold text-base font-serif-kr">{{ animatedScore }}</span>
                 </div>
                 <div>
                   <div class="text-sm text-amber-800 dark:text-[#FFDE9E] font-bold font-serif-kr">오늘({{ todayGanzhi }}일) 일진 & 십신 분석</div>
                   <div class="text-xs text-slate-500 dark:text-[#9a8f7f] mt-0.5">나의 일간(日干)과 오늘 날짜의 조화</div>
                 </div>
               </div>
-              <UIcon name="i-heroicons-sparkles" class="w-6 h-6 text-amber-600 dark:text-[#FFDE9E]" />
+              <UIcon name="i-heroicons-sparkles" class="w-6 h-6 text-amber-600 dark:text-[#FFDE9E] animate-pulse" />
             </div>
 
             <!-- Five Elements Bar -->
@@ -225,7 +261,7 @@ const elementRatios = computed(() => {
                   </div>
                 </div>
                 <!-- 火 (화) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-rose-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-rose-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
                   <div class="h-4 flex items-center justify-center">
                     <span class="text-xs font-serif-kr text-rose-600 dark:text-rose-400 font-bold leading-none">火</span>
                   </div>
@@ -237,9 +273,9 @@ const elementRatios = computed(() => {
                   </div>
                 </div>
                 <!-- 土 (토) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-amber-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                <div class="h-20 py-2.5 px-1 rounded-xl bg-slate-100 dark:bg-[#1b1e33] border border-amber-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
                   <div class="h-4 flex items-center justify-center">
-                    <span class="text-xs font-serif-kr text-amber-600 dark:text-amber-300 font-bold leading-none">土</span>
+                    <span class="text-xs font-serif-kr text-amber-600 dark:text-amber-400 font-bold leading-none">土</span>
                   </div>
                   <div class="h-5 flex items-center justify-center w-full">
                     <div class="elem-dot-pulse w-2 h-2 rounded-full bg-amber-500 text-amber-500" style="animation-delay: 1.0s;"></div>
@@ -288,6 +324,7 @@ const elementRatios = computed(() => {
         <!-- ================= CARD B: 오늘의 주역 괘 ================= -->
         <NuxtLink 
           to="/iching"
+          @click="navigateTo('/iching')"
           class="gold-filament-card p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group cursor-pointer"
         >
           <!-- Background Watermark (z-0) -->
@@ -298,18 +335,17 @@ const elementRatios = computed(() => {
           <!-- Foreground Content (z-10) -->
           <div class="relative z-10">
             <!-- Header with Vermilion Mini-Seal -->
-            <div class="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-[#4d4638]/30">
-              <div class="flex items-center gap-3">
-                <span class="seal-stamp text-lg px-2 py-0.5">易</span>
-                <div>
-                  <h2 class="font-serif-kr text-xl sm:text-2xl text-slate-900 dark:text-white font-bold flex items-center gap-2">
+            <div class="flex items-center justify-between pb-4 sm:pb-5 border-b border-slate-200 dark:border-[#4d4638]/30 gap-2">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <span class="seal-stamp text-base sm:text-lg px-2 py-0.5 shrink-0">易</span>
+                <div class="min-w-0">
+                  <h2 class="font-serif-kr text-base sm:text-xl lg:text-2xl text-slate-900 dark:text-white font-bold whitespace-nowrap">
                     오늘의 주역 괘
-                    <span class="text-xs text-amber-700 dark:text-[#FFDE9E]/80 font-sans-kr font-normal">(Today's I Ching)</span>
                   </h2>
-                  <p class="text-xs text-slate-500 dark:text-[#d1c5b3] mt-0.5">하늘과 땅의 64가지 변화</p>
+                  <p class="text-[11px] sm:text-xs text-slate-500 dark:text-[#d1c5b3] mt-0.5 truncate">하늘과 땅의 64가지 변화</p>
                 </div>
               </div>
-              <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-purple-500/10 dark:bg-purple-500/20 border border-purple-500/30 text-purple-700 dark:text-purple-300 text-xs font-medium relative z-20 shrink-0 whitespace-nowrap shadow-xs backdrop-blur-xs">
+              <span class="inline-flex items-center px-2 sm:px-2.5 py-1 rounded-full bg-purple-500/10 dark:bg-purple-500/20 border border-purple-500/30 text-purple-700 dark:text-purple-300 text-[11px] sm:text-xs font-medium relative z-10 shrink-0 whitespace-nowrap shadow-xs backdrop-blur-xs">
                 64괘 대나무 드로우
               </span>
             </div>
@@ -400,5 +436,19 @@ const elementRatios = computed(() => {
 .elem-dot-pulse {
   animation: elemDotPulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   will-change: transform, opacity, filter, box-shadow;
+}
+
+@keyframes scoreGlowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px rgba(217, 119, 6, 0.5)) drop-shadow(0 0 7px rgba(251, 191, 36, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(217, 119, 6, 0.95)) drop-shadow(0 0 16px rgba(251, 191, 36, 0.85));
+  }
+}
+
+.score-glow-ring {
+  animation: scoreGlowPulse 2.5s ease-in-out infinite;
+  will-change: filter;
 }
 </style>

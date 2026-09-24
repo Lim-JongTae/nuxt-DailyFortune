@@ -352,3 +352,16 @@ body {
 .animate-element-pulse {
   animation: elementPulse 3.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Scroll Reveal Animation (스크롤 및 등장 애니메이션) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}

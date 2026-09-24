@@ -454,7 +454,7 @@ const triggerScoreAnimation = () => {
         }
       }
       requestAnimationFrame(step)
-    }, 150)
+    }, 200)
   })
 }
 
@@ -462,26 +462,36 @@ const triggerScoreAnimation = () => {
 const setupScrollObserver = () => {
   if (typeof window === 'undefined') return
   nextTick(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
-        }
+    setTimeout(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+          }
+        })
+      }, {
+        threshold: 0.02,
+        rootMargin: '100px 0px 50px 0px'
       })
-    }, {
-      threshold: 0.08,
-      rootMargin: '0px 0px -20px 0px'
-    })
 
-    const elements = document.querySelectorAll('.reveal-on-scroll')
-    elements.forEach(el => observer.observe(el))
+      const elements = document.querySelectorAll('.reveal-on-scroll')
+      elements.forEach(el => {
+        const rect = el.getBoundingClientRect()
+        if (rect.top < window.innerHeight + 100 && rect.bottom > 0) {
+          el.classList.add('is-visible')
+        }
+        observer.observe(el)
+      })
+    }, 200)
   })
 }
 
-watch(result, () => {
-  if (result.value) {
-    triggerScoreAnimation()
-    setupScrollObserver()
+watch(result, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      triggerScoreAnimation()
+      setupScrollObserver()
+    })
   }
 }, { immediate: true })
 
@@ -493,11 +503,12 @@ onMounted(() => {
     })
   }
 
-  setupScrollObserver()
-
-  if (result.value) {
-    triggerScoreAnimation()
-  }
+  nextTick(() => {
+    setupScrollObserver()
+    if (result.value) {
+      triggerScoreAnimation()
+    }
+  })
 })
 
 const markdownFormatter = useMarkdownFormatter()

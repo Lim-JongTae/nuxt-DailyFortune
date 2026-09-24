@@ -18,26 +18,30 @@ export const useFortuneStore = defineStore('fortune', () => {
       birthTime.value = localStorage.getItem('fortune_birthTime') || ''
       noTime.value = localStorage.getItem('fortune_noTime') === 'true'
       gender.value = localStorage.getItem('fortune_gender') || 'man'
-      sajuWorry.value = localStorage.getItem('fortune_sajuWorry') || ''
-      ichingWorry.value = localStorage.getItem('fortune_ichingWorry') || ''
       
-      const nowUtc = new Date().getTime()
+      const now = Date.now()
       const kstOffset = 9 * 60 * 60 * 1000
-      const todayKst = new Date(nowUtc + kstOffset)
+      const todayKst = new Date(now + kstOffset)
       const todayStr = todayKst.toISOString().split('T')[0] || ''
       
       const savedDate = localStorage.getItem('fortune_savedDate')
+      const savedTime = Number(localStorage.getItem('fortune_savedTime') || 0)
+      const isExpired = !savedDate || savedDate !== todayStr || (savedTime > 0 && (now - savedTime >= 12 * 60 * 60 * 1000))
       
-      if (savedDate && savedDate !== todayStr) {
+      if (isExpired) {
         localStorage.removeItem('fortune_sajuResult')
         localStorage.removeItem('fortune_ichingResult')
         localStorage.removeItem('fortune_sajuWorry')
         localStorage.removeItem('fortune_ichingWorry')
+        localStorage.removeItem('fortune_savedTime')
         sajuWorry.value = ''
         ichingWorry.value = ''
         sajuResult.value = null
         ichingResult.value = null
       } else {
+        sajuWorry.value = localStorage.getItem('fortune_sajuWorry') || ''
+        ichingWorry.value = localStorage.getItem('fortune_ichingWorry') || ''
+        
         const storedSaju = localStorage.getItem('fortune_sajuResult')
         if (storedSaju) {
           try {
@@ -63,16 +67,17 @@ export const useFortuneStore = defineStore('fortune', () => {
 
   const saveToLocalStorage = () => {
     if (import.meta.client) {
+      const now = Date.now()
       localStorage.setItem('fortune_birthDate', birthDate.value)
       localStorage.setItem('fortune_birthTime', birthTime.value)
       localStorage.setItem('fortune_noTime', String(noTime.value))
       localStorage.setItem('fortune_gender', gender.value)
       localStorage.setItem('fortune_sajuWorry', sajuWorry.value)
       localStorage.setItem('fortune_ichingWorry', ichingWorry.value)
+      localStorage.setItem('fortune_savedTime', String(now))
       
-      const nowUtc = new Date().getTime()
       const kstOffset = 9 * 60 * 60 * 1000
-      const todayKst = new Date(nowUtc + kstOffset)
+      const todayKst = new Date(now + kstOffset)
       const todayStr = todayKst.toISOString().split('T')[0] || ''
       localStorage.setItem('fortune_savedDate', todayStr)
       
@@ -93,13 +98,19 @@ export const useFortuneStore = defineStore('fortune', () => {
   const clearSaju = () => {
     sajuWorry.value = ''
     sajuResult.value = null
-    saveToLocalStorage()
+    if (import.meta.client) {
+      localStorage.removeItem('fortune_sajuWorry')
+      localStorage.removeItem('fortune_sajuResult')
+    }
   }
 
   const clearIching = () => {
     ichingWorry.value = ''
     ichingResult.value = null
-    saveToLocalStorage()
+    if (import.meta.client) {
+      localStorage.removeItem('fortune_ichingWorry')
+      localStorage.removeItem('fortune_ichingResult')
+    }
   }
 
   const resetAllInputs = () => {

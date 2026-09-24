@@ -528,11 +528,6 @@ const copyToClipboard = () => {
     .then(() => alert('주역점 결과 보고서가 복사되었습니다! 카카오톡이나 SNS에 공유해보세요.'))
     .catch(err => console.error(err))
 }
-
-const markdownFormatter = useMarkdownFormatter()
-const formattedInterpretation = computed(() => {
-  return markdownFormatter.formatMarkdown(result.value?.aiInterpretation)
-})
 </script>
 
 <template>
