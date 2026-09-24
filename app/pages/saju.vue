@@ -45,8 +45,9 @@ const zodiacZhi = [
 ]
 
 const userZodiacInfo = computed(() => {
-  const y = birthYear.value ? parseInt(birthYear.value, 10) : 1965
-  if (Number.isNaN(y)) return { fullName: '을사', animal: '🐍', zodiacName: '1965년 을사년 뱀띠', branchIdx: 5 }
+  if (!birthYear.value) return null
+  const y = parseInt(birthYear.value, 10)
+  if (Number.isNaN(y) || y < 1900 || y > new Date().getFullYear()) return null
 
   const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
   const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
@@ -574,26 +575,36 @@ const todayLunarText = computed(() => {
 
       <!-- 십이지신/띠 수평 칩 슬라이더 -->
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-4">
-        <!-- 동적 계산된 내 띠 칩 (가장 앞에 강조 표시) -->
-        <button
-          type="button"
-          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all border shadow-sm font-bold"
-          style="background: linear-gradient(to right, rgba(255, 229, 163, 0.25), rgba(232, 193, 112, 0.35)); border-color: var(--fortune-gold); color: var(--fortune-gold-light);"
-        >
-          <span>{{ userZodiacInfo.animal }}</span>
-          <span>{{ userZodiacInfo.zodiacName }}</span>
-        </button>
-
-        <!-- 일반 띠 칩 목록 -->
-        <button
-          v-for="z in zodiacZhi.filter(item => item.branchIdx !== userZodiacInfo.branchIdx)"
-          :key="z.branchIdx"
-          type="button"
-          class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all pg-chip border"
-        >
-          <span>{{ z.animal }}</span>
-          <span>{{ z.name }}</span>
-        </button>
+        <template v-if="userZodiacInfo">
+          <button
+            type="button"
+            class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all border shadow-sm font-bold"
+            style="background: linear-gradient(to right, rgba(255, 229, 163, 0.25), rgba(232, 193, 112, 0.35)); border-color: var(--fortune-gold); color: var(--fortune-gold-light);"
+          >
+            <span>{{ userZodiacInfo.animal }}</span>
+            <span>{{ userZodiacInfo.zodiacName }}</span>
+          </button>
+          <button
+            v-for="z in zodiacZhi.filter(item => item.branchIdx !== userZodiacInfo.branchIdx)"
+            :key="z.branchIdx"
+            type="button"
+            class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all pg-chip border"
+          >
+            <span>{{ z.animal }}</span>
+            <span>{{ z.name }}</span>
+          </button>
+        </template>
+        <template v-else>
+          <button
+            v-for="z in zodiacZhi"
+            :key="z.branchIdx"
+            type="button"
+            class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all pg-chip border"
+          >
+            <span>{{ z.animal }}</span>
+            <span>{{ z.name }}</span>
+          </button>
+        </template>
       </div>
 
       <!-- ========================================== -->
@@ -732,7 +743,7 @@ const todayLunarText = computed(() => {
           <div class="pg-card-inner p-2 rounded-xl border">
             <span class="text-[10px] pg-text-bold block mb-0.5">내 출생년도 / 띠</span>
             <strong class="text-xs pg-text-gold-light font-serif-kr block truncate">
-              {{ result.userSaju?.zodiacName || userZodiacInfo.zodiacName }}
+              {{ result.userSaju?.zodiacName || userZodiacInfo?.zodiacName || '-' }}
             </strong>
           </div>
           <div class="pg-card-inner p-2 rounded-xl border">
