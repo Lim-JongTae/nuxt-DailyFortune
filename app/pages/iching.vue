@@ -529,9 +529,9 @@ const copyToClipboard = () => {
     .catch(err => console.error(err))
 }
 
-const { formatMarkdown } = useMarkdownFormatter()
+const markdownFormatter = useMarkdownFormatter()
 const formattedInterpretation = computed(() => {
-  return formatMarkdown(result.value?.aiInterpretation)
+  return markdownFormatter.formatMarkdown(result.value?.aiInterpretation)
 })
 </script>
 

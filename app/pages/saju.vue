@@ -499,10 +499,10 @@ onMounted(() => {
   }
 })
 
-const { formatMarkdown } = useMarkdownFormatter()
+const markdownFormatter = useMarkdownFormatter()
 
 const formattedInterpretation = computed(() => {
-  return formatMarkdown(result.value?.aiInterpretation)
+  return markdownFormatter.formatMarkdown(result.value?.aiInterpretation)
 })
 
 // 오늘 날짜 및 일진 헤더 동적 계산 (KST 기준)
