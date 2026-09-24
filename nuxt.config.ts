@@ -71,8 +71,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     geminiApiKey: process.env.GEMINI_API_KEY || '',
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sajuapp.kr',
-      siteName: 'sajuapp.kr',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sajuapp.co.kr',
+      siteName: 'sajuapp.co.kr',
       adsenseClient: process.env.NUXT_PUBLIC_ADSENSE_CLIENT || ''
     }
   },
@@ -80,8 +80,8 @@ export default defineNuxtConfig({
     zeroRuntime: true
   },
   site: {
-    url: 'https://sajuapp.kr',
-    name: 'sajuapp.kr',
+    url: 'https://sajuapp.co.kr',
+    name: 'sajuapp.co.kr',
     defaultLocale: 'ko'
   }
 })

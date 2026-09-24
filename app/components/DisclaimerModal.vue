@@ -65,7 +65,7 @@ defineExpose({
                 <div class="pg-card-inner p-3 rounded-xl border pg-border">
                   <h4 class="font-bold pg-text-gold mb-1 font-serif-kr">1. 서비스 목적 및 안내</h4>
                   <p class="pg-text-muted">
-                    sajuapp.kr에서 제공하는 사주명리 및 주역 64괘 운세 서비스는 동양 명리학 데이터와 인공지능(AI) 알고리즘을 바탕으로 생성되는 성찰 및 일상 참고용 콘텐츠입니다.
+                    sajuapp.co.kr(사주앱)에서 제공하는 사주명리 및 주역 64괘 운세 서비스는 동양 명리학 데이터와 인공지능(AI) 알고리즘을 바탕으로 생성되는 성찰 및 일상 참고용 콘텐츠입니다.
                   </p>
                 </div>
 

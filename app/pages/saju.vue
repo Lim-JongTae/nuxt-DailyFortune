@@ -5,9 +5,9 @@ import { z } from 'zod'
 import { getGanzhiOfDay, getGanzhiOfYear, getTodayLunarDateString } from '~/utils/saju'
 
 useSeoMeta({
-  title: '일일 사주명리 - 오늘의 운세 | sajuapp.kr',
+  title: '일일 사주명리 - 오늘의 운세 | sajuapp.co.kr',
   description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
-  ogTitle: '일일 사주명리 - 오늘의 운세 | sajuapp.kr',
+  ogTitle: '일일 사주명리 - 오늘의 운세 | sajuapp.co.kr',
   ogDescription: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image',
@@ -258,7 +258,7 @@ const copyToClipboard = () => {
     .replace(/### /g, '■ ')
     .replace(/## /g, '◈ ')
 
-  const shareText = `🔮 [사주앱 - sajuapp.kr] 오늘의 사주명리 분석 보고서 🔮
+  const shareText = `🔮 [사주앱 - sajuapp.co.kr] 오늘의 사주명리 분석 보고서 🔮
 --------------------------------------
 ● 내 일간: ${user.ilgan} (${user.ilganElement})
 ● 오늘의 일진: ${today.ganzhi}일 (${today.shipsin}의 날)
@@ -267,7 +267,7 @@ const copyToClipboard = () => {
 ${plainText}
 
 --------------------------------------
-내 일일 사주 직접 보기: https://sajuapp.kr/saju`
+내 일일 사주 직접 보기: https://sajuapp.co.kr/saju`
 
   navigator.clipboard.writeText(shareText)
     .then(() => alert('오늘의 사주명리 결과 보고서가 복사되었습니다. 카카오톡이나 SNS에 공유해 보세요!'))

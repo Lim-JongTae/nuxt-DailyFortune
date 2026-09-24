@@ -1,8 +1,8 @@
-# GEMINI.md - Daily-Fortune (sajuapp.kr) 프로젝트 지침서
+# GEMINI.md - Daily-Fortune (sajuapp.co.kr) 프로젝트 지침서
 
 ## 1. 프로젝트 개요 (Project Overview)
-- **프로젝트명**: Daily-Fortune (sajuapp.kr)
-- **도메인**: `https://sajuapp.kr`
+- **프로젝트명**: Daily-Fortune (sajuapp.co.kr)
+- **도메인**: `https://sajuapp.co.kr`
 - **목적**: 기존 스마트라이프(`smartlife.pe.kr`)에서 독립시킨 AI 맞춤형 사주명리 및 주역 비결 단독 운세 서비스.
 - **주요 목표**: 높은 체류 시간과 SNS 공유 유도를 통해 구글 애드센스(Google AdSense) 수익성 및 사용자 경험 극대화.
 - **주요 기능**:

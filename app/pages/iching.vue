@@ -3,9 +3,9 @@ import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 useSeoMeta({
-  title: '주역점 결과 - I CHING ORACLE | sajuapp.kr',
+  title: '주역점 결과 - I CHING ORACLE | sajuapp.co.kr',
   description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
-  ogTitle: '주역점 결과 - I CHING ORACLE | sajuapp.kr',
+  ogTitle: '주역점 결과 - I CHING ORACLE | sajuapp.co.kr',
   ogDescription: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image',
