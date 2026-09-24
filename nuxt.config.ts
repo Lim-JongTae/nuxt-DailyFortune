@@ -56,6 +56,13 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      script: [
+        {
+          async: true,
+          src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9938049374204211',
+          crossorigin: 'anonymous'
+        }
+      ],
       meta: [
         { name: 'theme-color', content: '#0F1226' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
@@ -73,7 +80,7 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sajuapp.co.kr',
       siteName: 'sajuapp.co.kr',
-      adsenseClient: process.env.NUXT_PUBLIC_ADSENSE_CLIENT || ''
+      adsenseClient: process.env.NUXT_PUBLIC_ADSENSE_CLIENT || 'ca-pub-9938049374204211'
     }
   },
   ogImage: {
