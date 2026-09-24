@@ -24,6 +24,21 @@ model IChingHexagram {
   @@map("iching_hexagrams")
 }
 
+// 주역 384효(爻) 원문 및 해석 정보
+model IChingLine {
+  id           Int      @id @default(autoincrement())
+  hexagramId   Int      @map("hexagram_id") // 괘 번호 (1 ~ 64)
+  lineNumber   Int      @map("line_number") // 효 번호 (1 ~ 6)
+  nameHanja    String   @map("name_hanja")   // 예: 初九, 九二, 六三...
+  textHanja    String   @map("text_hanja")   // 효사 한자 원문
+  textKorean   String   @map("text_korean")  // 효사 한글 음독 및 원전 풀이
+  modernAdvice String   @map("modern_advice") // 현대적 처세 조언
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([hexagramId, lineNumber])
+  @@map("iching_lines")
+}
+
 // 천간 (갑, 을, 병...) 성향 정보
 model SajuIlgan {
   id        String   @id @default(uuid())
@@ -66,4 +81,27 @@ model FortuneRateLimit {
 
   @@index([ip, type, createdAt])
   @@map("fortune_rate_limits")
+}
+
+// 결과지 공감/좋아요 기록
+model FortuneLike {
+  id        String   @id @default(uuid())
+  type      String   // "saju" | "iching"
+  targetKey String   @map("target_key") // 예: "iching_3_2" 또는 사주 일진 키
+  ip        String?  // 중복 클릭 방지용
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([type, targetKey])
+  @@map("fortune_likes")
+}
+
+// 서비스 방문자 수 및 누적 방문 통계 (KST 기준)
+model SiteStats {
+  id         Int      @id @default(1)
+  totalViews Int      @default(0) @map("total_views") // 전체 누적 방문 수
+  todayViews Int      @default(0) @map("today_views") // 오늘 일일 방문자 수
+  todayDate  String   @default("") @map("today_date") // KST 기준 날짜 (YYYY-MM-DD)
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("site_stats")
 }

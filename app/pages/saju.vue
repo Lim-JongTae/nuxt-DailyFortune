@@ -543,6 +543,54 @@ const todayHeaderInfo = computed(() => {
 const todayLunarText = computed(() => {
   return getTodayLunarDateString()
 })
+
+// 공감 / 좋아요 로직
+const likeCount = ref(0)
+const alreadyLiked = ref(false)
+
+const targetKey = computed(() => {
+  if (!result.value) return 'saju_default'
+  return `saju_${result.value.dayGan}_${result.value.shipsin}`
+})
+
+const fetchLikeStats = async () => {
+  if (!targetKey.value) return
+  try {
+    const res: any = await $fetch(`/api/fortune/like?type=saju&targetKey=${targetKey.value}`)
+    if (res?.success) {
+      likeCount.value = res.likeCount ?? res.count ?? 0
+      alreadyLiked.value = res.alreadyLiked
+    }
+  } catch (err) {
+    console.error('Failed to fetch saju like stats:', err)
+  }
+}
+
+const toggleLike = async () => {
+  if (alreadyLiked.value) return
+  try {
+    const res: any = await $fetch('/api/fortune/like', {
+      method: 'POST',
+      body: { type: 'saju', targetKey: targetKey.value }
+    })
+    if (res?.success) {
+      likeCount.value = res.likeCount ?? res.count ?? (likeCount.value + 1)
+      alreadyLiked.value = true
+    }
+  } catch (err) {
+    console.error('Failed to toggle saju like:', err)
+  }
+}
+
+watch(result, (newVal) => {
+  if (newVal) {
+    fetchLikeStats()
+    nextTick(() => {
+      triggerScoreAnimation()
+      setupScrollObserver()
+    })
+  }
+}, { immediate: true })
 </script>
 
 <template>
@@ -1024,6 +1072,23 @@ const todayLunarText = computed(() => {
           <div v-html="formattedInterpretation" class="markdown-body"></div>
         </div>
       </div>
+
+        <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
+        <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">
+          <div class="flex items-center gap-2">
+            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold text-amber-600 dark:text-[#FFDE9E]">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
+          </div>
+          <button
+            type="button"
+            @click="toggleLike"
+            :disabled="alreadyLiked"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
+            :class="alreadyLiked ? 'bg-amber-500/20 text-amber-600 dark:text-[#FFDE9E] border border-amber-500/40 cursor-default' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
+          >
+            <UIcon :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'" class="w-4 h-4" />
+            <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
+          </button>
+        </div>
 
         <!-- 8. 하단 버튼 영역 (이미지 2 1:1) -->
         <div class="space-y-3 pt-2">

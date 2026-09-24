@@ -268,6 +268,9 @@ const handleStickClick = async (stick: any) => {
             result.value = res
             store.saveToLocalStorage()
             currentStep.value = 5
+            if (res.hexagram) {
+              fetchLikeStats(res.hexagram.id, res.hexagram.lineNumber)
+            }
           } else {
             alert(res.error || '오류가 발생했습니다.')
             currentStep.value = 0
@@ -281,6 +284,43 @@ const handleStickClick = async (stick: any) => {
         currentStep.value = 0
       }
     }, 1000)
+  }
+}
+
+// 운세 결과 공감/좋아요 카운터
+const likeCount = ref(0)
+const alreadyLiked = ref(false)
+
+const fetchLikeStats = async (hexId: number, lineNum: number) => {
+  const targetKey = `iching_${hexId}_${lineNum}`
+  try {
+    const res: any = await $fetch('/api/fortune/like', {
+      params: { type: 'iching', targetKey }
+    })
+    if (res?.success) {
+      likeCount.value = res.likeCount
+      alreadyLiked.value = res.alreadyLiked
+    }
+  } catch (e) {
+    console.warn('Failed to fetch like stats:', e)
+  }
+}
+
+const toggleLike = async () => {
+  if (alreadyLiked.value || !result.value?.hexagram) return
+  const hexId = result.value.hexagram.id
+  const lineNum = result.value.hexagram.lineNumber
+  const targetKey = `iching_${hexId}_${lineNum}`
+
+  try {
+    alreadyLiked.value = true
+    likeCount.value++
+    await $fetch('/api/fortune/like', {
+      method: 'POST',
+      body: { type: 'iching', targetKey }
+    })
+  } catch (e) {
+    console.warn('Failed to post like:', e)
   }
 }
 
@@ -989,7 +1029,24 @@ const copyToClipboard = () => {
           </div>
         </div>
 
-        <!-- 7. 버튼 영역 (이미지 1:1) -->
+        <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
+        <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">
+          <div class="flex items-center gap-2">
+            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold text-amber-600 dark:text-[#FFDE9E]">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
+          </div>
+          <button
+            type="button"
+            @click="toggleLike"
+            :disabled="alreadyLiked"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
+            :class="alreadyLiked ? 'bg-amber-500/20 text-amber-600 dark:text-[#FFDE9E] border border-amber-500/40 cursor-default' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
+          >
+            <UIcon :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'" class="w-4 h-4" />
+            <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
+          </button>
+        </div>
+
+        <!-- 8. 버튼 영역 (이미지 1:1) -->
         <div class="space-y-2.5 pt-2 reveal-on-scroll">
           <button
             type="button"

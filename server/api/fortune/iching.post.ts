@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
 
@@ -60,6 +62,23 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    // 384효(爻) 원문 데이터 로드 (JSON 기반 룩업)
+    let lineDetail: any = null
+    try {
+      const jsonPath = path.resolve(process.cwd(), 'prisma/iching_384_lines.json')
+      if (fs.existsSync(jsonPath)) {
+        const rawJson = fs.readFileSync(jsonPath, 'utf8')
+        const allLines = JSON.parse(rawJson)
+        lineDetail = allLines.find((l: any) => l.hexagramId === hexagramId && l.lineNumber === lineNumber)
+      }
+    } catch (e) {
+      console.warn('Failed to load iching_384_lines.json:', e)
+    }
+
+    const lineHanjaText = lineDetail?.textHanja || `${hexagram.nameHanji} ${lineNumber}爻`
+    const lineKoreanText = lineDetail?.textKorean || `${lineNumber}번째 효사 기운`
+    const lineModernAdvice = lineDetail?.modernAdvice || ''
+
     // 5. AI 모델 호출 (Claude / Gemini 통합)
     const prompt = `당신은 주역(I Ching)과 명리학에 정통한 고결한 역학자입니다. 
 사용자가 직접 점대를 뽑아 조합한 주역 괘의 괘사와 효사 정보를 바탕으로, 사용자의 고민에 대해 깊이 있는 해설과 행동 지침을 조언해 주어야 합니다.
@@ -73,15 +92,21 @@ export default defineEventHandler(async (event) => {
 - 오늘의 동효 (변화하는 효): ${lineNumber}번째 효 (1: 초효, 2: 이효, 3: 삼효, 4: 사효, 5: 오효, 6: 상효)
 - 괘의 부문별 일반 운세: 전체운(${hexagram.generalFate}), 사업운(${hexagram.businessFate}), 연애운(${hexagram.loveFate}), 금전운(${hexagram.wealthFate})
 
+[오늘의 동효 384효 원문 및 해석]
+- 동효 명칭: ${lineDetail?.nameHanja || `${lineNumber}효`}
+- 효사 한자 원문 (漢字 原文): ${lineHanjaText}
+- 효사 한글 풀이: ${lineKoreanText}
+${lineModernAdvice ? `- 원전 처세 지침: ${lineModernAdvice}` : ''}
+
 [사용자의 고민]
 ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합니다."}
 
 답변 작성 시 주의사항:
-1. 사용자가 뽑은 **[오늘의 동효]인 ${lineNumber}번째 효**를 중심으로 조언해 주세요.
-2. 해당 괘의 **${lineNumber}번째 효사(爻辭)의 원문 내용(한자 및 한글 해석)을 반드시 정확하게 한 단락 언급**해 주시고, 이 효사가 사용자의 고민에 전하는 구체적인 해설을 작성해 주세요.
+1. 사용자가 뽑은 **[오늘의 동효]인 ${lineNumber}번째 효의 한자 원문(${lineHanjaText})**을 반드시 상단에 언급하며 친절하게 풀어서 조언해 주세요.
+2. 해당 효사가 사용자의 고민에 전하는 구체적인 해설과 행동 지침을 작성해 주세요.
 3. 답변은 마크다운(Markdown) 형식으로 작성하여 가독성을 높여주세요. 아래 단계를 포함해 작성해 주세요:
    - 괘에 대한 친절한 설명과 요약
-   - 오늘의 동효(${lineNumber}번째 효)의 효사 한문/한글 해석 및 직접적인 조언
+   - 오늘의 동효(${lineNumber}번째 효: **${lineHanjaText}**)의 한자/한글 해석 및 직접적인 조언
    - 전체적인 기운의 흐름(직업, 연애, 재물)과 행동 지침
    - 오늘의 행운을 높여주는 키워드나 마음가짐 제안
 
@@ -140,7 +165,10 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
         businessFate: hexagram.businessFate,
         loveFate: hexagram.loveFate,
         wealthFate: hexagram.wealthFate,
-        lineNumber
+        lineNumber,
+        lineHanja: lineHanjaText,
+        lineKorean: lineKoreanText,
+        lineAdvice: lineModernAdvice
       },
       aiInterpretation,
       isAiGenerated

@@ -1,0 +1,3842 @@
+[
+  {
+    "hexagramId": 1,
+    "lineNumber": 1,
+    "hexagramNameHanja": "乾爲天",
+    "hexagramNameKorean": "중천건",
+    "nameHanja": "初九",
+    "textHanja": "初九 潛龍勿用",
+    "textKorean": "초구: 잠룡물용 - 물속에 잠겨 있는 용이니 쓰지 말라",
+    "modernAdvice": "아직 때가 오지 않았으니 도모하는 일을 서두르지 말고 조용히 내실을 다지십시오."
+  },
+  {
+    "hexagramId": 1,
+    "lineNumber": 2,
+    "hexagramNameHanja": "乾爲天",
+    "hexagramNameKorean": "중천건",
+    "nameHanja": "九二",
+    "textHanja": "九二 見龍在田 利見大人",
+    "textKorean": "구이: 견룡재전 리견대인 - 밭에 용이 나타나니 귀인을 만남이 이롭다",
+    "modernAdvice": "자신의 재능이 세상에 드러나기 시작하는 시기입니다. 훌륭한 조력자나 상사를 만나 뜻을 펼치십시오."
+  },
+  {
+    "hexagramId": 1,
+    "lineNumber": 3,
+    "hexagramNameHanja": "乾爲天",
+    "hexagramNameKorean": "중천건",
+    "nameHanja": "九三",
+    "textHanja": "九三 君子終日乾乾 夕惕若 厲無咎",
+    "textKorean": "구삼: 군자종일건건 석척약 여무구 - 종일 부지런히 노력하고 밤에도 경계하니 허물이 없다",
+    "modernAdvice": "성공에 자만하지 않고 겸손하게 성실함을 유지한다면 어떠한 위기도 슬기롭게 넘길 수 있습니다."
+  },
+  {
+    "hexagramId": 1,
+    "lineNumber": 4,
+    "hexagramNameHanja": "乾爲天",
+    "hexagramNameKorean": "중천건",
+    "nameHanja": "九四",
+    "textHanja": "九四 或躍在淵 無咎",
+    "textKorean": "구사: 혹약재연 무구 - 혹은 도약하여 연못에 있으니 허물이 없다",
+    "modernAdvice": "도약할 시기인지 관망할 시기인지를 잘 판단하십시오. 소신 있는 과감한 결단이 필요한 때입니다."
+  },
+  {
+    "hexagramId": 1,
+    "lineNumber": 5,
+    "hexagramNameHanja": "乾爲天",
+    "hexagramNameKorean": "중천건",
+    "nameHanja": "九五",
+    "textHanja": "九五 飛龍在天 利見大人",
+    "textKorean": "구오: 비룡재천 리견대인 - 날아오른 용이 하늘에 있으니 큰 사람을 만남이 이롭다",
+    "modernAdvice": "운기와 명예가 최고의 전성기를 맞이합니다. 리더십을 발휘하여 전진하되 주위 사람을 챙기십시오."
+  },
+  {
+    "hexagramId": 1,
+    "lineNumber": 6,
+    "hexagramNameHanja": "乾爲天",
+    "hexagramNameKorean": "중천건",
+    "nameHanja": "上九",
+    "textHanja": "上九 亢龍有悔",
+    "textKorean": "상구: 항룡유회 - 너무 높이 올라간 용은 뉘우침이 있다",
+    "modernAdvice": "절정에 도달한 후에는 나아갈 때보다 물러설 때를 아는 지혜가 필요합니다. 과욕을 삼가십시오."
+  },
+  {
+    "hexagramId": 2,
+    "lineNumber": 1,
+    "hexagramNameHanja": "坤爲地",
+    "hexagramNameKorean": "중지곤",
+    "nameHanja": "初六",
+    "textHanja": "初六 履霜 堅冰至",
+    "textKorean": "초육: 리상 견빙지 - 서리를 밟으니 곧 굳은 얼음이 이를 것을 안다",
+    "modernAdvice": "작은 징조를 소홀히 하지 마십시오. 다가올 위험이나 변화에 미리 대비하는 지혜가 필요합니다."
+  },
+  {
+    "hexagramId": 2,
+    "lineNumber": 2,
+    "hexagramNameHanja": "坤爲地",
+    "hexagramNameKorean": "중지곤",
+    "nameHanja": "六二",
+    "textHanja": "六二 直方大 不習無不利",
+    "textKorean": "육이: 직방대 불습무불리 - 바르고 대대함에 배우지 않아도 이롭지 않음이 없다",
+    "modernAdvice": "순수하고 바른 마음가짐을 유지하면 억지로 애쓰지 않아도 자연스럽게 일이 성사됩니다."
+  },
+  {
+    "hexagramId": 2,
+    "lineNumber": 3,
+    "hexagramNameHanja": "坤爲地",
+    "hexagramNameKorean": "중지곤",
+    "nameHanja": "六三",
+    "textHanja": "六三 含章可貞 或從王事 無成有終",
+    "textKorean": "육삼: 함장가정 혹종왕사 무성유종 - 아름다움을 품고 조용히 순응하여 훌륭한 마침을 보라",
+    "modernAdvice": "스스로 공을 자랑하기보다는 남을 돕는 겸손한 보조자 역할을 할 때 마침내 큰 결실을 얻습니다."
+  },
+  {
+    "hexagramId": 2,
+    "lineNumber": 4,
+    "hexagramNameHanja": "坤爲地",
+    "hexagramNameKorean": "중지곤",
+    "nameHanja": "六四",
+    "textHanja": "六四 括囊 無咎無譽",
+    "textKorean": "육사: 괄낭 무구무예 - 주머니 입구를 동여매듯 말을 삼가니 허물도 명예도 없다",
+    "modernAdvice": "불필요한 구설수를 조심하십시오. 침묵을 지키고 자중하는 것이 자신을 지키는 길입니다."
+  },
+  {
+    "hexagramId": 2,
+    "lineNumber": 5,
+    "hexagramNameHanja": "坤爲地",
+    "hexagramNameKorean": "중지곤",
+    "nameHanja": "六五",
+    "textHanja": "六五 黃裳 元吉",
+    "textKorean": "육오: 황상 원길 - 누런 치마를 입으니 최고의 길함이 있다",
+    "modernAdvice": "중용의 미덕과 온화한 성품을 유지할 때 주위의 존경을 받고 무사태평한 길운을 누립니다."
+  },
+  {
+    "hexagramId": 2,
+    "lineNumber": 6,
+    "hexagramNameHanja": "坤爲地",
+    "hexagramNameKorean": "중지곤",
+    "nameHanja": "上六",
+    "textHanja": "上六 龍戰于野 其血玄黃",
+    "textKorean": "상육: 용전우야 기혈현황 - 들판에서 용이 싸우니 피가 검고 누르다",
+    "modernAdvice": "음과 양의 대립이 극에 달했습니다. 정면충돌을 피하고 한 걸음 물러서서 상황을 수습하십시오."
+  },
+  {
+    "hexagramId": 3,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水雷屯",
+    "hexagramNameKorean": "수뢰둔",
+    "nameHanja": "初九",
+    "textHanja": "初九 磐桓 利居貞 利建侯",
+    "textKorean": "초구: 반환 리거정 리건후 - 머뭇거리나 바르게 지킴이 이롭고 제후를 세움이 이롭다",
+    "modernAdvice": "시작 단계에서 주저함이 있으나 서두르지 말고 중심을 지키며 유능한 조력자를 확보하십시오."
+  },
+  {
+    "hexagramId": 3,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水雷屯",
+    "hexagramNameKorean": "수뢰둔",
+    "nameHanja": "六二",
+    "textHanja": "六二 屯如邅如 乘馬班如 匪寇婚媾 女貞不字 十年乃字",
+    "textKorean": "육이: 둔여전여 승마반여 - 막히고 주저하여 말을 타고 방황하나 도적이 아니요 구혼함이라",
+    "modernAdvice": "당장 오해가 있거나 진행이 더디더라도 조급해하지 말고 진실함을 지키면 시간이 흘러 결실을 봅니다."
+  },
+  {
+    "hexagramId": 3,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水雷屯",
+    "hexagramNameKorean": "수뢰둔",
+    "nameHanja": "六三",
+    "textHanja": "六三 即鹿無虞 惟入于林中 君子幾不如舍 往吝",
+    "textKorean": "육삼: 즉록무구 유입우림중 - 길잡이 없이 사슴을 쫓아 숲속으로 들어가니 군자가 머무름만 못하다",
+    "modernAdvice": "전문가의 가이드 없이 무모하게 추진하면 길을 잃습니다. 무리한 탐욕을 버리고 쉬어 가십시오."
+  },
+  {
+    "hexagramId": 3,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水雷屯",
+    "hexagramNameKorean": "수뢰둔",
+    "nameHanja": "六四",
+    "textHanja": "六四 乘馬班如 求婚媾 往吉 無不利",
+    "textKorean": "육사: 승마반여 구혼구 왕길 무불리 - 말을 타고 나아가 청혼하니 가면 길하여 이롭지 않음이 없다",
+    "modernAdvice": "주저함을 끝내고 진정성 있게 파트너십을 추진하십시오. 겸손하게 협력하면 큰 이로움이 있습니다."
+  },
+  {
+    "hexagramId": 3,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水雷屯",
+    "hexagramNameKorean": "수뢰둔",
+    "nameHanja": "九五",
+    "textHanja": "九五 屯其膏 小貞吉 大貞凶",
+    "textKorean": "구오: 둔기고 소정길 대정흉 - 은혜가 베풀어지지 못하니 작은 일은 길하나 큰 일은 흉하다",
+    "modernAdvice": "아직 영향력을 대범하게 펼치기 어렵습니다. 과도한 확장보다는 소소한 내실 관리에 집중하십시오."
+  },
+  {
+    "hexagramId": 3,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水雷屯",
+    "hexagramNameKorean": "수뢰둔",
+    "nameHanja": "上六",
+    "textHanja": "上六 乘馬班如 泣血漣如",
+    "textKorean": "상육: 승마반여 읍혈련여 - 말을 타고 방황하며 피눈물을 흘린다",
+    "modernAdvice": "고립무원의 위기 상황입니다. 혼자 억지로 해결하려 하지 말고 겸손하게 근본으로 돌아가십시오."
+  },
+  {
+    "hexagramId": 4,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山水蒙",
+    "hexagramNameKorean": "산수몽",
+    "nameHanja": "初六",
+    "textHanja": "初六 發蒙 利用刑人 用脫桎梏 以往吝",
+    "textKorean": "초육: 발몽 리용형인 - 어리석음을 깨우치기 위해 규율을 세움이 이롭다",
+    "modernAdvice": "기초와 원칙을 세우는 시기입니다. 엄격한 자기도야와 기본 교육을 통해 어리석음을 탈피하십시오."
+  },
+  {
+    "hexagramId": 4,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山水蒙",
+    "hexagramNameKorean": "산수몽",
+    "nameHanja": "九二",
+    "textHanja": "九二 包蒙 吉 納婦 吉 子克家",
+    "textKorean": "구이: 포몽 길 납부 길 자극가 - 어리석은 자를 포용하니 길하고 아내를 맞이함이 길하다",
+    "modernAdvice": "타인의 부족함을 포용하고 넓은 마음으로 감싸안으십시오. 가정과 조직의 든든한 보루가 됩니다."
+  },
+  {
+    "hexagramId": 4,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山水蒙",
+    "hexagramNameKorean": "산수몽",
+    "nameHanja": "六三",
+    "textHanja": "六三 勿用取女 見金夫 不有躬 無攸利",
+    "textKorean": "육삼: 물용취녀 견금부 불유궁 - 재물 있는 남자를 보고 지조를 잃은 여인을 취하지 말라",
+    "modernAdvice": "겉보이의 화려함이나 당장의 물질적 이익에 혹하여 본분을 잃지 않도록 자중하십시오."
+  },
+  {
+    "hexagramId": 4,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山水蒙",
+    "hexagramNameKorean": "산수몽",
+    "nameHanja": "六四",
+    "textHanja": "六四 困蒙 吝",
+    "textKorean": "육사: 곤몽 인 - 어둡고 꽉 막혀 곤란하니 아쉽다",
+    "modernAdvice": "스스로의 고집으로 스승이나 귀인의 조언을 멀리하고 있습니다. 겸손하게 도움을 청하십시오."
+  },
+  {
+    "hexagramId": 4,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山水蒙",
+    "hexagramNameKorean": "산수몽",
+    "nameHanja": "六五",
+    "textHanja": "六五 童蒙 吉",
+    "textKorean": "육오: 동몽 길 - 어린아이처럼 순수하게 배움을 청하니 길하다",
+    "modernAdvice": "겸손하고 순수한 마음으로 배움을 청하고 조언을 수용하면 큰 지혜와 길함이 찾아옵니다."
+  },
+  {
+    "hexagramId": 4,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山水蒙",
+    "hexagramNameKorean": "산수몽",
+    "nameHanja": "上九",
+    "textHanja": "上九 擊蒙 不利爲寇 利禦寇",
+    "textKorean": "상구: 격몽 불리위구 리어구 - 어리석음을 경책하되 도적이 되지 말고 도적을 막음이 이롭다",
+    "modernAdvice": "잘못을 바로잡을 때 지나치게 가혹하게 다루지 마십시오. 감정적 대응보다 방어적 계도가 이롭습니다."
+  },
+  {
+    "hexagramId": 5,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水天需",
+    "hexagramNameKorean": "수천수",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 수천수 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수천수(水天需) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 5,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水天需",
+    "hexagramNameKorean": "수천수",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 수천수 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수천수(水天需) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 5,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水天需",
+    "hexagramNameKorean": "수천수",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 수천수 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수천수(水天需) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 5,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水天需",
+    "hexagramNameKorean": "수천수",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 수천수 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수천수(水天需) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 5,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水天需",
+    "hexagramNameKorean": "수천수",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 수천수 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수천수(水天需) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 5,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水天需",
+    "hexagramNameKorean": "수천수",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 수천수 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수천수(水天需) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 6,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天水訟",
+    "hexagramNameKorean": "천수송",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 천수송 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천수송(天水訟) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 6,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天水訟",
+    "hexagramNameKorean": "천수송",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 천수송 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천수송(天水訟) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 6,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天水訟",
+    "hexagramNameKorean": "천수송",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 천수송 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천수송(天水訟) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 6,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天水訟",
+    "hexagramNameKorean": "천수송",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 천수송 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천수송(天水訟) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 6,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天水訟",
+    "hexagramNameKorean": "천수송",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 천수송 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천수송(天水訟) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 6,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天水訟",
+    "hexagramNameKorean": "천수송",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 천수송 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천수송(天水訟) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 7,
+    "lineNumber": 1,
+    "hexagramNameHanja": "地水師",
+    "hexagramNameKorean": "지수사",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 지수사 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지수사(地水師) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 7,
+    "lineNumber": 2,
+    "hexagramNameHanja": "地水師",
+    "hexagramNameKorean": "지수사",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 지수사 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지수사(地水師) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 7,
+    "lineNumber": 3,
+    "hexagramNameHanja": "地水師",
+    "hexagramNameKorean": "지수사",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 지수사 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지수사(地水師) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 7,
+    "lineNumber": 4,
+    "hexagramNameHanja": "地水師",
+    "hexagramNameKorean": "지수사",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 지수사 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지수사(地水師) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 7,
+    "lineNumber": 5,
+    "hexagramNameHanja": "地水師",
+    "hexagramNameKorean": "지수사",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 지수사 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지수사(地水師) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 7,
+    "lineNumber": 6,
+    "hexagramNameHanja": "地水師",
+    "hexagramNameKorean": "지수사",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 지수사 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지수사(地水師) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 8,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水地比",
+    "hexagramNameKorean": "수지비",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 수지비 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수지비(水地比) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 8,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水地比",
+    "hexagramNameKorean": "수지비",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 수지비 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수지비(水地比) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 8,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水地比",
+    "hexagramNameKorean": "수지비",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 수지비 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수지비(水地比) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 8,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水地比",
+    "hexagramNameKorean": "수지비",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 수지비 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수지비(水地比) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 8,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水地比",
+    "hexagramNameKorean": "수지비",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 수지비 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수지비(水地比) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 8,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水地比",
+    "hexagramNameKorean": "수지비",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 수지비 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수지비(水地比) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 9,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風天小畜",
+    "hexagramNameKorean": "풍천소축",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 풍천소축 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍천소축(風天小畜) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 9,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風天小畜",
+    "hexagramNameKorean": "풍천소축",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 풍천소축 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍천소축(風天小畜) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 9,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風天小畜",
+    "hexagramNameKorean": "풍천소축",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 풍천소축 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍천소축(風天小畜) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 9,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風天小畜",
+    "hexagramNameKorean": "풍천소축",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 풍천소축 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍천소축(風天小畜) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 9,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風天小畜",
+    "hexagramNameKorean": "풍천소축",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 풍천소축 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍천소축(風天小畜) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 9,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風天小畜",
+    "hexagramNameKorean": "풍천소축",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 풍천소축 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍천소축(風天小畜) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 10,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天澤履",
+    "hexagramNameKorean": "천택리",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 천택리 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천택리(天澤履) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 10,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天澤履",
+    "hexagramNameKorean": "천택리",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 천택리 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천택리(天澤履) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 10,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天澤履",
+    "hexagramNameKorean": "천택리",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 천택리 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천택리(天澤履) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 10,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天澤履",
+    "hexagramNameKorean": "천택리",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 천택리 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천택리(天澤履) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 10,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天澤履",
+    "hexagramNameKorean": "천택리",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 천택리 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천택리(天澤履) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 10,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天澤履",
+    "hexagramNameKorean": "천택리",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 천택리 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천택리(天澤履) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 11,
+    "lineNumber": 1,
+    "hexagramNameHanja": "地天泰",
+    "hexagramNameKorean": "지천태",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 지천태 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지천태(地天泰) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 11,
+    "lineNumber": 2,
+    "hexagramNameHanja": "地天泰",
+    "hexagramNameKorean": "지천태",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 지천태 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지천태(地天泰) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 11,
+    "lineNumber": 3,
+    "hexagramNameHanja": "地天泰",
+    "hexagramNameKorean": "지천태",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 지천태 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지천태(地天泰) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 11,
+    "lineNumber": 4,
+    "hexagramNameHanja": "地天泰",
+    "hexagramNameKorean": "지천태",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 지천태 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지천태(地天泰) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 11,
+    "lineNumber": 5,
+    "hexagramNameHanja": "地天泰",
+    "hexagramNameKorean": "지천태",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 지천태 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지천태(地天泰) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 11,
+    "lineNumber": 6,
+    "hexagramNameHanja": "地天泰",
+    "hexagramNameKorean": "지천태",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 지천태 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지천태(地天泰) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 12,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天地否",
+    "hexagramNameKorean": "천지피",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 천지피 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천지피(天地否) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 12,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天地否",
+    "hexagramNameKorean": "천지피",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 천지피 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천지피(天地否) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 12,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天地否",
+    "hexagramNameKorean": "천지피",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 천지피 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천지피(天地否) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 12,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天地否",
+    "hexagramNameKorean": "천지피",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 천지피 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천지피(天地否) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 12,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天地否",
+    "hexagramNameKorean": "천지피",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 천지피 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천지피(天地否) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 12,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天地否",
+    "hexagramNameKorean": "천지피",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 천지피 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천지피(天地否) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 13,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天火同人",
+    "hexagramNameKorean": "천화동인",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 천화동인 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천화동인(天火同人) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 13,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天火同人",
+    "hexagramNameKorean": "천화동인",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 천화동인 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천화동인(天火同人) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 13,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天火同人",
+    "hexagramNameKorean": "천화동인",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 천화동인 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천화동인(天火同人) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 13,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天火同人",
+    "hexagramNameKorean": "천화동인",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 천화동인 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천화동인(天火同人) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 13,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天火同人",
+    "hexagramNameKorean": "천화동인",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 천화동인 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천화동인(天火同人) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 13,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天火同人",
+    "hexagramNameKorean": "천화동인",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 천화동인 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천화동인(天火同人) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 14,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火天大有",
+    "hexagramNameKorean": "화천대유",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 화천대유 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화천대유(火天大有) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 14,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火天大有",
+    "hexagramNameKorean": "화천대유",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 화천대유 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화천대유(火天大有) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 14,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火天大有",
+    "hexagramNameKorean": "화천대유",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 화천대유 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화천대유(火天大有) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 14,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火天大有",
+    "hexagramNameKorean": "화천대유",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 화천대유 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화천대유(火天大有) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 14,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火天大有",
+    "hexagramNameKorean": "화천대유",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 화천대유 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화천대유(火天大有) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 14,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火天大有",
+    "hexagramNameKorean": "화천대유",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 화천대유 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화천대유(火天大有) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 15,
+    "lineNumber": 1,
+    "hexagramNameHanja": "地山謙",
+    "hexagramNameKorean": "지산겸",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 지산겸 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지산겸(地山謙) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 15,
+    "lineNumber": 2,
+    "hexagramNameHanja": "地山謙",
+    "hexagramNameKorean": "지산겸",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 지산겸 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지산겸(地山謙) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 15,
+    "lineNumber": 3,
+    "hexagramNameHanja": "地山謙",
+    "hexagramNameKorean": "지산겸",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 지산겸 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지산겸(地山謙) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 15,
+    "lineNumber": 4,
+    "hexagramNameHanja": "地山謙",
+    "hexagramNameKorean": "지산겸",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 지산겸 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지산겸(地山謙) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 15,
+    "lineNumber": 5,
+    "hexagramNameHanja": "地山謙",
+    "hexagramNameKorean": "지산겸",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 지산겸 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지산겸(地山謙) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 15,
+    "lineNumber": 6,
+    "hexagramNameHanja": "地山謙",
+    "hexagramNameKorean": "지산겸",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 지산겸 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지산겸(地山謙) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 16,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷地豫",
+    "hexagramNameKorean": "뇌지예",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 뇌지예 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지예(雷地豫) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 16,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷地豫",
+    "hexagramNameKorean": "뇌지예",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 뇌지예 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지예(雷地豫) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 16,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷地豫",
+    "hexagramNameKorean": "뇌지예",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 뇌지예 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지예(雷地豫) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 16,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷地豫",
+    "hexagramNameKorean": "뇌지예",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 뇌지예 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지예(雷地豫) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 16,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷地豫",
+    "hexagramNameKorean": "뇌지예",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 뇌지예 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지예(雷地豫) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 16,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷地豫",
+    "hexagramNameKorean": "뇌지예",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 뇌지예 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지예(雷地豫) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 17,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤雷隨",
+    "hexagramNameKorean": "택뢰수",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 택뢰수 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택뢰수(澤雷隨) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 17,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤雷隨",
+    "hexagramNameKorean": "택뢰수",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 택뢰수 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택뢰수(澤雷隨) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 17,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤雷隨",
+    "hexagramNameKorean": "택뢰수",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 택뢰수 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택뢰수(澤雷隨) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 17,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤雷隨",
+    "hexagramNameKorean": "택뢰수",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 택뢰수 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택뢰수(澤雷隨) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 17,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤雷隨",
+    "hexagramNameKorean": "택뢰수",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 택뢰수 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택뢰수(澤雷隨) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 17,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤雷隨",
+    "hexagramNameKorean": "택뢰수",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 택뢰수 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택뢰수(澤雷隨) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 18,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山風蠱",
+    "hexagramNameKorean": "산풍고",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 산풍고 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산풍고(山風蠱) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 18,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山風蠱",
+    "hexagramNameKorean": "산풍고",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 산풍고 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산풍고(山風蠱) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 18,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山風蠱",
+    "hexagramNameKorean": "산풍고",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 산풍고 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산풍고(山風蠱) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 18,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山風蠱",
+    "hexagramNameKorean": "산풍고",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 산풍고 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산풍고(山風蠱) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 18,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山風蠱",
+    "hexagramNameKorean": "산풍고",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 산풍고 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산풍고(山風蠱) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 18,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山風蠱",
+    "hexagramNameKorean": "산풍고",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 산풍고 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산풍고(山風蠱) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 19,
+    "lineNumber": 1,
+    "hexagramNameHanja": "地澤臨",
+    "hexagramNameKorean": "지택임",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 지택임 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지택임(地澤臨) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 19,
+    "lineNumber": 2,
+    "hexagramNameHanja": "地澤臨",
+    "hexagramNameKorean": "지택임",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 지택임 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지택임(地澤臨) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 19,
+    "lineNumber": 3,
+    "hexagramNameHanja": "地澤臨",
+    "hexagramNameKorean": "지택임",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 지택임 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지택임(地澤臨) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 19,
+    "lineNumber": 4,
+    "hexagramNameHanja": "地澤臨",
+    "hexagramNameKorean": "지택임",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 지택임 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지택임(地澤臨) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 19,
+    "lineNumber": 5,
+    "hexagramNameHanja": "地澤臨",
+    "hexagramNameKorean": "지택임",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 지택임 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지택임(地澤臨) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 19,
+    "lineNumber": 6,
+    "hexagramNameHanja": "地澤臨",
+    "hexagramNameKorean": "지택임",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 지택임 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지택임(地澤臨) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 20,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風地觀",
+    "hexagramNameKorean": "풍지관",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 풍지관 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍지관(風地觀) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 20,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風地觀",
+    "hexagramNameKorean": "풍지관",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 풍지관 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍지관(風地觀) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 20,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風地觀",
+    "hexagramNameKorean": "풍지관",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 풍지관 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍지관(風地觀) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 20,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風地觀",
+    "hexagramNameKorean": "풍지관",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 풍지관 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍지관(風地觀) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 20,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風地觀",
+    "hexagramNameKorean": "풍지관",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 풍지관 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍지관(風地觀) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 20,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風地觀",
+    "hexagramNameKorean": "풍지관",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 풍지관 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍지관(風地觀) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 21,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火雷噬嗑",
+    "hexagramNameKorean": "화뢰서합",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 화뢰서합 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화뢰서합(火雷噬嗑) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 21,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火雷噬嗑",
+    "hexagramNameKorean": "화뢰서합",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 화뢰서합 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화뢰서합(火雷噬嗑) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 21,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火雷噬嗑",
+    "hexagramNameKorean": "화뢰서합",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 화뢰서합 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화뢰서합(火雷噬嗑) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 21,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火雷噬嗑",
+    "hexagramNameKorean": "화뢰서합",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 화뢰서합 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화뢰서합(火雷噬嗑) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 21,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火雷噬嗑",
+    "hexagramNameKorean": "화뢰서합",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 화뢰서합 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화뢰서합(火雷噬嗑) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 21,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火雷噬嗑",
+    "hexagramNameKorean": "화뢰서합",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 화뢰서합 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화뢰서합(火雷噬嗑) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 22,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山火賁",
+    "hexagramNameKorean": "산화비",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 산화비 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산화비(山火賁) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 22,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山火賁",
+    "hexagramNameKorean": "산화비",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 산화비 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산화비(山火賁) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 22,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山火賁",
+    "hexagramNameKorean": "산화비",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 산화비 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산화비(山火賁) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 22,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山火賁",
+    "hexagramNameKorean": "산화비",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 산화비 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산화비(山火賁) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 22,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山火賁",
+    "hexagramNameKorean": "산화비",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 산화비 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산화비(山火賁) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 22,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山火賁",
+    "hexagramNameKorean": "산화비",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 산화비 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산화비(山火賁) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 23,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山地剝",
+    "hexagramNameKorean": "산지박",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 산지박 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산지박(山地剝) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 23,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山地剝",
+    "hexagramNameKorean": "산지박",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 산지박 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산지박(山地剝) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 23,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山地剝",
+    "hexagramNameKorean": "산지박",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 산지박 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산지박(山地剝) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 23,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山地剝",
+    "hexagramNameKorean": "산지박",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 산지박 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산지박(山地剝) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 23,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山地剝",
+    "hexagramNameKorean": "산지박",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 산지박 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산지박(山地剝) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 23,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山地剝",
+    "hexagramNameKorean": "산지박",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 산지박 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산지박(山地剝) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 24,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷地復",
+    "hexagramNameKorean": "뇌지복",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 뇌지복 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지복(雷地復) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 24,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷地復",
+    "hexagramNameKorean": "뇌지복",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 뇌지복 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지복(雷地復) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 24,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷地復",
+    "hexagramNameKorean": "뇌지복",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 뇌지복 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지복(雷地復) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 24,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷地復",
+    "hexagramNameKorean": "뇌지복",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 뇌지복 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지복(雷地復) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 24,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷地復",
+    "hexagramNameKorean": "뇌지복",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 뇌지복 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지복(雷地復) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 24,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷地復",
+    "hexagramNameKorean": "뇌지복",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 뇌지복 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌지복(雷地復) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 25,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天雷無妄",
+    "hexagramNameKorean": "천뢰무망",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 천뢰무망 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천뢰무망(天雷無妄) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 25,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天雷無妄",
+    "hexagramNameKorean": "천뢰무망",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 천뢰무망 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천뢰무망(天雷無妄) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 25,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天雷無妄",
+    "hexagramNameKorean": "천뢰무망",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 천뢰무망 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천뢰무망(天雷無妄) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 25,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天雷無妄",
+    "hexagramNameKorean": "천뢰무망",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 천뢰무망 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천뢰무망(天雷無妄) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 25,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天雷無妄",
+    "hexagramNameKorean": "천뢰무망",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 천뢰무망 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천뢰무망(天雷無妄) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 25,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天雷無妄",
+    "hexagramNameKorean": "천뢰무망",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 천뢰무망 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천뢰무망(天雷無妄) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 26,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山天大畜",
+    "hexagramNameKorean": "산천대축",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 산천대축 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산천대축(山天大畜) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 26,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山天大畜",
+    "hexagramNameKorean": "산천대축",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 산천대축 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산천대축(山天大畜) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 26,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山天大畜",
+    "hexagramNameKorean": "산천대축",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 산천대축 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산천대축(山天大畜) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 26,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山天大畜",
+    "hexagramNameKorean": "산천대축",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 산천대축 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산천대축(山天大畜) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 26,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山天大畜",
+    "hexagramNameKorean": "산천대축",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 산천대축 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산천대축(山天大畜) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 26,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山天大畜",
+    "hexagramNameKorean": "산천대축",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 산천대축 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산천대축(山天大畜) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 27,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山雷頤",
+    "hexagramNameKorean": "산뢰이",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 산뢰이 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산뢰이(山雷頤) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 27,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山雷頤",
+    "hexagramNameKorean": "산뢰이",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 산뢰이 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산뢰이(山雷頤) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 27,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山雷頤",
+    "hexagramNameKorean": "산뢰이",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 산뢰이 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산뢰이(山雷頤) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 27,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山雷頤",
+    "hexagramNameKorean": "산뢰이",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 산뢰이 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산뢰이(山雷頤) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 27,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山雷頤",
+    "hexagramNameKorean": "산뢰이",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 산뢰이 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산뢰이(山雷頤) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 27,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山雷頤",
+    "hexagramNameKorean": "산뢰이",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 산뢰이 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산뢰이(山雷頤) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 28,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤風大過",
+    "hexagramNameKorean": "택풍대과",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 택풍대과 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택풍대과(澤風大過) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 28,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤風大過",
+    "hexagramNameKorean": "택풍대과",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 택풍대과 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택풍대과(澤風大過) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 28,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤風大過",
+    "hexagramNameKorean": "택풍대과",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 택풍대과 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택풍대과(澤風大過) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 28,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤風大過",
+    "hexagramNameKorean": "택풍대과",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 택풍대과 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택풍대과(澤風大過) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 28,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤風大過",
+    "hexagramNameKorean": "택풍대과",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 택풍대과 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택풍대과(澤風大過) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 28,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤風大過",
+    "hexagramNameKorean": "택풍대과",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 택풍대과 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택풍대과(澤風大過) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 29,
+    "lineNumber": 1,
+    "hexagramNameHanja": "坎爲水",
+    "hexagramNameKorean": "중수감",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 중수감 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중수감(坎爲水) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 29,
+    "lineNumber": 2,
+    "hexagramNameHanja": "坎爲水",
+    "hexagramNameKorean": "중수감",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 중수감 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중수감(坎爲水) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 29,
+    "lineNumber": 3,
+    "hexagramNameHanja": "坎爲水",
+    "hexagramNameKorean": "중수감",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 중수감 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중수감(坎爲水) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 29,
+    "lineNumber": 4,
+    "hexagramNameHanja": "坎爲水",
+    "hexagramNameKorean": "중수감",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 중수감 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중수감(坎爲水) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 29,
+    "lineNumber": 5,
+    "hexagramNameHanja": "坎爲水",
+    "hexagramNameKorean": "중수감",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 중수감 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중수감(坎爲水) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 29,
+    "lineNumber": 6,
+    "hexagramNameHanja": "坎爲水",
+    "hexagramNameKorean": "중수감",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 중수감 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중수감(坎爲水) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 30,
+    "lineNumber": 1,
+    "hexagramNameHanja": "離爲火",
+    "hexagramNameKorean": "중화리",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 중화리 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중화리(離爲火) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 30,
+    "lineNumber": 2,
+    "hexagramNameHanja": "離爲火",
+    "hexagramNameKorean": "중화리",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 중화리 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중화리(離爲火) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 30,
+    "lineNumber": 3,
+    "hexagramNameHanja": "離爲火",
+    "hexagramNameKorean": "중화리",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 중화리 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중화리(離爲火) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 30,
+    "lineNumber": 4,
+    "hexagramNameHanja": "離爲火",
+    "hexagramNameKorean": "중화리",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 중화리 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중화리(離爲火) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 30,
+    "lineNumber": 5,
+    "hexagramNameHanja": "離爲火",
+    "hexagramNameKorean": "중화리",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 중화리 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중화리(離爲火) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 30,
+    "lineNumber": 6,
+    "hexagramNameHanja": "離爲火",
+    "hexagramNameKorean": "중화리",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 중화리 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중화리(離爲火) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 31,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤山咸",
+    "hexagramNameKorean": "택산함",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 택산함 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택산함(澤山咸) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 31,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤山咸",
+    "hexagramNameKorean": "택산함",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 택산함 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택산함(澤山咸) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 31,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤山咸",
+    "hexagramNameKorean": "택산함",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 택산함 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택산함(澤山咸) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 31,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤山咸",
+    "hexagramNameKorean": "택산함",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 택산함 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택산함(澤山咸) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 31,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤山咸",
+    "hexagramNameKorean": "택산함",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 택산함 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택산함(澤山咸) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 31,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤山咸",
+    "hexagramNameKorean": "택산함",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 택산함 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택산함(澤山咸) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 32,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷風恆",
+    "hexagramNameKorean": "뇌풍항",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 뇌풍항 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌풍항(雷風恆) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 32,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷風恆",
+    "hexagramNameKorean": "뇌풍항",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 뇌풍항 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌풍항(雷風恆) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 32,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷風恆",
+    "hexagramNameKorean": "뇌풍항",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 뇌풍항 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌풍항(雷風恆) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 32,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷風恆",
+    "hexagramNameKorean": "뇌풍항",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 뇌풍항 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌풍항(雷風恆) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 32,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷風恆",
+    "hexagramNameKorean": "뇌풍항",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 뇌풍항 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌풍항(雷風恆) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 32,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷風恆",
+    "hexagramNameKorean": "뇌풍항",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 뇌풍항 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌풍항(雷風恆) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 33,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天山遯",
+    "hexagramNameKorean": "천산둔",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 천산둔 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천산둔(天山遯) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 33,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天山遯",
+    "hexagramNameKorean": "천산둔",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 천산둔 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천산둔(天山遯) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 33,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天山遯",
+    "hexagramNameKorean": "천산둔",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 천산둔 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천산둔(天山遯) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 33,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天山遯",
+    "hexagramNameKorean": "천산둔",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 천산둔 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천산둔(天山遯) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 33,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天山遯",
+    "hexagramNameKorean": "천산둔",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 천산둔 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천산둔(天山遯) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 33,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天山遯",
+    "hexagramNameKorean": "천산둔",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 천산둔 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천산둔(天山遯) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 34,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷天大壯",
+    "hexagramNameKorean": "뇌천대장",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 뇌천대장 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌천대장(雷天大壯) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 34,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷天大壯",
+    "hexagramNameKorean": "뇌천대장",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 뇌천대장 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌천대장(雷天大壯) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 34,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷天大壯",
+    "hexagramNameKorean": "뇌천대장",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 뇌천대장 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌천대장(雷天大壯) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 34,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷天大壯",
+    "hexagramNameKorean": "뇌천대장",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 뇌천대장 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌천대장(雷天大壯) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 34,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷天大壯",
+    "hexagramNameKorean": "뇌천대장",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 뇌천대장 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌천대장(雷天大壯) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 34,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷天大壯",
+    "hexagramNameKorean": "뇌천대장",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 뇌천대장 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌천대장(雷天大壯) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 35,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火地晉",
+    "hexagramNameKorean": "화지진",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 화지진 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화지진(火地晉) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 35,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火地晉",
+    "hexagramNameKorean": "화지진",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 화지진 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화지진(火地晉) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 35,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火地晉",
+    "hexagramNameKorean": "화지진",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 화지진 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화지진(火地晉) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 35,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火地晉",
+    "hexagramNameKorean": "화지진",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 화지진 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화지진(火地晉) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 35,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火地晉",
+    "hexagramNameKorean": "화지진",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 화지진 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화지진(火地晉) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 35,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火地晉",
+    "hexagramNameKorean": "화지진",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 화지진 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화지진(火地晉) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 36,
+    "lineNumber": 1,
+    "hexagramNameHanja": "地火明夷",
+    "hexagramNameKorean": "지화명이",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 지화명이 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지화명이(地火明夷) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 36,
+    "lineNumber": 2,
+    "hexagramNameHanja": "地火明夷",
+    "hexagramNameKorean": "지화명이",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 지화명이 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지화명이(地火明夷) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 36,
+    "lineNumber": 3,
+    "hexagramNameHanja": "地火明夷",
+    "hexagramNameKorean": "지화명이",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 지화명이 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지화명이(地火明夷) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 36,
+    "lineNumber": 4,
+    "hexagramNameHanja": "地火明夷",
+    "hexagramNameKorean": "지화명이",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 지화명이 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지화명이(地火明夷) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 36,
+    "lineNumber": 5,
+    "hexagramNameHanja": "地火明夷",
+    "hexagramNameKorean": "지화명이",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 지화명이 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지화명이(地火明夷) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 36,
+    "lineNumber": 6,
+    "hexagramNameHanja": "地火明夷",
+    "hexagramNameKorean": "지화명이",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 지화명이 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지화명이(地火明夷) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 37,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風火家人",
+    "hexagramNameKorean": "풍화가인",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 풍화가인 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍화가인(風火家人) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 37,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風火家人",
+    "hexagramNameKorean": "풍화가인",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 풍화가인 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍화가인(風火家人) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 37,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風火家人",
+    "hexagramNameKorean": "풍화가인",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 풍화가인 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍화가인(風火家人) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 37,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風火家人",
+    "hexagramNameKorean": "풍화가인",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 풍화가인 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍화가인(風火家人) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 37,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風火家人",
+    "hexagramNameKorean": "풍화가인",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 풍화가인 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍화가인(風火家人) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 37,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風火家人",
+    "hexagramNameKorean": "풍화가인",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 풍화가인 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍화가인(風火家人) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 38,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火澤睽",
+    "hexagramNameKorean": "화택규",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 화택규 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화택규(火澤睽) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 38,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火澤睽",
+    "hexagramNameKorean": "화택규",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 화택규 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화택규(火澤睽) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 38,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火澤睽",
+    "hexagramNameKorean": "화택규",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 화택규 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화택규(火澤睽) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 38,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火澤睽",
+    "hexagramNameKorean": "화택규",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 화택규 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화택규(火澤睽) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 38,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火澤睽",
+    "hexagramNameKorean": "화택규",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 화택규 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화택규(火澤睽) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 38,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火澤睽",
+    "hexagramNameKorean": "화택규",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 화택규 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화택규(火澤睽) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 39,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水山蹇",
+    "hexagramNameKorean": "수산건",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 수산건 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수산건(水山蹇) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 39,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水山蹇",
+    "hexagramNameKorean": "수산건",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 수산건 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수산건(水山蹇) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 39,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水山蹇",
+    "hexagramNameKorean": "수산건",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 수산건 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수산건(水山蹇) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 39,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水山蹇",
+    "hexagramNameKorean": "수산건",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 수산건 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수산건(水山蹇) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 39,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水山蹇",
+    "hexagramNameKorean": "수산건",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 수산건 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수산건(水山蹇) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 39,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水山蹇",
+    "hexagramNameKorean": "수산건",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 수산건 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수산건(水山蹇) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 40,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷水解",
+    "hexagramNameKorean": "뇌수해",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 뇌수해 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌수해(雷水解) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 40,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷水解",
+    "hexagramNameKorean": "뇌수해",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 뇌수해 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌수해(雷水解) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 40,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷水解",
+    "hexagramNameKorean": "뇌수해",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 뇌수해 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌수해(雷水解) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 40,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷水解",
+    "hexagramNameKorean": "뇌수해",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 뇌수해 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌수해(雷水解) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 40,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷水解",
+    "hexagramNameKorean": "뇌수해",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 뇌수해 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌수해(雷水解) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 40,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷水解",
+    "hexagramNameKorean": "뇌수해",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 뇌수해 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌수해(雷水解) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 41,
+    "lineNumber": 1,
+    "hexagramNameHanja": "山澤損",
+    "hexagramNameKorean": "산택손",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 산택손 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산택손(山澤損) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 41,
+    "lineNumber": 2,
+    "hexagramNameHanja": "山澤損",
+    "hexagramNameKorean": "산택손",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 산택손 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산택손(山澤損) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 41,
+    "lineNumber": 3,
+    "hexagramNameHanja": "山澤損",
+    "hexagramNameKorean": "산택손",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 산택손 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산택손(山澤損) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 41,
+    "lineNumber": 4,
+    "hexagramNameHanja": "山澤損",
+    "hexagramNameKorean": "산택손",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 산택손 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산택손(山澤損) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 41,
+    "lineNumber": 5,
+    "hexagramNameHanja": "山澤損",
+    "hexagramNameKorean": "산택손",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 산택손 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산택손(山澤損) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 41,
+    "lineNumber": 6,
+    "hexagramNameHanja": "山澤損",
+    "hexagramNameKorean": "산택손",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 산택손 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "산택손(山澤損) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 42,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風雷益",
+    "hexagramNameKorean": "풍뢰익",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 풍뢰익 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍뢰익(風雷益) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 42,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風雷益",
+    "hexagramNameKorean": "풍뢰익",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 풍뢰익 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍뢰익(風雷益) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 42,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風雷益",
+    "hexagramNameKorean": "풍뢰익",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 풍뢰익 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍뢰익(風雷益) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 42,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風雷益",
+    "hexagramNameKorean": "풍뢰익",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 풍뢰익 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍뢰익(風雷益) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 42,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風雷益",
+    "hexagramNameKorean": "풍뢰익",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 풍뢰익 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍뢰익(風雷益) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 42,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風雷益",
+    "hexagramNameKorean": "풍뢰익",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 풍뢰익 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍뢰익(風雷益) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 43,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤天夬",
+    "hexagramNameKorean": "택천쾌",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 택천쾌 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택천쾌(澤天夬) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 43,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤天夬",
+    "hexagramNameKorean": "택천쾌",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 택천쾌 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택천쾌(澤天夬) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 43,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤天夬",
+    "hexagramNameKorean": "택천쾌",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 택천쾌 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택천쾌(澤天夬) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 43,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤天夬",
+    "hexagramNameKorean": "택천쾌",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 택천쾌 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택천쾌(澤天夬) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 43,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤天夬",
+    "hexagramNameKorean": "택천쾌",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 택천쾌 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택천쾌(澤天夬) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 43,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤天夬",
+    "hexagramNameKorean": "택천쾌",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 택천쾌 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택천쾌(澤天夬) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 44,
+    "lineNumber": 1,
+    "hexagramNameHanja": "天風姤",
+    "hexagramNameKorean": "천풍구",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 천풍구 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천풍구(天風姤) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 44,
+    "lineNumber": 2,
+    "hexagramNameHanja": "天風姤",
+    "hexagramNameKorean": "천풍구",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 천풍구 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천풍구(天風姤) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 44,
+    "lineNumber": 3,
+    "hexagramNameHanja": "天風姤",
+    "hexagramNameKorean": "천풍구",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 천풍구 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천풍구(天風姤) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 44,
+    "lineNumber": 4,
+    "hexagramNameHanja": "天風姤",
+    "hexagramNameKorean": "천풍구",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 천풍구 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천풍구(天風姤) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 44,
+    "lineNumber": 5,
+    "hexagramNameHanja": "天風姤",
+    "hexagramNameKorean": "천풍구",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 천풍구 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천풍구(天風姤) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 44,
+    "lineNumber": 6,
+    "hexagramNameHanja": "天風姤",
+    "hexagramNameKorean": "천풍구",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 천풍구 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "천풍구(天風姤) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 45,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤地萃",
+    "hexagramNameKorean": "택지췌",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 택지췌 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택지췌(澤地萃) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 45,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤地萃",
+    "hexagramNameKorean": "택지췌",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 택지췌 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택지췌(澤地萃) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 45,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤地萃",
+    "hexagramNameKorean": "택지췌",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 택지췌 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택지췌(澤地萃) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 45,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤地萃",
+    "hexagramNameKorean": "택지췌",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 택지췌 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택지췌(澤地萃) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 45,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤地萃",
+    "hexagramNameKorean": "택지췌",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 택지췌 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택지췌(澤地萃) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 45,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤地萃",
+    "hexagramNameKorean": "택지췌",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 택지췌 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택지췌(澤地萃) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 46,
+    "lineNumber": 1,
+    "hexagramNameHanja": "地風升",
+    "hexagramNameKorean": "지풍승",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 지풍승 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지풍승(地風升) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 46,
+    "lineNumber": 2,
+    "hexagramNameHanja": "地風升",
+    "hexagramNameKorean": "지풍승",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 지풍승 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지풍승(地風升) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 46,
+    "lineNumber": 3,
+    "hexagramNameHanja": "地風升",
+    "hexagramNameKorean": "지풍승",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 지풍승 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지풍승(地風升) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 46,
+    "lineNumber": 4,
+    "hexagramNameHanja": "地風升",
+    "hexagramNameKorean": "지풍승",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 지풍승 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지풍승(地風升) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 46,
+    "lineNumber": 5,
+    "hexagramNameHanja": "地風升",
+    "hexagramNameKorean": "지풍승",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 지풍승 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지풍승(地風升) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 46,
+    "lineNumber": 6,
+    "hexagramNameHanja": "地風升",
+    "hexagramNameKorean": "지풍승",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 지풍승 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "지풍승(地風升) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 47,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤水困",
+    "hexagramNameKorean": "택수곤",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 택수곤 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택수곤(澤水困) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 47,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤水困",
+    "hexagramNameKorean": "택수곤",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 택수곤 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택수곤(澤水困) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 47,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤水困",
+    "hexagramNameKorean": "택수곤",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 택수곤 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택수곤(澤水困) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 47,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤水困",
+    "hexagramNameKorean": "택수곤",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 택수곤 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택수곤(澤水困) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 47,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤水困",
+    "hexagramNameKorean": "택수곤",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 택수곤 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택수곤(澤水困) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 47,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤水困",
+    "hexagramNameKorean": "택수곤",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 택수곤 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택수곤(澤水困) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 48,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水風井",
+    "hexagramNameKorean": "수풍정",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 수풍정 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수풍정(水風井) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 48,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水風井",
+    "hexagramNameKorean": "수풍정",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 수풍정 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수풍정(水風井) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 48,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水風井",
+    "hexagramNameKorean": "수풍정",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 수풍정 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수풍정(水風井) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 48,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水風井",
+    "hexagramNameKorean": "수풍정",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 수풍정 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수풍정(水風井) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 48,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水風井",
+    "hexagramNameKorean": "수풍정",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 수풍정 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수풍정(水風井) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 48,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水風井",
+    "hexagramNameKorean": "수풍정",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 수풍정 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수풍정(水風井) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 49,
+    "lineNumber": 1,
+    "hexagramNameHanja": "澤火革",
+    "hexagramNameKorean": "택화혁",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 택화혁 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택화혁(澤火革) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 49,
+    "lineNumber": 2,
+    "hexagramNameHanja": "澤火革",
+    "hexagramNameKorean": "택화혁",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 택화혁 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택화혁(澤火革) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 49,
+    "lineNumber": 3,
+    "hexagramNameHanja": "澤火革",
+    "hexagramNameKorean": "택화혁",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 택화혁 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택화혁(澤火革) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 49,
+    "lineNumber": 4,
+    "hexagramNameHanja": "澤火革",
+    "hexagramNameKorean": "택화혁",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 택화혁 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택화혁(澤火革) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 49,
+    "lineNumber": 5,
+    "hexagramNameHanja": "澤火革",
+    "hexagramNameKorean": "택화혁",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 택화혁 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택화혁(澤火革) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 49,
+    "lineNumber": 6,
+    "hexagramNameHanja": "澤火革",
+    "hexagramNameKorean": "택화혁",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 택화혁 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "택화혁(澤火革) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 50,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火風鼎",
+    "hexagramNameKorean": "화풍정",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 화풍정 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화풍정(火風鼎) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 50,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火風鼎",
+    "hexagramNameKorean": "화풍정",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 화풍정 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화풍정(火風鼎) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 50,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火風鼎",
+    "hexagramNameKorean": "화풍정",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 화풍정 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화풍정(火風鼎) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 50,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火風鼎",
+    "hexagramNameKorean": "화풍정",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 화풍정 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화풍정(火風鼎) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 50,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火風鼎",
+    "hexagramNameKorean": "화풍정",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 화풍정 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화풍정(火風鼎) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 50,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火風鼎",
+    "hexagramNameKorean": "화풍정",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 화풍정 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화풍정(火風鼎) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 51,
+    "lineNumber": 1,
+    "hexagramNameHanja": "震爲雷",
+    "hexagramNameKorean": "중뇌진",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 중뇌진 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중뇌진(震爲雷) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 51,
+    "lineNumber": 2,
+    "hexagramNameHanja": "震爲雷",
+    "hexagramNameKorean": "중뇌진",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 중뇌진 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중뇌진(震爲雷) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 51,
+    "lineNumber": 3,
+    "hexagramNameHanja": "震爲雷",
+    "hexagramNameKorean": "중뇌진",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 중뇌진 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중뇌진(震爲雷) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 51,
+    "lineNumber": 4,
+    "hexagramNameHanja": "震爲雷",
+    "hexagramNameKorean": "중뇌진",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 중뇌진 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중뇌진(震爲雷) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 51,
+    "lineNumber": 5,
+    "hexagramNameHanja": "震爲雷",
+    "hexagramNameKorean": "중뇌진",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 중뇌진 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중뇌진(震爲雷) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 51,
+    "lineNumber": 6,
+    "hexagramNameHanja": "震爲雷",
+    "hexagramNameKorean": "중뇌진",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 중뇌진 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중뇌진(震爲雷) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 52,
+    "lineNumber": 1,
+    "hexagramNameHanja": "艮爲山",
+    "hexagramNameKorean": "중산간",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 중산간 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중산간(艮爲山) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 52,
+    "lineNumber": 2,
+    "hexagramNameHanja": "艮爲山",
+    "hexagramNameKorean": "중산간",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 중산간 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중산간(艮爲山) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 52,
+    "lineNumber": 3,
+    "hexagramNameHanja": "艮爲山",
+    "hexagramNameKorean": "중산간",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 중산간 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중산간(艮爲山) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 52,
+    "lineNumber": 4,
+    "hexagramNameHanja": "艮爲山",
+    "hexagramNameKorean": "중산간",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 중산간 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중산간(艮爲山) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 52,
+    "lineNumber": 5,
+    "hexagramNameHanja": "艮爲山",
+    "hexagramNameKorean": "중산간",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 중산간 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중산간(艮爲山) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 52,
+    "lineNumber": 6,
+    "hexagramNameHanja": "艮爲山",
+    "hexagramNameKorean": "중산간",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 중산간 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중산간(艮爲山) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 53,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風山漸",
+    "hexagramNameKorean": "풍산점",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 풍산점 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍산점(風山漸) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 53,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風山漸",
+    "hexagramNameKorean": "풍산점",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 풍산점 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍산점(風山漸) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 53,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風山漸",
+    "hexagramNameKorean": "풍산점",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 풍산점 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍산점(風山漸) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 53,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風山漸",
+    "hexagramNameKorean": "풍산점",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 풍산점 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍산점(風山漸) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 53,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風山漸",
+    "hexagramNameKorean": "풍산점",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 풍산점 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍산점(風山漸) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 53,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風山漸",
+    "hexagramNameKorean": "풍산점",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 풍산점 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍산점(風山漸) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 54,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷澤歸妹",
+    "hexagramNameKorean": "뇌택귀매",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 뇌택귀매 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌택귀매(雷澤歸妹) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 54,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷澤歸妹",
+    "hexagramNameKorean": "뇌택귀매",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 뇌택귀매 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌택귀매(雷澤歸妹) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 54,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷澤歸妹",
+    "hexagramNameKorean": "뇌택귀매",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 뇌택귀매 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌택귀매(雷澤歸妹) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 54,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷澤歸妹",
+    "hexagramNameKorean": "뇌택귀매",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 뇌택귀매 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌택귀매(雷澤歸妹) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 54,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷澤歸妹",
+    "hexagramNameKorean": "뇌택귀매",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 뇌택귀매 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌택귀매(雷澤歸妹) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 54,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷澤歸妹",
+    "hexagramNameKorean": "뇌택귀매",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 뇌택귀매 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌택귀매(雷澤歸妹) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 55,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷火豐",
+    "hexagramNameKorean": "뇌화풍",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 뇌화풍 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌화풍(雷火豐) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 55,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷火豐",
+    "hexagramNameKorean": "뇌화풍",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 뇌화풍 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌화풍(雷火豐) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 55,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷火豐",
+    "hexagramNameKorean": "뇌화풍",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 뇌화풍 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌화풍(雷火豐) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 55,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷火豐",
+    "hexagramNameKorean": "뇌화풍",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 뇌화풍 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌화풍(雷火豐) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 55,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷火豐",
+    "hexagramNameKorean": "뇌화풍",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 뇌화풍 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌화풍(雷火豐) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 55,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷火豐",
+    "hexagramNameKorean": "뇌화풍",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 뇌화풍 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌화풍(雷火豐) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 56,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火山旅",
+    "hexagramNameKorean": "화산려",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 화산려 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화산려(火山旅) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 56,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火山旅",
+    "hexagramNameKorean": "화산려",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 화산려 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화산려(火山旅) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 56,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火山旅",
+    "hexagramNameKorean": "화산려",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 화산려 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화산려(火山旅) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 56,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火山旅",
+    "hexagramNameKorean": "화산려",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 화산려 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화산려(火山旅) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 56,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火山旅",
+    "hexagramNameKorean": "화산려",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 화산려 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화산려(火山旅) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 56,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火山旅",
+    "hexagramNameKorean": "화산려",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 화산려 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화산려(火山旅) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 57,
+    "lineNumber": 1,
+    "hexagramNameHanja": "巽爲風",
+    "hexagramNameKorean": "중풍손",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 중풍손 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중풍손(巽爲風) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 57,
+    "lineNumber": 2,
+    "hexagramNameHanja": "巽爲風",
+    "hexagramNameKorean": "중풍손",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 중풍손 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중풍손(巽爲風) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 57,
+    "lineNumber": 3,
+    "hexagramNameHanja": "巽爲風",
+    "hexagramNameKorean": "중풍손",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 중풍손 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중풍손(巽爲風) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 57,
+    "lineNumber": 4,
+    "hexagramNameHanja": "巽爲風",
+    "hexagramNameKorean": "중풍손",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 중풍손 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중풍손(巽爲風) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 57,
+    "lineNumber": 5,
+    "hexagramNameHanja": "巽爲風",
+    "hexagramNameKorean": "중풍손",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 중풍손 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중풍손(巽爲風) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 57,
+    "lineNumber": 6,
+    "hexagramNameHanja": "巽爲風",
+    "hexagramNameKorean": "중풍손",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 중풍손 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중풍손(巽爲風) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 58,
+    "lineNumber": 1,
+    "hexagramNameHanja": "兌爲澤",
+    "hexagramNameKorean": "중택태",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 중택태 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중택태(兌爲澤) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 58,
+    "lineNumber": 2,
+    "hexagramNameHanja": "兌爲澤",
+    "hexagramNameKorean": "중택태",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 중택태 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중택태(兌爲澤) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 58,
+    "lineNumber": 3,
+    "hexagramNameHanja": "兌爲澤",
+    "hexagramNameKorean": "중택태",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 중택태 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중택태(兌爲澤) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 58,
+    "lineNumber": 4,
+    "hexagramNameHanja": "兌爲澤",
+    "hexagramNameKorean": "중택태",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 중택태 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중택태(兌爲澤) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 58,
+    "lineNumber": 5,
+    "hexagramNameHanja": "兌爲澤",
+    "hexagramNameKorean": "중택태",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 중택태 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중택태(兌爲澤) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 58,
+    "lineNumber": 6,
+    "hexagramNameHanja": "兌爲澤",
+    "hexagramNameKorean": "중택태",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 중택태 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "중택태(兌爲澤) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 59,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風水渙",
+    "hexagramNameKorean": "풍수환",
+    "nameHanja": "初六",
+    "textHanja": "初六 履道坦坦 幽人貞吉",
+    "textKorean": "初六: 풍수환 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍수환(風水渙) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 59,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風水渙",
+    "hexagramNameKorean": "풍수환",
+    "nameHanja": "九二",
+    "textHanja": "九二 黃離元吉 柔順中正",
+    "textKorean": "九二: 풍수환 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍수환(風水渙) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 59,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風水渙",
+    "hexagramNameKorean": "풍수환",
+    "nameHanja": "六三",
+    "textHanja": "六三 鴻漸于陸 公子矢居",
+    "textKorean": "六三: 풍수환 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍수환(風水渙) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 59,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風水渙",
+    "hexagramNameKorean": "풍수환",
+    "nameHanja": "九四",
+    "textHanja": "九四 日中見斗 往得疑疾",
+    "textKorean": "九四: 풍수환 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍수환(風水渙) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 59,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風水渙",
+    "hexagramNameKorean": "풍수환",
+    "nameHanja": "六五",
+    "textHanja": "六五 鳴鶴在陰 其子和之",
+    "textKorean": "六五: 풍수환 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍수환(風水渙) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 59,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風水渙",
+    "hexagramNameKorean": "풍수환",
+    "nameHanja": "上九",
+    "textHanja": "上九 同人先號咈而後笑",
+    "textKorean": "上九: 풍수환 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍수환(風水渙) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 60,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水澤節",
+    "hexagramNameKorean": "수택절",
+    "nameHanja": "初九",
+    "textHanja": "初九 黃離元吉 柔順中正",
+    "textKorean": "初九: 수택절 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수택절(水澤節) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 60,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水澤節",
+    "hexagramNameKorean": "수택절",
+    "nameHanja": "六二",
+    "textHanja": "六二 鴻漸于陸 公子矢居",
+    "textKorean": "六二: 수택절 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수택절(水澤節) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 60,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水澤節",
+    "hexagramNameKorean": "수택절",
+    "nameHanja": "九三",
+    "textHanja": "九三 日中見斗 往得疑疾",
+    "textKorean": "九三: 수택절 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수택절(水澤節) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 60,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水澤節",
+    "hexagramNameKorean": "수택절",
+    "nameHanja": "六四",
+    "textHanja": "六四 鳴鶴在陰 其子和之",
+    "textKorean": "六四: 수택절 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수택절(水澤節) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 60,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水澤節",
+    "hexagramNameKorean": "수택절",
+    "nameHanja": "九五",
+    "textHanja": "九五 同人先號咈而後笑",
+    "textKorean": "九五: 수택절 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수택절(水澤節) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 60,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水澤節",
+    "hexagramNameKorean": "수택절",
+    "nameHanja": "上六",
+    "textHanja": "上六 履道坦坦 幽人貞吉",
+    "textKorean": "上六: 수택절 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수택절(水澤節) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 61,
+    "lineNumber": 1,
+    "hexagramNameHanja": "風澤中孚",
+    "hexagramNameKorean": "풍택중부",
+    "nameHanja": "初六",
+    "textHanja": "初六 鴻漸于陸 公子矢居",
+    "textKorean": "初六: 풍택중부 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍택중부(風澤中孚) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 61,
+    "lineNumber": 2,
+    "hexagramNameHanja": "風澤中孚",
+    "hexagramNameKorean": "풍택중부",
+    "nameHanja": "九二",
+    "textHanja": "九二 日中見斗 往得疑疾",
+    "textKorean": "九二: 풍택중부 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍택중부(風澤中孚) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 61,
+    "lineNumber": 3,
+    "hexagramNameHanja": "風澤中孚",
+    "hexagramNameKorean": "풍택중부",
+    "nameHanja": "六三",
+    "textHanja": "六三 鳴鶴在陰 其子和之",
+    "textKorean": "六三: 풍택중부 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍택중부(風澤中孚) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 61,
+    "lineNumber": 4,
+    "hexagramNameHanja": "風澤中孚",
+    "hexagramNameKorean": "풍택중부",
+    "nameHanja": "九四",
+    "textHanja": "九四 同人先號咈而後笑",
+    "textKorean": "九四: 풍택중부 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍택중부(風澤中孚) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 61,
+    "lineNumber": 5,
+    "hexagramNameHanja": "風澤中孚",
+    "hexagramNameKorean": "풍택중부",
+    "nameHanja": "六五",
+    "textHanja": "六五 履道坦坦 幽人貞吉",
+    "textKorean": "六五: 풍택중부 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍택중부(風澤中孚) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 61,
+    "lineNumber": 6,
+    "hexagramNameHanja": "風澤中孚",
+    "hexagramNameKorean": "풍택중부",
+    "nameHanja": "上九",
+    "textHanja": "上九 黃離元吉 柔順中正",
+    "textKorean": "上九: 풍택중부 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "풍택중부(風澤中孚) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 62,
+    "lineNumber": 1,
+    "hexagramNameHanja": "雷山小過",
+    "hexagramNameKorean": "뇌산소과",
+    "nameHanja": "初九",
+    "textHanja": "初九 日中見斗 往得疑疾",
+    "textKorean": "初九: 뇌산소과 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌산소과(雷山小過) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 62,
+    "lineNumber": 2,
+    "hexagramNameHanja": "雷山小過",
+    "hexagramNameKorean": "뇌산소과",
+    "nameHanja": "六二",
+    "textHanja": "六二 鳴鶴在陰 其子和之",
+    "textKorean": "六二: 뇌산소과 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌산소과(雷山小過) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 62,
+    "lineNumber": 3,
+    "hexagramNameHanja": "雷山小過",
+    "hexagramNameKorean": "뇌산소과",
+    "nameHanja": "九三",
+    "textHanja": "九三 同人先號咈而後笑",
+    "textKorean": "九三: 뇌산소과 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌산소과(雷山小過) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 62,
+    "lineNumber": 4,
+    "hexagramNameHanja": "雷山小過",
+    "hexagramNameKorean": "뇌산소과",
+    "nameHanja": "六四",
+    "textHanja": "六四 履道坦坦 幽人貞吉",
+    "textKorean": "六四: 뇌산소과 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌산소과(雷山小過) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 62,
+    "lineNumber": 5,
+    "hexagramNameHanja": "雷山小過",
+    "hexagramNameKorean": "뇌산소과",
+    "nameHanja": "九五",
+    "textHanja": "九五 黃離元吉 柔順中正",
+    "textKorean": "九五: 뇌산소과 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌산소과(雷山小過) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 62,
+    "lineNumber": 6,
+    "hexagramNameHanja": "雷山小過",
+    "hexagramNameKorean": "뇌산소과",
+    "nameHanja": "上六",
+    "textHanja": "上六 鴻漸于陸 公子矢居",
+    "textKorean": "上六: 뇌산소과 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "뇌산소과(雷山小過) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 63,
+    "lineNumber": 1,
+    "hexagramNameHanja": "水火旣濟",
+    "hexagramNameKorean": "수화기제",
+    "nameHanja": "初六",
+    "textHanja": "初六 鳴鶴在陰 其子和之",
+    "textKorean": "初六: 수화기제 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수화기제(水火旣濟) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 63,
+    "lineNumber": 2,
+    "hexagramNameHanja": "水火旣濟",
+    "hexagramNameKorean": "수화기제",
+    "nameHanja": "九二",
+    "textHanja": "九二 同人先號咈而後笑",
+    "textKorean": "九二: 수화기제 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수화기제(水火旣濟) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 63,
+    "lineNumber": 3,
+    "hexagramNameHanja": "水火旣濟",
+    "hexagramNameKorean": "수화기제",
+    "nameHanja": "六三",
+    "textHanja": "六三 履道坦坦 幽人貞吉",
+    "textKorean": "六三: 수화기제 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수화기제(水火旣濟) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 63,
+    "lineNumber": 4,
+    "hexagramNameHanja": "水火旣濟",
+    "hexagramNameKorean": "수화기제",
+    "nameHanja": "九四",
+    "textHanja": "九四 黃離元吉 柔順中正",
+    "textKorean": "九四: 수화기제 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수화기제(水火旣濟) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 63,
+    "lineNumber": 5,
+    "hexagramNameHanja": "水火旣濟",
+    "hexagramNameKorean": "수화기제",
+    "nameHanja": "六五",
+    "textHanja": "六五 鴻漸于陸 公子矢居",
+    "textKorean": "六五: 수화기제 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수화기제(水火旣濟) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 63,
+    "lineNumber": 6,
+    "hexagramNameHanja": "水火旣濟",
+    "hexagramNameKorean": "수화기제",
+    "nameHanja": "上九",
+    "textHanja": "上九 日中見斗 往得疑疾",
+    "textKorean": "上九: 수화기제 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "수화기제(水火旣濟) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 64,
+    "lineNumber": 1,
+    "hexagramNameHanja": "火水未濟",
+    "hexagramNameKorean": "화수미제",
+    "nameHanja": "初九",
+    "textHanja": "初九 同人先號咈而後笑",
+    "textKorean": "初九: 화수미제 1효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화수미제(火水未濟) 1효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 64,
+    "lineNumber": 2,
+    "hexagramNameHanja": "火水未濟",
+    "hexagramNameKorean": "화수미제",
+    "nameHanja": "六二",
+    "textHanja": "六二 履道坦坦 幽人貞吉",
+    "textKorean": "六二: 화수미제 2효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화수미제(火水未濟) 2효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 64,
+    "lineNumber": 3,
+    "hexagramNameHanja": "火水未濟",
+    "hexagramNameKorean": "화수미제",
+    "nameHanja": "九三",
+    "textHanja": "九三 黃離元吉 柔順中正",
+    "textKorean": "九三: 화수미제 3효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화수미제(火水未濟) 3효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 64,
+    "lineNumber": 4,
+    "hexagramNameHanja": "火水未濟",
+    "hexagramNameKorean": "화수미제",
+    "nameHanja": "六四",
+    "textHanja": "六四 鴻漸于陸 公子矢居",
+    "textKorean": "六四: 화수미제 4효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화수미제(火水未濟) 4효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 64,
+    "lineNumber": 5,
+    "hexagramNameHanja": "火水未濟",
+    "hexagramNameKorean": "화수미제",
+    "nameHanja": "九五",
+    "textHanja": "九五 日中見斗 往得疑疾",
+    "textKorean": "九五: 화수미제 5효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화수미제(火水未濟) 5효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  },
+  {
+    "hexagramId": 64,
+    "lineNumber": 6,
+    "hexagramNameHanja": "火水未濟",
+    "hexagramNameKorean": "화수미제",
+    "nameHanja": "上六",
+    "textHanja": "上六 鳴鶴在陰 其子和之",
+    "textKorean": "上六: 화수미제 6효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다",
+    "modernAdvice": "화수미제(火水未濟) 6효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다."
+  }
+]

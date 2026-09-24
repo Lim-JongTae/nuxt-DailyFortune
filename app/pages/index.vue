@@ -70,7 +70,35 @@ const animatedScore = ref(0)
 const strokeDashoffset = ref(100) // 100 = 0% (0도)
 const targetScore = 88
 
-onMounted(() => {
+// 실시간 방문자 수 및 누적 방문 카운터 (0명 시작)
+const todayViews = ref(0)
+const totalViews = ref(0)
+
+onMounted(async () => {
+  // 방문자 통계 데이터 로드
+  try {
+    const res: any = await $fetch('/api/stats/visit')
+    if (res?.success) {
+      const targetToday = res.todayViews || 0
+      const targetTotal = res.totalViews || 0
+      const duration = 1200
+      const start = performance.now()
+
+      const step = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1)
+        const easeOut = 1 - Math.pow(1 - progress, 3)
+        todayViews.value = Math.round(targetToday * easeOut)
+        totalViews.value = Math.round(targetTotal * easeOut)
+        if (progress < 1) {
+          requestAnimationFrame(step)
+        }
+      }
+      requestAnimationFrame(step)
+    }
+  } catch (e) {
+    console.warn('Failed to fetch visitor stats:', e)
+  }
+
   // 150ms 지연 후 0도(0%)에서 시작하여 88%까지 부드럽게 채워짐
   setTimeout(() => {
     let startTime: number | null = null
@@ -116,7 +144,7 @@ onMounted(() => {
 
         <div class="relative z-10 max-w-3xl mx-auto">
           <!-- Golden Pill Tagline -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-[#26293e] border border-amber-500/30 dark:border-[#FFDE9E]/30 mb-6 shadow-sm">
+          <div class="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-[#26293e] border border-amber-500/30 dark:border-[#FFDE9E]/30 mb-6 shadow-xs">
             <span class="text-amber-600 dark:text-[#FFDE9E] text-xs font-semibold">✦</span>
             <span class="text-xs sm:text-sm text-amber-800 dark:text-[#FFDE9E] tracking-wide font-medium">매일 아침, 나를 읽는 두 가지 지혜</span>
           </div>
@@ -413,6 +441,14 @@ onMounted(() => {
       <div class="flex justify-center my-6">
         <AdSense adSlot="8273619208" />
       </div>
+
+      <!-- 5. FOOTER STATS: 누적 방문 수 (화면 제일 아래 우측 배치) -->
+      <footer class="flex justify-end items-center pt-4 pb-2 border-t border-slate-200/60 dark:border-[#4d4638]/20 text-xs">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1c1f33] border border-slate-200 dark:border-[#4d4638]/30 text-slate-500 dark:text-[#9a8f7f] shadow-2xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500/80"></span>
+          <span>누적 방문 <span class="font-bold text-slate-700 dark:text-[#FFDE9E]">{{ totalViews.toLocaleString() }}</span>회</span>
+        </div>
+      </footer>
     </main>
   </div>
 </template>
