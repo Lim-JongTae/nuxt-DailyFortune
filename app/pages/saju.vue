@@ -656,25 +656,31 @@ const todayLunarText = computed(() => {
           <!-- 태어난 날짜 -->
           <div>
             <label class="block text-xs font-bold pg-text-gold mb-2 font-serif-kr">태어난 날짜 (양력 기준)</label>
-            <div class="flex gap-2">
-              <input
-                v-model="birthYear"
-                type="number"
-                placeholder="년(YYYY)"
-                class="saju-input flex-1 py-2.5 px-3 rounded-xl text-xs text-center"
-              />
-              <input
-                v-model="birthMonth"
-                type="number"
-                placeholder="월"
-                class="saju-input w-20 py-2.5 px-3 rounded-xl text-xs text-center"
-              />
-              <input
-                v-model="birthDay"
-                type="number"
-                placeholder="일"
-                class="saju-input w-20 py-2.5 px-3 rounded-xl text-xs text-center"
-              />
+            <div class="grid grid-cols-12 gap-1.5 sm:gap-2 w-full">
+              <div class="col-span-6 min-w-0">
+                <input
+                  v-model="birthYear"
+                  type="number"
+                  placeholder="년(YYYY)"
+                  class="saju-input w-full min-w-0 py-2.5 px-2 sm:px-3 rounded-xl text-xs text-center"
+                />
+              </div>
+              <div class="col-span-3 min-w-0">
+                <input
+                  v-model="birthMonth"
+                  type="number"
+                  placeholder="월"
+                  class="saju-input w-full min-w-0 py-2.5 px-1 sm:px-2 rounded-xl text-xs text-center"
+                />
+              </div>
+              <div class="col-span-3 min-w-0">
+                <input
+                  v-model="birthDay"
+                  type="number"
+                  placeholder="일"
+                  class="saju-input w-full min-w-0 py-2.5 px-1 sm:px-2 rounded-xl text-xs text-center"
+                />
+              </div>
             </div>
           </div>
 
