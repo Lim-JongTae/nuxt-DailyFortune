@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
-      name: '일일운세 ✦ 天命 | 사주명리와 주역 64괘',
+      name: '일일운세 ✦ 天命',
       short_name: '일일운세',
       description: '생년월일로 짚어보는 나의 사주명리와 주역 64괘 맞춤 AI 일일 운세',
       theme_color: '#0F1226',
@@ -71,8 +71,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     geminiApiKey: process.env.GEMINI_API_KEY || '',
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://일일운세.kr',
-      siteName: '일일운세.kr',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sajuapp.kr',
+      siteName: 'sajuapp.kr',
       adsenseClient: process.env.NUXT_PUBLIC_ADSENSE_CLIENT || ''
     }
   },
@@ -80,8 +80,8 @@ export default defineNuxtConfig({
     zeroRuntime: true
   },
   site: {
-    url: 'https://일일운세.kr',
-    name: '일일운세.kr',
+    url: 'https://sajuapp.kr',
+    name: 'sajuapp.kr',
     defaultLocale: 'ko'
   }
 })

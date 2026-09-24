@@ -4,10 +4,24 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
   const claudeModel = process.env.CLAUDE_MODEL || 'claude-sonnet-5'
   const geminiApiKey = process.env.GEMINI_API_KEY
 
-  // 1. Claude API (aiapiflow.com 프록시 기반 Anthropic Messages API) 시도
+  // Helper: fetch with timeout
+  const fetchWithTimeout = async (url: string, opts: any, timeoutMs: number) => {
+    const controller = new AbortController()
+    const id = setTimeout(() => controller.abort(), timeoutMs)
+    try {
+      const res = await $fetch(url, { ...opts, signal: controller.signal })
+      return res
+    } finally {
+      clearTimeout(id)
+    }
+  }
+
+  const timeout = Number(process.env.AI_API_TIMEOUT_MS) || 15000 // 15s default
+
+  // 1. Claude API (aiapiflow.com proxy) attempt
   if (claudeApiKey) {
     try {
-      const response: any = await $fetch(`${claudeEndPoint}/v1/messages`, {
+      const response: any = await fetchWithTimeout(`${claudeEndPoint}/v1/messages`, {
         method: 'POST',
         headers: {
           'x-api-key': claudeApiKey,
@@ -17,28 +31,26 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
         },
         body: {
           model: claudeModel,
-          max_tokens: 4096,
+          // Reduce max tokens to speed up response
+          max_tokens: Number(process.env.CLAUDE_MAX_TOKENS) || 2048,
           messages: [
             { role: 'user', content: prompt }
           ]
         }
-      })
+      }, timeout)
 
       if (response?.content?.[0]?.text) {
-        return {
-          text: response.content[0].text,
-          isAiGenerated: true
-        }
+        return { text: response.content[0].text, isAiGenerated: true }
       }
     } catch (claudeError: any) {
       console.error('Claude API (aiapiflow.com) Error:', claudeError?.data || claudeError?.message || claudeError)
     }
   }
 
-  // 2. Gemini API Fallback 시도
+  // 2. Gemini API fallback attempt
   if (geminiApiKey) {
     try {
-      const response: any = await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
+      const response: any = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         body: {
           contents: [
@@ -50,24 +62,20 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
           ],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 8192
+            // Reduce max output tokens for faster generation
+            maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 2048
           }
         }
-      })
+      }, timeout)
 
       if (response?.candidates?.[0]?.content?.parts?.[0]?.text) {
-        return {
-          text: response.candidates[0].content.parts[0].text,
-          isAiGenerated: true
-        }
+        return { text: response.candidates[0].content.parts[0].text, isAiGenerated: true }
       }
     } catch (geminiError: any) {
       console.error('Gemini API Fallback Error:', geminiError)
     }
   }
 
-  return {
-    text: '',
-    isAiGenerated: false
-  }
+  return { text: '', isAiGenerated: false }
 }
+

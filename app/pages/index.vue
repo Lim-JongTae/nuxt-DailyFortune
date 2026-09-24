@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/`
-const fortuneTitle = '일일운세 ✦ 天命 | 오늘의 사주명리와 주역 64괘'
+const fortuneTitle = '일일운세 ✦ 天命'
 const fortuneDesc = '생년월일로 짚어보는 하루의 에너지와 오행의 균형, 그리고 64괘의 괘상이 전하는 오늘 하루의 깊은 처세와 지혜를 마주합니다.'
 
 useSeoMeta({
@@ -300,7 +300,7 @@ const elementRatios = computed(() => {
             <!-- Header with Vermilion Mini-Seal -->
             <div class="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-[#4d4638]/30">
               <div class="flex items-center gap-3">
-                <span class="seal-stamp text-xs px-2 py-0.5">易</span>
+                <span class="seal-stamp text-lg px-2 py-0.5">易</span>
                 <div>
                   <h2 class="font-serif-kr text-xl sm:text-2xl text-slate-900 dark:text-white font-bold flex items-center gap-2">
                     오늘의 주역 괘

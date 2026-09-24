@@ -3,9 +3,9 @@ import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 useSeoMeta({
-  title: '주역점 결과 - I CHING ORACLE | 일일운세.kr',
+  title: '주역점 결과 - I CHING ORACLE | sajuapp.kr',
   description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
-  ogTitle: '주역점 결과 - I CHING ORACLE | 일일운세.kr',
+  ogTitle: '주역점 결과 - I CHING ORACLE | sajuapp.kr',
   ogDescription: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image',
@@ -122,6 +122,7 @@ const formattedInterpretation = computed(() => {
 const currentStep = ref(0)
 const loading = ref(false)
 const activeTab = ref('iching')
+const disclaimerModalRef = ref<any>(null)
 
 // 아코디언 열림 상태
 const accordionOpen = ref({
@@ -712,33 +713,37 @@ const copyToClipboard = () => {
             </div>
 
             <!-- 본괘 ➔ 변괘 대칭 디스플레이 -->
-            <div class="grid grid-cols-2 gap-4 items-center mb-5 relative">
+            <div class="grid grid-cols-2 gap-4 items-stretch mb-5 relative">
 
               <!-- 본괘 (Origin) -->
-              <div class="pg-card-inner border pg-border-strong rounded-2xl p-3.5 text-center">
-                <span class="text-[11px] pg-text-gold font-bold block mb-1">본괘 [本卦]</span>
-                <h3 class="font-serif-kr text-base font-extrabold pg-text mb-0.5">
-                  제{{ hexagramLinesDetail.origin.id }}괘 {{ hexagramLinesDetail.origin.nameKorean }}
-                </h3>
-                <p class="text-[11px] pg-text-muted mb-3">{{ hexagramLinesDetail.origin.desc }}</p>
+              <div class="pg-card-inner border pg-border-strong rounded-2xl p-3.5 text-center flex flex-col justify-between h-full">
+                <div>
+                  <span class="text-[11px] pg-text-gold font-bold block mb-1">본괘 [本卦]</span>
+                  <h3 class="font-serif-kr text-base font-extrabold pg-text mb-1">
+                    제{{ hexagramLinesDetail.origin.id }}괘 {{ hexagramLinesDetail.origin.nameKorean }}
+                  </h3>
+                  <div class="min-h-[2.5rem] flex items-center justify-center mb-3">
+                    <p class="text-[11px] pg-text-muted leading-tight">{{ hexagramLinesDetail.origin.desc }}</p>
+                  </div>
 
-                <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로) -->
-                <div class="space-y-1.5 max-w-25 mx-auto mb-3">
-                  <div
-                    v-for="(val, index) in [...hexagramLinesDetail.origin.lines].reverse()"
-                    :key="index"
-                    class="h-2 rounded flex items-center justify-between overflow-hidden relative"
-                    :class="6 - index === hexagramLinesDetail.lineNum ? 'ring-2 ring-amber-600 dark:ring-[#E8C170] shadow-[0_0_10px_rgba(217,119,6,0.4)] dark:shadow-[0_0_10px_rgba(232,193,112,0.6)]' : ''"
-                  >
-                    <!-- 양효 (1): 통 줄 -->
-                    <template v-if="val === 1">
-                      <div class="w-full h-full bg-[#93C5FD] rounded-sm shadow-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
-                    </template>
-                    <!-- 음효 (0): 두 갈래 -->
-                    <template v-else>
-                      <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
-                      <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
-                    </template>
+                  <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로) -->
+                  <div class="space-y-1.5 max-w-25 mx-auto mb-3">
+                    <div
+                      v-for="(val, index) in [...hexagramLinesDetail.origin.lines].reverse()"
+                      :key="index"
+                      class="h-2 rounded flex items-center justify-between overflow-hidden relative"
+                      :class="6 - index === hexagramLinesDetail.lineNum ? 'ring-2 ring-amber-600 dark:ring-[#E8C170] shadow-[0_0_10px_rgba(217,119,6,0.4)] dark:shadow-[0_0_10px_rgba(232,193,112,0.6)]' : ''"
+                    >
+                      <!-- 양효 (1): 통 줄 -->
+                      <template v-if="val === 1">
+                        <div class="w-full h-full bg-[#93C5FD] rounded-sm shadow-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
+                      </template>
+                      <!-- 음효 (0): 두 갈래 -->
+                      <template v-else>
+                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
+                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
+                      </template>
+                    </div>
                   </div>
                 </div>
 
@@ -753,27 +758,31 @@ const copyToClipboard = () => {
               </div>
 
               <!-- 변괘 (Changed) -->
-              <div class="pg-card-inner border pg-border-strong rounded-2xl p-3.5 text-center">
-                <span class="text-[11px] pg-text-gold font-bold block mb-1">변괘 [變卦]</span>
-                <h3 class="font-serif-kr text-base font-extrabold pg-text mb-0.5">
-                  제{{ hexagramLinesDetail.changed.id }}괘 {{ hexagramLinesDetail.changed.nameKorean }}
-                </h3>
-                <p class="text-[11px] pg-text-muted mb-3">{{ hexagramLinesDetail.changed.desc }}</p>
+              <div class="pg-card-inner border pg-border-strong rounded-2xl p-3.5 text-center flex flex-col justify-between h-full">
+                <div>
+                  <span class="text-[11px] pg-text-gold font-bold block mb-1">변괘 [變卦]</span>
+                  <h3 class="font-serif-kr text-base font-extrabold pg-text mb-1">
+                    제{{ hexagramLinesDetail.changed.id }}괘 {{ hexagramLinesDetail.changed.nameKorean }}
+                  </h3>
+                  <div class="min-h-[2.5rem] flex items-center justify-center mb-3">
+                    <p class="text-[11px] pg-text-muted leading-tight">{{ hexagramLinesDetail.changed.desc }}</p>
+                  </div>
 
-                <!-- 6효 그리기 -->
-                <div class="space-y-1.5 max-w-25 mx-auto mb-3">
-                  <div
-                    v-for="(val, index) in [...hexagramLinesDetail.changed.lines].reverse()"
-                    :key="index"
-                    class="h-2 rounded flex items-center justify-between overflow-hidden"
-                  >
-                    <template v-if="val === 1">
-                      <div class="w-full h-full bg-[#93C5FD] rounded-sm"></div>
-                    </template>
-                    <template v-else>
-                      <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm"></div>
-                      <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm"></div>
-                    </template>
+                  <!-- 6효 그리기 -->
+                  <div class="space-y-1.5 max-w-25 mx-auto mb-3">
+                    <div
+                      v-for="(val, index) in [...hexagramLinesDetail.changed.lines].reverse()"
+                      :key="index"
+                      class="h-2 rounded flex items-center justify-between overflow-hidden"
+                    >
+                      <template v-if="val === 1">
+                        <div class="w-full h-full bg-[#93C5FD] rounded-sm"></div>
+                      </template>
+                      <template v-else>
+                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm"></div>
+                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm"></div>
+                      </template>
+                    </div>
                   </div>
                 </div>
 
@@ -1019,44 +1028,46 @@ const copyToClipboard = () => {
 
     </div>
 
-    <!-- 하단 탭바 (첫 번째 이미지 1:1) -->
+    <!-- 하단 탭바 -->
     <div class="fixed bottom-0 left-0 right-0 bg-[var(--fortune-bg)]/95 backdrop-blur-md border-t pg-border z-50 py-2">
       <div class="max-w-md sm:max-w-lg mx-auto grid grid-cols-4 text-center px-4">
         <NuxtLink
-          to="/saju"
-          class="flex flex-col items-center gap-1 py-1 text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+          to="/"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
-          <UIcon name="i-heroicons-calendar-days" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">오늘</span>
+          <UIcon name="i-heroicons-home" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">홈</span>
         </NuxtLink>
-
-        <button
-          type="button"
-          @click="activeTab = 'iching'"
-          class="flex flex-col items-center gap-1 py-1 transition-colors text-[#E8C170]"
-        >
-          <UIcon name="i-heroicons-sparkles" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">주역</span>
-        </button>
-
-        <button
-          type="button"
-          @click="activeTab = 'record'"
-          class="flex flex-col items-center gap-1 py-1 text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
-        >
-          <UIcon name="i-heroicons-document-text" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">기록</span>
-        </button>
 
         <NuxtLink
           to="/saju"
-          class="flex flex-col items-center gap-1 py-1 text-[#6B7280] hover:text-[#9CA3AF] transition-colors"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
-          <UIcon name="i-heroicons-user" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">내 정보</span>
+          <UIcon name="i-heroicons-sparkles" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">오늘 사주</span>
         </NuxtLink>
+
+        <NuxtLink
+          to="/iching"
+          class="flex flex-col items-center gap-1 py-1 transition-colors pg-text-gold"
+        >
+          <UIcon name="i-heroicons-sun" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">오늘 주역</span>
+        </NuxtLink>
+
+        <button
+          type="button"
+          @click="disclaimerModalRef?.openModal()"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
+        >
+          <UIcon name="i-heroicons-shield-check" class="w-5 h-5 pg-text-gold" />
+          <span class="text-[10px] font-medium">면책조항</span>
+        </button>
       </div>
     </div>
+
+    <!-- 면책조항 & 개인정보 팝업 모달 -->
+    <DisclaimerModal ref="disclaimerModalRef" />
   </div>
 </template>
 

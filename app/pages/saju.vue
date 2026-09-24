@@ -5,9 +5,9 @@ import { z } from 'zod'
 import { getGanzhiOfDay, getGanzhiOfYear, getTodayLunarDateString } from '~/utils/saju'
 
 useSeoMeta({
-  title: '일일 사주명리 - 오늘의 운세 | 일일운세.kr',
+  title: '일일 사주명리 - 오늘의 운세 | sajuapp.kr',
   description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
-  ogTitle: '일일 사주명리 - 오늘의 운세 | 일일운세.kr',
+  ogTitle: '일일 사주명리 - 오늘의 운세 | sajuapp.kr',
   ogDescription: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image',
@@ -258,7 +258,7 @@ const copyToClipboard = () => {
     .replace(/### /g, '■ ')
     .replace(/## /g, '◈ ')
 
-  const shareText = `🔮 [일일운세.kr] 오늘의 사주명리 분석 보고서 🔮
+  const shareText = `🔮 [사주앱 - sajuapp.kr] 오늘의 사주명리 분석 보고서 🔮
 --------------------------------------
 ● 내 일간: ${user.ilgan} (${user.ilganElement})
 ● 오늘의 일진: ${today.ganzhi}일 (${today.shipsin}의 날)
@@ -267,7 +267,7 @@ const copyToClipboard = () => {
 ${plainText}
 
 --------------------------------------
-내 일일 사주 직접 보기: https://일일운세.kr/saju`
+내 일일 사주 직접 보기: https://sajuapp.kr/saju`
 
   navigator.clipboard.writeText(shareText)
     .then(() => alert('오늘의 사주명리 결과 보고서가 복사되었습니다. 카카오톡이나 SNS에 공유해 보세요!'))
@@ -365,7 +365,54 @@ const sajuDynamicData = computed(() => {
   }
 })
 
+const timeFlowSlots = computed(() => {
+  const tf = sajuDynamicData.value.timeFlow
+
+  const getStarCount = (s: string) => (s.match(/★/g) || []).length
+  const mStars = getStarCount(tf.morning.stars)
+  const aStars = getStarCount(tf.afternoon.stars)
+  const eStars = getStarCount(tf.evening.stars)
+
+  let peakKey = 'afternoon'
+  if (tf.peakText.includes('오전')) peakKey = 'morning'
+  else if (tf.peakText.includes('저녁')) peakKey = 'evening'
+  else if (tf.peakText.includes('오후')) peakKey = 'afternoon'
+  else {
+    if (mStars > aStars && mStars >= eStars) peakKey = 'morning'
+    else if (eStars > aStars && eStars > mStars) peakKey = 'evening'
+    else peakKey = 'afternoon'
+  }
+
+  return [
+    {
+      key: 'morning',
+      label: '오전',
+      time: '08:00~12:00',
+      stars: tf.morning.stars,
+      desc: tf.morning.desc,
+      isPeak: peakKey === 'morning'
+    },
+    {
+      key: 'afternoon',
+      label: '오후',
+      time: '12:00~18:00',
+      stars: tf.afternoon.stars,
+      desc: tf.afternoon.desc,
+      isPeak: peakKey === 'afternoon'
+    },
+    {
+      key: 'evening',
+      label: '저녁',
+      time: '18:00~24:00',
+      stars: tf.evening.stars,
+      desc: tf.evening.desc,
+      isPeak: peakKey === 'evening'
+    }
+  ]
+})
+
 const isAnimated = ref(false)
+const disclaimerModalRef = ref<any>(null)
 const animatedScores = ref({
   totalScore: 0,
   wealthScore: 0,
@@ -384,33 +431,56 @@ const triggerScoreAnimation = () => {
     businessScore: 0
   }
 
-  setTimeout(() => {
-    isAnimated.value = true
-    const duration = 2000
-    const start = performance.now()
-    const target = sajuScores.value
+  nextTick(() => {
+    setTimeout(() => {
+      isAnimated.value = true
+      const duration = 2000
+      const start = performance.now()
+      const target = sajuScores.value
 
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1)
-      const easeOut = 1 - Math.pow(1 - progress, 3)
+      const step = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1)
+        const easeOut = 1 - Math.pow(1 - progress, 3)
 
-      animatedScores.value.totalScore = Math.round(target.totalScore * easeOut)
-      animatedScores.value.wealthScore = Math.round(target.wealthScore * easeOut)
-      animatedScores.value.loveScore = Math.round(target.loveScore * easeOut)
-      animatedScores.value.healthScore = Math.round(target.healthScore * easeOut)
-      animatedScores.value.businessScore = Math.round(target.businessScore * easeOut)
+        animatedScores.value.totalScore = Math.round(target.totalScore * easeOut)
+        animatedScores.value.wealthScore = Math.round(target.wealthScore * easeOut)
+        animatedScores.value.loveScore = Math.round(target.loveScore * easeOut)
+        animatedScores.value.healthScore = Math.round(target.healthScore * easeOut)
+        animatedScores.value.businessScore = Math.round(target.businessScore * easeOut)
 
-      if (progress < 1) {
-        requestAnimationFrame(step)
+        if (progress < 1) {
+          requestAnimationFrame(step)
+        }
       }
-    }
-    requestAnimationFrame(step)
-  }, 100)
+      requestAnimationFrame(step)
+    }, 150)
+  })
+}
+
+// 스크롤 시 아래에서 솟아오르는 효과 (IntersectionObserver)
+const setupScrollObserver = () => {
+  if (typeof window === 'undefined') return
+  nextTick(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+        }
+      })
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -20px 0px'
+    })
+
+    const elements = document.querySelectorAll('.reveal-on-scroll')
+    elements.forEach(el => observer.observe(el))
+  })
 }
 
 watch(result, () => {
   if (result.value) {
     triggerScoreAnimation()
+    setupScrollObserver()
   }
 }, { immediate: true })
 
@@ -421,6 +491,8 @@ onMounted(() => {
       deferredPrompt.value = e
     })
   }
+
+  setupScrollObserver()
 
   if (result.value) {
     triggerScoreAnimation()
@@ -478,7 +550,7 @@ const todayLunarText = computed(() => {
               </h1>
               <span class="text-xs font-bold" style="color: var(--fortune-gold);">+</span>
             </div>
-            <p class="text-[11px] pg-text-muted font-light">
+            <p class="text-[11px] pg-text-muted font-bold">
               {{ todayHeaderInfo.dateSubTitle }}
             </p>
           </div>
@@ -527,8 +599,14 @@ const todayLunarText = computed(() => {
       <!-- ========================================== -->
       <!-- 생년월일시 입력 폼 (결과가 없을 때) -->
       <!-- ========================================== -->
-      <div v-if="!result && !loading" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6">
-        <div class="text-center py-2 mb-4">
+      <div v-if="!result && !loading" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden">
+        <!-- Background Watermark (z-0) -->
+        <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/10 text-9xl font-serif-kr select-none pointer-events-none z-0">
+          命
+        </div>
+
+        <div class="relative z-10">
+          <div class="text-center py-2 mb-4">
           <span class="inline-block px-3 py-1 rounded-full bg-[var(--fortune-gold)]/10 border border-[var(--fortune-gold)]/30 pg-text-gold text-xs font-bold font-serif-kr mb-2">
             🔮 일일 사주명리
           </span>
@@ -630,6 +708,7 @@ const todayLunarText = computed(() => {
           </button>
         </div>
       </div>
+    </div>
 
       <!-- 로딩 화면 -->
       <div v-if="loading" class="pg-card border rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6">
@@ -649,27 +728,27 @@ const todayLunarText = computed(() => {
       <div v-if="result" class="space-y-4">
 
         <!-- 1. 내 명식 요약 지표 (1965년생 을사년 뱀띠 연동) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pg-card border rounded-2xl p-3 text-center text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pg-card border rounded-2xl p-3 text-center text-xs reveal-on-scroll">
           <div class="pg-card-inner p-2 rounded-xl border">
-            <span class="text-[10px] pg-text-soft block mb-0.5">내 출생년도 / 띠</span>
+            <span class="text-[10px] pg-text-bold block mb-0.5">내 출생년도 / 띠</span>
             <strong class="text-xs pg-text-gold-light font-serif-kr block truncate">
               {{ result.userSaju?.zodiacName || userZodiacInfo.zodiacName }}
             </strong>
           </div>
           <div class="pg-card-inner p-2 rounded-xl border">
-            <span class="text-[10px] pg-text-soft block mb-0.5">내 일간(태어난 날)</span>
+            <span class="text-[10px] pg-text-bold block mb-0.5">내 일간(태어난 날)</span>
             <strong class="text-xs pg-text font-serif-kr block">
               {{ result.userSaju?.ilgan }} ({{ result.userSaju?.ilganElement }})
             </strong>
           </div>
           <div class="pg-card-inner p-2 rounded-xl border">
-            <span class="text-[10px] pg-text-soft block mb-0.5">태어난 시지</span>
+            <span class="text-[10px] pg-text-bold block mb-0.5">태어난 시지</span>
             <strong class="text-xs pg-text font-serif-kr block">
               {{ result.userSaju?.siji }}시
             </strong>
           </div>
           <div class="pg-card-inner p-2 rounded-xl border">
-            <span class="text-[10px] pg-text-soft block mb-0.5">오늘의 일진</span>
+            <span class="text-[10px] pg-text-bold block mb-0.5">오늘의 일진</span>
             <strong class="text-xs pg-text-gold font-serif-kr block">
               {{ result.todaySaju?.ganzhi }}일 ({{ result.todaySaju?.shipsin }})
             </strong>
@@ -677,8 +756,14 @@ const todayLunarText = computed(() => {
         </div>
 
         <!-- 2. 중앙 종합 점수 & 원형 게이지 링 카드 -->
-        <div class="pg-card border rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl">
-          <!-- 상단 뱃지 -->
+        <div class="pg-card border rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl reveal-on-scroll">
+          <!-- Background Watermark (z-0) -->
+          <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/10 text-9xl font-serif-kr select-none pointer-events-none z-0">
+            命
+          </div>
+
+          <div class="relative z-10">
+            <!-- 상단 뱃지 -->
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-deep pg-border text-[11px] font-semibold pg-text-gold-light mb-5">
             <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--fortune-gold);"></span>
             오늘의 천기누설 · 총평 ✦
@@ -727,13 +812,14 @@ const todayLunarText = computed(() => {
           <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text-gold mb-2 leading-snug">
             "{{ sajuDynamicData.headline }}"
           </h2>
-          <p class="text-xs pg-text-muted font-light max-w-sm mx-auto leading-relaxed">
+          <p class="text-xs pg-text-muted font-bold max-w-sm mx-auto leading-relaxed">
             {{ sajuDynamicData.headlineSub }}
           </p>
         </div>
+      </div>
 
         <!-- 3. 영역별 세부 운세 2x2 Grid (이미지 2 1:1) -->
-        <div class="space-y-2.5">
+        <div class="space-y-2.5 reveal-on-scroll">
           <div class="flex justify-between items-center px-1">
             <h3 class="font-serif-kr text-sm font-bold pg-text flex items-center gap-1.5">
               <span class="pg-text-gold">✦</span> 영역별 세부 운세
@@ -813,7 +899,7 @@ const todayLunarText = computed(() => {
         </div>
 
         <!-- 4. 시간대별 일진(日辰) 흐름 (이미지 2 1:1) -->
-        <div class="pg-card border rounded-3xl p-5 shadow-lg">
+        <div class="pg-card border rounded-3xl p-5 shadow-lg reveal-on-scroll">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-serif-kr text-xs font-bold pg-text flex items-center gap-1.5">
               <UIcon name="i-heroicons-clock" class="w-4 h-4 pg-text-gold" />
@@ -823,34 +909,32 @@ const todayLunarText = computed(() => {
           </div>
 
           <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="pg-card-inner border rounded-2xl p-3">
-              <span class="text-[10px] pg-text-muted block mb-0.5">오전</span>
-              <span class="text-[10px] pg-text-soft block mb-1">08:00~12:00</span>
-              <div class="pg-text-gold text-xs font-bold mb-1">{{ sajuDynamicData.timeFlow.morning.stars }}</div>
-              <span class="text-[10px] pg-text-muted font-light">{{ sajuDynamicData.timeFlow.morning.desc }}</span>
-            </div>
-
-            <div class="pg-card-deep border pg-border-strong rounded-2xl p-3 relative shadow-md">
-              <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[9px] font-bold rounded-full bg-emerald-200 text-emerald-900 border border-emerald-300/60 dark:bg-[var(--fortune-gold)] dark:text-[#0F1226] dark:border-transparent transition-colors">
+            <div
+              v-for="item in timeFlowSlots"
+              :key="item.key"
+              :class="[
+                item.isPeak
+                  ? 'pg-card-deep border pg-border-strong relative shadow-md'
+                  : 'pg-card-inner border',
+                'rounded-2xl p-3'
+              ]"
+            >
+              <span
+                v-if="item.isPeak"
+                class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[11px] font-bold rounded-full bg-emerald-200 text-emerald-900 border border-emerald-300/60 dark:bg-[var(--fortune-gold)] dark:text-[#0F1226] dark:border-transparent transition-colors"
+              >
                 절정
               </span>
-              <span class="text-[10px] pg-text-gold block mb-0.5">오후</span>
-              <span class="text-[10px] pg-text-soft block mb-1">12:00~18:00</span>
-              <div class="pg-text-gold text-xs font-bold mb-1">{{ sajuDynamicData.timeFlow.afternoon.stars }}</div>
-              <span class="text-[10px] pg-text-gold font-medium">{{ sajuDynamicData.timeFlow.afternoon.desc }}</span>
-            </div>
-
-            <div class="pg-card-inner border rounded-2xl p-3">
-              <span class="text-[10px] pg-text-muted block mb-0.5">저녁</span>
-              <span class="text-[10px] pg-text-soft block mb-1">18:00~24:00</span>
-              <div class="pg-text-gold text-xs font-bold mb-1">{{ sajuDynamicData.timeFlow.evening.stars }}</div>
-              <span class="text-[10px] pg-text-muted font-light">{{ sajuDynamicData.timeFlow.evening.desc }}</span>
+              <span :class="[item.isPeak ? 'pg-text-gold' : 'pg-text-muted', 'text-[10px] block mb-0.5']">{{ item.label }}</span>
+              <span class="text-[10px] pg-text-soft block mb-1">{{ item.time }}</span>
+              <div class="pg-text-gold text-xs font-bold mb-1">{{ item.stars }}</div>
+              <span :class="[item.isPeak ? 'pg-text-gold font-bold' : 'pg-text-muted font-bold', 'text-[10px]']">{{ item.desc }}</span>
             </div>
           </div>
         </div>
 
         <!-- 5. 오늘의 조력 기운 (이미지 2 1:1) -->
-        <div class="space-y-2">
+        <div class="space-y-2 reveal-on-scroll">
           <span class="text-xs font-bold pg-text-muted flex items-center gap-1 px-1">
             <UIcon name="i-heroicons-chevron-left" class="w-3.5 h-3.5" />
             오늘의 조력 기운
@@ -858,13 +942,13 @@ const todayLunarText = computed(() => {
 
           <div class="grid grid-cols-3 gap-2.5">
             <div class="pg-card border rounded-2xl p-3 text-center">
-              <span class="text-[10px] pg-text-soft block mb-2">행운의 색</span>
+              <span class="text-[10px] pg-text-bold block mb-2">행운의 색</span>
               <div class="w-8 h-8 rounded-full mx-auto mb-2 border border-white/20 shadow-md" :style="{ backgroundColor: sajuDynamicData.luckyItems.colorHex }"></div>
               <span class="text-xs font-bold pg-text block truncate">{{ sajuDynamicData.luckyItems.colorName }}</span>
             </div>
 
             <div class="pg-card border rounded-2xl p-3 text-center">
-              <span class="text-[10px] pg-text-soft block mb-2">행운의 수</span>
+              <span class="text-[10px] pg-text-bold block mb-2">행운의 수</span>
               <div class="w-8 h-8 rounded-full pg-card-deep pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold text-xs font-bold">
                 #
               </div>
@@ -872,7 +956,7 @@ const todayLunarText = computed(() => {
             </div>
 
             <div class="pg-card border rounded-2xl p-3 text-center">
-              <span class="text-[10px] pg-text-soft block mb-2">행운의 방위</span>
+              <span class="text-[10px] pg-text-bold block mb-2">행운의 방위</span>
               <div class="w-8 h-8 rounded-full pg-card-deep border pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold shadow-xs">
                 <svg class="w-6 h-6 text-[var(--fortune-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
@@ -885,26 +969,33 @@ const todayLunarText = computed(() => {
         </div>
 
         <!-- 6. 오늘의 지혜 카드 (이미지 2 1:1) -->
-        <div class="pg-card-deep border pg-border-strong rounded-2xl p-5 shadow-lg">
+        <div class="pg-card-deep border pg-border-strong rounded-2xl p-5 shadow-lg reveal-on-scroll">
           <span class="text-xs font-bold pg-text-gold flex items-center gap-1 mb-2 font-serif-kr">
             ◆ 오늘의 지혜
           </span>
           <p class="font-serif-kr text-sm pg-text italic leading-relaxed mb-3">
             "{{ sajuDynamicData.wisdom }}"
           </p>
-          <p class="text-right text-[11px] pg-text-soft font-serif-kr">
+          <p class="text-right text-[11px] pg-text-bold font-serif-kr">
             — 마음에 새기는 화두
           </p>
         </div>
 
         <!-- 7. 세부 AI 보고서 본문 -->
-        <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl">
-          <h3 class="font-serif-kr text-base font-bold pg-text mb-4 border-b pg-border pb-3 flex items-center gap-2">
+        <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll">
+          <!-- Background Watermark (z-0) -->
+          <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/10 text-9xl font-serif-kr select-none pointer-events-none z-0">
+            命
+          </div>
+
+          <div class="relative z-10">
+            <h3 class="font-serif-kr text-base font-bold pg-text mb-4 border-b pg-border pb-3 flex items-center gap-2">
             <UIcon name="i-heroicons-document-text" class="w-5 h-5 pg-text-gold" />
             AI 맞춤 사주명리 보고서
           </h3>
           <div v-html="formattedInterpretation" class="markdown-body"></div>
         </div>
+      </div>
 
         <!-- 8. 하단 버튼 영역 (이미지 2 1:1) -->
         <div class="space-y-3 pt-2">
@@ -951,45 +1042,46 @@ const todayLunarText = computed(() => {
 
     </div>
 
-    <!-- 9. 하단 탭바 (이미지 2 1:1) -->
+    <!-- 9. 하단 탭바 -->
     <div class="fixed bottom-0 left-0 right-0 pg-bg backdrop-blur-md border-t pg-border z-50 py-2" style="background-color: var(--fortune-bg); opacity: 0.95;">
       <div class="max-w-md sm:max-w-lg mx-auto grid grid-cols-4 text-center px-4">
-        <button
-          type="button"
-          @click="activeTab = 'today'"
-          class="flex flex-col items-center gap-1 py-1 transition-colors pg-text-gold"
-        >
-          <UIcon name="i-heroicons-calendar-days" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">오늘</span>
-        </button>
-
-        <button
-          type="button"
-          @click="activeTab = 'weekly'"
+        <NuxtLink
+          to="/"
           class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
-          <UIcon name="i-heroicons-calendar" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">주간</span>
-        </button>
-
-        <button
-          type="button"
-          @click="activeTab = 'monthly'"
-          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
-        >
-          <UIcon name="i-heroicons-calendar" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">월간</span>
-        </button>
+          <UIcon name="i-heroicons-home" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">홈</span>
+        </NuxtLink>
 
         <NuxtLink
           to="/saju"
+          class="flex flex-col items-center gap-1 py-1 transition-colors pg-text-gold"
+        >
+          <UIcon name="i-heroicons-sparkles" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">오늘 사주</span>
+        </NuxtLink>
+
+        <NuxtLink
+          to="/iching"
           class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
         >
-          <UIcon name="i-heroicons-user" class="w-5 h-5" />
-          <span class="text-[10px] font-medium">내 정보</span>
+          <UIcon name="i-heroicons-sun" class="w-5 h-5" />
+          <span class="text-[10px] font-medium">오늘 주역</span>
         </NuxtLink>
+
+        <button
+          type="button"
+          @click="disclaimerModalRef?.openModal()"
+          class="flex flex-col items-center gap-1 py-1 pg-text-soft hover:pg-text-muted transition-colors"
+        >
+          <UIcon name="i-heroicons-shield-check" class="w-5 h-5 pg-text-gold" />
+          <span class="text-[10px] font-medium">면책조항</span>
+        </button>
       </div>
     </div>
+
+    <!-- 면책조항 & 개인정보 팝업 모달 -->
+    <DisclaimerModal ref="disclaimerModalRef" />
   </div>
 </template>
 
@@ -1017,5 +1109,18 @@ const todayLunarText = computed(() => {
 }
 .pg-hover-gold:hover {
   border-color: var(--fortune-gold);
+}
+
+/* 마우스 스크롤을 아래로 내릴 때 수직으로 스르륵 솟아오르는 효과 (Scroll Reveal) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
