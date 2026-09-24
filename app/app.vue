@@ -4,5 +4,6 @@
     <AppHeader />
     <NuxtPage />
     <PWAInstallPrompt />
+    <ScrollToTop />
   </UApp>
 </template>

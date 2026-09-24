@@ -430,8 +430,8 @@ onMounted(async () => {
 
       <!-- 3. GUIDANCE SECTION -->
       <section class="gold-filament-card p-6 sm:p-8 text-center">
-        <h3 class="font-serif-kr text-lg font-bold text-amber-700 dark:text-[#FFDE9E] mb-2">💡 운세를 지혜롭게 대하는 마음가짐</h3>
-        <p class="text-xs sm:text-sm text-slate-600 dark:text-[#d1c5b3] leading-relaxed max-w-2xl mx-auto font-light">
+        <h3 class="font-serif-kr sm:text-md lg:text-xl font-bold text-amber-700 dark:text-[#FFDE9E] mb-2">💡 운세를 지혜롭게 대하는 마음가짐</h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-[#d1c5b3] leading-relaxed max-w-2xl mx-auto font-bold">
           운세와 주역은 미래를 고정짓는 미신이 아니라 다가올 오늘 하루의 기운을 차분히 대비하는 마음의 거울입니다.<br>
           길한 운은 감사히 활용하고, 삼가야 할 조언은 지혜롭게 대비하는 나침반으로 사용해 보세요.
         </p>
