@@ -104,44 +104,9 @@ export default defineNuxtConfig({
     defaultLocale: 'ko'
   },
   sitemap: {
-    hostname: 'https://sajuapp.co.kr',
-    gzip: true,
     exclude: [
       '/admin/**',
       '/api/**'
-    ],
-    defaults: {
-      changefreq: 'daily',
-      priority: 0.8,
-      lastmod: new Date().toISOString()
-    },
-    urls: async () => {
-      return [
-        {
-          loc: '/',
-          changefreq: 'daily',
-          priority: 1.0,
-          lastmod: new Date().toISOString()
-        },
-        {
-          loc: '/saju',
-          changefreq: 'daily',
-          priority: 0.9,
-          lastmod: new Date().toISOString()
-        },
-        {
-          loc: '/iching',
-          changefreq: 'daily',
-          priority: 0.9,
-          lastmod: new Date().toISOString()
-        }
-      ]
-    }
-  },
-  robots: {
-    UserAgent: '*',
-    Allow: '/',
-    Disallow: ['/api/', '/admin/'],
-    Sitemap: 'https://sajuapp.co.kr/sitemap.xml'
+    ]
   }
 })
