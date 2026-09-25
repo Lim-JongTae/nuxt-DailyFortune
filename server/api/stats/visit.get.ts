@@ -112,6 +112,45 @@ export default defineEventHandler(async (event) => {
       stack: error.stack
     })
 
+    // Prepared statement 에러(42P05)인 경우 연결 재시도
+    if (error.code === '42P05') {
+      try {
+        await prisma.$disconnect()
+        console.log('[Visit Stats] Reconnecting after prepared statement error...')
+
+        const stats = await prisma.siteStats.findUnique({
+          where: { id: 1 }
+        })
+
+        if (stats) {
+          return {
+            success: true,
+            todayViews: stats.todayViews,
+            totalViews: stats.totalViews
+          }
+        }
+      } catch (retryError: any) {
+        console.error('[Visit Stats] Retry failed:', retryError.message)
+      }
+    }
+
+    // 재시도 실패 시 DB에서 최소한 현재 값이라도 가져오기 시도
+    try {
+      const stats = await prisma.siteStats.findUnique({
+        where: { id: 1 }
+      })
+
+      if (stats) {
+        return {
+          success: true,
+          todayViews: stats.todayViews,
+          totalViews: stats.totalViews
+        }
+      }
+    } catch (fallbackError) {
+      console.error('[Visit Stats] Fallback read failed')
+    }
+
     return {
       success: false,
       todayViews: 0,
