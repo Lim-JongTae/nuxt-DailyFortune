@@ -694,7 +694,7 @@ const copyToClipboard = () => {
       <!-- ========================================== -->
       <div v-if="currentStep === 0" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden reveal-on-scroll">
         <!-- Background Watermark (z-0) -->
-        <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+        <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
           易
         </div>
 
@@ -740,7 +740,7 @@ const copyToClipboard = () => {
       <!-- ========================================== -->
       <div v-if="currentStep >= 1 && currentStep <= 3" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden reveal-on-scroll">
         <!-- Background Watermark (z-0) -->
-        <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+        <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
           易
         </div>
 
@@ -796,7 +796,7 @@ const copyToClipboard = () => {
       <!-- ========================================== -->
       <div v-if="currentStep === 4" class="pg-card border rounded-3xl p-8 sm:p-10 text-center shadow-xl mb-6 relative overflow-hidden">
         <!-- Background Watermark (z-0) -->
-        <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+        <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
           易
         </div>
 
@@ -839,7 +839,7 @@ const copyToClipboard = () => {
         <!-- 2. 본괘 & 변괘 6효 카드 (이미지 메인 1:1) -->
         <div class="pg-card border rounded-3xl p-5 shadow-2xl relative overflow-hidden reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+          <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
             易
           </div>
 

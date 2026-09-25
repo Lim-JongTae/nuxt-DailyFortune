@@ -402,3 +402,21 @@ body {
 .dark .pg-watermark-text {
   color: rgba(232, 193, 112, 0.1);
 }
+
+/* 워터마크 배경 한자 동적 크기 조절(숨쉬기) 애니메이션 */
+@keyframes watermarkPulse {
+  0%, 100% {
+    transform: scale(0.95) rotate(0deg);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.15) rotate(2deg);
+    opacity: 1;
+  }
+}
+
+.animate-watermark-pulse {
+  animation: watermarkPulse 6s ease-in-out infinite;
+  transform-origin: center center;
+  display: inline-block;
+}

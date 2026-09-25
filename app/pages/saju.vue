@@ -732,7 +732,7 @@ watch(result, (newVal) => {
       <!-- ========================================== -->
       <div v-if="!result && !loading" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden">
         <!-- Background Watermark (z-0) -->
-        <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+        <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
           命
         </div>
 
@@ -895,7 +895,7 @@ watch(result, (newVal) => {
         <!-- 2. 중앙 종합 점수 & 원형 게이지 링 카드 -->
         <div class="pg-card border rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+          <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
             命
           </div>
 
@@ -1121,7 +1121,7 @@ watch(result, (newVal) => {
         <!-- 7. 세부 AI 보고서 본문 -->
         <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
+          <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
             命
           </div>
 
