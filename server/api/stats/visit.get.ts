@@ -155,7 +155,12 @@ export default defineEventHandler(async (event) => {
       success: false,
       todayViews: 0,
       totalViews: 0,
-      error: 'Failed to fetch visit stats'
+      error: 'Failed to fetch visit stats',
+      details: process.env.NODE_ENV === 'production' ? undefined : {
+        message: error.message,
+        code: error.code,
+        name: error.name
+      }
     }
   }
 })
