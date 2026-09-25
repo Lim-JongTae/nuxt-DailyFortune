@@ -1,7 +1,7 @@
 export async function callAiModel(prompt: string): Promise<{ text: string; isAiGenerated: boolean }> {
   const claudeEndPoint = (process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com').replace(/\/$/, '')
   const claudeApiKey = process.env.CLAUDE_API_KEY
-  const claudeModel = process.env.CLAUDE_MODEL || 'claude-sonnet-5'
+  const claudeModel = process.env.CLAUDE_MODEL || 'claude-3-5-sonnet-20241022'
   const geminiApiKey = process.env.GEMINI_API_KEY
 
   // Helper: fetch with timeout
@@ -50,7 +50,7 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
   // 2. Gemini API fallback attempt
   if (geminiApiKey) {
     try {
-      const response: any = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
+      const response: any = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         body: {
           contents: [

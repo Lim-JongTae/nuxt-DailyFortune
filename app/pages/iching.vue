@@ -112,6 +112,7 @@ const hexagramNames: Record<number, { nameKorean: string; nameHanji: string; des
 
 const store = useFortuneStore()
 const { ichingWorry: worry, ichingResult: result } = storeToRefs(store)
+const toast = useToast()
 
 const { formatMarkdown } = useMarkdownFormatter()
 
@@ -213,6 +214,12 @@ const startRitual = () => {
   upperTrigram.value = null
   selectedLine.value = null
   initTrigramSticks()
+  toast.add({
+    title: '☯️ 주역 괘 도출 시작',
+    description: '1단계: 마음을 가다듬고 하괘(下卦) 점대를 선택해 주세요.',
+    icon: 'i-heroicons-sparkles',
+    color: 'amber'
+  })
 }
 
 const handleStickClick = async (stick: any) => {
@@ -224,18 +231,36 @@ const handleStickClick = async (stick: any) => {
     setTimeout(() => {
       currentStep.value = 2
       initTrigramSticks()
+      toast.add({
+        title: '☯️ 2단계: 상괘(上卦) 선택',
+        description: '두 번째 대나무 점대를 선택해 주세요.',
+        icon: 'i-heroicons-sparkles',
+        color: 'amber'
+      })
     }, 1000)
   } else if (currentStep.value === 2) {
     upperTrigram.value = stick.trigram
     setTimeout(() => {
       currentStep.value = 3
       initLineSticks()
+      toast.add({
+        title: '☯️ 3단계: 동효(動爻) 선택',
+        description: '변화할 효(動爻) 점대를 선택해 주세요.',
+        icon: 'i-heroicons-sparkles',
+        color: 'amber'
+      })
     }, 1000)
   } else if (currentStep.value === 3) {
     selectedLine.value = stick.lineNum
     setTimeout(async () => {
       currentStep.value = 4
       loading.value = true
+      toast.add({
+        title: '☯️ 본괘와 변괘 맞추는 중...',
+        description: '384효 고전 원전과 AI 지혜 조언을 조율하고 있습니다.',
+        icon: 'i-heroicons-arrow-path',
+        color: 'neutral'
+      })
 
       const startTime = Date.now()
       const upper = upperTrigram.value
@@ -268,18 +293,45 @@ const handleStickClick = async (stick: any) => {
             result.value = res
             store.saveToLocalStorage()
             currentStep.value = 5
+            if (res.isAiGenerated) {
+              toast.add({
+                title: '✨ AI 주역 맞춤 분석 완료',
+                description: 'AI의 실시간 맞춤 괘사와 처세 조언이 도출되었습니다.',
+                icon: 'i-heroicons-sparkles',
+                color: 'emerald',
+                duration: 3500
+              })
+            } else {
+              toast.add({
+                title: '📜 고전 원전 괘 해설 도출',
+                description: '주역 64괘 및 384효 원천 DB 해설이 준비되었습니다.',
+                icon: 'i-heroicons-book-open',
+                color: 'amber',
+                duration: 3500
+              })
+            }
             if (res.hexagram) {
               fetchLikeStats(res.hexagram.id, res.hexagram.lineNumber)
             }
           } else {
-            alert(res.error || '오류가 발생했습니다.')
+            toast.add({
+              title: '오류 발생',
+              description: res.error || '운세를 불러오는 중 오류가 발생했습니다.',
+              icon: 'i-heroicons-exclamation-triangle',
+              color: 'rose'
+            })
             currentStep.value = 0
           }
           loading.value = false
         }, remainingTime)
       } catch (error) {
         console.error(error)
-        alert('서버 연결 중 오류가 발생했습니다.')
+        toast.add({
+          title: '서버 연결 오류',
+          description: '서버 연결 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+          icon: 'i-heroicons-exclamation-triangle',
+          color: 'rose'
+        })
         loading.value = false
         currentStep.value = 0
       }
@@ -565,8 +617,23 @@ const copyToClipboard = () => {
 나의 주역 괘 직접 점쳐보기: https://sajuapp.co.kr/iching`
 
   navigator.clipboard.writeText(shareText)
-    .then(() => alert('주역점 결과 보고서가 복사되었습니다! 카카오톡이나 SNS에 공유해보세요.'))
-    .catch(err => console.error(err))
+    .then(() => {
+      toast.add({
+        title: '📋 주역점 결과 복사 완료',
+        description: '결과 보고서가 복사되었습니다. 카카오톡이나 SNS에 공유해보세요!',
+        icon: 'i-heroicons-clipboard-document-check',
+        color: 'emerald'
+      })
+    })
+    .catch(err => {
+      console.error(err)
+      toast.add({
+        title: '복사 실패',
+        description: '클립보드 복사 중 오류가 발생했습니다.',
+        icon: 'i-heroicons-exclamation-triangle',
+        color: 'rose'
+      })
+    })
 }
 </script>
 
@@ -648,7 +715,7 @@ const copyToClipboard = () => {
         <div class="relative z-10">
           <div class="flex justify-between items-center mb-6 border-b pg-border pb-4">
             <div>
-              <span class="text-[10px] font-bold pg-text-gold tracking-wider uppercase block mb-0.5">TRADITIONAL DRAW</span>
+              <span class="text-[10px] font-bold pg-text-gold tracking-wider uppercase block mb-0.5"></span>
               <h2 class="font-serif-kr text-base font-bold pg-text">
                 <span v-if="currentStep === 1">1단계: 하괘(下卦) 선택</span>
                 <span v-if="currentStep === 2">2단계: 상괘(上卦) 선택</span>
@@ -723,7 +790,7 @@ const copyToClipboard = () => {
         <div class="pg-card border rounded-2xl p-4 relative reveal-on-scroll">
           <div class="flex justify-between items-start mb-2">
             <h2 class="font-serif-kr text-sm sm:text-base font-bold pg-text leading-snug">
-              "{{ worry || '새로운 일을 시작해도 될까요?' }}"
+              "{{ worry || '오늘 하루의 운세와 지혜' }}"
             </h2>
           </div>
           <div class="flex items-center justify-between text-[12px] pg-text-muted">
