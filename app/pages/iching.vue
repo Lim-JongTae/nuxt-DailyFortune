@@ -1133,16 +1133,32 @@ const copyToClipboard = () => {
           <div class="flex items-center gap-2">
             <span class="text-xs text-gray-800 dark:text-gray-200 font-medium">❤️ 오늘 <span class="font-bold text-amber-700 dark:text-amber-300">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
           </div>
-          <button
-            type="button"
-            @click="toggleLike"
-            :disabled="alreadyLiked"
-            class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
-            :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40 cursor-default' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
-          >
-            <UIcon :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'" class="w-4 h-4" />
-            <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
-          </button>
+          <div class="relative group shrink-0">
+            <!-- 이미 선택하였음을 알리는 말풍선 (Tooltip Bubble) -->
+            <div
+              v-if="alreadyLiked"
+              class="absolute -top-8 right-0 whitespace-nowrap bg-rose-950/90 dark:bg-rose-100 text-rose-200 dark:text-rose-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1"
+            >
+              <span>이미 선택하셨습니다</span>
+              <!-- 말풍선 꼬리 (삼각형) -->
+              <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-950/90 dark:bg-rose-100 rotate-45 border-r border-b border-rose-400/40"></span>
+            </div>
+
+            <button
+              type="button"
+              @click="toggleLike"
+              :disabled="alreadyLiked"
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
+              :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40 cursor-default' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
+            >
+              <UIcon
+                :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
+                class="w-4 h-4"
+                :class="alreadyLiked ? 'text-rose-500 animate-pulse' : ''"
+              />
+              <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
+            </button>
+          </div>
         </div>
 
         <!-- 8. 버튼 영역 (이미지 1:1) -->

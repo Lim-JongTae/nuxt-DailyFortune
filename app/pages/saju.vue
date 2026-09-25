@@ -585,10 +585,24 @@ const todayLunarText = computed(() => {
 // 공감 / 좋아요 로직
 const likeCount = ref(0)
 const alreadyLiked = ref(false)
+const showLikeTooltip = ref(false)
+const likeTooltipText = ref('')
+let likeTooltipTimer: any = null
+
+const triggerLikeTooltip = (msg: string) => {
+  likeTooltipText.value = msg
+  showLikeTooltip.value = true
+  if (likeTooltipTimer) clearTimeout(likeTooltipTimer)
+  likeTooltipTimer = setTimeout(() => {
+    showLikeTooltip.value = false
+  }, 1500)
+}
 
 const targetKey = computed(() => {
   if (!result.value) return 'saju_default'
-  return `saju_${result.value.dayGan}_${result.value.shipsin}`
+  const ilgan = result.value.userSaju?.ilgan || 'default'
+  const shipsin = result.value.todaySaju?.shipsin || 'default'
+  return `saju_${ilgan}_${shipsin}`
 })
 
 const fetchLikeStats = async () => {
@@ -604,6 +618,14 @@ const fetchLikeStats = async () => {
   }
 }
 
+const handleLikeClick = () => {
+  if (alreadyLiked.value) {
+    triggerLikeTooltip('이미 선택하셨습니다!')
+    return
+  }
+  toggleLike()
+}
+
 const toggleLike = async () => {
   if (alreadyLiked.value) return
   try {
@@ -614,6 +636,7 @@ const toggleLike = async () => {
     if (res?.success) {
       likeCount.value = res.likeCount ?? res.count ?? (likeCount.value + 1)
       alreadyLiked.value = true
+      triggerLikeTooltip('공감이 반영되었습니다! ❤️')
     }
   } catch (err) {
     console.error('Failed to toggle saju like:', err)
@@ -1116,16 +1139,32 @@ watch(result, (newVal) => {
           <div class="flex items-center gap-2">
             <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold text-amber-600 dark:text-[#FFDE9E]">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
           </div>
-          <button
-            type="button"
-            @click="toggleLike"
-            :disabled="alreadyLiked"
-            class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
-            :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40 cursor-default' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
-          >
-            <UIcon :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'" class="w-4 h-4" />
-            <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
-          </button>
+          <div class="relative group shrink-0" @click="handleLikeClick">
+            <!-- 1.5초 후 사라지는 이벤트 말풍선 (Tooltip Bubble) -->
+            <Transition name="fade-slide">
+              <div
+                v-if="showLikeTooltip"
+                class="absolute -top-9 right-0 whitespace-nowrap bg-rose-950/90 dark:bg-rose-100 text-rose-200 dark:text-rose-950 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 z-20"
+              >
+                <span>{{ likeTooltipText }}</span>
+                <!-- 말풍선 꼬리 (삼각형) -->
+                <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-950/90 dark:bg-rose-100 rotate-45 border-r border-b border-rose-400/40"></span>
+              </div>
+            </Transition>
+
+            <button
+              type="button"
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0 select-none cursor-pointer"
+              :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95'"
+            >
+              <UIcon
+                :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
+                class="w-4 h-4"
+                :class="alreadyLiked ? 'text-rose-500 animate-pulse' : ''"
+              />
+              <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
+            </button>
+          </div>
         </div>
 
         <!-- 8. 하단 버튼 영역 (이미지 2 1:1) -->
