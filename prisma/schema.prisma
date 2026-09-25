@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // 주역 64괘 정보
@@ -70,6 +69,32 @@ model SajuJiji {
   createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("saju_jijis")
+}
+
+// 60일주 (갑자 ~ 계해) 원천 데이터
+model SajuIlju {
+  id              String   @id @default(uuid())
+  order           Int      @unique // 육십갑자 순번 1~60
+  ganzhi          String   @unique // 예: "갑자"
+  ganzhiHanja     String   @map("ganzhi_hanja") // 예: "甲子"
+
+  stemHanja       String   @map("stem_hanja")   // 예: "甲"
+  stemElement     String   @map("stem_element") // 예: "양목(陽木)"
+  branchHanja     String   @map("branch_hanja") // 예: "子"
+  branchElement   String   @map("branch_element") // 예: "양수(陽水)"
+
+  character       String   @map("character")      // 일주 고유 성향 및 심성
+  careerFortune   String   @map("career_fortune") // 직업·학업운 및 적성
+  wealthFortune   String   @map("wealth_fortune") // 재물운 및 축재 특성
+  romanceAdvice   String   @map("romance_advice") // 애정운 및 대인관계 조언
+  healthFortune   String   @map("health_fortune") // 건강운 및 체질적 조심점
+
+  rawAnalysis     Json?    @map("raw_analysis")    // 물상론/십신/12운성/신살 원자료
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt      @map("updated_at")
+
+  @@map("saju_iljus")
 }
 
 // 어뷰징 및 쿼터 방지 IP 사용 제한 기록

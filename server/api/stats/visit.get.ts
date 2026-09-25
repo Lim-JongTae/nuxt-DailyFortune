@@ -1,4 +1,4 @@
-import { defineEventHandler, getCookie, setCookie, getRequestIP } from 'h3'
+import { defineEventHandler, getCookie, setCookie } from 'h3'
 import prisma from '../../utils/prisma'
 
 export default defineEventHandler(async (event) => {
@@ -7,39 +7,81 @@ export default defineEventHandler(async (event) => {
     const kstOffset = 9 * 60 * 60 * 1000 // KST UTC+9
     const todayKstStr = new Date(nowUtc + kstOffset).toISOString().split('T')[0] || ''
 
-    const db = (prisma as any).siteStats
-    let stats = await db.findUnique({
-      where: { id: 1 }
-    })
-
-    // 데이터가 없거나 KST 날짜가 바뀌었을 경우 카운트 초기화 및 업데이트
-    if (!stats) {
-      stats = await db.create({
-        data: {
-          id: 1,
-          totalViews: 1, // 첫 기점 1부터 시작
-          todayViews: 1,
-          todayDate: todayKstStr
-        }
-      })
-    } else if (stats.todayDate !== todayKstStr) {
-      // 자정(00:00) 경과 시 오늘 방문자 수 0으로 리셋 후 1 시작
-      stats = await db.update({
-        where: { id: 1 },
-        data: {
-          todayViews: 1,
-          todayDate: todayKstStr
-        }
-      })
-    }
-
-    // 중복 카운트 방지 쿠키 확인
+    // 중복 카운트 방지 쿠키 먼저 확인
     const cookieName = 'fortune_visited_today'
     const hasVisitedCookie = getCookie(event, cookieName)
 
+    let stats = await prisma.siteStats.findUnique({
+      where: { id: 1 }
+    })
+
+    // 데이터가 없으면 초기 생성
+    if (!stats) {
+      stats = await prisma.siteStats.create({
+        data: {
+          id: 1,
+          totalViews: hasVisitedCookie ? 0 : 1,
+          todayViews: hasVisitedCookie ? 0 : 1,
+          todayDate: todayKstStr
+        }
+      })
+
+      if (!hasVisitedCookie) {
+        setCookie(event, cookieName, todayKstStr, {
+          maxAge: 24 * 60 * 60,
+          path: '/'
+        })
+      }
+
+      console.log('[Visit Stats] Initial create:', {
+        todayViews: stats.todayViews,
+        totalViews: stats.totalViews
+      })
+
+      return {
+        success: true,
+        todayViews: stats.todayViews,
+        totalViews: stats.totalViews
+      }
+    }
+
+    // 날짜가 바뀌었는지 확인
+    const dateChanged = stats.todayDate !== todayKstStr
+
+    // 날짜가 바뀌었으면 todayViews 리셋
+    if (dateChanged) {
+      stats = await prisma.siteStats.update({
+        where: { id: 1 },
+        data: {
+          todayViews: hasVisitedCookie ? 0 : 1,
+          todayDate: todayKstStr,
+          totalViews: hasVisitedCookie ? stats.totalViews : { increment: 1 }
+        }
+      })
+
+      if (!hasVisitedCookie) {
+        setCookie(event, cookieName, todayKstStr, {
+          maxAge: 24 * 60 * 60,
+          path: '/'
+        })
+      }
+
+      console.log('[Visit Stats] Date changed:', {
+        date: todayKstStr,
+        todayViews: stats.todayViews,
+        totalViews: stats.totalViews
+      })
+
+      return {
+        success: true,
+        todayViews: stats.todayViews,
+        totalViews: stats.totalViews
+      }
+    }
+
+    // 같은 날짜 && 쿠키 없음 → 새 방문자
     if (!hasVisitedCookie) {
-      // 새로운 방문일 경우 카운트 +1 증가
-      stats = await db.update({
+      stats = await prisma.siteStats.update({
         where: { id: 1 },
         data: {
           totalViews: { increment: 1 },
@@ -47,10 +89,14 @@ export default defineEventHandler(async (event) => {
         }
       })
 
-      // KST 자정까지 유효한 방문 쿠키 설정
       setCookie(event, cookieName, todayKstStr, {
         maxAge: 24 * 60 * 60,
         path: '/'
+      })
+
+      console.log('[Visit Stats] New visitor:', {
+        todayViews: stats.todayViews,
+        totalViews: stats.totalViews
       })
     }
 
@@ -60,16 +106,17 @@ export default defineEventHandler(async (event) => {
       totalViews: stats.totalViews
     }
   } catch (error: any) {
-    // DB 연결 예외 발생 시 디폴트 카운트 제공
-    const nowUtc = Date.now()
-    const kstOffset = 9 * 60 * 60 * 1000
-    const todayKstStr = new Date(nowUtc + kstOffset).toISOString().split('T')[0] || ''
-    const daySeed = parseInt(todayKstStr.replace(/-/g, ''), 10) % 500
-    
+    console.error('[Visit Stats] Error:', {
+      error: error.message,
+      code: error.code,
+      stack: error.stack
+    })
+
     return {
-      success: true,
-      todayViews: 1,
-      totalViews: 1
+      success: false,
+      todayViews: 0,
+      totalViews: 0,
+      error: 'Failed to fetch visit stats'
     }
   }
 })

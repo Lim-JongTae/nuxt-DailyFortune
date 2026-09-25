@@ -36,7 +36,7 @@ onMounted(async () => {
       <NuxtLink to="/" class="flex items-center gap-2 sm:gap-3 group shrink-0">
         <div class="flex items-center gap-1.5 sm:gap-2">
           <span class="font-serif-kr text-base sm:text-xl font-bold text-amber-700 dark:text-[#FFDE9E] tracking-wider group-hover:text-amber-800 dark:group-hover:text-white transition-colors">
-            일일운세 ✦ 天命
+            일일운세 ✦
           </span>
           <span class="seal-stamp text-[9px] sm:text-[10px] px-1.5 py-0.5" title="천명인 (天命印)">天命</span>
         </div>
@@ -50,7 +50,7 @@ onMounted(async () => {
           <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
         <span class="font-medium text-[11px] sm:text-xs tracking-tight">
-          오늘 방문자 <span class="font-bold text-amber-600 dark:text-[#FFDE9E] animate-pulse">{{ todayViews.toLocaleString() }}</span>명
+          오늘 방문자 <span class="font-bold text-amber-600 dark:text-[#FFDE9E] animate-pulse">{{ todayViews.toLocaleString() }}</span>  명
         </span>
       </div>
 

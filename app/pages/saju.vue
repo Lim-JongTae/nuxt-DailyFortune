@@ -4,14 +4,46 @@ import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 import { getGanzhiOfDay, getGanzhiOfYear, getTodayLunarDateString } from '~/utils/saju'
 
+const runtimeConfig = useRuntimeConfig()
+const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/saju`
+
 useSeoMeta({
-  title: '일일 사주명리 - 오늘의 운세 | sajuapp.co.kr',
+  title: '일일 사주명리 - 오늘의 운세',
   description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
-  ogTitle: '일일 사주명리 - 오늘의 운세 | sajuapp.co.kr',
+  ogTitle: '일일 사주명리 - 오늘의 운세',
   ogDescription: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
-  ogImage: '/seo-1-edut.png',
+  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`,
+  ogUrl: pageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: '/seo-1-edut.png'
+  twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`
+})
+
+useHead({
+  link: [
+    { rel: 'canonical', href: pageUrl }
+  ],
+  script: [
+    {
+      type: 'application/ld+json' as const,
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: '일일 사주명리',
+        description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
+        url: pageUrl,
+        isPartOf: {
+          '@type': 'WebSite',
+          name: '일일운세 ✦ 天命',
+          url: runtimeConfig.public?.siteUrl || 'https://sajuapp.co.kr'
+        },
+        about: {
+          '@type': 'Thing',
+          name: '사주명리학',
+          description: '60일주론과 오행 생극제화를 기반으로 한 명리학적 운세 분석'
+        }
+      })
+    }
+  ]
 })
 
 const store = useFortuneStore()
@@ -67,6 +99,12 @@ const userZodiacInfo = computed(() => {
     zodiacName: `${y}년 ${fullName}년 ${animals[bIdx]}`,
     branchIdx: bIdx
   }
+})
+
+const otherZodiacZhi = computed(() => {
+  const currentBranchIdx = userZodiacInfo.value?.branchIdx
+  if (currentBranchIdx === undefined) return zodiacZhi
+  return zodiacZhi.filter(item => item.branchIdx !== currentBranchIdx)
 })
 
 const getWesternAge = (y: number, m: number, d: number): number => {
@@ -644,7 +682,7 @@ watch(result, (newVal) => {
             <span>{{ userZodiacInfo.zodiacName }}</span>
           </button>
           <button
-            v-for="z in zodiacZhi.filter(item => item.branchIdx !== userZodiacInfo.branchIdx)"
+            v-for="z in otherZodiacZhi"
             :key="z.branchIdx"
             type="button"
             class="shrink-0 px-3 py-1.5 rounded-full text-xs font-serif-kr flex items-center gap-1.5 transition-all pg-chip border"
@@ -671,7 +709,7 @@ watch(result, (newVal) => {
       <!-- ========================================== -->
       <div v-if="!result && !loading" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden">
         <!-- Background Watermark (z-0) -->
-        <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/10 text-9xl font-serif-kr select-none pointer-events-none z-0">
+        <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
           命
         </div>
 
@@ -776,7 +814,7 @@ watch(result, (newVal) => {
 
           <button
             type="button"
-            class="w-full py-3.5 rounded-full font-bold text-sm text-[#0F1226] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            class="w-full py-3.5 rounded-full font-bold text-sm text-[#0F1226] bg-gradient-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
             @click="startSajuFortune"
           >
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#0F1226]" />
@@ -834,7 +872,7 @@ watch(result, (newVal) => {
         <!-- 2. 중앙 종합 점수 & 원형 게이지 링 카드 -->
         <div class="pg-card border rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/10 text-9xl font-serif-kr select-none pointer-events-none z-0">
+          <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
             命
           </div>
 
@@ -859,7 +897,7 @@ watch(result, (newVal) => {
                 stroke-linecap="round"
                 :stroke-dasharray="283"
                 :stroke-dashoffset="isAnimated ? sajuScores.strokeDash : 283"
-                class="transition-all duration-[2000ms] ease-out"
+                class="transition-all duration-2000ms ease-out"
               />
               <defs>
                 <linearGradient id="goldGradientSaju" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -917,7 +955,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.wealthScore}%` : '0%' }"></div>
+                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.wealthScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -934,7 +972,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.loveScore}%` : '0%' }"></div>
+                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.loveScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -951,7 +989,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.healthScore}%` : '0%' }"></div>
+                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.healthScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -968,7 +1006,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-[2000ms] ease-out" :style="{ width: isAnimated ? `${sajuScores.businessScore}%` : '0%' }"></div>
+                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.businessScore}%` : '0%' }"></div>
               </div>
             </div>
           </div>
@@ -997,7 +1035,7 @@ watch(result, (newVal) => {
             >
               <span
                 v-if="item.isPeak"
-                class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[11px] font-bold rounded-full bg-emerald-200 text-emerald-900 border border-emerald-300/60 dark:bg-[var(--fortune-gold)] dark:text-[#0F1226] dark:border-transparent transition-colors"
+                class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[11px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60 dark:bg-amber-500 dark:text-amber-950 dark:border-amber-400 transition-colors"
               >
                 절정
               </span>
@@ -1060,7 +1098,7 @@ watch(result, (newVal) => {
         <!-- 7. 세부 AI 보고서 본문 -->
         <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/10 text-9xl font-serif-kr select-none pointer-events-none z-0">
+          <div class="absolute -right-3 -top-5 pg-watermark-text text-9xl font-serif-kr select-none pointer-events-none z-0">
             命
           </div>
 
@@ -1083,7 +1121,7 @@ watch(result, (newVal) => {
             @click="toggleLike"
             :disabled="alreadyLiked"
             class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
-            :class="alreadyLiked ? 'bg-amber-500/20 text-amber-600 dark:text-[#FFDE9E] border border-amber-500/40 cursor-default' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
+            :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40 cursor-default' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
           >
             <UIcon :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'" class="w-4 h-4" />
             <span>{{ alreadyLiked ? '공감 완료' : '좋아요' }}</span>
@@ -1094,7 +1132,7 @@ watch(result, (newVal) => {
         <div class="space-y-3 pt-2">
           <button
             type="button"
-            class="w-full py-4 rounded-full font-bold text-sm text-[#0F1226] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            class="w-full py-4 rounded-full font-bold text-sm text-[#0F1226] bg-gradient-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
             @click="copyToClipboard"
           >
             <UIcon name="i-heroicons-share" class="w-5 h-5 text-[#0F1226]" />
@@ -1127,7 +1165,8 @@ watch(result, (newVal) => {
           </p>
         </div>
 
-        <div class="flex justify-center my-4">
+        <!-- AdSense: AI 결과가 있을 때만 표시 (Google 정책 준수) -->
+        <div v-if="result && result.aiInterpretation" class="flex justify-center my-4">
           <AdSense adSlot="8877665544" />
         </div>
 
@@ -1175,6 +1214,22 @@ watch(result, (newVal) => {
 
     <!-- 면책조항 & 개인정보 팝업 모달 -->
     <DisclaimerModal ref="disclaimerModalRef" />
+
+    <!-- AI 정밀 분석 진행 상태 Toast 프로그레스 바 -->
+    <AiLoadingProgress
+      :show="loading"
+      title="오늘의 사주명리 정밀 분석 중"
+      subtitle="60일주 원천 데이터와 오행 생극제화를 정밀 분석하느라 약 30~35초가 소요됩니다."
+      :estimated-seconds="35"
+      icon="🔮"
+      :tips="[
+        '💡 사주명리학에서 일주(日柱)는 나 자신의 본연의 심성과 그릇을 상징합니다.',
+        '✨ 오늘의 일진과 내 일주 간의 오행 조화는 하루의 에너지 흐름을 결정합니다.',
+        '🌿 지장간(支藏干)은 지지 속에 숨겨진 천간의 기운으로 내면의 잠재력을 의미합니다.',
+        '🌟 12운성은 일간의 생로병사 기운의 왕성함과 쇠퇴함을 나타냅니다.',
+        '🎯 명리적 조언을 삶의 지혜로 활용하면 다가올 난관을 지혜롭게 피할 수 있습니다.'
+      ]"
+    />
   </div>
 </template>
 

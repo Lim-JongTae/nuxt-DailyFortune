@@ -3,6 +3,30 @@ import path from 'path'
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
 
+// 384효 데이터 캐싱 (서버 시작 시 한 번만 로드)
+let cachedLines: any[] | null = null
+
+function loadIchingLines(): any[] {
+  if (cachedLines !== null) {
+    return cachedLines
+  }
+
+  try {
+    const jsonPath = path.resolve(process.cwd(), 'prisma/iching_384_lines.json')
+    if (fs.existsSync(jsonPath)) {
+      const rawJson = fs.readFileSync(jsonPath, 'utf8')
+      cachedLines = JSON.parse(rawJson)
+      console.log('[I Ching] Loaded 384 lines data successfully')
+      return cachedLines
+    }
+  } catch (e: any) {
+    console.error('[I Ching] Failed to load 384 lines data:', e.message)
+  }
+
+  cachedLines = []
+  return cachedLines
+}
+
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event) || {}
@@ -28,22 +52,32 @@ export default defineEventHandler(async (event) => {
 
     const clientIp = getRequestIP(event, { xForwardedFor: true }) || '127.0.0.1'
     if (!isDev) {
-      const dbLimit = await prisma.fortuneRateLimit.findFirst({
-        where: {
-          ip: clientIp,
-          type: 'iching',
-          createdAt: {
-            gte: new Date(now - limitDurationMs)
+      try {
+        const dbLimit = await prisma.fortuneRateLimit.findFirst({
+          where: {
+            ip: clientIp,
+            type: 'iching',
+            createdAt: {
+              gte: new Date(now - limitDurationMs)
+            }
           }
-        }
-      })
+        })
 
-      if (dbLimit) {
-        const timeDiff = now - dbLimit.createdAt.getTime()
-        const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
-        throw createError({
-          statusCode: 429,
-          statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 주역 괘를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
+        if (dbLimit) {
+          const timeDiff = now - dbLimit.createdAt.getTime()
+          const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
+          throw createError({
+            statusCode: 429,
+            statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 주역 괘를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
+          })
+        }
+      } catch (err: any) {
+        // Rate limit 에러는 다시 throw
+        if (err?.statusCode === 429) throw err
+        // DB 연결 에러는 로그만 하고 계속 진행
+        console.warn('[Rate Limit DB Check] Error, bypassing:', {
+          error: err.message,
+          ip: clientIp
         })
       }
     }
@@ -62,25 +96,16 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // 384효(爻) 원문 데이터 로드 (JSON 기반 룩업)
-    let lineDetail: any = null
-    try {
-      const jsonPath = path.resolve(process.cwd(), 'prisma/iching_384_lines.json')
-      if (fs.existsSync(jsonPath)) {
-        const rawJson = fs.readFileSync(jsonPath, 'utf8')
-        const allLines = JSON.parse(rawJson)
-        lineDetail = allLines.find((l: any) => l.hexagramId === hexagramId && l.lineNumber === lineNumber)
-      }
-    } catch (e) {
-      console.warn('Failed to load iching_384_lines.json:', e)
-    }
+    // 384효(爻) 원문 데이터 로드 (캐싱된 데이터 사용)
+    const allLines = loadIchingLines()
+    const lineDetail = allLines.find((l: any) => l.hexagramId === hexagramId && l.lineNumber === lineNumber)
 
     const lineHanjaText = lineDetail?.textHanja || `${hexagram.nameHanji} ${lineNumber}爻`
     const lineKoreanText = lineDetail?.textKorean || `${lineNumber}번째 효사 기운`
     const lineModernAdvice = lineDetail?.modernAdvice || ''
 
     // 5. AI 모델 호출 (Claude / Gemini 통합)
-    const prompt = `당신은 주역(I Ching)과 명리학에 정통한 고결한 역학자입니다. 
+    const prompt = `당신은 주역(I Ching)과 명리학에 정통한 고결한 역학자입니다.
 사용자가 직접 점대를 뽑아 조합한 주역 괘의 괘사와 효사 정보를 바탕으로, 사용자의 고민에 대해 깊이 있는 해설과 행동 지침을 조언해 주어야 합니다.
 어조는 신뢰감을 주며 따뜻하고 정중한 높임말을 사용하고, 너무 미신적인 단정보다는 지혜로운 조언 형태로 답해주십시오.
 
@@ -141,12 +166,26 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
 *조금 더 상세하고 개인화된 조언을 원하시면 나중에 다시 시도해 주세요.*`
     }
 
-    await prisma.fortuneRateLimit.create({
-      data: {
-        ip: clientIp,
-        type: 'iching'
+    // Rate limit 기록 저장
+    if (!isDev) {
+      try {
+        await prisma.fortuneRateLimit.create({
+          data: {
+            ip: clientIp,
+            type: 'iching'
+          }
+        })
+      } catch (err: any) {
+        // 중복 키 에러가 아닌 경우만 로그
+        if (err.code !== 'P2002') {
+          console.warn('[Rate Limit DB Insert] Error:', {
+            error: err.message,
+            code: err.code,
+            ip: clientIp
+          })
+        }
       }
-    })
+    }
 
     setCookie(event, cookieName, String(now), {
       maxAge: 10 * 24 * 60 * 60,
@@ -175,9 +214,24 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
     }
 
   } catch (error: any) {
+    // createError로 생성된 에러는 상태 코드 포함
+    const statusCode = error.statusCode || 500
+    const statusMessage = error.statusMessage || error.message || '서버 오류가 발생했습니다.'
+
+    console.error('[I Ching API Error]', {
+      statusCode,
+      message: statusMessage,
+      stack: error.stack
+    })
+
+    // Rate limit 에러는 명시적으로 throw
+    if (statusCode === 429) {
+      throw error
+    }
+
     return {
       success: false,
-      error: error.message || '서버 오류가 발생했습니다.'
+      error: statusMessage
     }
   }
 })

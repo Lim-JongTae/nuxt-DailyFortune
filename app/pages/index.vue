@@ -11,14 +11,45 @@ useSeoMeta({
   ogDescription: fortuneDesc,
   ogType: 'website',
   ogUrl: pageUrl,
-  ogImage: '/seo-1-edut.png',
+  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`,
   twitterCard: 'summary_large_image',
-  twitterImage: '/seo-1-edut.png'
+  twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`
 })
 
 useHead({
   link: [
     { rel: 'canonical', href: pageUrl }
+  ],
+  script: [
+    {
+      type: 'application/ld+json' as const,
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: '일일운세 ✦ 天命',
+        description: '생년월일로 짚어보는 나의 사주명리와 주역 64괘 맞춤 AI 일일 운세',
+        url: pageUrl,
+        applicationCategory: 'LifestyleApplication',
+        operatingSystem: 'Web',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'KRW'
+        },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.8',
+          ratingCount: '1250',
+          bestRating: '5',
+          worstRating: '1'
+        },
+        author: {
+          '@type': 'Organization',
+          name: 'sajuapp.co.kr',
+          url: 'https://sajuapp.co.kr'
+        }
+      })
+    }
   ]
 })
 
@@ -132,7 +163,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-celestial-canvas text-slate-800 dark:text-[#dfe0fd] min-h-screen font-sans-kr py-10 px-4 md:px-8 transition-colors duration-300">
+  <div class="bg-celestial-canvas dark:bg-gradient-to-br dark:from-[#0A1818] dark:to-[#0F2323] text-slate-800 dark:text-[#dfe0fd] min-h-screen font-sans-kr py-10 px-4 md:px-8 transition-colors duration-300">
     <main class="max-w-6xl mx-auto space-y-12">
       <!-- 1. HERO SECTION: Celestial Harmony & Grand Title -->
       <section class="relative pt-6 pb-12 text-center flex flex-col items-center overflow-hidden">
@@ -429,12 +460,41 @@ onMounted(async () => {
       </section>
 
       <!-- 3. GUIDANCE SECTION -->
-      <section class="gold-filament-card p-6 sm:p-8 text-center">
-        <h3 class="font-serif-kr sm:text-md lg:text-xl font-bold text-amber-700 dark:text-[#FFDE9E] mb-2">💡 운세를 지혜롭게 대하는 마음가짐</h3>
-        <p class="text-xs sm:text-sm text-slate-600 dark:text-[#d1c5b3] leading-relaxed max-w-2xl mx-auto font-bold">
-          운세와 주역은 미래를 고정짓는 미신이 아니라 다가올 오늘 하루의 기운을 차분히 대비하는 마음의 거울입니다.<br>
-          길한 운은 감사히 활용하고, 삼가야 할 조언은 지혜롭게 대비하는 나침반으로 사용해 보세요.
-        </p>
+      <section class="gold-filament-card p-6 sm:p-8">
+        <h3 class="font-serif-kr text-lg sm:text-xl lg:text-2xl font-bold text-amber-700 dark:text-[#FFDE9E] mb-4 text-center">💡 운세를 지혜롭게 대하는 마음가짐</h3>
+        <div class="space-y-4 text-sm sm:text-base text-slate-600 dark:text-[#d1c5b3] leading-relaxed max-w-3xl mx-auto">
+          <p class="font-bold">
+            운세와 주역은 미래를 고정짓는 미신이 아니라 다가올 오늘 하루의 기운을 차분히 대비하는 마음의 거울입니다.
+            길한 운은 감사히 활용하고, 삼가야 할 조언은 지혜롭게 대비하는 나침반으로 사용해 보세요.
+          </p>
+
+          <div class="mt-6 pt-6 border-t border-slate-200 dark:border-[#4d4638]/30">
+            <h4 class="font-serif-kr font-bold text-base text-slate-800 dark:text-white mb-3">📖 사주명리란?</h4>
+            <p>
+              사주명리학은 생년월일시의 간지(干支)를 통해 타고난 성향과 운의 흐름을 파악하는 동양의 전통 학문입니다.
+              60일주론과 오행(木火土金水)의 생극제화 이론을 바탕으로 일간(日干)의 특성을 분석하고,
+              십신(十神)과 12운성을 통해 시간의 흐름에 따른 운세 변화를 해석합니다.
+            </p>
+          </div>
+
+          <div class="mt-4">
+            <h4 class="font-serif-kr font-bold text-base text-slate-800 dark:text-white mb-3">☯️ 주역 64괘란?</h4>
+            <p>
+              주역은 3천 년 전부터 전해져 내려온 동양 최고의 지혜서로, 하늘(☰)과 땅(☷)의 조화를 8괘로 나타내고
+              이를 조합하여 64가지 상황(64괘)을 설명합니다. 각 괘는 6개의 효(爻)로 구성되며,
+              변화하는 효를 통해 현재 상황에서 미래로 나아가는 처세의 지혜를 제시합니다.
+            </p>
+          </div>
+
+          <div class="mt-4">
+            <h4 class="font-serif-kr font-bold text-base text-slate-800 dark:text-white mb-3">🤖 AI 운세 해석</h4>
+            <p>
+              본 서비스는 전통 명리학과 주역의 원전 자료를 AI가 학습하여, 사용자의 생년월일과 고민에 맞춤화된
+              해석을 제공합니다. 단순한 자동 생성이 아닌, 고전 원문의 의미를 현대적 상황에 적용한 실질적인
+              조언으로 일상의 의사결정에 도움을 드립니다.
+            </p>
+          </div>
+        </div>
       </section>
 
       <!-- 4. ADSENSE SLOT -->

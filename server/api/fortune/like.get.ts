@@ -7,11 +7,16 @@ export default defineEventHandler(async (event) => {
     const type = String(query.type || 'iching')
     const targetKey = String(query.targetKey || 'default')
 
-    const db = (prisma as any).fortuneLike
     let count = 0
-    if (db) {
-      count = await db.count({
+    try {
+      count = await prisma.fortuneLike.count({
         where: { type, targetKey }
+      })
+    } catch (dbErr: any) {
+      console.warn('[Like Get] DB count error:', {
+        error: dbErr.message,
+        type,
+        targetKey
       })
     }
 
@@ -24,6 +29,10 @@ export default defineEventHandler(async (event) => {
       alreadyLiked
     }
   } catch (error: any) {
+    console.error('[Like Get] Error:', {
+      error: error.message,
+      stack: error.stack
+    })
     return {
       success: true,
       likeCount: 0,

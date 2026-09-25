@@ -19,23 +19,30 @@ export default defineEventHandler(async (event) => {
 
     let count = 0
     try {
-      const db = (prisma as any).fortuneLike
-      if (db) {
-        if (!hasLiked) {
-          await db.create({
-            data: {
-              type,
-              targetKey,
-              ip: clientIp
-            }
-          })
-        }
-        count = await db.count({
-          where: { type, targetKey }
+      // 쿠키로 이미 좋아요를 눌렀는지 확인 후 DB 저장
+      if (!hasLiked) {
+        await prisma.fortuneLike.create({
+          data: {
+            type,
+            targetKey,
+            ip: clientIp
+          }
         })
+        console.log('[Like Post] Created:', { type, targetKey, ip: clientIp })
       }
-    } catch (dbErr) {
-      console.warn('[Like API DB Fallback]', dbErr)
+
+      // 좋아요 개수 조회
+      count = await prisma.fortuneLike.count({
+        where: { type, targetKey }
+      })
+    } catch (dbErr: any) {
+      console.warn('[Like Post] DB error:', {
+        error: dbErr.message,
+        code: dbErr.code,
+        type,
+        targetKey,
+        ip: clientIp
+      })
     }
 
     // 쿠키 설정 (30일 유효)
@@ -50,6 +57,10 @@ export default defineEventHandler(async (event) => {
       likeCount: count
     }
   } catch (error: any) {
+    console.error('[Like Post] Error:', {
+      error: error.message,
+      stack: error.stack
+    })
     return {
       success: false,
       error: error.message || '좋아요 처리 중 오류가 발생했습니다.'

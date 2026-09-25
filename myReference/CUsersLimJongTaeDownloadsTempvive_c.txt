@@ -35,3 +35,17 @@ https://aiapiflow.com/docs
 일주별(日柱) 오행, 신살, 십신 및 고전 명리학 성향 데이터 정밀 구조화
 AI 사주 분석 프롬프트 레퍼런스 고도화:
 사용자 일주와 오늘 일진 간의 상생/상극 및 십신 조화를 Gemini AI가 깊이 있게 해석하도록 지침 보완
+
+🔄 워크플로우:
+
+# 1. 스키마 수정
+vi prisma/schema.prisma
+
+# 2. Prisma Client 재생성
+npx prisma generate
+
+# 3. DB 마이그레이션 (필요시)
+npx prisma migrate dev
+
+# 4. 개발 서버 재시작
+npm run dev
