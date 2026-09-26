@@ -262,10 +262,8 @@ const startSajuFortune = async () => {
 
     if (statusCode === 429) {
       toast.clear()
-      // 1일 1회 조회 제한 - 기존 결과가 없으면 로컬 스토리지에서 복원 후 toast 안내
-      if (!result.value) {
-        store.loadFromLocalStorage()
-      }
+      // 1일 1회 조회 제한 - 로컬 스토리지에서 이전 결과 강제 복원 (만료 무시)
+      store.loadFromLocalStorage(true)
       toast.add({
         title: '✦ 오늘의 운세 조회 안내',
         description: statusMessage || '오늘 이미 사주 운세를 조회하셨습니다.',

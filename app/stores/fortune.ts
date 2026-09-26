@@ -12,7 +12,7 @@ export const useFortuneStore = defineStore('fortune', () => {
   const sajuResult = ref<any>(null)
   const ichingResult = ref<any>(null)
 
-  const loadFromLocalStorage = () => {
+  const loadFromLocalStorage = (ignoreExpiration = false) => {
     if (import.meta.client) {
       birthDate.value = localStorage.getItem('fortune_birthDate') || ''
       birthTime.value = localStorage.getItem('fortune_birthTime') || ''
@@ -25,8 +25,8 @@ export const useFortuneStore = defineStore('fortune', () => {
       const todayStr = todayKst.toISOString().split('T')[0] || ''
       
       const savedDate = localStorage.getItem('fortune_savedDate')
-      const savedTime = Number(localStorage.getItem('fortune_savedTime') || 0)
-      const isExpired = !savedDate || savedDate !== todayStr || (savedTime > 0 && (now - savedTime >= 12 * 60 * 60 * 1000))
+      // ignoreExpiration이 true인 경우 만료 검사를 건너뛰고 이전 데이터를 강제 복원
+      const isExpired = !ignoreExpiration && (!savedDate || savedDate !== todayStr)
       
       if (isExpired) {
         localStorage.removeItem('fortune_sajuResult')
@@ -61,7 +61,9 @@ export const useFortuneStore = defineStore('fortune', () => {
         }
       }
       
-      localStorage.setItem('fortune_savedDate', todayStr)
+      if (!isExpired) {
+        localStorage.setItem('fortune_savedDate', todayStr)
+      }
     }
   }
 

@@ -362,8 +362,8 @@ const handleStickClick = async (stick: any) => {
         if (statusCode === 429) {
           // 기존 진행 toast 제거 후 12시간 제한 안내 toast 1개만 표출
           toast.clear()
-          // 로컬 스토리지에서 이전 결과 먼저 복원
-          store.loadFromLocalStorage()
+          // 로컬 스토리지에서 이전 결과 먼저 강제 복원 (만료 무시)
+          store.loadFromLocalStorage(true)
           // 복원 후 result가 있으면 결과 화면으로 이동하여 이전 조회 내용 표시
           if (result.value) {
             currentStep.value = 5
