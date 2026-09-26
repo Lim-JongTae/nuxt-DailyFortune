@@ -1152,21 +1152,12 @@ watch(result, (newVal) => {
           </p>
         </div>
 
-        <!-- 7. 세부 AI 보고서 본문 -->
-        <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll">
-          <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
-            命
-          </div>
-
-          <div class="relative z-10">
-            <h3 class="font-serif-kr text-base font-bold pg-text mb-4 border-b pg-border pb-3 flex items-center gap-2">
-            <UIcon name="i-heroicons-document-text" class="w-5 h-5 pg-text-gold" />
-            AI 맞춤 사주명리 보고서
-          </h3>
-          <div v-html="formattedInterpretation" class="markdown-body"></div>
-        </div>
-      </div>
+        <!-- 7. 세부 AI 보고서 본문 컴포넌트 -->
+        <FortuneReportContent
+          :ai-interpretation="result?.aiInterpretation"
+          :is-ai-generated="result?.isAiGenerated"
+          watermark-text="命"
+        />
 
         <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
         <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">

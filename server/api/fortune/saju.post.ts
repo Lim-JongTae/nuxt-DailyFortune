@@ -200,7 +200,7 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
     let aiInterpretation = ''
 
     if (isAiGenerated && rawAiText) {
-      // JSON 파싱 로직 - 닫힌 코드블록, 열린 코드블록, 순수 JSON 순서로 시도
+      // 1. 닫힌 코드블록 시도 (```json ... ```)
       const closedMatch = rawAiText.match(/```json\s*([\s\S]*?)\s*```/)
       if (closedMatch && closedMatch[1]) {
         try {
@@ -211,6 +211,7 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
         }
       }
 
+      // 2. 닫히지 않은 코드블록 시도 (```json ...)
       if (!parsedData) {
         const unclosedMatch = rawAiText.match(/```json\s*([\s\S]*)/)
         if (unclosedMatch && unclosedMatch[1]) {
@@ -224,22 +225,41 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
         }
       }
 
+      // 3. 백틱 없이 생성된 생 JSON 시도 ({ "headline": ... })
       if (!parsedData) {
-        const rawMatch = rawAiText.match(/^\s*(\{[\s\S]*?\})\s*(\n\n|#|$)/)
-        if (rawMatch && rawMatch[1]) {
+        const rawJsonMatch = rawAiText.match(/^\s*(\{[\s\S]*?\})(?=\s*(\n\n|#|###|####|\*\*|$))/)
+        if (rawJsonMatch && rawJsonMatch[1]) {
           try {
-            parsedData = JSON.parse(rawMatch[1])
-            aiInterpretation = rawAiText.replace(/^\s*\{[\s\S]*?\}/, '').trim()
+            parsedData = JSON.parse(rawJsonMatch[1])
+            aiInterpretation = rawAiText.substring(rawJsonMatch[0].length).trim()
           } catch (e: any) {
-            console.warn('[JSON Parse] Raw object failed:', e.message)
+            console.warn('[JSON Parse] Raw JSON match failed:', e.message)
           }
-        } else {
-          aiInterpretation = rawAiText.trim()
         }
       }
 
-      // 잔여 마크다운 찌꺼기 정제
-      aiInterpretation = aiInterpretation.replace(/^```json\s*/i, '').replace(/```$/i, '').trim()
+      // 4. 파싱 실패 시에도 aiInterpretation에 Raw JSON이 섞이지 않도록 방어 정제(Sanitize)
+      if (!aiInterpretation || /^\s*\{\s*"headline"/i.test(aiInterpretation)) {
+        // Raw JSON 부분(중괄호 쌍 또는 첫 마크다운 헤더 전까지) 제거
+        let cleaned = rawAiText.replace(/```json\s*[\s\S]*?\s*```/gi, '').trim()
+        if (/^\s*\{/i.test(cleaned)) {
+          const lastBraceIdx = cleaned.lastIndexOf('}')
+          if (lastBraceIdx !== -1) {
+            cleaned = cleaned.substring(lastBraceIdx + 1).trim()
+          } else {
+            const headerIdx = cleaned.search(/^#+/m)
+            cleaned = headerIdx !== -1 ? cleaned.substring(headerIdx).trim() : ''
+          }
+        }
+        aiInterpretation = cleaned
+      }
+
+      // 잔여 백틱 및 마크다운 찌꺼기 정리
+      aiInterpretation = aiInterpretation
+        .replace(/^```json\s*/i, '')
+        .replace(/^```\s*/g, '')
+        .replace(/```$/g, '')
+        .trim()
     }
 
     if (!isAiGenerated) {

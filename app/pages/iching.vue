@@ -995,22 +995,13 @@ const copyToClipboard = () => {
           </div>
         </div>
 
-        <!-- 3. AI 주역 지혜 보고서 (Claude / Gemini AI 총평) -->
-        <div v-if="result.aiInterpretation" class="pg-card border rounded-2xl p-5 shadow-lg space-y-3 relative overflow-hidden reveal-on-scroll">
-          <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -bottom-5 text-slate-400/20 dark:text-[#E8C170]/08 text-8xl font-serif-kr select-none pointer-events-none z-0">
-            易
-          </div>
-
-          <div class="relative z-10 space-y-3">
-            <div class="flex items-center gap-2 text-xs text-amber-800 dark:text-amber-300 font-bold pb-2 border-b pg-border">
-              <UIcon name="i-heroicons-sparkles" class="w-4 h-4 text-amber-600 dark:text-amber-300" />
-              <span>AI 주역 맞춤 지혜 조언</span>
-              <span v-if="result.isAiGenerated" class="ml-auto text-[10px] px-2 py-0.5 rounded bg-emerald-100 dark:bg-[#10B981]/20 text-emerald-700 dark:text-emerald-300 font-normal">AI 실시간 분석</span>
-            </div>
-            <div v-html="formattedInterpretation" class="markdown-body max-w-none text-xs sm:text-sm leading-relaxed font-normal text-gray-800 dark:text-gray-200"></div>
-          </div>
-        </div>
+        <!-- 3. AI 주역 지혜 보고서 (공용 리포트 컴포넌트) -->
+        <FortuneReportContent
+          v-if="result.aiInterpretation"
+          :ai-interpretation="result?.aiInterpretation"
+          :is-ai-generated="result?.isAiGenerated"
+          watermark-text="易"
+        />
 
         <!-- 4. 괘도 핵심 요약 -->
         <div class="pg-card border rounded-2xl p-5 shadow-lg relative overflow-hidden reveal-on-scroll">
