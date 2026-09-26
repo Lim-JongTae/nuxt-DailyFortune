@@ -6,6 +6,9 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
   const claudeModel = config.claudeModel || process.env.CLAUDE_MODEL || 'claude-sonnet-5'
   const geminiApiKey = config.geminiApiKey || process.env.GEMINI_API_KEY
 
+  const timeout = Number(config.aiApiTimeoutMs) || Number(process.env.AI_API_TIMEOUT_MS) || 90000
+  const maxTokens = Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 2500
+
   // Helper: fetch with timeout
   const fetchWithTimeout = async (url: string, opts: any, timeoutMs: number) => {
     const controller = new AbortController()
@@ -16,7 +19,6 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
       return res
     } catch (error: any) {
       clearTimeout(timeoutId)
-      // AbortError를 타임아웃 에러로 변환
       if (error.name === 'AbortError' || error.code === 'ABORT_ERR') {
         throw new Error(`Request timeout after ${timeoutMs}ms`)
       }
@@ -24,10 +26,8 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
     }
   }
 
-  const timeout = Number(config.aiApiTimeoutMs) || Number(process.env.AI_API_TIMEOUT_MS) || 90000 // 90s default
-  const maxTokens = Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 2500
-
-  // 1. Claude API (aiapiflow.com proxy) attempt
+  // 1. Claude API (1순위) - Vercel 동적 IP 환경에서는 403이 발생할 수 있으나,
+  //    에러 시 자동으로 Gemini fallback으로 전환됨
   if (claudeApiKey) {
     try {
       const response: any = await fetchWithTimeout(`${claudeEndPoint}/v1/messages`, {
@@ -41,57 +41,57 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
         body: {
           model: claudeModel,
           max_tokens: maxTokens,
-          messages: [
-            { role: 'user', content: prompt }
-          ]
+          messages: [{ role: 'user', content: prompt }]
         }
       }, timeout)
 
       if (response?.content?.[0]?.text) {
         return { text: response.content[0].text, isAiGenerated: true }
       }
-      console.warn('[Claude API] No text content in response')
+      console.warn('[Claude API] No text content in response, falling back to Gemini')
     } catch (claudeError: any) {
+      const statusCode = claudeError?.statusCode || claudeError?.status
       const errorMsg = claudeError?.message || claudeError?.data?.error?.message || String(claudeError)
-      console.error('[Claude API Error]', {
+      console.error('[Claude API Error] Falling back to Gemini', {
         message: errorMsg,
-        status: claudeError?.statusCode || claudeError?.status,
-        endpoint: claudeEndPoint
+        status: statusCode,
+        // 403: Vercel 동적 IP가 프록시에 차단됨 → Gemini로 자동 전환
+        hint: statusCode === 403 ? 'Vercel dynamic IP blocked by proxy. Auto-switching to Gemini.' : undefined
       })
+      // 에러 시 Gemini fallback으로 계속 진행 (throw 하지 않음)
     }
   } else {
-    console.warn('[Claude API] No API key configured, skipping Claude')
+    console.warn('[Claude API] No API key configured, skipping to Gemini')
   }
 
-  // 2. Gemini API fallback attempt
+  // 2. Gemini API (2순위 fallback - gemini-2.5-flash, IP 제한 없음)
   if (geminiApiKey) {
     try {
-      const response: any = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
-        method: 'POST',
-        body: {
-          contents: [
-            {
-              parts: [
-                { text: prompt }
-              ]
+      const response: any = await fetchWithTimeout(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`,
+        {
+          method: 'POST',
+          body: {
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: maxTokens
             }
-          ],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: maxTokens
           }
-        }
-      }, timeout)
+        },
+        timeout
+      )
 
       if (response?.candidates?.[0]?.content?.parts?.[0]?.text) {
         return { text: response.candidates[0].content.parts[0].text, isAiGenerated: true }
       }
       console.warn('[Gemini API] No text content in response')
     } catch (geminiError: any) {
-      const errorMsg = geminiError?.message || String(geminiError)
+      const errorMsg = geminiError?.message || geminiError?.data?.error?.message || String(geminiError)
       console.error('[Gemini API Error]', {
         message: errorMsg,
-        status: geminiError?.statusCode || geminiError?.status
+        status: geminiError?.statusCode || geminiError?.status,
+        cause: geminiError?.data?.error?.message
       })
     }
   } else {
@@ -101,5 +101,3 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
   console.error('[AI Models] All AI services failed or unavailable')
   return { text: '', isAiGenerated: false }
 }
-
-
