@@ -1,8 +1,10 @@
 export async function callAiModel(prompt: string): Promise<{ text: string; isAiGenerated: boolean }> {
-  const claudeEndPoint = (process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com').replace(/\/$/, '')
-  const claudeApiKey = process.env.CLAUDE_API_KEY
-  const claudeModel = process.env.CLAUDE_MODEL || 'claude-sonnet-5'
-  const geminiApiKey = process.env.GEMINI_API_KEY
+  // useRuntimeConfig()를 사용해야 Nuxt 프로덕션에서도 환경변수가 올바르게 주입됨
+  const config = useRuntimeConfig()
+  const claudeEndPoint = (config.claudeApiEndPoint || process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com').replace(/\/$/, '')
+  const claudeApiKey = config.claudeApiKey || process.env.CLAUDE_API_KEY
+  const claudeModel = config.claudeModel || process.env.CLAUDE_MODEL || 'claude-sonnet-5'
+  const geminiApiKey = config.geminiApiKey || process.env.GEMINI_API_KEY
 
   // Helper: fetch with timeout
   const fetchWithTimeout = async (url: string, opts: any, timeoutMs: number) => {
@@ -22,7 +24,7 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
     }
   }
 
-  const timeout = Number(process.env.AI_API_TIMEOUT_MS) || 90000 // 90s default
+  const timeout = Number(config.aiApiTimeoutMs) || Number(process.env.AI_API_TIMEOUT_MS) || 90000 // 90s default
   const maxTokens = Number(process.env.GEMINI_MAX_OUTPUT_TOKENS) || 2500
 
   // 1. Claude API (aiapiflow.com proxy) attempt
