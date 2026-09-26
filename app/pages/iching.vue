@@ -735,7 +735,7 @@ const copyToClipboard = () => {
           <UIcon name="i-heroicons-arrow-left" class="w-5 h-5" />
         </NuxtLink>
         <div class="text-center">
-          <span class="text-[9px] font-bold tracking-widest text-[#4b360c] block uppercase">I CHING ORACLE</span>
+          <span class="text-[9px] font-bold tracking-widest text-[#4b360c] dark:text-amber-200/90 block uppercase">변화의 이치</span>
           <h1 class="font-serif-kr text-base sm:text-lg font-bold pg-text tracking-wide">
             주역점 결과
           </h1>
@@ -757,7 +757,7 @@ const copyToClipboard = () => {
         <div class="relative z-10">
           <div class="text-center py-2 mb-4">
             <span class="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-[#E8C170]/10 border border-amber-300 dark:border-[#E8C170]/30 text-amber-800 dark:text-amber-300 text-xs font-bold font-serif-kr mb-2">
-              ☯️ I CHING ORACLE
+              ☯️ 하늘과 땅의 지혜, 64괘
             </span>
             <h2 class="font-serif-kr text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               풀어내고자 하는 고민을 떠올려보세요
