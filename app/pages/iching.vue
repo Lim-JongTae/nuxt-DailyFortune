@@ -287,12 +287,7 @@ const handleStickClick = async (stick: any) => {
     setTimeout(async () => {
       currentStep.value = 4
       loading.value = true
-      toast.add({
-        title: '☯️ 본괘와 변괘 맞추는 중...',
-        description: '384효 고전 원전과 AI 지혜 조언을 조율하고 있습니다.',
-        icon: 'i-heroicons-arrow-path',
-        color: 'neutral'
-      })
+      // 조회 중 toast 제거 - 429 발생 시 중복 표시 방지
 
       const startTime = Date.now()
       const upper = upperTrigram.value
@@ -361,23 +356,26 @@ const handleStickClick = async (stick: any) => {
         const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
 
         if (statusCode === 429) {
-          // 1일 1회 조회 제한 안내
+          // 로컬 스토리지에서 이전 결과 먼저 복원
+          store.loadFromLocalStorage()
+          // 복원 후 result가 있으면 결과 화면으로 이동
+          if (result.value) {
+            currentStep.value = 5
+            // 복원된 결과의 좋아요 상태도 로드
+            if (result.value.hexagram) {
+              fetchLikeStats(result.value.hexagram.id, result.value.hexagram.lineNumber)
+            }
+          } else {
+            currentStep.value = 0
+          }
+          // 12시간 제한 안내 toast
           toast.add({
             title: '✦ 오늘의 주역 조회 안내',
-            description: `${statusMessage}\n오늘 이미 조회하신 결과를 확인하실 수 있습니다.`,
+            description: statusMessage || '오늘 이미 주역 운세를 조회하셨습니다.',
             icon: 'i-heroicons-information-circle',
             color: 'warning',
             duration: 6000
           })
-          // 저장된 결과가 없으면 로컬 스토리지에서 불러와 표시
-          if (!result.value) {
-            store.loadFromLocalStorage()
-          }
-          if (result.value) {
-            currentStep.value = 5
-          } else {
-            currentStep.value = 0
-          }
         } else {
           console.error('[IChing API Error]', error)
           toast.add({
