@@ -254,9 +254,21 @@ const startSajuFortune = async () => {
       loading.value = false
     }, remainingTime)
 
-  } catch (error) {
-    console.error(error)
-    alert('서버 연결 중 오류가 발생했습니다.')
+  } catch (error: any) {
+    const statusCode = error?.statusCode || error?.status || error?.response?.status
+    const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
+
+    if (statusCode === 429) {
+      // 1일 1회 조회 제한 안내
+      alert(`✦ 오늘의 운세 조회 안내 ✦\n\n${statusMessage}\n\n오늘 이미 조회하신 결과를 확인하실 수 있습니다.`)
+      // 저장된 결과가 없으면 로컬 스토리지에서 불러와 표시
+      if (!result.value) {
+        store.loadFromLocalStorage()
+      }
+    } else {
+      console.error('[Saju API Error]', error)
+      alert(statusMessage || '서버 연결 중 오류가 발생했습니다.')
+    }
     loading.value = false
   }
 }

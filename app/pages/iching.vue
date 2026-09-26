@@ -356,16 +356,39 @@ const handleStickClick = async (stick: any) => {
           }
           loading.value = false
         }, remainingTime)
-      } catch (error) {
-        console.error(error)
-        toast.add({
-          title: '서버 연결 오류',
-          description: '서버 연결 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-          icon: 'i-heroicons-exclamation-triangle',
-          color: 'error'
-        })
+      } catch (error: any) {
+        const statusCode = error?.statusCode || error?.status || error?.response?.status
+        const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
+
+        if (statusCode === 429) {
+          // 1일 1회 조회 제한 안내
+          toast.add({
+            title: '✦ 오늘의 주역 조회 안내',
+            description: `${statusMessage}\n오늘 이미 조회하신 결과를 확인하실 수 있습니다.`,
+            icon: 'i-heroicons-information-circle',
+            color: 'warning',
+            duration: 6000
+          })
+          // 저장된 결과가 없으면 로컬 스토리지에서 불러와 표시
+          if (!result.value) {
+            store.loadFromLocalStorage()
+          }
+          if (result.value) {
+            currentStep.value = 5
+          } else {
+            currentStep.value = 0
+          }
+        } else {
+          console.error('[IChing API Error]', error)
+          toast.add({
+            title: '서버 연결 오류',
+            description: statusMessage || '서버 연결 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
+            icon: 'i-heroicons-exclamation-triangle',
+            color: 'error'
+          })
+          currentStep.value = 0
+        }
         loading.value = false
-        currentStep.value = 0
       }
     }, 1000)
   }
