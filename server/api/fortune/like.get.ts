@@ -8,13 +8,16 @@ export default defineEventHandler(async (event) => {
     const targetKey = String(query.targetKey || 'default')
 
     let count = 0
+    let dbError: string | null = null
     try {
       count = await prisma.fortuneLike.count({
         where: { type, targetKey }
       })
     } catch (dbErr: any) {
-      console.warn('[Like Get] DB count error:', {
+      dbError = dbErr.message
+      console.error('[Like Get] DB count error:', {
         error: dbErr.message,
+        code: dbErr.code,
         type,
         targetKey
       })
@@ -26,7 +29,9 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       likeCount: count,
-      alreadyLiked
+      alreadyLiked,
+      // 개발 디버그용: DB 에러 여부 (프론트에서 콘솔 확인 가능)
+      ...(dbError && process.env.NODE_ENV !== 'production' ? { dbError } : {})
     }
   } catch (error: any) {
     console.error('[Like Get] Error:', {

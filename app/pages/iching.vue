@@ -397,16 +397,32 @@ const handleStickClick = async (stick: any) => {
 // 운세 결과 공감/좋아요 카운터
 const likeCount = ref(0)
 const alreadyLiked = ref(false)
+const showAlreadyLikedTooltip = ref(false) // 두 번째 클릭부터 2초간 표시
+let tooltipTimer: ReturnType<typeof setTimeout> | null = null
+
+// localStorage에서 좋아요 상태 복원
+const loadLikeState = (targetKey: string) => {
+  if (import.meta.client) {
+    const stored = localStorage.getItem(`like_${targetKey}`)
+    if (stored === 'true') {
+      alreadyLiked.value = true
+    } else {
+      alreadyLiked.value = false
+    }
+  }
+}
 
 const fetchLikeStats = async (hexId: number, lineNum: number) => {
   const targetKey = `iching_${hexId}_${lineNum}`
+  loadLikeState(targetKey)
   try {
     const res: any = await $fetch('/api/fortune/like', {
       params: { type: 'iching', targetKey }
     })
     if (res?.success) {
       likeCount.value = res.likeCount
-      alreadyLiked.value = res.alreadyLiked
+      // 서버 alreadyLiked 값도 반영 (localStorage와 OR)
+      if (res.alreadyLiked) alreadyLiked.value = true
     }
   } catch (e) {
     console.warn('Failed to fetch like stats:', e)
@@ -414,14 +430,28 @@ const fetchLikeStats = async (hexId: number, lineNum: number) => {
 }
 
 const toggleLike = async () => {
-  if (alreadyLiked.value || !result.value?.hexagram) return
+  if (!result.value?.hexagram) return
   const hexId = result.value.hexagram.id
   const lineNum = result.value.hexagram.lineNumber
   const targetKey = `iching_${hexId}_${lineNum}`
 
+  if (alreadyLiked.value) {
+    // 두 번째 클릭: 풍선 메시지 2초 표시
+    showAlreadyLikedTooltip.value = true
+    if (tooltipTimer) clearTimeout(tooltipTimer)
+    tooltipTimer = setTimeout(() => {
+      showAlreadyLikedTooltip.value = false
+    }, 2000)
+    return
+  }
+
   try {
     alreadyLiked.value = true
     likeCount.value++
+    // localStorage에 좋아요 상태 저장
+    if (import.meta.client) {
+      localStorage.setItem(`like_${targetKey}`, 'true')
+    }
     await $fetch('/api/fortune/like', {
       method: 'POST',
       body: { type: 'iching', targetKey }
@@ -1157,10 +1187,10 @@ const copyToClipboard = () => {
             <span class="text-xs text-gray-800 dark:text-gray-200 font-medium">❤️ 오늘 <span class="font-bold text-amber-700 dark:text-amber-300">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
           </div>
           <div class="relative group shrink-0">
-            <!-- 이미 선택하였음을 알리는 말풍선 (Tooltip Bubble) -->
+            <!-- 이미 선택하였음을 알리는 말풍선 - 두 번째 클릭부터 2초간만 표시 -->
             <div
-              v-if="alreadyLiked"
-              class="absolute -top-8 right-0 whitespace-nowrap bg-rose-950/90 dark:bg-rose-100 text-rose-200 dark:text-rose-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1"
+              v-if="showAlreadyLikedTooltip"
+              class="absolute -top-8 right-0 whitespace-nowrap bg-rose-950/90 dark:bg-rose-100 text-rose-200 dark:text-rose-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 transition-opacity duration-300"
             >
               <span>이미 선택하셨습니다</span>
               <!-- 말풍선 꼬리 (삼각형) -->

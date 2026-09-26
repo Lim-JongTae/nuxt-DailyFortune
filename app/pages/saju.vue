@@ -56,6 +56,8 @@ const {
   sajuResult: result
 } = storeToRefs(store)
 
+const toast = useToast()
+
 const birthYear = ref('')
 const birthMonth = ref('')
 const birthDay = ref('')
@@ -226,7 +228,7 @@ const startSajuFortune = async () => {
   birthDate.value = `${yearStr}-${monthStr}-${dayStr}`
 
   loading.value = true
-  result.value = null
+  // result.value는 초기화하지 않음 - 429 시 기존 결과를 그대로 유지하기 위해
 
   const startTime = Date.now()
 
@@ -259,15 +261,26 @@ const startSajuFortune = async () => {
     const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
 
     if (statusCode === 429) {
-      // 1일 1회 조회 제한 안내
-      alert(`✦ 오늘의 운세 조회 안내 ✦\n\n${statusMessage}\n\n오늘 이미 조회하신 결과를 확인하실 수 있습니다.`)
-      // 저장된 결과가 없으면 로컬 스토리지에서 불러와 표시
+      // 1일 1회 조회 제한 - 기존 결과가 없으면 로컬 스토리지에서 복원 후 toast 안내
       if (!result.value) {
         store.loadFromLocalStorage()
       }
+      toast.add({
+        title: '✦ 오늘의 운세 조회 안내',
+        description: statusMessage || '오늘 이미 사주 운세를 조회하셨습니다.',
+        icon: 'i-heroicons-information-circle',
+        color: 'warning',
+        duration: 6000
+      })
     } else {
       console.error('[Saju API Error]', error)
-      alert(statusMessage || '서버 연결 중 오류가 발생했습니다.')
+      toast.add({
+        title: '오류 발생',
+        description: statusMessage || '서버 연결 중 오류가 발생했습니다.',
+        icon: 'i-heroicons-exclamation-triangle',
+        color: 'error',
+        duration: 5000
+      })
     }
     loading.value = false
   }
@@ -619,11 +632,17 @@ const targetKey = computed(() => {
 
 const fetchLikeStats = async () => {
   if (!targetKey.value) return
+  // localStorage에서 좋아요 상태 먼저 복원
+  if (import.meta.client) {
+    const stored = localStorage.getItem(`like_${targetKey.value}`)
+    if (stored === 'true') alreadyLiked.value = true
+  }
   try {
     const res: any = await $fetch(`/api/fortune/like?type=saju&targetKey=${targetKey.value}`)
     if (res?.success) {
       likeCount.value = res.likeCount ?? res.count ?? 0
-      alreadyLiked.value = res.alreadyLiked
+      // 서버 alreadyLiked도 반영 (localStorage와 OR)
+      if (res.alreadyLiked) alreadyLiked.value = true
     }
   } catch (err) {
     console.error('Failed to fetch saju like stats:', err)
@@ -648,6 +667,10 @@ const toggleLike = async () => {
     if (res?.success) {
       likeCount.value = res.likeCount ?? res.count ?? (likeCount.value + 1)
       alreadyLiked.value = true
+      // localStorage에 좋아요 상태 저장
+      if (import.meta.client) {
+        localStorage.setItem(`like_${targetKey.value}`, 'true')
+      }
       triggerLikeTooltip('공감이 반영되었습니다! ❤️')
     }
   } catch (err) {
