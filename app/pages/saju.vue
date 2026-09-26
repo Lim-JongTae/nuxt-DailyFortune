@@ -261,6 +261,7 @@ const startSajuFortune = async () => {
     const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
 
     if (statusCode === 429) {
+      toast.clear()
       // 1일 1회 조회 제한 - 기존 결과가 없으면 로컬 스토리지에서 복원 후 toast 안내
       if (!result.value) {
         store.loadFromLocalStorage()
