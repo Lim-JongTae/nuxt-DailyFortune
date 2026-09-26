@@ -22,13 +22,16 @@ export default defineEventHandler(async (event) => {
     const now = Date.now()
 
     if (!isDev && lastRequestCookie) {
-      const timeDiff = now - Number(lastRequestCookie)
-      if (timeDiff < limitDurationMs) {
-        const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
-        throw createError({
-          statusCode: 429,
-          statusMessage: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 주역/사주는 하루에 한 번 정성껏 확인하는 것이 좋습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
-        })
+      const cookieTime = Number(lastRequestCookie)
+      if (!isNaN(cookieTime)) {
+        const timeDiff = now - cookieTime
+        if (timeDiff >= 0 && timeDiff < limitDurationMs) {
+          const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
+          throw createError({
+            statusCode: 429,
+            statusMessage: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 주역/사주는 하루에 한 번 정성껏 확인하는 것이 좋습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+          })
+        }
       }
     }
 
@@ -42,16 +45,21 @@ export default defineEventHandler(async (event) => {
             createdAt: {
               gte: new Date(now - limitDurationMs)
             }
+          },
+          orderBy: {
+            createdAt: 'desc'
           }
         })
 
         if (dbLimit) {
           const timeDiff = now - dbLimit.createdAt.getTime()
-          const remainingHours = Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60))
-          throw createError({
-            statusCode: 429,
-            statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 사주 운세를 확인하셨습니다. ${remainingHours}시간 후에 다시 확인해 주세요.`
-          })
+          if (timeDiff >= 0 && timeDiff < limitDurationMs) {
+            const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
+            throw createError({
+              statusCode: 429,
+              statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 사주 운세를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+            })
+          }
         }
       } catch (err: any) {
         // Rate limit 에러는 다시 throw

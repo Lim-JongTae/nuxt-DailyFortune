@@ -262,11 +262,14 @@ const startSajuFortune = async () => {
 
     if (statusCode === 429) {
       toast.clear()
-      // 1일 1회 조회 제한 - 로컬 스토리지에서 이전 결과 강제 복원 (만료 무시)
+      // 1일 1회 조회 제한 - 로컬 스토리지 및 백업에서 이전 결과 강제 복원 (만료 무시)
       store.loadFromLocalStorage(true)
+      if (store.sajuResult) {
+        result.value = store.sajuResult
+      }
       toast.add({
         title: '✦ 오늘의 운세 조회 안내',
-        description: statusMessage || '오늘 이미 사주 운세를 조회하셨습니다.',
+        description: statusMessage || '최근 12시간 이내에 이미 사주 운세를 조회하셨습니다. 이전 조회 결과를 보여드립니다.',
         icon: 'i-heroicons-information-circle',
         color: 'warning',
         duration: 6000
