@@ -62,7 +62,10 @@ const formattedHtml = computed(() => {
 </script>
 
 <template>
-  <div class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll">
+  <div
+    v-if="formattedHtml"
+    class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll"
+  >
     <!-- Background Watermark (z-0) -->
     <div
       class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0"
@@ -83,14 +86,7 @@ const formattedHtml = computed(() => {
       </h3>
 
       <!-- 마크다운 보고서 본문 렌더링 -->
-      <div v-if="formattedHtml" v-html="formattedHtml" class="markdown-body"></div>
-
-      <!-- 마크다운 텍스트가 없는 경우 안전 대체 예외 문구 -->
-      <div v-else class="py-6 text-center pg-text-muted text-xs">
-        <UIcon name="i-heroicons-sparkles" class="w-8 h-8 text-(--fortune-gold) mx-auto mb-2 opacity-60" />
-        <p>명리학적 분석 보고서를 구성하고 있습니다.</p>
-        <p class="text-[11px] mt-1 text-(--fortune-gold-light)">잠시 후 운세 분석 결과가 완성됩니다.</p>
-      </div>
+      <div v-html="formattedHtml" class="markdown-body"></div>
     </div>
   </div>
 </template>
