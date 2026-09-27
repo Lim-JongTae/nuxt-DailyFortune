@@ -150,8 +150,9 @@ export const useFortuneStore = defineStore('fortune', () => {
       return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
     }
 
-    const hours = Math.floor(remainingMs / (1000 * 60 * 60))
-    const minutes = Math.ceil((remainingMs % (1000 * 60 * 60)) / (1000 * 60))
+    const totalMinutes = Math.ceil(remainingMs / (1000 * 60))
+    const hours = Math.floor(totalMinutes / 60)
+    const minutes = totalMinutes % 60
 
     return { isLimited: true, hours, minutes, remainingMs }
   }

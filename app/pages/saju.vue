@@ -362,7 +362,7 @@ const handleResetSaju = () => {
   if (coolTime.isLimited) {
     toast.clear()
     const timeText = coolTime.hours > 0 
-      ? `${coolTime.hours}시간 ${coolTime.minutes}분`
+      ? (coolTime.minutes > 0 ? `${coolTime.hours}시간 ${coolTime.minutes}분` : `${coolTime.hours}시간`)
       : `${coolTime.minutes}분`
     toast.add({
       title: '⏳ 사주 재조회 대기 시간 안내',
@@ -427,6 +427,34 @@ const sajuDynamicData = computed(() => {
   const ilganElement = user?.ilganElement || '오행'
   const shipsin = today?.shipsin || '십신'
 
+  const siji = user?.siji || ''
+  const charSum = (birthGanzhi.charCodeAt(0) || 0) + (birthGanzhi.charCodeAt(1) || 0)
+  
+  let peakSlot: 'morning' | 'afternoon' | 'evening' = 'afternoon'
+  if (/인|묘|진|사/i.test(siji) || charSum % 3 === 0) {
+    peakSlot = 'morning'
+  } else if (/술|해|자|축/i.test(siji) || charSum % 3 === 2) {
+    peakSlot = 'evening'
+  } else {
+    peakSlot = 'afternoon'
+  }
+
+  const defaultTimeFlow = {
+    peakText: peakSlot === 'morning' ? "오전 기운 집중" : peakSlot === 'evening' ? "저녁 기운 집중" : "오후 기운 집중",
+    morning: {
+      desc: peakSlot === 'morning' ? `${ilganElement} 기운 최고조 상승` : `${ilganElement} 기운 준비의 시간`,
+      stars: peakSlot === 'morning' ? "★★★★★" : "★★★★☆"
+    },
+    afternoon: {
+      desc: peakSlot === 'afternoon' ? `${shipsin} 기운 최고조 상승` : `${shipsin} 기운 안정적 흐름`,
+      stars: peakSlot === 'afternoon' ? "★★★★★" : "★★★★☆"
+    },
+    evening: {
+      desc: peakSlot === 'evening' ? `${shipsin} 기운 최고조 안착` : "기운 정돈과 결실의 시간",
+      stars: peakSlot === 'evening' ? "★★★★★" : "★★★★☆"
+    }
+  }
+
   return {
     headline: sanitizeKoreanText(parsed?.headline) || `${birthGanzhi}일주와 오늘 ${shipsin} 기운의 조화`,
     headlineSub: sanitizeKoreanText(parsed?.headlineSub) || `타고난 ${ilganElement} 기운의 본질을 바탕으로 오늘 ${shipsin}의 흐름을 지혜롭게 활용하는 날입니다.`,
@@ -449,18 +477,18 @@ const sajuDynamicData = computed(() => {
       }
     },
     timeFlow: {
-      peakText: sanitizeKoreanText(parsed?.timeFlow?.peakText) || "오후 기운 집중",
+      peakText: sanitizeKoreanText(parsed?.timeFlow?.peakText) || defaultTimeFlow.peakText,
       morning: {
-        desc: sanitizeKoreanText(parsed?.timeFlow?.morning?.desc) || `${ilganElement} 기운 준비의 시간`,
-        stars: parsed?.timeFlow?.morning?.stars || "★★★★☆"
+        desc: sanitizeKoreanText(parsed?.timeFlow?.morning?.desc) || defaultTimeFlow.morning.desc,
+        stars: parsed?.timeFlow?.morning?.stars || defaultTimeFlow.morning.stars
       },
       afternoon: {
-        desc: sanitizeKoreanText(parsed?.timeFlow?.afternoon?.desc) || `${shipsin} 기운 상승의 시간`,
-        stars: parsed?.timeFlow?.afternoon?.stars || "★★★★★"
+        desc: sanitizeKoreanText(parsed?.timeFlow?.afternoon?.desc) || defaultTimeFlow.afternoon.desc,
+        stars: parsed?.timeFlow?.afternoon?.stars || defaultTimeFlow.afternoon.stars
       },
       evening: {
-        desc: sanitizeKoreanText(parsed?.timeFlow?.evening?.desc) || "기운 정돈과 휴식의 시간",
-        stars: parsed?.timeFlow?.evening?.stars || "★★★★☆"
+        desc: sanitizeKoreanText(parsed?.timeFlow?.evening?.desc) || defaultTimeFlow.evening.desc,
+        stars: parsed?.timeFlow?.evening?.stars || defaultTimeFlow.evening.stars
       }
     },
     luckyItems: {

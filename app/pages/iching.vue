@@ -489,7 +489,7 @@ const resetAll = () => {
   if (coolTime.isLimited) {
     toast.clear()
     const timeText = coolTime.hours > 0 
-      ? `${coolTime.hours}시간 ${coolTime.minutes}분`
+      ? (coolTime.minutes > 0 ? `${coolTime.hours}시간 ${coolTime.minutes}분` : `${coolTime.hours}시간`)
       : `${coolTime.minutes}분`
     toast.add({
       title: '⏳ 주역비결 재조회 대기 시간 안내',
