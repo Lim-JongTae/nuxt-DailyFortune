@@ -107,7 +107,7 @@ export const useFortuneStore = defineStore('fortune', () => {
     if (import.meta.client) {
       localStorage.removeItem('fortune_sajuWorry')
       localStorage.removeItem('fortune_sajuResult')
-      // fortune_backup_sajuResult는 삭제하지 않고 보존함 (429 발생 시 복원용)
+      // fortune_backup_sajuResult는 삭제하지 않고 12시간 복원용으로 보존
     }
   }
 
@@ -117,8 +117,21 @@ export const useFortuneStore = defineStore('fortune', () => {
     if (import.meta.client) {
       localStorage.removeItem('fortune_ichingWorry')
       localStorage.removeItem('fortune_ichingResult')
-      // fortune_backup_ichingResult는 삭제하지 않고 보존함 (429 발생 시 복원용)
+      // fortune_backup_ichingResult는 삭제하지 않고 12시간 복원용으로 보존
     }
+  }
+
+  const hasRecentResult = (type: 'saju' | 'iching'): boolean => {
+    if (!import.meta.client) return false
+    const limitDurationMs = 12 * 60 * 60 * 1000
+    const savedTime = Number(localStorage.getItem('fortune_savedTime'))
+    if (!savedTime || isNaN(savedTime)) return false
+    
+    const isWithin12Hours = (Date.now() - savedTime) < limitDurationMs
+    const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
+    const hasBackup = !!localStorage.getItem(backupKey)
+    
+    return isWithin12Hours && hasBackup
   }
 
   const resetAllInputs = () => {
@@ -150,6 +163,7 @@ export const useFortuneStore = defineStore('fortune', () => {
     saveToLocalStorage,
     clearSaju,
     clearIching,
+    hasRecentResult,
     resetAllInputs
   }
 })

@@ -196,6 +196,23 @@ watch(noTime, (val) => {
 })
 
 const startSajuFortune = async () => {
+  // 사전 검증: 최근 12시간 이내에 이미 사주 조회가 이루어졌고 백업 데이터가 있는지 확인
+  if (store.hasRecentResult('saju')) {
+    store.loadFromLocalStorage(true)
+    if (store.sajuResult) {
+      result.value = store.sajuResult
+      toast.clear()
+      toast.add({
+        title: '✦ 오늘의 운세 조회 안내',
+        description: '최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 이전 결과를 보여드립니다.',
+        icon: 'i-heroicons-information-circle',
+        color: 'warning',
+        duration: 5000
+      })
+      return
+    }
+  }
+
   if (!birthYear.value || !birthMonth.value || !birthDay.value) {
     alert('태어난 날짜(연, 월, 일)를 모두 입력해 주세요.')
     return

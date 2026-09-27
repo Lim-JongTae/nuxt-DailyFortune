@@ -373,8 +373,8 @@ onMounted(async () => {
 
           <!-- CTA Button (z-10) -->
           <div class="mt-8 relative z-10">
-            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-[#402d00] bg-linear-to-r from-[#FFDF9E] to-[#E8C170] hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-amber-500/20">
-              오늘의 사주 보러가기
+            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-[#402d00] bg-gradient-to-r from-[#FFDF9E] via-[#E8C170] to-[#FFDF9E] hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-amber-500/30">
+              <span>🔮 AI 맞춤 사주 명리 확인하기</span>
               <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
@@ -419,19 +419,19 @@ onMounted(async () => {
                   <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
                 </div>
                 <!-- 상괘 (5효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+                <div class="h-1.5 rounded-xs w-full bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
                 <!-- 상괘 (4효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+                <div class="h-1.5 rounded-xs w-full bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
 
                 <!-- 하괘 (3효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+                <div class="h-1.5 rounded-xs w-full bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
                 <!-- 하괘 (2효: 음효) -->
                 <div class="flex gap-2 w-full">
                   <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
                   <div class="h-1.5 rounded-xs w-1/2 bg-purple-600 dark:bg-purple-400 shadow-xs"></div>
                 </div>
                 <!-- 하괘 (1효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full bg-linear-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
+                <div class="h-1.5 rounded-xs w-full bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 shadow-xs"></div>
               </div>
               <div>
                 <div class="text-xs text-purple-700 dark:text-[#FFDE9E] font-bold font-serif-kr mb-1">3단계 대나무 점대 드로우</div>
@@ -451,8 +451,8 @@ onMounted(async () => {
 
           <!-- CTA Button (z-10) -->
           <div class="mt-8 relative z-10">
-            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-white bg-linear-to-r from-purple-700 to-indigo-800 hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-purple-900/30">
-              주역 괘 뽑으러가기
+            <div class="w-full py-3.5 px-6 rounded-full font-bold text-sm text-white bg-gradient-to-r from-purple-700 to-indigo-800 hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2 group-hover:shadow-purple-900/30">
+              <span>☯️ AI 맞춤 주역 괘 뽑으러 가기</span>
               <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>

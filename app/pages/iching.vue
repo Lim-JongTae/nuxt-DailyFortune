@@ -244,6 +244,27 @@ onMounted(() => {
 })
 
 const startRitual = () => {
+  // 사전 검증: 최근 12시간 이내에 이미 조회가 이루어졌고 백업 데이터가 있는지 확인
+  if (store.hasRecentResult('iching')) {
+    store.loadFromLocalStorage(true)
+    if (store.ichingResult) {
+      result.value = store.ichingResult
+      currentStep.value = 5
+      if (result.value.hexagram) {
+        fetchLikeStats(result.value.hexagram.id, result.value.hexagram.lineNumber)
+      }
+      toast.clear()
+      toast.add({
+        title: '✦ 오늘의 주역 조회 안내',
+        description: '최근 12시간 이내에 이미 주역 운세를 확인하셨습니다. 이전 결과를 보여드립니다.',
+        icon: 'i-heroicons-information-circle',
+        color: 'warning',
+        duration: 5000
+      })
+      return
+    }
+  }
+
   currentStep.value = 1
   lowerTrigram.value = null
   upperTrigram.value = null
@@ -269,7 +290,7 @@ const handleStickClick = async (stick: any) => {
       toast.add({
         title: '☯️ 2단계: 상괘(上卦) 선택',
         description: '두 번째 대나무 점대를 선택해 주세요.',
-        icon: 'i-heroicons-sparkles',
+        icon: 'i-heroicons-[#FFE5A3]',
         color: 'warning'
       })
     }, 1000)
@@ -290,7 +311,6 @@ const handleStickClick = async (stick: any) => {
     setTimeout(async () => {
       currentStep.value = 4
       loading.value = true
-      // 조회 중 toast 제거 - 429 발생 시 중복 표시 방지
 
       const startTime = Date.now()
       const upper = upperTrigram.value
@@ -360,14 +380,12 @@ const handleStickClick = async (stick: any) => {
         const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
 
         if (statusCode === 429) {
-          // 기존 진행 toast 제거 후 12시간 제한 안내 toast 1개만 표출
           toast.clear()
-          // 로컬 스토리지 및 백업에서 이전 결과 강제 복원 (만료 무시)
+          // 만료 무시하고 이전 조회 결과 강제 복원
           store.loadFromLocalStorage(true)
           if (store.ichingResult) {
             result.value = store.ichingResult
           }
-          // 복원 후 result가 있으면 결과 화면으로 이동하여 이전 조회 내용 표시
           if (result.value) {
             currentStep.value = 5
             if (result.value.hexagram) {
@@ -376,10 +394,9 @@ const handleStickClick = async (stick: any) => {
           } else {
             currentStep.value = 0
           }
-          // 12시간 제한 안내 toast
           toast.add({
             title: '✦ 오늘의 주역 조회 안내',
-            description: statusMessage || '오늘 이미 주역 운세를 조회하셨습니다.',
+            description: statusMessage || '최근 12시간 이내에 이미 주역 운세를 확인하셨습니다. 이전 결과를 보여드립니다.',
             icon: 'i-heroicons-information-circle',
             color: 'warning',
             duration: 6000
