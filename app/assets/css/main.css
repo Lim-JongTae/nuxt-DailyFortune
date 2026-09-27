@@ -395,28 +395,28 @@ body {
   animation: toastProgressShrink var(--toast-duration, 4000ms) linear forwards !important;
 }
 
-/* 카드 워터마크 배경 텍스트 */
+/* 카드 워터마크 배경 텍스트 (동적 펄스 연동) */
 .pg-watermark-text {
-  color: rgba(148, 163, 184, 0.2);
+  color: rgba(148, 163, 184, 0.22);
 }
 .dark .pg-watermark-text {
-  color: rgba(232, 193, 112, 0.1);
+  color: rgba(232, 193, 112, 0.20);
 }
 
-/* 워터마크 배경 한자 동적 크기 조절(숨쉬기) 애니메이션 */
+/* 워터마크 배경 한자 동적 크기 및 불투명도 조절 (연했다 진했다 숨쉬는 펄스) */
 @keyframes watermarkPulse {
   0%, 100% {
-    transform: scale(0.95) rotate(0deg);
-    opacity: 0.75;
+    transform: scale(0.96) rotate(0deg);
+    opacity: 0.3;
   }
   50% {
-    transform: scale(1.15) rotate(2deg);
-    opacity: 1;
+    transform: scale(1.08) rotate(1.5deg);
+    opacity: 0.85;
   }
 }
 
 .animate-watermark-pulse {
-  animation: watermarkPulse 6s ease-in-out infinite;
-  transform-origin: center center;
+  animation: watermarkPulse 7.5s ease-in-out infinite;
+  transform-origin: top right;
   display: inline-block;
 }
