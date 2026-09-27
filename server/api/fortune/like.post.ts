@@ -14,7 +14,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const clientIp = getRequestIP(event, { xForwardedFor: true }) || '127.0.0.1'
-    const cookieName = `fortune_liked_${type}_${targetKey}`
+    const safeKey = Buffer.from(String(targetKey)).toString('hex')
+    const cookieName = `fortune_liked_${type}_${safeKey}`
     const hasLiked = getCookie(event, cookieName)
 
     let count = 0

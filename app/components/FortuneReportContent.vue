@@ -44,10 +44,12 @@ const cleanMarkdownContent = computed(() => {
     }
   }
 
-  // 4. 잔여 코드 블록 표시 찌꺼기 정리
+  // 4. 잔여 코드 블록 표시 및 쉼표/기호 찌꺼기 정리
   text = text
     .replace(/^```\s*/g, '')
     .replace(/```$/g, '')
+    .replace(/^[\s,`]+/g, '')
+    .replace(/[\s,`]+$/g, '')
     .trim()
 
   return text

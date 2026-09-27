@@ -90,11 +90,11 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     // Server-only (AI API keys) - injected from .env or server env vars
-    geminiApiKey: process.env.GEMINI_API_KEY || '',
-    claudeApiKey: process.env.CLAUDE_API_KEY || '',
-    claudeApiEndPoint: process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com',
-    claudeModel: process.env.CLAUDE_MODEL || 'claude-sonnet-5',
-    aiApiTimeoutMs: process.env.AI_API_TIMEOUT_MS || '90000',
+    geminiApiKey: process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
+    claudeApiKey: process.env.NUXT_CLAUDE_API_KEY || process.env.CLAUDE_API_KEY || '',
+    claudeApiEndPoint: process.env.NUXT_CLAUDE_API_END_POINT || process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com',
+    claudeModel: process.env.NUXT_CLAUDE_MODEL || process.env.CLAUDE_MODEL || 'claude-sonnet-5',
+    aiApiTimeoutMs: process.env.NUXT_AI_API_TIMEOUT_MS || process.env.AI_API_TIMEOUT_MS || '90000',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sajuapp.co.kr',
       siteName: 'sajuapp.co.kr',

@@ -262,12 +262,20 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
         aiInterpretation = cleaned
       }
 
-      // 잔여 백틱 및 마크다운 찌꺼기 정리
+      // 잔여 백틱 및 쉼표/마크다운 찌꺼기 완벽 정리
       aiInterpretation = aiInterpretation
         .replace(/^```json\s*/i, '')
         .replace(/^```\s*/g, '')
         .replace(/```$/g, '')
+        .replace(/^[\s,`]+/g, '')
+        .replace(/[\s,`]+$/g, '')
         .trim()
+
+      // 정제된 마크다운 텍스트의 유효성 검사 (50자 미만이면 AI 생성 실패로 간주하고 Fallback 템플릿 사용)
+      if (!aiInterpretation || aiInterpretation.length < 50) {
+        console.warn('[Saju API] aiInterpretation too short or invalid after sanitize, triggering fallback template')
+        isAiGenerated = false
+      }
     }
 
     if (!isAiGenerated) {

@@ -3,11 +3,22 @@ import path from 'path'
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
 
-// 384효 데이터 캐싱 (서버 시작 시 한 번만 로드)
-let cachedLines: any[] | null = null
+export interface IChingLine {
+  hexagramId: number
+  lineNumber: number
+  hexagramNameHanja?: string
+  hexagramNameKorean?: string
+  nameHanja?: string
+  textHanja: string
+  textKorean: string
+  modernAdvice?: string
+}
 
-function loadIchingLines(): any[] {
-  if (cachedLines !== null) {
+// 384효 데이터 캐싱 (서버 시작 시 한 번만 로드)
+let cachedLines: IChingLine[] | null = null
+
+function loadIchingLines(): IChingLine[] {
+  if (cachedLines !== null && cachedLines.length > 0) {
     return cachedLines
   }
 
@@ -15,7 +26,7 @@ function loadIchingLines(): any[] {
     const jsonPath = path.resolve(process.cwd(), 'prisma/iching_384_lines.json')
     if (fs.existsSync(jsonPath)) {
       const rawJson = fs.readFileSync(jsonPath, 'utf8')
-      cachedLines = JSON.parse(rawJson)
+      cachedLines = JSON.parse(rawJson) as IChingLine[]
       console.log('[I Ching] Loaded 384 lines data successfully')
       return cachedLines
     }
@@ -23,8 +34,7 @@ function loadIchingLines(): any[] {
     console.error('[I Ching] Failed to load 384 lines data:', e.message)
   }
 
-  cachedLines = []
-  return cachedLines
+  return []
 }
 
 export default defineEventHandler(async (event) => {
@@ -106,7 +116,7 @@ export default defineEventHandler(async (event) => {
 
     // 384효(爻) 원문 데이터 로드 (캐싱된 데이터 사용)
     const allLines = loadIchingLines()
-    const lineDetail = allLines.find((l: any) => l.hexagramId === hexagramId && l.lineNumber === lineNumber)
+    const lineDetail = allLines.find((l: IChingLine) => l.hexagramId === hexagramId && l.lineNumber === lineNumber)
 
     const lineHanjaText = lineDetail?.textHanja || `${hexagram.nameHanji} ${lineNumber}爻`
     const lineKoreanText = lineDetail?.textKorean || `${lineNumber}번째 효사 기운`
