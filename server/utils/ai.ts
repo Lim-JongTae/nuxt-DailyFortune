@@ -112,4 +112,3 @@ export async function callAiModel(prompt: string): Promise<{ text: string; isAiG
   console.error('[AI Models] All AI services failed or unavailable')
   return { text: '', isAiGenerated: false }
 }
-}

@@ -639,7 +639,7 @@ const triggerLikeTooltip = (msg: string) => {
   if (likeTooltipTimer) clearTimeout(likeTooltipTimer)
   likeTooltipTimer = setTimeout(() => {
     showLikeTooltip.value = false
-  }, 1500)
+  }, 2000)
 }
 
 const targetKey = computed(() => {
@@ -670,7 +670,7 @@ const fetchLikeStats = async () => {
 
 const handleLikeClick = () => {
   if (alreadyLiked.value) {
-    triggerLikeTooltip('이미 선택하셨습니다!')
+    triggerLikeTooltip('이미 클릭했습니다.')
     return
   }
   toggleLike()

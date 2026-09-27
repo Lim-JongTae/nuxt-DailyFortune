@@ -1202,21 +1202,22 @@ const copyToClipboard = () => {
           </div>
           <div class="relative group shrink-0">
             <!-- 이미 선택하였음을 알리는 말풍선 - 두 번째 클릭부터 2초간만 표시 -->
-            <div
-              v-if="showAlreadyLikedTooltip"
-              class="absolute -top-8 right-0 whitespace-nowrap bg-rose-900 text-rose-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 transition-opacity duration-300"
-            >
-              <span>이미 선택하셨습니다</span>
-              <!-- 말풍선 꼬리 (삼각형) -->
-              <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-900 rotate-45 border-r border-b border-rose-400/40"></span>
-            </div>
+            <Transition name="fade-slide">
+              <div
+                v-if="showAlreadyLikedTooltip"
+                class="absolute -top-9 right-0 whitespace-nowrap bg-rose-900 text-rose-100 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 z-20"
+              >
+                <span>이미 클릭했습니다.</span>
+                <!-- 말풍선 꼬리 (삼각형) -->
+                <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-900 rotate-45 border-r border-b border-rose-400/40"></span>
+              </div>
+            </Transition>
 
             <button
               type="button"
               @click="toggleLike"
-              :disabled="alreadyLiked"
-              class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
-              :class="alreadyLiked ? 'pg-card-inner pg-text-gold border pg-border cursor-default' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
+              class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0 select-none cursor-pointer"
+              :class="alreadyLiked ? 'pg-card-inner pg-text-gold border pg-border' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95'"
             >
               <UIcon
                 :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
