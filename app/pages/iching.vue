@@ -485,6 +485,21 @@ const toggleLike = async () => {
 }
 
 const resetAll = () => {
+  const coolTime = store.getRemainingCoolTime('iching')
+  if (coolTime.isLimited) {
+    toast.clear()
+    const timeText = coolTime.hours > 0 
+      ? `${coolTime.hours}시간 ${coolTime.minutes}분`
+      : `${coolTime.minutes}분`
+    toast.add({
+      title: '⏳ 주역비결 재조회 대기 시간 안내',
+      description: `최근 12시간 이내에 이미 주역 괘사를 확인하셨습니다. 약 ${timeText} 후에 다시 점치기가 가능합니다.`,
+      icon: 'i-heroicons-clock',
+      color: 'warning',
+      duration: 6000
+    })
+    return
+  }
   store.clearIching()
   lowerTrigram.value = null
   upperTrigram.value = null
@@ -1243,11 +1258,12 @@ const copyToClipboard = () => {
           <div class="flex gap-2">
             <button
               type="button"
-              class="flex-1 py-3 rounded-full pg-card border pg-border text-xs font-semibold pg-text-muted hover:pg-text hover:border-(--fortune-gold) active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5"
+              class="flex-1 py-3 rounded-full pg-card border pg-border text-xs font-semibold flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer select-none"
+              :class="store.getRemainingCoolTime('iching').isLimited ? 'opacity-70 pg-text-muted hover:border-amber-500/50' : 'pg-text-muted hover:pg-text hover:border-(--fortune-gold) active:scale-95'"
               @click="resetAll"
             >
               <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
-              다시 점치기
+              <span>다시 점치기</span>
             </button>
             <button
               type="button"

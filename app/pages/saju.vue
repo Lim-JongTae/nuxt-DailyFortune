@@ -357,6 +357,25 @@ ${plainText}
     .catch(err => console.error(err))
 }
 
+const handleResetSaju = () => {
+  const coolTime = store.getRemainingCoolTime('saju')
+  if (coolTime.isLimited) {
+    toast.clear()
+    const timeText = coolTime.hours > 0 
+      ? `${coolTime.hours}시간 ${coolTime.minutes}분`
+      : `${coolTime.minutes}분`
+    toast.add({
+      title: '⏳ 사주 재조회 대기 시간 안내',
+      description: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 약 ${timeText} 후에 다시 입력 및 조회가 가능합니다.`,
+      icon: 'i-heroicons-clock',
+      color: 'warning',
+      duration: 6000
+    })
+    return
+  }
+  store.clearSaju()
+}
+
 const sajuScores = computed(() => {
   if (!result.value) {
     return {
@@ -401,50 +420,56 @@ const sajuScores = computed(() => {
 
 const sajuDynamicData = computed(() => {
   const parsed = result.value?.parsedData
+  const user = result.value?.userSaju
+  const today = result.value?.todaySaju
+
+  const birthGanzhi = user?.birthGanzhi || '사주'
+  const ilganElement = user?.ilganElement || '오행'
+  const shipsin = today?.shipsin || '십신'
 
   return {
-    headline: sanitizeKoreanText(parsed?.headline) || "오늘은 작은 인연이 큰 기회가 됩니다",
-    headlineSub: sanitizeKoreanText(parsed?.headlineSub) || "마음속에 품고 있던 오랜 계획을 소심스레 꺼내어보세요. 귀인의 따스한 조언에 순풍이 되어줄 것입니다.",
+    headline: sanitizeKoreanText(parsed?.headline) || `${birthGanzhi}일주와 오늘 ${shipsin} 기운의 조화`,
+    headlineSub: sanitizeKoreanText(parsed?.headlineSub) || `타고난 ${ilganElement} 기운의 본질을 바탕으로 오늘 ${shipsin}의 흐름을 지혜롭게 활용하는 날입니다.`,
     categories: {
       wealth: {
         score: sajuScores.value.wealthScore,
-        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || "뜻밖의 소소한 이득이 찾아옵니다."
+        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || `${birthGanzhi}일주에 ${shipsin} 기운이 작용하여 재물 흐름을 이끕니다.`
       },
       love: {
         score: sajuScores.value.loveScore,
-        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || "마음을 터놓는 대화가 깊은 신뢰를 만듭니다."
+        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || `대인관계와 인연에서 ${shipsin}의 덕이 발휘됩니다.`
       },
       health: {
         score: sajuScores.value.healthScore,
-        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || "가벼운 산책과 충분한 수분 섭취가 필요합니다."
+        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || `${ilganElement} 기운의 오행 균형을 이룰 수 있도록 안정을 취하세요.`
       },
       business: {
         score: sajuScores.value.businessScore,
-        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || "집중력이 발휘되어 막혔던 문제가 풀립니다."
+        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || `${shipsin}의 역량이 발휘되어 과업의 결실을 맺는 시기입니다.`
       }
     },
     timeFlow: {
-      peakText: sanitizeKoreanText(parsed?.timeFlow?.peakText) || "오후가 절정",
+      peakText: sanitizeKoreanText(parsed?.timeFlow?.peakText) || "오후 기운 집중",
       morning: {
-        desc: sanitizeKoreanText(parsed?.timeFlow?.morning?.desc) || "차분한 준비의 시간",
+        desc: sanitizeKoreanText(parsed?.timeFlow?.morning?.desc) || `${ilganElement} 기운 준비의 시간`,
         stars: parsed?.timeFlow?.morning?.stars || "★★★★☆"
       },
       afternoon: {
-        desc: sanitizeKoreanText(parsed?.timeFlow?.afternoon?.desc) || "오늘의 최고조 상승운",
+        desc: sanitizeKoreanText(parsed?.timeFlow?.afternoon?.desc) || `${shipsin} 기운 상승의 시간`,
         stars: parsed?.timeFlow?.afternoon?.stars || "★★★★★"
       },
       evening: {
-        desc: sanitizeKoreanText(parsed?.timeFlow?.evening?.desc) || "편안한 휴식과 정리",
+        desc: sanitizeKoreanText(parsed?.timeFlow?.evening?.desc) || "기운 정돈과 휴식의 시간",
         stars: parsed?.timeFlow?.evening?.stars || "★★★★☆"
       }
     },
     luckyItems: {
-      colorName: sanitizeKoreanText(parsed?.luckyItems?.colorName) || "청록빛 옥색",
+      colorName: sanitizeKoreanText(parsed?.luckyItems?.colorName) || "기운 보완 색상",
       colorHex: parsed?.luckyItems?.colorHex || "#10B981",
-      number: sanitizeKoreanText(parsed?.luckyItems?.number) || "7 과 18",
-      direction: sanitizeKoreanText(parsed?.luckyItems?.direction) || "남동쪽 (풍요)"
+      number: sanitizeKoreanText(parsed?.luckyItems?.number) || "상생의 수 3 과 8",
+      direction: sanitizeKoreanText(parsed?.luckyItems?.direction) || "길한 방위"
     },
-    wisdom: sanitizeKoreanText(parsed?.wisdom) || "바람이 불지 않을 때 바람개비를 돌리는 방법은, 내가 앞으로 달려가는 것이다."
+    wisdom: sanitizeKoreanText(parsed?.wisdom) || `${birthGanzhi}일주의 지혜로 오늘 ${shipsin}의 흐름을 바르고 신중하게 다스리세요.`
   }
 })
 
@@ -1234,11 +1259,12 @@ watch(result, (newVal) => {
             </button>
             <button
               type="button"
-              class="py-3 rounded-full pg-card border text-xs font-semibold pg-text-muted hover:pg-text transition-colors flex items-center justify-center gap-1.5 pg-hover-gold"
-              @click="store.clearSaju()"
+              class="py-3 rounded-full pg-card border text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none"
+              :class="store.getRemainingCoolTime('saju').isLimited ? 'opacity-70 pg-text-muted hover:border-amber-500/50' : 'pg-text-muted hover:pg-text pg-hover-gold'"
+              @click="handleResetSaju"
             >
               <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
-              내 사주 다시 입력
+              <span>내 사주 다시 입력</span>
             </button>
           </div>
         </div>

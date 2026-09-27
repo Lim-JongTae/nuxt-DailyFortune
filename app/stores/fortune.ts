@@ -134,6 +134,28 @@ export const useFortuneStore = defineStore('fortune', () => {
     return isWithin12Hours && hasBackup
   }
 
+  const getRemainingCoolTime = (type: 'saju' | 'iching') => {
+    if (!import.meta.client) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
+    const limitDurationMs = 12 * 60 * 60 * 1000
+    const savedTime = Number(localStorage.getItem('fortune_savedTime'))
+    if (!savedTime || isNaN(savedTime)) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
+
+    const elapsed = Date.now() - savedTime
+    const remainingMs = limitDurationMs - elapsed
+
+    const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
+    const hasBackup = !!localStorage.getItem(backupKey)
+
+    if (remainingMs <= 0 || !hasBackup) {
+      return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
+    }
+
+    const hours = Math.floor(remainingMs / (1000 * 60 * 60))
+    const minutes = Math.ceil((remainingMs % (1000 * 60 * 60)) / (1000 * 60))
+
+    return { isLimited: true, hours, minutes, remainingMs }
+  }
+
   const resetAllInputs = () => {
     birthDate.value = ''
     birthTime.value = ''
@@ -164,6 +186,7 @@ export const useFortuneStore = defineStore('fortune', () => {
     clearSaju,
     clearIching,
     hasRecentResult,
+    getRemainingCoolTime,
     resetAllInputs
   }
 })
