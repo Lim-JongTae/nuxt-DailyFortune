@@ -85,9 +85,9 @@ const formattedHtml = computed(() => {
 
       <!-- 마크다운 텍스트가 없는 경우 안전 대체 예외 문구 -->
       <div v-else class="py-6 text-center pg-text-muted text-xs">
-        <UIcon name="i-heroicons-sparkles" class="w-8 h-8 text-[var(--fortune-gold)] mx-auto mb-2 opacity-60" />
+        <UIcon name="i-heroicons-sparkles" class="w-8 h-8 text-(--fortune-gold) mx-auto mb-2 opacity-60" />
         <p>명리학적 분석 보고서를 구성하고 있습니다.</p>
-        <p class="text-[11px] mt-1 text-[var(--fortune-gold-light)]">잠시 후 운세 분석 결과가 완성됩니다.</p>
+        <p class="text-[11px] mt-1 text-(--fortune-gold-light)">잠시 후 운세 분석 결과가 완성됩니다.</p>
       </div>
     </div>
   </div>

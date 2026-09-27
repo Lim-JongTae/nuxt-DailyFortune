@@ -53,25 +53,30 @@ useHead({
   ]
 })
 
-// KST 오늘 일진 간지 및 오행 기운 동적 계산
+// KST 오늘 일진 간지 및 오행 기운 동적 계산 (useState 활용으로 SSR-Client 하이드레이션 일치)
 const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
 const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
 
-const nowUtc = new Date().getTime()
-const kstOffset = 9 * 60 * 60 * 1000
-const todayKst = new Date(nowUtc + kstOffset)
-const todayStr = todayKst.toISOString().split('T')[0] || ''
+const todayGanzhi = useState('todayGanzhi', () => {
+  const nowUtc = new Date().getTime()
+  const kstOffset = 9 * 60 * 60 * 1000
+  const todayKst = new Date(nowUtc + kstOffset)
+  const todayStr = todayKst.toISOString().split('T')[0] || ''
 
-const targetDate = new Date(`${todayStr}T00:00:00+09:00`)
-const refDate = new Date('2000-01-01T00:00:00+09:00')
-const diffDays = Math.round((targetDate.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24))
+  const targetDate = new Date(`${todayStr}T00:00:00+09:00`)
+  const refDate = new Date('2000-01-01T00:00:00+09:00')
+  const diffDays = Math.round((targetDate.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24))
 
-const todayStemIdx = (4 + (diffDays % 10) + 10) % 10
-const todayBranchIdx = (6 + (diffDays % 12) + 12) % 12
-const todayGanzhi = `${stems[todayStemIdx]}${branches[todayBranchIdx]}`
+  const todayStemIdx = (4 + (diffDays % 10) + 10) % 10
+  const todayBranchIdx = (6 + (diffDays % 12) + 12) % 12
+  return {
+    ganzhi: `${stems[todayStemIdx]}${branches[todayBranchIdx]}`,
+    elementIdx: Math.floor(todayStemIdx / 2)
+  }
+})
 
-// 오늘 일진의 천간 기준 주오행 (0: 목, 1: 화, 2: 토, 3: 금, 4: 수)
-const todayElementIdx = Math.floor(todayStemIdx / 2)
+const todayElementIdx = computed(() => todayGanzhi.value.elementIdx)
+const todayGanzhiText = computed(() => todayGanzhi.value.ganzhi)
 
 const elementBadge = computed(() => {
   const badgeMap = [
@@ -81,7 +86,7 @@ const elementBadge = computed(() => {
     '金 · 결실 결단',
     '水 · 지혜 흐름'
   ]
-  return badgeMap[todayElementIdx] || '木 · 생기 상승'
+  return badgeMap[todayElementIdx.value] || '木 · 생기 상승'
 })
 
 // 오늘 일진 오행 비율 동적 계산
@@ -93,7 +98,7 @@ const elementRatios = computed(() => {
     [15, 15, 20, 35, 15], // 금 위주
     [20, 15, 15, 15, 35], // 수 위주
   ]
-  return baseRatios[todayElementIdx] || [35, 20, 20, 15, 10]
+  return baseRatios[todayElementIdx.value] || [35, 20, 20, 15, 10]
 })
 
 // 오늘 사주 운세 점수 (0% / 0도 -> 88% / 88점 카운트업 & 게이지 그리기 애니메이션)
@@ -105,7 +110,14 @@ const targetScore = 88
 const todayViews = ref(0)
 const totalViews = ref(0)
 
+// 브라우저 마운트 완료 후 괘 애니메이션 시작 제어 (SSR 미리 동작 방지)
+const isAnimated = ref(false)
+
 onMounted(async () => {
+  setTimeout(() => {
+    isAnimated.value = true
+  }, 100)
+
   // 방문자 통계 데이터 로드
   try {
     const res: any = await $fetch('/api/stats/visit')
@@ -256,7 +268,6 @@ onMounted(async () => {
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
         <NuxtLink 
           to="/saju"
-          @click="navigateTo('/saju')"
           class="gold-filament-card p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group cursor-pointer"
         >
           <!-- Background Watermark (z-0) -->
@@ -293,7 +304,7 @@ onMounted(async () => {
                   <span class="absolute pg-text font-bold text-base font-serif-kr">{{ animatedScore }}</span>
                 </div>
                 <div>
-                  <div class="text-sm pg-text-gold font-bold font-serif-kr">오늘({{ todayGanzhi }}일) 일진 & 십신 분석</div>
+                  <div class="text-sm pg-text-gold font-bold font-serif-kr">오늘({{ todayGanzhiText }}일) 일진 & 십신 분석</div>
                   <div class="text-xs pg-text-muted mt-0.5">나의 일간(日干)과 오늘 날짜의 조화</div>
                 </div>
               </div>
@@ -383,7 +394,6 @@ onMounted(async () => {
         <!-- ================= CARD B: 오늘의 주역 괘 ================= -->
         <NuxtLink 
           to="/iching"
-          @click="navigateTo('/iching')"
           class="gold-filament-card p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group cursor-pointer"
         >
           <!-- Background Watermark (z-0) -->
@@ -409,44 +419,48 @@ onMounted(async () => {
               </span>
             </div>
 
-            <!-- Hexagram Preview Graphic (6효 완성: 보라/인디고 단일 톤) -->
-            <div class="mt-6 flex flex-col sm:flex-row items-center gap-6 pg-card-inner p-5 rounded-2xl border pg-border">
-              <!-- 64괘 6효 그래픽 -->
-              <div class="w-32 flex flex-col gap-1.5 py-1 select-none">
-                <!-- 상괘 (6효: 음효) -->
-                <div class="flex gap-2 w-full">
-                  <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
-                  <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
-                </div>
-                <!-- 상괘 (5효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs"></div>
-                <!-- 상괘 (4효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs"></div>
+            <!-- Hexagram Preview Graphic (모자이크 셔플 조합 연출 & 우측 텍스트 순차 등장) -->
+            <ClientOnly>
+              <div class="mt-6 flex flex-col sm:flex-row items-center gap-6 pg-card-inner p-5 rounded-2xl border pg-border">
+                <!-- 64괘 6효 그래픽 (모자이크 블러 ➔ 라인 조합) -->
+                <div class="w-32 flex flex-col gap-1.5 py-1 select-none hex-mosaic-container" :class="{ 'is-active': isAnimated }">
+                  <!-- 상괘 (6효: 음효) -->
+                  <div class="flex gap-2 w-full hex-line-item hex-line-6" :class="{ 'is-active': isAnimated }">
+                    <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
+                    <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
+                  </div>
+                  <!-- 상괘 (5효: 양효) -->
+                  <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs hex-line-item hex-line-5" :class="{ 'is-active': isAnimated }"></div>
+                  <!-- 상괘 (4효: 양효) -->
+                  <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs hex-line-item hex-line-4" :class="{ 'is-active': isAnimated }"></div>
 
-                <!-- 하괘 (3효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs"></div>
-                <!-- 하괘 (2효: 음효) -->
-                <div class="flex gap-2 w-full">
-                  <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
-                  <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
+                  <!-- 하괘 (3효: 양효) -->
+                  <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs hex-line-item hex-line-3" :class="{ 'is-active': isAnimated }"></div>
+                  <!-- 하괘 (2효: 음효) -->
+                  <div class="flex gap-2 w-full hex-line-item hex-line-2" :class="{ 'is-active': isAnimated }">
+                    <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
+                    <div class="h-1.5 rounded-xs w-1/2 trigram-bar-broken shadow-xs"></div>
+                  </div>
+                  <!-- 하괘 (1효: 양효) -->
+                  <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs hex-line-item hex-line-1" :class="{ 'is-active': isAnimated }"></div>
                 </div>
-                <!-- 하괘 (1효: 양효) -->
-                <div class="h-1.5 rounded-xs w-full trigram-bar-solid shadow-xs"></div>
+
+                <!-- 우측 텍스트 (괘가 도출된 후 서서히 등장) -->
+                <div class="hex-text-fade-in" :class="{ 'is-active': isAnimated }">
+                  <div class="text-xs trigram-badge-text font-bold font-serif-kr mb-1">3단계 대나무 점대 드로우</div>
+                  <p class="text-xs pg-text-muted leading-relaxed">
+                    하괘, 상괘, 동효를 마음을 담아 직접 선택하여 오늘 나에게 필요한 처세의 지혜를 구합니다.
+                  </p>
+                </div>
               </div>
-              <div>
-                <div class="text-xs trigram-badge-text font-bold font-serif-kr mb-1">3단계 대나무 점대 드로우</div>
-                <p class="text-xs pg-text-muted leading-relaxed">
-                  하괘, 상괘, 동효를 마음을 담아 직접 선택하여 오늘 나에게 필요한 처세의 지혜를 구합니다.
+
+              <!-- Quote Preview (괘가 도출된 후 함께 서서히 등장) -->
+              <div class="mt-6 p-4 rounded-xl trigram-quote-box border-l-2 hex-text-fade-in hex-text-delay-quote" :class="{ 'is-active': isAnimated }">
+                <p class="font-serif-kr text-xs sm:text-sm trigram-quote-text italic">
+                  “상황에 맞추어 유연하게 순응하면 굳게 막혔던 난관이 스스로 풀려나갑니다.”
                 </p>
               </div>
-            </div>
-
-            <!-- Quote Preview -->
-            <div class="mt-6 p-4 rounded-xl trigram-quote-box border-l-2">
-              <p class="font-serif-kr text-xs sm:text-sm trigram-quote-text italic">
-                “상황에 맞추어 유연하게 순응하면 굳게 막혔던 난관이 스스로 풀려나갑니다.”
-              </p>
-            </div>
+            </ClientOnly>
           </div>
 
           <!-- CTA Button (z-10) -->
@@ -496,11 +510,6 @@ onMounted(async () => {
           </div>
         </div>
       </section>
-
-      <!-- 4. ADSENSE SLOT -->
-      <div class="flex justify-center my-6">
-        <AdSense adSlot="8273619208" />
-      </div>
 
       <!-- 5. FOOTER STATS: 누적 방문 수 (화면 제일 아래 우측 배치) -->
       <footer class="flex justify-end items-center pt-4 pb-2 border-t pg-border text-xs">
@@ -610,5 +619,90 @@ onMounted(async () => {
 .score-glow-ring {
   animation: scoreGlowPulse 2.5s ease-in-out infinite;
   will-change: filter;
+}
+
+/* 주역 괘 모자이크 블러 & 순차 슬라이드 조립 애니메이션 */
+@keyframes hexLineAssembleOdd {
+  0% {
+    opacity: 0;
+    filter: blur(12px) brightness(220%);
+    transform: translateX(-28px) scaleX(0.3);
+  }
+  60% {
+    opacity: 0.8;
+    filter: blur(3px) brightness(140%);
+    transform: translateX(4px) scaleX(1.06);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(100%);
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+@keyframes hexLineAssembleEven {
+  0% {
+    opacity: 0;
+    filter: blur(12px) brightness(220%);
+    transform: translateX(28px) scaleX(0.3);
+  }
+  60% {
+    opacity: 0.8;
+    filter: blur(3px) brightness(140%);
+    transform: translateX(-4px) scaleX(1.06);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(100%);
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+.hex-line-item {
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.hex-line-1.is-active, .hex-line-3.is-active, .hex-line-5.is-active {
+  animation: hexLineAssembleOdd 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hex-line-2.is-active, .hex-line-4.is-active, .hex-line-6.is-active {
+  animation: hexLineAssembleEven 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 1효(맨 아래) -> 6효(맨 위) 순차 조립 딜레이 */
+.hex-line-1.is-active { animation-delay: 0.15s; }
+.hex-line-2.is-active { animation-delay: 0.35s; }
+.hex-line-3.is-active { animation-delay: 0.55s; }
+.hex-line-4.is-active { animation-delay: 0.75s; }
+.hex-line-5.is-active { animation-delay: 0.95s; }
+.hex-line-6.is-active { animation-delay: 1.15s; }
+
+@keyframes hexTextFadeInUp {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.hex-text-fade-in {
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.hex-text-fade-in.is-active {
+  animation: hexTextFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 1.45s; /* 괘 6개가 모두 도출된 후 우측 텍스트 등장 */
+}
+
+.hex-text-delay-quote.is-active {
+  animation-delay: 1.75s; /* 텍스트 도출 후 명언 상자 등장 */
 }
 </style>

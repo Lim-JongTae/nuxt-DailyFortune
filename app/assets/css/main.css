@@ -397,26 +397,24 @@ body {
 
 /* 카드 워터마크 배경 텍스트 (동적 펄스 연동) */
 .pg-watermark-text {
-  color: rgba(148, 163, 184, 0.22);
+  color: var(--fortune-text-soft);
 }
 .dark .pg-watermark-text {
-  color: rgba(232, 193, 112, 0.20);
+  color: var(--fortune-gold);
 }
 
-/* 워터마크 배경 한자 동적 크기 및 불투명도 조절 (연했다 진했다 숨쉬는 펄스) */
+/* 워터마크 배경 한자 색상 (움직임 없이 연하게 ➔ 진하게 동적 표현) */
 @keyframes watermarkPulse {
   0%, 100% {
-    transform: scale(0.96) rotate(0deg);
-    opacity: 0.3;
+    opacity: 0.08;
   }
   50% {
-    transform: scale(1.08) rotate(1.5deg);
-    opacity: 0.85;
+    opacity: 0.35;
   }
 }
 
 .animate-watermark-pulse {
   animation: watermarkPulse 7.5s ease-in-out infinite;
-  transform-origin: top right;
   display: inline-block;
+  will-change: opacity;
 }

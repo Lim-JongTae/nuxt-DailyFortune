@@ -69,6 +69,7 @@ export default defineNuxtConfig({
         { name: 'keywords', content: '사주, 사주명리, 주역, 64괘, 일일운세, 오늘의 운세, 일진, 십신, 오행, AI 운세, 무료 운세' },
         { name: 'author', content: 'sajuapp.co.kr' },
         { name: 'theme-color', content: '#0F1226' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
         { name: 'apple-mobile-web-app-title', content: '일일운세' },

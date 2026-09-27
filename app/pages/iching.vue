@@ -755,13 +755,13 @@ const copyToClipboard = () => {
           <UIcon name="i-heroicons-arrow-left" class="w-5 h-5" />
         </NuxtLink>
         <div class="text-center">
-          <span class="text-[9px] font-bold tracking-widest text-[#4b360c] dark:text-amber-200/90 block uppercase">변화의 이치</span>
+          <span class="text-[9px] font-bold tracking-widest pg-text-gold block uppercase">변화의 이치</span>
           <h1 class="font-serif-kr text-base sm:text-lg font-bold pg-text tracking-wide">
             주역점 결과
           </h1>
         </div>
         <button type="button" class="p-1.5 rounded-full pg-text-muted hover:pg-text transition-colors">
-          <UIcon name="i-heroicons-[#1E2640]" class="w-5 h-5 i-heroicons-bookmark" />
+          <UIcon name="i-heroicons-bookmark" class="w-5 h-5 text-(--fortune-text-soft)" />
         </button>
       </div>
 
@@ -776,19 +776,19 @@ const copyToClipboard = () => {
 
         <div class="relative z-10">
           <div class="text-center py-2 mb-4">
-            <span class="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-[#E8C170]/10 border border-amber-300 dark:border-[#E8C170]/30 text-amber-800 dark:text-amber-300 text-xs font-bold font-serif-kr mb-2">
+            <span class="inline-block px-3 py-1 rounded-full pg-card-inner border pg-border pg-text-gold text-xs font-bold font-serif-kr mb-2">
               ☯️ 하늘과 땅의 지혜, 64괘
             </span>
-            <h2 class="font-serif-kr text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            <h2 class="font-serif-kr text-xl font-bold pg-text mb-2">
               풀어내고자 하는 고민을 떠올려보세요
             </h2>
-            <p class="text-xs text-gray-600 dark:text-gray-300 max-w-xs mx-auto leading-relaxed font-normal">
+            <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-normal">
               주역 64괘의 괘사와 변효(動爻)가 당신의 고민에 전하는 처세와 지혜를 명확히 제시합니다.
             </p>
           </div>
 
           <div class="mb-5">
-            <label for="worry-iching" class="block text-xs font-bold text-amber-800 dark:text-amber-300 mb-2 font-serif-kr">
+            <label for="worry-iching" class="block text-xs font-bold pg-text-gold mb-2 font-serif-kr">
               ❓ 질문 내용 (예: 새로운 일을 시작해도 될까요?)
             </label>
             <textarea
@@ -796,13 +796,13 @@ const copyToClipboard = () => {
               v-model="worry"
               placeholder="마음속에 간절히 바라거나 판단이 필요한 고민을 입력해 보세요."
               rows="3"
-              class="iching-textarea w-full py-3 px-4 rounded-2xl focus:outline-hidden text-xs sm:text-sm resize-none text-gray-900 dark:text-gray-100"
+              class="iching-textarea w-full py-3 px-4 rounded-2xl focus:outline-hidden text-xs sm:text-sm resize-none pg-text"
             ></textarea>
           </div>
 
           <button
             type="button"
-            class="hover:cursor-pointer w-full py-3.5 rounded-full font-bold text-sm text-[#0B0E1B] bg-gradient-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            class="hover:cursor-pointer w-full py-3.5 rounded-full font-bold text-sm text-[#0B0E1B] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
             @click="startRitual"
           >
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#0B0E1B]" />
@@ -823,8 +823,8 @@ const copyToClipboard = () => {
         <div class="relative z-10">
           <div class="flex justify-between items-center mb-6 border-b pg-border pb-4">
             <div>
-              <span class="text-[10px] font-bold text-amber-700 dark:text-amber-300 tracking-wider uppercase block mb-0.5"></span>
-              <h2 class="font-serif-kr text-base font-bold text-gray-900 dark:text-gray-100">
+              <span class="text-[10px] font-bold pg-text-gold tracking-wider uppercase block mb-0.5"></span>
+              <h2 class="font-serif-kr text-base font-bold pg-text">
                 <span v-if="currentStep === 1">1단계: 하괘(下卦) 선택</span>
                 <span v-if="currentStep === 2">2단계: 상괘(上卦) 선택</span>
                 <span v-if="currentStep === 3">3단계: 동효(動爻) 선택</span>
@@ -846,7 +846,7 @@ const copyToClipboard = () => {
               class="relative cursor-pointer h-36 w-10 rounded-xl transition-all duration-500 transform hover:-translate-y-2 preserve-3d"
               :class="{ 'rotate-y-180': stick.isFlipped }"
             >
-              <div class="absolute inset-0 bg-gradient-to-b from-[#78350F] via-[#713F12] to-[#451A03] flex flex-col items-center justify-between py-3 border border-[#B45309]/50 rounded-xl shadow-lg backface-hidden z-10">
+              <div class="absolute inset-0 bg-linear-to-b from-[#78350F] via-[#713F12] to-[#451A03] flex flex-col items-center justify-between py-3 border border-[#B45309]/50 rounded-xl shadow-lg backface-hidden z-10">
                 <span class="text-[12px] text-[#FDE047]/40 select-none">☯</span>
                 <div class="w-1 h-14 bg-[#451A03]/60 rounded-full"></div>
                 <span class="text-[9px] text-[#FEF08A]/60 font-serif-kr">{{ stick.stickId }}</span>
@@ -883,7 +883,7 @@ const copyToClipboard = () => {
               <span class="seal-stamp text-xs px-2 py-0.5">易</span>
             </div>
           </div>
-          <h3 class="font-serif-kr text-base font-bold text-gray-900 dark:text-gray-100 mb-1 animate-pulse">
+          <h3 class="font-serif-kr text-base font-bold pg-text mb-1 animate-pulse">
             본괘와 변괘를 맞추는 중입니다...
           </h3>
         </div>
@@ -897,16 +897,16 @@ const copyToClipboard = () => {
         <!-- 1. 질문 카드 (상단 인풋 요약) -->
         <div class="pg-card border rounded-2xl p-4 relative reveal-on-scroll">
           <div class="flex justify-between items-start mb-2">
-            <h2 class="font-serif-kr text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100 leading-snug">
+            <h2 class="font-serif-kr text-sm sm:text-base font-bold pg-text leading-snug">
               "{{ worry || '오늘 하루의 운세와 지혜' }}"
             </h2>
           </div>
-          <div class="flex items-center justify-between text-[12px] text-gray-600 dark:text-gray-300">
+          <div class="flex items-center justify-between text-[12px] pg-text-muted">
             <span class="flex items-center gap-1.5">
-              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 text-amber-700 dark:text-amber-300" />
+              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 pg-text-gold" />
               {{ formattedKstDateTime }}
             </span>
-            <span class="px-2 py-0.5 rounded-md pg-chip text-amber-700 dark:text-amber-300 border pg-border text-[11px]">
+            <span class="px-2 py-0.5 rounded-md pg-chip pg-text-gold border pg-border text-[11px]">
               문사 (問事)
             </span>
           </div>
@@ -922,7 +922,7 @@ const copyToClipboard = () => {
           <div class="relative z-10">
             <!-- 상단 뱃지 -->
             <div class="text-center mb-4">
-              <span class="inline-block px-3 py-0.5 rounded-full pg-chip border pg-border text-[11px] text-amber-800 dark:text-amber-300 font-medium">
+              <span class="inline-block px-3 py-0.5 rounded-full pg-chip border pg-border text-[11px] pg-text-gold font-medium">
                 ● 동효: {{ hexagramLinesDetail.lineText }} ✦
               </span>
             </div>
@@ -933,12 +933,12 @@ const copyToClipboard = () => {
               <!-- 본괘 (Origin) -->
               <div class="pg-card-inner border pg-border-strong rounded-2xl p-3.5 text-center flex flex-col justify-between h-full">
                 <div>
-                  <span class="text-[11px] text-amber-700 dark:text-amber-300 font-bold block mb-1">본괘 [本卦]</span>
-                  <h3 class="font-serif-kr text-base font-extrabold text-gray-900 dark:text-gray-100 mb-1">
+                  <span class="text-[11px] pg-text-gold font-bold block mb-1">본괘 [本卦]</span>
+                  <h3 class="font-serif-kr text-base font-extrabold pg-text mb-1">
                     제{{ hexagramLinesDetail.origin.id }}괘 {{ hexagramLinesDetail.origin.nameKorean }}
                   </h3>
                   <div class="min-h-10 flex items-center justify-center mb-3">
-                    <p class="text-[11px] text-gray-600 dark:text-gray-300 leading-tight">{{ hexagramLinesDetail.origin.desc }}</p>
+                    <p class="text-[11px] pg-text-muted leading-tight">{{ hexagramLinesDetail.origin.desc }}</p>
                   </div>
 
                   <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로) -->
@@ -947,40 +947,40 @@ const copyToClipboard = () => {
                       v-for="(val, index) in [...hexagramLinesDetail.origin.lines].reverse()"
                       :key="index"
                       class="h-2 rounded flex items-center justify-between overflow-hidden relative"
-                      :class="6 - index === hexagramLinesDetail.lineNum ? 'ring-2 ring-amber-600 dark:ring-[#E8C170] shadow-[0_0_10px_rgba(217,119,6,0.4)] dark:shadow-[0_0_10px_rgba(232,193,112,0.6)]' : ''"
+                      :class="6 - index === hexagramLinesDetail.lineNum ? 'ring-2 ring-(--fortune-gold) shadow-[0_0_10px_var(--fortune-gold-shadow)]' : ''"
                     >
                       <!-- 양효 (1): 통 줄 -->
                       <template v-if="val === 1">
-                        <div class="w-full h-full bg-[#93C5FD] rounded-sm shadow-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
+                        <div class="w-full h-full bg-[#93C5FD] rounded-sm shadow-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-(--fortune-gold) animate-pulse shadow-[0_0_8px_var(--fortune-gold-shadow)]' : ''"></div>
                       </template>
                       <!-- 음효 (0): 두 갈래 -->
                       <template v-else>
-                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
-                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-amber-600 dark:bg-[#FDE047] animate-pulse shadow-[0_0_8px_rgba(217,119,6,0.8)] dark:shadow-[0_0_8px_#FDE047]' : ''"></div>
+                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-(--fortune-gold) animate-pulse shadow-[0_0_8px_var(--fortune-gold-shadow)]' : ''"></div>
+                        <div class="w-[45%] h-full bg-[#93C5FD] rounded-sm" :class="6 - index === hexagramLinesDetail.lineNum ? 'bg-(--fortune-gold) animate-pulse shadow-[0_0_8px_var(--fortune-gold-shadow)]' : ''"></div>
                       </template>
                     </div>
                   </div>
                 </div>
 
-                <span class="text-[11px] text-gray-500 dark:text-gray-400 font-serif-kr block">
+                <span class="text-[11px] pg-text-soft font-serif-kr block">
                   {{ hexagramLinesDetail.origin.upperName }} · {{ hexagramLinesDetail.origin.lowerName }}
                 </span>
               </div>
 
               <!-- 변효 화살표 (중앙 - 좌우 흐름 애니메이션 & 라이트/다크모드 시인성 강화) -->
-              <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 p-1.5 rounded-full text-amber-700 dark:text-[#FFDE9E] border border-amber-500/60 dark:border-[#E8C170]/60 shadow-lg shadow-amber-600/30 dark:shadow-[#E8C170]/20 bg-amber-50 dark:bg-[#1A1D2E]">
-                <UIcon name="i-heroicons-arrow-right" class="w-4.5 h-4.5 text-amber-700 dark:text-[#E8C170] animate-arrow-flow" />
+              <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 p-1.5 rounded-full pg-text-gold border pg-border shadow-lg pg-card-deep">
+                <UIcon name="i-heroicons-arrow-right" class="w-4.5 h-4.5 pg-text-gold animate-arrow-flow" />
               </div>
 
               <!-- 변괘 (Changed) -->
               <div class="pg-card-inner border pg-border-strong rounded-2xl p-3.5 text-center flex flex-col justify-between h-full">
                 <div>
-                  <span class="text-[11px] text-amber-700 dark:text-amber-300 font-bold block mb-1">변괘 [變卦]</span>
-                  <h3 class="font-serif-kr text-base font-extrabold text-gray-900 dark:text-gray-100 mb-1">
+                  <span class="text-[11px] pg-text-gold font-bold block mb-1">변괘 [變卦]</span>
+                  <h3 class="font-serif-kr text-base font-extrabold pg-text mb-1">
                     제{{ hexagramLinesDetail.changed.id }}괘 {{ hexagramLinesDetail.changed.nameKorean }}
                   </h3>
                   <div class="min-h-10 flex items-center justify-center mb-3">
-                    <p class="text-[11px] text-gray-600 dark:text-gray-300 leading-tight">{{ hexagramLinesDetail.changed.desc }}</p>
+                    <p class="text-[11px] pg-text-muted leading-tight">{{ hexagramLinesDetail.changed.desc }}</p>
                   </div>
 
                   <!-- 6효 그리기 -->
@@ -1001,7 +1001,7 @@ const copyToClipboard = () => {
                   </div>
                 </div>
 
-                <span class="text-[11px] text-gray-500 dark:text-gray-400 font-serif-kr block">
+                <span class="text-[11px] pg-text-soft font-serif-kr block">
                   {{ hexagramLinesDetail.changed.upperName }} · {{ hexagramLinesDetail.changed.lowerName }}
                 </span>
               </div>
@@ -1009,8 +1009,8 @@ const copyToClipboard = () => {
 
             <!-- 하단 요약 정보 -->
             <div class="flex justify-between items-center px-2 pt-2 border-t pg-border text-[11px]">
-              <span class="text-gray-600 dark:text-gray-300">{{ hexagramLinesDetail.harmonyText }}</span>
-              <span class="text-amber-700 dark:text-amber-300 font-bold">{{ hexagramLinesDetail.fortuneBadge }}</span>
+              <span class="pg-text-muted">{{ hexagramLinesDetail.harmonyText }}</span>
+              <span class="pg-text-gold font-bold">{{ hexagramLinesDetail.fortuneBadge }}</span>
             </div>
           </div>
         </div>
@@ -1031,14 +1031,14 @@ const copyToClipboard = () => {
           </div>
 
           <div class="relative z-10">
-            <div class="flex items-center gap-1.5 text-xs text-amber-800 dark:text-amber-300 font-bold mb-2">
+            <div class="flex items-center gap-1.5 text-xs pg-text-gold font-bold mb-2">
               <UIcon name="i-heroicons-share" class="w-4 h-4" />
               괘도 핵심 요약
             </div>
-            <h2 class="font-serif-kr text-base sm:text-lg font-bold text-amber-800 dark:text-amber-300 mb-2 leading-snug">
+            <h2 class="font-serif-kr text-base sm:text-lg font-bold pg-text-gold mb-2 leading-snug">
               "{{ result.hexagram.summary }}"
             </h2>
-            <p class="text-xs text-gray-800 dark:text-gray-200 font-normal leading-relaxed">
+            <p class="text-xs pg-text font-normal leading-relaxed">
               {{ result.hexagram.nameKorean }}({{ result.hexagram.nameHanji }}) - {{ result.hexagram.meaning }}
             </p>
           </div>
@@ -1046,7 +1046,7 @@ const copyToClipboard = () => {
 
         <!-- 5. 고전 원문 심층 풀이 (아코디언) -->
         <div class="space-y-2 reveal-on-scroll">
-          <span class="text-xs font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1 px-1 font-serif-kr">
+          <span class="text-xs font-bold pg-text-gold flex items-center gap-1 px-1 font-serif-kr">
             ✦ 고전 원문 심층 풀이
           </span>
 
@@ -1056,24 +1056,24 @@ const copyToClipboard = () => {
               <button
                 type="button"
                 @click="toggleAccordion('total')"
-                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold text-gray-900 dark:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
                 <span class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded pg-chip text-amber-700 dark:text-amber-300 border pg-border text-[10px]">괘사 (卦辭)</span>
+                  <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">괘사 (卦辭)</span>
                   {{ result.hexagram.nameKorean }} 본괘 총론
                 </span>
                 <UIcon
                   name="i-heroicons-chevron-down"
-                  class="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform"
+                  class="w-4 h-4 pg-text-soft transition-transform"
                   :class="accordionOpen.total ? 'rotate-180' : ''"
                 />
               </button>
-              <div v-if="accordionOpen.total" class="p-4 pt-0 text-xs text-gray-800 dark:text-gray-200 font-serif-kr space-y-2 leading-relaxed">
-                <p class="text-amber-800 dark:text-amber-300 font-bold">{{ result.hexagram.nameHanji }} - {{ result.hexagram.nameKorean }}</p>
-                <p class="font-sans-kr font-normal text-gray-800 dark:text-gray-200">
+              <div v-if="accordionOpen.total" class="p-4 pt-0 text-xs pg-text font-serif-kr space-y-2 leading-relaxed">
+                <p class="pg-text-gold font-bold">{{ result.hexagram.nameHanji }} - {{ result.hexagram.nameKorean }}</p>
+                <p class="font-sans-kr font-normal pg-text">
                   "{{ result.hexagram.summary }}"
                 </p>
-                <p class="font-sans-kr font-normal text-gray-600 dark:text-gray-300">
+                <p class="font-sans-kr font-normal pg-text-muted">
                   {{ result.hexagram.meaning }}
                 </p>
               </div>
@@ -1084,24 +1084,24 @@ const copyToClipboard = () => {
               <button
                 type="button"
                 @click="toggleAccordion('line')"
-                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold text-gray-900 dark:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
                 <span class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded pg-chip text-amber-700 dark:text-amber-300 border pg-border text-[10px]">효사 (爻辭)</span>
+                  <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">효사 (爻辭)</span>
                   {{ hexagramLinesDetail.lineText }}의 가르침
                 </span>
                 <UIcon
                   name="i-heroicons-chevron-down"
-                  class="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform"
+                  class="w-4 h-4 pg-text-soft transition-transform"
                   :class="accordionOpen.line ? 'rotate-180' : ''"
                 />
               </button>
-              <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs text-gray-800 dark:text-gray-200 font-serif-kr space-y-2 leading-relaxed">
-                <p class="text-amber-800 dark:text-amber-300 font-bold">● 동효: {{ hexagramLinesDetail.lineText }}</p>
-                <p class="font-sans-kr font-normal text-gray-800 dark:text-gray-200">
+              <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs pg-text font-serif-kr space-y-2 leading-relaxed">
+                <p class="pg-text-gold font-bold">● 동효: {{ hexagramLinesDetail.lineText }}</p>
+                <p class="font-sans-kr font-normal pg-text">
                   "{{ hexagramLinesDetail.lineText }}가 움직여 {{ hexagramLinesDetail.changed.nameKorean }}({{ hexagramLinesDetail.changed.nameHanji }}) 괘의 기운으로 변화합니다."
                 </p>
-                <p class="font-sans-kr font-normal text-gray-600 dark:text-gray-300">
+                <p class="font-sans-kr font-normal pg-text-muted">
                   {{ hexagramLinesDetail.changed.desc }}
                 </p>
               </div>
@@ -1112,19 +1112,19 @@ const copyToClipboard = () => {
               <button
                 type="button"
                 @click="toggleAccordion('symbol')"
-                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold text-gray-900 dark:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               >
                 <span class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 rounded pg-chip text-amber-700 dark:text-amber-300 border pg-border text-[10px]">상전 (象傳)</span>
+                  <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">상전 (象傳)</span>
                   대자연의 형상과 리더십
                 </span>
                 <UIcon
                   name="i-heroicons-chevron-down"
-                  class="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform"
+                  class="w-4 h-4 pg-text-soft transition-transform"
                   :class="accordionOpen.symbol ? 'rotate-180' : ''"
                 />
               </button>
-              <div v-if="accordionOpen.symbol" class="p-4 pt-0 text-xs text-gray-800 dark:text-gray-200 font-sans-kr font-normal leading-relaxed">
+              <div v-if="accordionOpen.symbol" class="p-4 pt-0 text-xs pg-text font-sans-kr font-normal leading-relaxed">
                 {{ hexagramLinesDetail.origin.upperName }}와 {{ hexagramLinesDetail.origin.lowerName }}가 상응하는 형상으로, {{ result.hexagram.generalFate }}
               </div>
             </div>
@@ -1133,7 +1133,7 @@ const copyToClipboard = () => {
 
         <!-- 6. 영역별 흐름 가이드 -->
         <div class="space-y-2 reveal-on-scroll">
-          <span class="text-xs font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1 px-1">
+          <span class="text-xs font-bold pg-text-gold flex items-center gap-1 px-1">
             ✦ 영역별 흐름 가이드
           </span>
 
@@ -1145,7 +1145,7 @@ const copyToClipboard = () => {
             >
               <div>
                 <div class="flex justify-between items-center mb-1.5">
-                  <h4 class="font-serif-kr text-xs font-bold text-gray-900 dark:text-gray-100">{{ cat.title }}</h4>
+                  <h4 class="font-serif-kr text-xs font-bold pg-text">{{ cat.title }}</h4>
                   <span
                     class="px-2 py-0.5 rounded text-[9px] font-bold shrink-0"
                     :class="cat.badge.class"
@@ -1153,7 +1153,7 @@ const copyToClipboard = () => {
                     {{ cat.badge.label }}
                   </span>
                 </div>
-                <p class="text-[11px] text-gray-700 dark:text-gray-300 font-normal leading-relaxed">
+                <p class="text-[11px] pg-text-muted font-normal leading-relaxed">
                   {{ cat.text }}
                 </p>
               </div>
@@ -1163,33 +1163,33 @@ const copyToClipboard = () => {
 
         <!-- 7. 지금 취해야 할 3가지 자세 (處世) -->
         <div class="pg-card border pg-border rounded-2xl p-5 shadow-lg reveal-on-scroll" style="background: linear-gradient(to bottom, var(--fortune-card), var(--fortune-card-deep));">
-          <div class="flex items-center gap-1.5 text-xs font-bold text-gray-900 dark:text-gray-100 mb-3">
-            <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-amber-700 dark:text-amber-300" />
+          <div class="flex items-center gap-1.5 text-xs font-bold pg-text mb-3">
+            <UIcon name="i-heroicons-check-circle" class="w-4 h-4 pg-text-gold" />
             지금 취해야 할 3가지 자세 (處世)
           </div>
 
           <div class="space-y-2.5 text-xs">
             <div class="flex items-start gap-2">
-              <span class="w-4 h-4 rounded-full bg-emerald-100 dark:bg-[#10B981]/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
+              <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
               <div>
-                <strong class="text-amber-800 dark:text-amber-300 font-bold">본괘의 지혜:</strong>
-                <span class="text-gray-800 dark:text-gray-200 font-normal"> {{ result.hexagram.nameKorean }} 괘의 뜻을 되새겨 차분하게 중심을 잡으세요.</span>
+                <strong class="pg-text-gold font-bold">본괘의 지혜:</strong>
+                <span class="pg-text font-normal"> {{ result.hexagram.nameKorean }} 괘의 뜻을 되새겨 차분하게 중심을 잡으세요.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-2">
-              <span class="w-4 h-4 rounded-full bg-emerald-100 dark:bg-[#10B981]/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
+              <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
               <div>
-                <strong class="text-amber-800 dark:text-amber-300 font-bold">동효의 조언:</strong>
-                <span class="text-gray-800 dark:text-gray-200 font-normal"> {{ hexagramLinesDetail.lineText }}가 움직여 변화하는 기운에 맞춰 유연하게 순응하세요.</span>
+                <strong class="pg-text-gold font-bold">동효의 조언:</strong>
+                <span class="pg-text font-normal"> {{ hexagramLinesDetail.lineText }}가 움직여 변화하는 기운에 맞춰 유연하게 순응하세요.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-2">
-              <span class="w-4 h-4 rounded-full bg-emerald-100 dark:bg-[#10B981]/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
+              <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
               <div>
-                <strong class="text-amber-800 dark:text-amber-300 font-bold">변괘의 방향:</strong>
-                <span class="text-gray-800 dark:text-gray-200 font-normal"> 결국 {{ hexagramLinesDetail.changed.nameKorean }} 괘상처럼 {{ hexagramLinesDetail.changed.desc }}의 결실로 지혜롭게 나아가게 됩니다.</span>
+                <strong class="pg-text-gold font-bold">변괘의 방향:</strong>
+                <span class="pg-text font-normal"> 결국 {{ hexagramLinesDetail.changed.nameKorean }} 괘상처럼 {{ hexagramLinesDetail.changed.desc }}의 결실로 지혜롭게 나아가게 됩니다.</span>
               </div>
             </div>
           </div>
@@ -1198,17 +1198,17 @@ const copyToClipboard = () => {
         <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
         <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">
           <div class="flex items-center gap-2">
-            <span class="text-xs text-gray-800 dark:text-gray-200 font-medium">❤️ 오늘 <span class="font-bold text-amber-700 dark:text-amber-300">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
+            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold pg-text-gold">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
           </div>
           <div class="relative group shrink-0">
             <!-- 이미 선택하였음을 알리는 말풍선 - 두 번째 클릭부터 2초간만 표시 -->
             <div
               v-if="showAlreadyLikedTooltip"
-              class="absolute -top-8 right-0 whitespace-nowrap bg-rose-950/90 dark:bg-rose-100 text-rose-200 dark:text-rose-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 transition-opacity duration-300"
+              class="absolute -top-8 right-0 whitespace-nowrap bg-rose-900 text-rose-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 transition-opacity duration-300"
             >
               <span>이미 선택하셨습니다</span>
               <!-- 말풍선 꼬리 (삼각형) -->
-              <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-950/90 dark:bg-rose-100 rotate-45 border-r border-b border-rose-400/40"></span>
+              <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-900 rotate-45 border-r border-b border-rose-400/40"></span>
             </div>
 
             <button
@@ -1216,7 +1216,7 @@ const copyToClipboard = () => {
               @click="toggleLike"
               :disabled="alreadyLiked"
               class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0"
-              :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40 cursor-default' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
+              :class="alreadyLiked ? 'pg-card-inner pg-text-gold border pg-border cursor-default' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95 cursor-pointer'"
             >
               <UIcon
                 :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
@@ -1232,7 +1232,7 @@ const copyToClipboard = () => {
         <div class="space-y-2.5 pt-2 reveal-on-scroll">
           <button
             type="button"
-            class="w-full py-3.5 rounded-full font-bold text-xs sm:text-sm text-[#0B0E1B] bg-gradient-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            class="w-full py-3.5 rounded-full font-bold text-xs sm:text-sm text-[#0B0E1B] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
             @click="copyToClipboard"
           >
             <UIcon name="i-heroicons-bookmark" class="w-4 h-4 text-[#0B0E1B]" />
@@ -1242,18 +1242,18 @@ const copyToClipboard = () => {
           <div class="flex gap-2">
             <button
               type="button"
-              class="flex-1 py-3 rounded-full bg-[#F3F4F6] dark:bg-[#0F2323] border border-gray-300 dark:border-[#1A3030] text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-[#153838] hover:border-amber-500 dark:hover:border-amber-400 active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5"
+              class="flex-1 py-3 rounded-full pg-card border pg-border text-xs font-semibold pg-text-muted hover:pg-text hover:border-(--fortune-gold) active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5"
               @click="resetAll"
             >
-              <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 text-amber-700 dark:text-amber-300" />
+              <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
               다시 점치기
             </button>
             <button
               type="button"
-              class="p-3 rounded-full bg-[#F9FAFB] dark:bg-[#0A1A1A] border border-gray-300 dark:border-[#1A3030] text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-[#153838] hover:border-amber-500 dark:hover:border-amber-400 active:scale-95 transition-all duration-200 flex items-center justify-center"
+              class="p-3 rounded-full pg-card border pg-border text-xs font-semibold pg-text-muted hover:pg-text hover:border-(--fortune-gold) active:scale-95 transition-all duration-200 flex items-center justify-center"
               @click="copyToClipboard"
             >
-              <UIcon name="i-heroicons-share" class="w-4 h-4 text-amber-700 dark:text-amber-300" />
+              <UIcon name="i-heroicons-share" class="w-4 h-4 pg-text-gold" />
             </button>
           </div>
         </div>
@@ -1262,6 +1262,11 @@ const copyToClipboard = () => {
         <p class="text-center text-[10px] pg-text-soft py-3 leading-relaxed">
           ※ 주역점은 삶의 지혜와 마음을 가다듬기 위한 참고용이며, 최종 선택과 판단은 스스로 내려보세요.
         </p>
+
+        <!-- AdSense: AI 결과가 있을 때만 표시 (Google 정책 준수) -->
+        <div v-if="result && result.aiInterpretation" class="flex justify-center my-4">
+          <AdSense adSlot="8877665544" />
+        </div>
 
       </div>
 

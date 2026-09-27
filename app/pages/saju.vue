@@ -792,7 +792,7 @@ watch(result, (newVal) => {
 
         <div class="relative z-10">
           <div class="text-center py-2 mb-4">
-          <span class="inline-block px-3 py-1 rounded-full bg-[var(--fortune-gold)]/10 border border-[var(--fortune-gold)]/30 pg-text-gold text-xs font-bold font-serif-kr mb-2">
+          <span class="inline-block px-3 py-1 rounded-full bg-(--fortune-gold)/10 border border-(--fortune-gold)/30 pg-text-gold text-xs font-bold font-serif-kr mb-2">
             🔮 일일 사주명리
           </span>
           <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text mb-2">
@@ -811,7 +811,7 @@ watch(result, (newVal) => {
               <button
                 type="button"
                 class="py-2.5 rounded-xl border text-xs font-bold transition-all"
-                :class="gender === 'male' ? 'pg-card-deep border-[var(--fortune-gold)] pg-text-gold-light' : 'pg-card-inner pg-border pg-text-muted'"
+                :class="gender === 'male' ? 'pg-card-deep border-(--fortune-gold) pg-text-gold-light' : 'pg-card-inner pg-border pg-text-muted'"
                 @click="gender = 'male'"
               >
                 남성 (陽)
@@ -819,7 +819,7 @@ watch(result, (newVal) => {
               <button
                 type="button"
                 class="py-2.5 rounded-xl border text-xs font-bold transition-all"
-                :class="gender === 'female' ? 'pg-card-deep border-[var(--fortune-gold)] pg-text-gold-light' : 'pg-card-inner pg-border pg-text-muted'"
+                :class="gender === 'female' ? 'pg-card-deep border-(--fortune-gold) pg-text-gold-light' : 'pg-card-inner pg-border pg-text-muted'"
                 @click="gender = 'female'"
               >
                 여성 (陰)
@@ -891,7 +891,7 @@ watch(result, (newVal) => {
 
           <button
             type="button"
-            class="w-full py-3.5 rounded-full font-bold text-sm text-[#0F1226] bg-gradient-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            class="w-full py-3.5 rounded-full font-bold text-sm text-[#0F1226] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-lg shadow-[#E8C170]/20 flex items-center justify-center gap-2"
             @click="startSajuFortune"
           >
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#0F1226]" />
@@ -1032,7 +1032,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.wealthScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.wealthScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -1049,7 +1049,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.loveScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.loveScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -1066,7 +1066,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.healthScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.healthScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -1083,7 +1083,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.businessScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.businessScore}%` : '0%' }"></div>
               </div>
             </div>
           </div>
@@ -1112,7 +1112,7 @@ watch(result, (newVal) => {
             >
               <span
                 v-if="item.isPeak"
-                class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[11px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/60 dark:bg-amber-500 dark:text-amber-950 dark:border-amber-400 transition-colors"
+                class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[11px] font-bold rounded-full pg-chip pg-text-gold border pg-border transition-colors"
               >
                 절정
               </span>
@@ -1149,7 +1149,7 @@ watch(result, (newVal) => {
             <div class="pg-card border rounded-2xl p-3 text-center">
               <span class="text-[10px] pg-text-bold block mb-2">행운의 방위</span>
               <div class="w-8 h-8 rounded-full pg-card-deep border pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold shadow-xs">
-                <svg class="w-6 h-6 text-[var(--fortune-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-6 h-6 text-(--fortune-gold)" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
                   <polygon points="16.24,7.76 13.8,13.8 7.76,16.24 10.2,10.2" stroke="currentColor" stroke-width="1.2" fill="currentColor" />
                 </svg>
@@ -1182,25 +1182,25 @@ watch(result, (newVal) => {
         <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
         <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">
           <div class="flex items-center gap-2">
-            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold text-amber-600 dark:text-[#FFDE9E]">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
+            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold pg-text-gold">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
           </div>
           <div class="relative group shrink-0" @click="handleLikeClick">
             <!-- 1.5초 후 사라지는 이벤트 말풍선 (Tooltip Bubble) -->
             <Transition name="fade-slide">
               <div
                 v-if="showLikeTooltip"
-                class="absolute -top-9 right-0 whitespace-nowrap bg-rose-950/90 dark:bg-rose-100 text-rose-200 dark:text-rose-950 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 z-20"
+                class="absolute -top-9 right-0 whitespace-nowrap bg-rose-900 text-rose-100 text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg border border-rose-400/40 pointer-events-none flex items-center gap-1 z-20"
               >
                 <span>{{ likeTooltipText }}</span>
                 <!-- 말풍선 꼬리 (삼각형) -->
-                <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-950/90 dark:bg-rose-100 rotate-45 border-r border-b border-rose-400/40"></span>
+                <span class="absolute -bottom-1 right-5 w-2 h-2 bg-rose-900 rotate-45 border-r border-b border-rose-400/40"></span>
               </div>
             </Transition>
 
             <button
               type="button"
               class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs shrink-0 select-none cursor-pointer"
-              :class="alreadyLiked ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40' : 'bg-gradient-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95'"
+              :class="alreadyLiked ? 'pg-card-inner pg-text-gold border pg-border' : 'bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0B0E1B] hover:brightness-110 active:scale-95'"
             >
               <UIcon
                 :name="alreadyLiked ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
@@ -1216,7 +1216,7 @@ watch(result, (newVal) => {
         <div class="space-y-3 pt-2">
           <button
             type="button"
-            class="w-full py-4 rounded-full font-bold text-sm text-[#0F1226] bg-gradient-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
+            class="w-full py-4 rounded-full font-bold text-sm text-[#0F1226] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
             @click="copyToClipboard"
           >
             <UIcon name="i-heroicons-share" class="w-5 h-5 text-[#0F1226]" />
