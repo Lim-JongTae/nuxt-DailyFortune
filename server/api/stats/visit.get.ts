@@ -1,5 +1,6 @@
 import { defineEventHandler, getCookie, setCookie } from 'h3'
 import prisma from '../../utils/prisma'
+import { recordDailyVisit } from '../../utils/stats'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -32,6 +33,8 @@ export default defineEventHandler(async (event) => {
           path: '/'
         })
       }
+
+      await recordDailyVisit(!hasVisitedCookie)
 
       console.log('[Visit Stats] Initial create:', {
         todayViews: stats.todayViews,
@@ -66,6 +69,8 @@ export default defineEventHandler(async (event) => {
         })
       }
 
+      await recordDailyVisit(!hasVisitedCookie)
+
       console.log('[Visit Stats] Date changed:', {
         date: todayKstStr,
         todayViews: stats.todayViews,
@@ -94,10 +99,14 @@ export default defineEventHandler(async (event) => {
         path: '/'
       })
 
+      await recordDailyVisit(true)
+
       console.log('[Visit Stats] New visitor:', {
         todayViews: stats.todayViews,
         totalViews: stats.totalViews
       })
+    } else {
+      await recordDailyVisit(false)
     }
 
     return {

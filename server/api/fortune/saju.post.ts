@@ -1,6 +1,7 @@
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
 import { getGanzhiOfDay, getHourBranch, getShipsin, getGanzhiOfYear } from '../../utils/saju'
+import { recordSajuView } from '../../utils/stats'
 
 export default defineEventHandler(async (event) => {
   const requestId = `saju_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
@@ -350,6 +351,8 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
       isAiGenerated,
       hasParsedData: !!parsedData
     })
+
+    recordSajuView().catch(() => {})
 
     return {
       success: true,

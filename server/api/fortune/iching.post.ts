@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
+import { recordIchingView } from '../../utils/stats'
 
 export interface IChingLine {
   hexagramId: number
@@ -209,6 +210,8 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
       maxAge: 10 * 24 * 60 * 60,
       path: '/'
     })
+
+    recordIchingView().catch(() => {})
 
     return {
       success: true,

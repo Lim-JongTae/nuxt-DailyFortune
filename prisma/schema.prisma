@@ -131,3 +131,16 @@ model SiteStats {
 
   @@map("site_stats")
 }
+
+// 일별 방문자 수 및 운세 서비스 이용 히스토리 통계 기록 (KST 기준)
+model DailyVisitLog {
+  id           Int      @id @default(autoincrement())
+  date         String   @unique // KST 기준 날짜 (예: "2026-09-28")
+  totalViews   Int      @default(0) @map("total_views")   // 해당 일자 총 방문자 수
+  sajuViews    Int      @default(0) @map("saju_views")    // 사주명리 분석 조회 수
+  ichingViews  Int      @default(0) @map("iching_views")  // 주역비결 분석 조회 수
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("daily_visit_logs")
+}
