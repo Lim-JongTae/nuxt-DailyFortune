@@ -42,25 +42,25 @@ const shipsins = [
 </script>
 
 <template>
-  <div class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+  <div class="min-h-screen pt-8 pb-2 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
     <div :class="['p-6 sm:p-10 rounded-2xl border shadow-xl backdrop-blur-md', 'bg-white/90 border-amber-200/60', 'dark:bg-[#161B33]/90 dark:border-[#FFDE9E]/20']">
       
       <!-- 헤더 -->
-      <div class="text-center mb-10 pb-6 border-b border-amber-200/40 dark:border-slate-700/50">
+      <div :class="['text-center mb-10 pb-6 border-b', 'border-amber-200/40', 'dark:border-slate-700/50']">
         <span class="inline-block seal-stamp text-xs px-2.5 py-1 mb-2">명리학 백과</span>
-        <h1 class="text-2xl sm:text-4xl font-serif-kr font-bold text-amber-900 dark:text-[#FFDE9E]">
+        <h1 :class="['text-2xl sm:text-4xl font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
           사주명리학(四柱命理學) 기초 가이드
         </h1>
-        <p class="mt-3 text-slate-600 dark:text-slate-300 text-sm sm:text-base">
+        <p :class="['mt-3 text-sm sm:text-base', 'text-slate-600', 'dark:text-slate-300']">
           태어난 연·월·일·시 4개의 기둥(四柱)과 8개의 글자(八字)에 담긴 자연의 이치를 해설합니다.
         </p>
       </div>
 
-      <div class="space-y-10 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+      <div :class="['space-y-10 text-sm sm:text-base leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
         
         <!-- 1. 사주명리란 무엇인가 -->
         <section class="space-y-4">
-          <h2 class="text-xl font-serif-kr font-bold text-amber-900 dark:text-[#FFDE9E] flex items-center gap-2 border-b border-amber-300/40 dark:border-slate-700 pb-2">
+          <h2 :class="['text-xl font-serif-kr font-bold flex items-center gap-2 border-b pb-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span class="text-amber-600">1.</span> 사주명리학의 근본 원리
           </h2>
           <p>
@@ -73,27 +73,27 @@ const shipsins = [
 
         <!-- 2. 10천간 (十天干) -->
         <section class="space-y-4">
-          <h2 class="text-xl font-serif-kr font-bold text-amber-900 dark:text-[#FFDE9E] flex items-center gap-2 border-b border-amber-300/40 dark:border-slate-700 pb-2">
+          <h2 :class="['text-xl font-serif-kr font-bold flex items-center gap-2 border-b pb-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span class="text-amber-600">2.</span> 10천간(十天干)과 성품
           </h2>
-          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+          <p :class="['text-xs sm:text-sm', 'text-slate-600', 'dark:text-slate-400']">
             하늘의 기운을 뜻하는 10가지 상징(갑·을·병·정·무·기·경·신·임·계)은 사용자의 **일간(日干: 나 자신)**의 핵심 에너지 성향을 규정합니다.
           </p>
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
             <div v-for="s in stems" :key="s.name" :class="['p-4 rounded-xl border', 'bg-amber-50/40 border-amber-200/60', 'dark:bg-[#1A203C] dark:border-slate-700']">
               <div class="flex items-center justify-between mb-1">
-                <span class="font-serif-kr font-bold text-amber-800 dark:text-[#FFDE9E] text-base">{{ s.char }}</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300 font-medium">{{ s.element }}</span>
+                <span :class="['font-serif-kr font-bold text-base', 'text-amber-800', 'dark:text-[#FFDE9E]']">{{ s.char }}</span>
+                <span :class="['text-xs px-2 py-0.5 rounded bg-amber-500/10 font-medium', 'text-amber-700', 'dark:text-amber-300']">{{ s.element }}</span>
               </div>
-              <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">{{ s.desc }}</p>
+              <p :class="['text-xs mt-1', 'text-slate-600', 'dark:text-slate-300']">{{ s.desc }}</p>
             </div>
           </div>
         </section>
 
         <!-- 3. 오행의 생극제화 (生剋制化) -->
         <section class="space-y-4">
-          <h2 class="text-xl font-serif-kr font-bold text-amber-900 dark:text-[#FFDE9E] flex items-center gap-2 border-b border-amber-300/40 dark:border-slate-700 pb-2">
+          <h2 :class="['text-xl font-serif-kr font-bold flex items-center gap-2 border-b pb-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span class="text-amber-600">3.</span> 오행(五行)의 상생과 상극
           </h2>
           <p>
@@ -102,17 +102,17 @@ const shipsins = [
           
           <div :class="['p-5 rounded-xl border space-y-3', 'bg-white border-amber-200/60', 'dark:bg-[#0F1226]/80 dark:border-slate-700']">
             <div class="flex items-start gap-3">
-              <span class="text-emerald-600 dark:text-emerald-400 font-bold shrink-0">상생(相生):</span>
+              <span :class="['font-bold shrink-0', 'text-emerald-600', 'dark:text-emerald-400']">상생(相生):</span>
               <p class="text-xs sm:text-sm">
                 서로를 돕고 북돋아주는 순환적 에너지 관계입니다.<br />
-                <span class="font-medium text-amber-700 dark:text-amber-300">목생화(木生火) ➔ 화생토(火生土) ➔ 토생금(土生金) ➔ 금생수(金生水) ➔ 수생목(水生木)</span>
+                <span :class="['font-medium', 'text-amber-700', 'dark:text-amber-300']">목생화(木生火) ➔ 화생토(火生土) ➔ 토생금(土生金) ➔ 금생수(金生水) ➔ 수생목(水生木)</span>
               </p>
             </div>
-            <div class="flex items-start gap-3 pt-2 border-t border-slate-200 dark:border-slate-700">
-              <span class="text-rose-600 dark:text-rose-400 font-bold shrink-0">상극(相剋):</span>
+            <div :class="['flex items-start gap-3 pt-2 border-t', 'border-slate-200', 'dark:border-slate-700']">
+              <span :class="['font-bold shrink-0', 'text-rose-600', 'dark:text-rose-400']">상극(相剋):</span>
               <p class="text-xs sm:text-sm">
                 치우친 기운을 적절히 견제하고 다듬어주는 절제 관계입니다.<br />
-                <span class="font-medium text-amber-700 dark:text-amber-300">목극토(木剋土) ➔ 토극수(土剋水) ➔ 수극화(水剋火) ➔ 화극금(火剋金) ➔ 금극목(金剋木)</span>
+                <span :class="['font-medium', 'text-amber-700', 'dark:text-amber-300']">목극토(木剋土) ➔ 토극수(土剋水) ➔ 수극화(水剋火) ➔ 화극금(火剋金) ➔ 금극목(金剋木)</span>
               </p>
             </div>
           </div>
@@ -120,20 +120,20 @@ const shipsins = [
 
         <!-- 4. 십신(十神)의 의미 -->
         <section class="space-y-4">
-          <h2 class="text-xl font-serif-kr font-bold text-amber-900 dark:text-[#FFDE9E] flex items-center gap-2 border-b border-amber-300/40 dark:border-slate-700 pb-2">
+          <h2 :class="['text-xl font-serif-kr font-bold flex items-center gap-2 border-b pb-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span class="text-amber-600">4.</span> 십신(十神)이 전하는 삶의 10가지 역학 관계
           </h2>
-          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+          <p :class="['text-xs sm:text-sm', 'text-slate-600', 'dark:text-slate-400']">
             나(일간)와 오늘 만나는 날짜(일진)의 오행 및 음양 상호작용으로 도출되는 10가지 심리 및 인간관계 별입니다.
           </p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
             <div v-for="ss in shipsins" :key="ss.name" :class="['p-3.5 rounded-lg border', 'bg-slate-50/70 border-slate-200', 'dark:bg-[#1A203C] dark:border-slate-700']">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-amber-800 dark:text-[#FFDE9E] text-sm">{{ ss.name }}</span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400">{{ ss.category }}</span>
+                <span :class="['font-bold text-sm', 'text-amber-800', 'dark:text-[#FFDE9E]']">{{ ss.name }}</span>
+                <span :class="['text-[11px]', 'text-slate-500', 'dark:text-slate-400']">{{ ss.category }}</span>
               </div>
-              <p class="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-snug">{{ ss.desc }}</p>
+              <p :class="['text-xs mt-1.5 leading-snug', 'text-slate-600', 'dark:text-slate-300']">{{ ss.desc }}</p>
             </div>
           </div>
         </section>
@@ -141,7 +141,7 @@ const shipsins = [
       </div>
 
       <!-- 하단 버튼 -->
-      <div class="mt-10 pt-6 border-t border-amber-200/40 dark:border-slate-700/50 flex flex-wrap justify-center gap-4">
+      <div :class="['mt-10 pt-6 border-t flex flex-wrap justify-center gap-4', 'border-amber-200/40', 'dark:border-slate-700/50']">
         <NuxtLink
           to="/"
           :class="[

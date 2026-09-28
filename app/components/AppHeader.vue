@@ -104,7 +104,7 @@ onUnmounted(() => {
               v-if="isGuideMenuOpen"
               :class="['absolute right-0 mt-2 w-48 rounded-xl border shadow-xl p-1.5 z-50 backdrop-blur-md', 'bg-white/95 border-amber-200', 'dark:bg-[#161B33]/95 dark:border-[#FFDE9E]/30']"
             >
-              <div class="px-3 py-1.5 text-[11px] font-bold border-b text-amber-800 border-amber-100 dark:text-amber-300 dark:border-slate-700">
+              <div :class="['px-3 py-1.5 text-[11px] font-bold border-b', 'text-amber-800 border-amber-100', 'dark:text-amber-300 dark:border-slate-700']">
                 가이드 & 약관
               </div>
 
@@ -113,7 +113,7 @@ onUnmounted(() => {
                 @click="closeGuideMenu"
                 :class="['flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors font-medium', 'text-slate-700 hover:bg-amber-50 hover:text-amber-900', 'dark:text-slate-200 dark:hover:bg-[#232B4F] dark:hover:text-[#FFDE9E]']"
               >
-                <UIcon name="i-heroicons-academic-cap" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <UIcon name="i-heroicons-academic-cap" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
                 <span>사주명리 가이드</span>
               </NuxtLink>
 
@@ -122,11 +122,11 @@ onUnmounted(() => {
                 @click="closeGuideMenu"
                 :class="['flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors font-medium', 'text-slate-700 hover:bg-amber-50 hover:text-amber-900', 'dark:text-slate-200 dark:hover:bg-[#232B4F] dark:hover:text-[#FFDE9E]']"
               >
-                <UIcon name="i-heroicons-sparkles" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <UIcon name="i-heroicons-sparkles" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
                 <span>주역비결 가이드</span>
               </NuxtLink>
 
-              <div class="my-1 border-t border-amber-100 dark:border-slate-700"></div>
+              <div :class="['my-1 border-t', 'border-amber-100', 'dark:border-slate-700']"></div>
 
               <NuxtLink
                 to="/about"

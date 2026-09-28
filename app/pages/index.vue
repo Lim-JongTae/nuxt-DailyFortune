@@ -563,12 +563,26 @@ onMounted(async () => {
           </div>
 
           <div class="mt-6 pt-4 border-t pg-border flex flex-wrap justify-center gap-4 text-xs font-medium">
-            <NuxtLink to="/guide/saju" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-[#FFDE9E] hover:bg-amber-500/20 transition-colors">
-              <UIcon name="i-heroicons-academic-cap" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <NuxtLink
+              to="/guide/saju"
+              :class="[
+                'inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors',
+                'text-amber-800',
+                'dark:text-[#FFDE9E]'
+              ]"
+            >
+              <UIcon name="i-heroicons-academic-cap" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
               <span>사주명리학 기초 가이드 문서 ➔</span>
             </NuxtLink>
-            <NuxtLink to="/guide/iching" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-[#FFDE9E] hover:bg-amber-500/20 transition-colors">
-              <UIcon name="i-heroicons-sparkles" class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <NuxtLink
+              to="/guide/iching"
+              :class="[
+                'inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors',
+                'text-amber-800',
+                'dark:text-[#FFDE9E]'
+              ]"
+            >
+              <UIcon name="i-heroicons-sparkles" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
               <span>주역 64괘 원리 해설 문서 ➔</span>
             </NuxtLink>
           </div>

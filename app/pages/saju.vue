@@ -1335,14 +1335,14 @@ watch(result, (newVal) => {
 
         <!-- 정적 서술형 명리학 백과 및 가이드 섹션 (Googlebot 인덱싱 및 AdSense 정책 준수용) -->
         <div :class="['mt-12 p-6 sm:p-8 rounded-2xl border transition-colors shadow-sm', 'bg-amber-50/40 border-amber-200/60', 'dark:bg-[#12162B] dark:border-amber-900/30']">
-          <div class="flex items-center gap-2 mb-4 pb-3 border-b border-amber-200/50 dark:border-slate-700">
-            <UIcon name="i-heroicons-academic-cap" class="w-6 h-6 text-amber-700 dark:text-[#FFDE9E]" />
-            <h2 class="font-serif-kr text-lg sm:text-xl font-bold text-amber-900 dark:text-[#FFDE9E]">
+          <div :class="['flex items-center gap-2 mb-4 pb-3 border-b', 'border-amber-200/50', 'dark:border-slate-700']">
+            <UIcon name="i-heroicons-academic-cap" :class="['w-6 h-6', 'text-amber-700', 'dark:text-[#FFDE9E]']" />
+            <h2 :class="['font-serif-kr text-lg sm:text-xl font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
               오늘의 사주명리학(四柱命理學) 원리와 해설
             </h2>
           </div>
 
-          <div class="space-y-4 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          <div :class="['space-y-4 text-xs sm:text-sm leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
             <p>
               <strong>사주명리학(四柱命理學)</strong>은 사람이 태어난 연(年)·월(月)·일(日)·시(時) 4개의 기둥(四柱)을 상징하는 10천간(天干)과 12지간(地支)의 조합으로 개인의 선천적 기운과 운의 흐름을 분석하는 동양 전통 역학입니다.
             </p>
@@ -1352,27 +1352,27 @@ watch(result, (newVal) => {
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
               <div :class="['p-3.5 rounded-xl border', 'bg-white border-amber-200/60', 'dark:bg-[#1A203C] dark:border-slate-700']">
-                <h3 class="font-bold text-amber-800 dark:text-amber-300 text-xs sm:text-sm mb-1">
+                <h3 :class="['font-bold text-xs sm:text-sm mb-1', 'text-amber-800', 'dark:text-amber-300']">
                   🌿 10천간(天干)과 나(日干)
                 </h3>
-                <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400">
+                <p :class="['text-[11px] sm:text-xs', 'text-slate-600', 'dark:text-slate-400']">
                   갑·을(木), 병·정(火), 무·기(土), 경·신(金), 임·계(水) 중 내가 타고난 일간은 정신적 가치관과 삶의 방향성을 지배합니다.
                 </p>
               </div>
 
               <div :class="['p-3.5 rounded-xl border', 'bg-white border-amber-200/60', 'dark:bg-[#1A203C] dark:border-slate-700']">
-                <h3 class="font-bold text-amber-800 dark:text-amber-300 text-xs sm:text-sm mb-1">
+                <h3 :class="['font-bold text-xs sm:text-sm mb-1', 'text-amber-800', 'dark:text-amber-300']">
                   ⚖️ 십신(十神)과 일진 조화
                 </h3>
-                <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400">
+                <p :class="['text-[11px] sm:text-xs', 'text-slate-600', 'dark:text-slate-400']">
                   오늘 만나는 일진과의 기운에 따라 대인관계, 창의성, 명예, 재물운, 학문적 통찰력의 십신 조화가 형성됩니다.
                 </p>
               </div>
             </div>
 
-            <div class="flex items-center justify-between pt-3 border-t border-amber-200/40 dark:border-slate-700 text-xs">
-              <span class="text-slate-500 dark:text-slate-400">사주명리학 기본 체계에 대해 더 깊이 알아보기</span>
-              <NuxtLink to="/guide/saju" class="font-medium text-amber-700 dark:text-[#FFDE9E] hover:underline flex items-center gap-1">
+            <div :class="['flex items-center justify-between pt-3 border-t text-xs', 'border-amber-200/40', 'dark:border-slate-700']">
+              <span :class="['text-slate-500', 'dark:text-slate-400']">사주명리학 기본 체계에 대해 더 깊이 알아보기</span>
+              <NuxtLink to="/guide/saju" :class="['font-medium hover:underline flex items-center gap-1', 'text-amber-700', 'dark:text-[#FFDE9E]']">
                 명리 가이드 ➔
               </NuxtLink>
             </div>
