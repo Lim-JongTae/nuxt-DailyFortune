@@ -1166,9 +1166,14 @@ watch(result, (newVal) => {
             >
               <span
                 v-if="item.isPeak"
-                class="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 text-[11px] font-bold rounded-full pg-chip pg-text-gold border pg-border transition-colors"
+                :class="[
+                  'absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-full border inline-flex items-center gap-1 shadow-xs transition-colors whitespace-nowrap',
+                  'bg-emerald-500/15 text-emerald-700 border-emerald-500/30',
+                  'dark:bg-purple-900/80 dark:text-purple-200 dark:border-purple-500/50'
+                ]"
               >
-                절정
+                <UIcon name="i-heroicons-sparkles" class="w-3 h-3 shrink-0" />
+                <span>절정</span>
               </span>
               <span :class="[item.isPeak ? 'pg-text-gold' : 'pg-text-muted', 'text-[10px] block mb-0.5']">{{ item.label }}</span>
               <span class="text-[10px] pg-text-soft block mb-1">{{ item.time }}</span>
