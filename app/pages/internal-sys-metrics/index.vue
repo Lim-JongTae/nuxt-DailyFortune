@@ -213,7 +213,7 @@ const hoveredLog = ref<DailyLog | null>(null)
               :key="log.date"
               @mouseenter="hoveredLog = log"
               @mouseleave="hoveredLog = null"
-              class="flex-1 min-w-[32px] flex flex-col items-center gap-1 group cursor-pointer h-full justify-end"
+              class="flex-1 min-w-8 flex flex-col items-center gap-1 group cursor-pointer h-full justify-end"
             >
               <!-- 수치 툴팁 (그룹 호버시) -->
               <span class="text-[10px] font-mono text-neutral-400 group-hover:text-amber-400 transition-colors">
@@ -225,7 +225,7 @@ const hoveredLog = ref<DailyLog | null>(null)
                    :style="{ height: `${Math.max(10, Math.round((log.totalViews / maxViewsInLogs) * 100))}%` }"
               >
                 <!-- 막대 내부 그라데이션 -->
-                <div class="w-full bg-gradient-to-t from-amber-600/40 to-amber-400 group-hover:from-amber-500 group-hover:to-amber-300 h-full transition-colors"></div>
+                <div class="w-full bg-linear-gradient-to-t from-amber-600/40 to-amber-400 group-hover:from-amber-500 group-hover:to-amber-300 h-full transition-colors"></div>
               </div>
 
               <!-- 날짜 라벨 -->
