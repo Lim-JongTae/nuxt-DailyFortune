@@ -10,10 +10,10 @@ useSeoMeta({
   description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
   ogTitle: '주역점 - 하늘과 땅의 64괘',
   ogDescription: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
-  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`,
+  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`,
   ogUrl: pageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`
+  twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`
 })
 
 useHead({

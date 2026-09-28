@@ -12,10 +12,10 @@ useSeoMeta({
   description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
   ogTitle: '일일 사주명리 - 오늘의 운세',
   ogDescription: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
-  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`,
+  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`,
   ogUrl: pageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.png`
+  twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`
 })
 
 useHead({
