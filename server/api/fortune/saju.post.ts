@@ -348,7 +348,7 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
     console.log(`[${requestId}] Saju API completed successfully`, {
       elapsed: `${Date.now() - parseInt(requestId.split('_')[1] || '0')}ms`,
       isAiGenerated,
-      hasResult: !!result.value
+      hasParsedData: !!parsedData
     })
 
     return {
