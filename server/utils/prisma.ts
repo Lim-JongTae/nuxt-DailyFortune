@@ -19,8 +19,8 @@ if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 
   // HMR 시 기존 연결 정리
-  if (import.meta.hot) {
-    import.meta.hot.dispose(async () => {
+  if ((import.meta as any).hot) {
+    (import.meta as any).hot.dispose(async () => {
       await prisma.$disconnect()
     })
   }
