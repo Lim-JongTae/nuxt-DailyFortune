@@ -101,8 +101,9 @@ const todayElementSentence = computed(() => {
   const b = todayGanzhi.value.branchElemIdx ?? 1
   const ganzhi = todayGanzhi.value.ganzhi
 
-  const stemAttr = ELEMENT_MAP[s] || ELEMENT_MAP[0]
-  const branchAttr = ELEMENT_MAP[b] || ELEMENT_MAP[1]
+  const defaultAttr = ELEMENT_MAP[0]!
+  const stemAttr = ELEMENT_MAP[s % 5] ?? defaultAttr
+  const branchAttr = ELEMENT_MAP[b % 5] ?? defaultAttr
 
   if (s === b) {
     return `${ganzhi}일 · ${stemAttr.name}의 ${stemAttr.trait}이(가) 배가되어 ${stemAttr.action}`
