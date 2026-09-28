@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
 
     // 0. Rate limiting check (Cookie-based & IP-based) - 개발 환경에서는 제한 해제
     const isDev = process.env.NODE_ENV !== 'production'
-    const limitDurationMs = 12 * 60 * 60 * 1000 // 12시간 제한
+    const limitDurationMs = 1 * 60 * 1000 // 임시 테스트: 1분 제한 (원래: 12 * 60 * 60 * 1000)
     const cookieName = 'fortune_last_saju'
     const lastRequestCookie = getCookie(event, cookieName)
     const now = Date.now()
