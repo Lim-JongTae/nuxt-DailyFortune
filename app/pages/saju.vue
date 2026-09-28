@@ -249,6 +249,12 @@ const startSajuFortune = async () => {
 
   const startTime = Date.now()
 
+  console.log('[Saju Frontend] Starting API call', {
+    birthDate: birthDate.value,
+    hasWorry: !!worry.value,
+    timestamp: new Date().toISOString()
+  })
+
   try {
     const res: any = await $fetch('/api/fortune/saju', {
       method: 'POST',
@@ -261,6 +267,12 @@ const startSajuFortune = async () => {
     })
 
     const elapsedTime = Date.now() - startTime
+    console.log('[Saju Frontend] API call successful', {
+      elapsed: `${elapsedTime}ms`,
+      hasResult: !!res,
+      success: res?.success
+    })
+
     const remainingTime = Math.max(2000 - elapsedTime, 0)
 
     setTimeout(() => {
@@ -277,6 +289,13 @@ const startSajuFortune = async () => {
   } catch (error: any) {
     const statusCode = error?.statusCode || error?.status || error?.response?.status
     const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
+
+    console.error('[Saju Frontend] API call failed', {
+      statusCode,
+      statusMessage,
+      errorType: error?.name,
+      error: error
+    })
 
     if (statusCode === 429) {
       toast.clear()

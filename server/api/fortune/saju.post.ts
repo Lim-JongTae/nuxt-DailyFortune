@@ -3,9 +3,23 @@ import prisma from '../../utils/prisma'
 import { getGanzhiOfDay, getHourBranch, getShipsin, getGanzhiOfYear } from '../../utils/saju'
 
 export default defineEventHandler(async (event) => {
+  const requestId = `saju_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`
+  console.log(`[${requestId}] Saju API Request Started`, {
+    timestamp: new Date().toISOString(),
+    ip: getRequestIP(event, { xForwardedFor: true }),
+    env: process.env.NODE_ENV
+  })
+
   try {
     const body = await readBody(event) || {}
     const { birthDate, birthTime, gender, worry } = body
+
+    console.log(`[${requestId}] Request body received`, {
+      birthDate,
+      birthTime: birthTime ? '***' : undefined,
+      gender,
+      hasWorry: !!worry
+    })
 
     if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
       throw createError({
@@ -146,6 +160,8 @@ export default defineEventHandler(async (event) => {
 
     const iljuRaw: any = iljuData?.rawAnalysis || {}
 
+    console.log(`[${requestId}] DB queries completed, calling AI model`)
+
     // 5. AI 모델 호출 (Claude / Gemini 통합) - 속도 최적화 및 60일주론 명리 프롬프트
     const prompt = `당신은 60일주론과 오행 생극제화에 정통한 고결한 역학자입니다.
 사용자의 사주 일주와 오늘 일진 정보, 고민을 바탕으로 품격 있고 정밀한 명리 보고서를 작성하십시오. 장황한 수사여구는 배제하고 군더더기 없이 명료하며 깊이 있는 언어로 조언하십시오.
@@ -203,7 +219,17 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
 ### 3. 실천적 처세술 및 체질적 건강 지침
 - 오늘 실천할 처세 지침 및 일주 체질에 맞는 실질적 건강 조언.`
 
+    console.log(`[${requestId}] Calling AI model with prompt length: ${prompt.length}`)
+    const aiStartTime = Date.now()
+
     let { text: rawAiText, isAiGenerated } = await callAiModel(prompt)
+
+    const aiElapsed = Date.now() - aiStartTime
+    console.log(`[${requestId}] AI model response received`, {
+      elapsed: `${aiElapsed}ms`,
+      isAiGenerated,
+      textLength: rawAiText?.length || 0
+    })
 
     let parsedData: any = null
     let aiInterpretation = ''
@@ -319,6 +345,12 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
       path: '/'
     })
 
+    console.log(`[${requestId}] Saju API completed successfully`, {
+      elapsed: `${Date.now() - parseInt(requestId.split('_')[1] || '0')}ms`,
+      isAiGenerated,
+      hasResult: !!result.value
+    })
+
     return {
       success: true,
       userSaju: {
@@ -345,10 +377,11 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
     const statusCode = error.statusCode || 500
     const statusMessage = error.statusMessage || error.message || '서버 오류가 발생했습니다.'
 
-    console.error('[Saju API Error]', {
+    console.error(`[${requestId}] Saju API Error`, {
       statusCode,
       message: statusMessage,
-      stack: error.stack
+      stack: error.stack,
+      errorName: error.name
     })
 
     // Rate limit 에러는 명시적으로 throw하여 Nuxt가 처리하도록
