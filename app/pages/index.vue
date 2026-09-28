@@ -87,6 +87,29 @@ const todayGanzhi = useState('todayGanzhi', () => {
 
 const todayGanzhiText = computed(() => todayGanzhi.value.ganzhi)
 
+// 오행별 명사, 특성, 동작 맵
+const ELEMENT_MAP = [
+  { name: '나무', trait: '유연함과 푸른 생명력', action: '새로운 기운을 뻗어내는 날' },
+  { name: '불', trait: '뜨거운 열정과 밝은 빛', action: '환하게 세상을 밝히는 날' },
+  { name: '대지', trait: '든든한 포용력과 안정감', action: '중심을 굳건히 잡아주는 날' },
+  { name: '바위', trait: '단단한 결단력', action: '알찬 결실을 이뤄내는 날' },
+  { name: '샘물', trait: '깊은 지혜와 유유함', action: '지혜롭게 흘러가는 날' }
+]
+
+const todayElementSentence = computed(() => {
+  const s = todayGanzhi.value.stemElemIdx ?? 0
+  const b = todayGanzhi.value.branchElemIdx ?? 1
+  const ganzhi = todayGanzhi.value.ganzhi
+
+  const stemAttr = ELEMENT_MAP[s] || ELEMENT_MAP[0]
+  const branchAttr = ELEMENT_MAP[b] || ELEMENT_MAP[1]
+
+  if (s === b) {
+    return `${ganzhi}일 · ${stemAttr.name}의 ${stemAttr.trait}이(가) 배가되어 ${stemAttr.action}`
+  }
+  return `${stemAttr.name}의 ${stemAttr.trait}이(가) ${branchAttr.name}의 ${branchAttr.trait}과(와) 만나 ${branchAttr.action}`
+})
+
 const elementBadge = computed(() => {
   const s = todayGanzhi.value.stemElemIdx
   const b = todayGanzhi.value.branchElemIdx
@@ -400,6 +423,14 @@ onMounted(async () => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <!-- 오늘의 일진 오행 조화 동적 1줄 문구 -->
+            <div class="mt-4 p-3 rounded-2xl pg-card-inner border pg-border flex items-center gap-2.5 shadow-2xs">
+              <UIcon name="i-heroicons-sparkles" class="w-4 h-4 pg-text-gold shrink-0 animate-pulse" />
+              <p class="text-xs pg-text-gold font-serif-kr font-medium leading-relaxed">
+                {{ todayElementSentence }}
+              </p>
             </div>
           </div>
 

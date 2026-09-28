@@ -161,6 +161,7 @@ export default defineEventHandler(async (event) => {
 
 [오늘의 일진(日辰) 정보]
 - 오늘의 일진: ${todaySaju.fullName}일 (${todaySaju.stem} / ${todaySaju.branch})
+- 오늘의 일진 오행: 천간(${todaySaju.stem}) / 지지(${todaySaju.branch}) 오행 기운
 - 오늘의 핵심 십신: ${shipsinName} (${shipsinData ? shipsinData.meaning : '일진 작용'})
 
 [사용자의 고민]
