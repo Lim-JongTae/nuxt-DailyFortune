@@ -266,6 +266,7 @@ const startSajuFortune = async () => {
     setTimeout(() => {
       if (res.success) {
         result.value = res
+        store.recordFortuneSuccess('saju')
         store.saveToLocalStorage()
       } else {
         alert(res.error || '오류가 발생했습니다.')

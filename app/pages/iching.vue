@@ -341,6 +341,7 @@ const handleStickClick = async (stick: any) => {
         setTimeout(() => {
           if (res.success) {
             result.value = res
+            store.recordFortuneSuccess('iching')
             store.saveToLocalStorage()
             currentStep.value = 5
             if (res.isAiGenerated) {

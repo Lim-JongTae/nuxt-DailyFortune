@@ -76,7 +76,6 @@ export const useFortuneStore = defineStore('fortune', () => {
       localStorage.setItem('fortune_gender', gender.value)
       localStorage.setItem('fortune_sajuWorry', sajuWorry.value)
       localStorage.setItem('fortune_ichingWorry', ichingWorry.value)
-      localStorage.setItem('fortune_savedTime', String(now))
 
       const kstOffset = 9 * 60 * 60 * 1000
       const todayKst = new Date(now + kstOffset)
@@ -98,6 +97,15 @@ export const useFortuneStore = defineStore('fortune', () => {
       } else {
         localStorage.removeItem('fortune_ichingResult')
       }
+    }
+  }
+
+  const recordFortuneSuccess = (type: 'saju' | 'iching') => {
+    if (import.meta.client) {
+      const now = Date.now()
+      const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+      localStorage.setItem(timeKey, String(now))
+      localStorage.setItem('fortune_savedTime', String(now))
     }
   }
 
@@ -124,7 +132,8 @@ export const useFortuneStore = defineStore('fortune', () => {
   const hasRecentResult = (type: 'saju' | 'iching'): boolean => {
     if (!import.meta.client) return false
     const limitDurationMs = 12 * 60 * 60 * 1000
-    const savedTime = Number(localStorage.getItem('fortune_savedTime'))
+    const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+    const savedTime = Number(localStorage.getItem(timeKey) || localStorage.getItem('fortune_savedTime'))
     if (!savedTime || isNaN(savedTime)) return false
     
     const isWithin12Hours = (Date.now() - savedTime) < limitDurationMs
@@ -137,7 +146,8 @@ export const useFortuneStore = defineStore('fortune', () => {
   const getRemainingCoolTime = (type: 'saju' | 'iching') => {
     if (!import.meta.client) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
     const limitDurationMs = 12 * 60 * 60 * 1000
-    const savedTime = Number(localStorage.getItem('fortune_savedTime'))
+    const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+    const savedTime = Number(localStorage.getItem(timeKey) || localStorage.getItem('fortune_savedTime'))
     if (!savedTime || isNaN(savedTime)) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
 
     const elapsed = Date.now() - savedTime
@@ -167,6 +177,9 @@ export const useFortuneStore = defineStore('fortune', () => {
     sajuResult.value = null
     ichingResult.value = null
     if (import.meta.client) {
+      localStorage.removeItem('fortune_saju_savedTime')
+      localStorage.removeItem('fortune_iching_savedTime')
+      localStorage.removeItem('fortune_savedTime')
       localStorage.removeItem('fortune_backup_sajuResult')
       localStorage.removeItem('fortune_backup_ichingResult')
     }
@@ -184,6 +197,7 @@ export const useFortuneStore = defineStore('fortune', () => {
     ichingResult,
     loadFromLocalStorage,
     saveToLocalStorage,
+    recordFortuneSuccess,
     clearSaju,
     clearIching,
     hasRecentResult,
