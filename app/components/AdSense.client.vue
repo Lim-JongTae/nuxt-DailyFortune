@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="adClient" class="ad-container my-6 min-h-[90px]">
+  <div v-if="adClient" class="ad-container my-6 min-h-22.5">
     <ins
       ref="insRef"
       class="adsbygoogle"

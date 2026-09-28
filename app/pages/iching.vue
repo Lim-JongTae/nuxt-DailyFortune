@@ -1286,6 +1286,52 @@ const copyToClipboard = () => {
           <AdSense adSlot="8877665544" />
         </div>
 
+        <!-- 정적 서술형 주역 64괘 백과 및 가이드 섹션 (Googlebot 인덱싱 및 AdSense 정책 준수용) -->
+        <div :class="['mt-12 p-6 sm:p-8 rounded-2xl border transition-colors shadow-sm', 'bg-amber-50/40 border-amber-200/60', 'dark:bg-[#12162B] dark:border-amber-900/30']">
+          <div class="flex items-center gap-2 mb-4 pb-3 border-b border-amber-200/50 dark:border-slate-700">
+            <UIcon name="i-heroicons-sparkles" class="w-6 h-6 text-amber-700 dark:text-[#FFDE9E]" />
+            <h2 class="font-serif-kr text-lg sm:text-xl font-bold text-amber-900 dark:text-[#FFDE9E]">
+              오늘의 주역비결(周易) 64괘 역사와 처세의 지혜
+            </h2>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+            <p>
+              <strong>주역(周易)</strong>은 3천 년 이상 이어져 내려온 동양 철학의 으뜸 경전으로, 우주 공간과 인간 사회에서 일어나는 변화의 법칙을 8개 소성괘의 조합으로 이루어진 **64대성괘**로 담아낸 최고봉의 지혜서입니다.
+            </p>
+            <p>
+              본 서비스는 대나무 점대를 뽑는 전통 3변 점법의 이치를 현대적으로 재해석하여, **하괘(내면의 기질) ➔ 상괘(외부 환경) ➔ 동효(오늘의 변효 포인트)**의 3단계 드로우를 거쳐 오늘 나에게 꼭 필요한 처세 조언을 도출합니다.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
+              <div :class="['p-3.5 rounded-xl border', 'bg-white border-amber-200/60', 'dark:bg-[#1A203C] dark:border-slate-700']">
+                <h3 class="font-bold text-amber-800 dark:text-amber-300 text-xs sm:text-sm mb-1">
+                  ☯ 64괘와 변효(動爻)
+                </h3>
+                <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400">
+                  음(⚋)과 양(⚊)이 그리는 6효의 위치 중 오늘 강렬하게 움직이는 동효는 상황의 전환점(變爻)을 상징합니다.
+                </p>
+              </div>
+
+              <div :class="['p-3.5 rounded-xl border', 'bg-white border-amber-200/60', 'dark:bg-[#1A203C] dark:border-slate-700']">
+                <h3 class="font-bold text-amber-800 dark:text-amber-300 text-xs sm:text-sm mb-1">
+                  💡 趨吉避凶 (추길피웅)
+                </h3>
+                <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400">
+                  길함에 자만하지 않고 흉함에 조심하는 정돈된 태도를 지닐 때 우주의 기운이 조화롭게 작용합니다.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-3 border-t border-amber-200/40 dark:border-slate-700 text-xs">
+              <span class="text-slate-500 dark:text-slate-400">주역 64괘 체계와 괘상 읽는 법 알아보기</span>
+              <NuxtLink to="/guide/iching" class="font-medium text-amber-700 dark:text-[#FFDE9E] hover:underline flex items-center gap-1">
+                주역 가이드 ➔
+              </NuxtLink>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
