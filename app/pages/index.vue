@@ -56,6 +56,7 @@ useHead({
 // KST 오늘 일진 간지 및 오행 기운 동적 계산 (useState 활용으로 SSR-Client 하이드레이션 일치)
 const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
 const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
+const elemNames = ['木', '火', '土', '金', '水']
 
 const todayGanzhi = useState('todayGanzhi', () => {
   const nowUtc = new Date().getTime()
@@ -69,36 +70,56 @@ const todayGanzhi = useState('todayGanzhi', () => {
 
   const todayStemIdx = (4 + (diffDays % 10) + 10) % 10
   const todayBranchIdx = (6 + (diffDays % 12) + 12) % 12
+
+  const stemElemIdx = Math.floor(todayStemIdx / 2) // 0:목, 1:화, 2:토, 3:금, 4:수
+  // 지지 오행 인덱스 (자:수4, 축:토2, 인:목0, 묘:목0, 진:토2, 사:화1, 오:화1, 미:토2, 신:금3, 유:금3, 술:토2, 해:수4)
+  const branchElemMap = [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4]
+  const branchElemIdx = branchElemMap[todayBranchIdx] ?? 0
+
   return {
     ganzhi: `${stems[todayStemIdx]}${branches[todayBranchIdx]}`,
-    elementIdx: Math.floor(todayStemIdx / 2)
+    stemIdx: todayStemIdx,
+    branchIdx: todayBranchIdx,
+    stemElemIdx,
+    branchElemIdx
   }
 })
 
-const todayElementIdx = computed(() => todayGanzhi.value.elementIdx)
 const todayGanzhiText = computed(() => todayGanzhi.value.ganzhi)
 
 const elementBadge = computed(() => {
-  const badgeMap = [
-    '木 · 생기 상승',
-    '火 · 열정 왕성',
-    '土 · 안정 조화',
-    '金 · 결실 결단',
-    '水 · 지혜 흐름'
-  ]
-  return badgeMap[todayElementIdx.value] || '木 · 생기 상승'
+  const s = todayGanzhi.value.stemElemIdx
+  const b = todayGanzhi.value.branchElemIdx
+  const ganzhi = todayGanzhi.value.ganzhi
+
+  if (s === b) {
+    return `${ganzhi} · ${elemNames[s]} 기운 왕성`
+  }
+  return `${ganzhi} · ${elemNames[s]}${elemNames[b]} 상생 조화`
 })
 
-// 오늘 일진 오행 비율 동적 계산
+// 오늘 일진(천간+지지) 60간지 명리학 오행 비율 동적 계산
 const elementRatios = computed(() => {
-  const baseRatios = [
-    [35, 20, 20, 15, 10], // 목 위주
-    [15, 35, 20, 15, 15], // 화 위주
-    [15, 20, 35, 15, 15], // 토 위주
-    [15, 15, 20, 35, 15], // 금 위주
-    [20, 15, 15, 15, 35], // 수 위주
-  ]
-  return baseRatios[todayElementIdx.value] || [35, 20, 20, 15, 10]
+  const s = todayGanzhi.value.stemElemIdx ?? 0
+  const b = todayGanzhi.value.branchElemIdx ?? 0
+
+  const ratios = [10, 10, 10, 10, 10]
+  if (ratios[s] !== undefined) ratios[s]! += 25
+  if (ratios[b] !== undefined) ratios[b]! += 25
+
+  // 상생 관계 추가 조율
+  if ((s + 1) % 5 === b) { // 천간이 지지를 생함 (예: 목생화)
+    if (ratios[b] !== undefined) ratios[b]! += 10
+  } else if ((b + 1) % 5 === s) { // 지지가 천간을 생함 (예: 수생목)
+    if (ratios[s] !== undefined) ratios[s]! += 10
+  } else {
+    if (ratios[s] !== undefined) ratios[s]! += 5
+    if (ratios[b] !== undefined) ratios[b]! += 5
+  }
+
+  // 총합 100% 정률 정산
+  const sum = ratios.reduce((acc, cur) => acc + cur, 0)
+  return ratios.map(r => Math.round((r / (sum || 1)) * 100))
 })
 
 // 오늘 사주 운세 점수 (0% / 0도 -> 88% / 88점 카운트업 & 게이지 그리기 애니메이션)
