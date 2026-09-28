@@ -105,7 +105,7 @@ const trigrams = [
               <span class="px-2 py-0.5 rounded bg-amber-800 text-white font-bold text-xs shrink-0 mt-0.5">3단계 (동효)</span>
               <div>
                 <h4 :class="['font-bold text-sm', 'text-slate-800', 'dark:text-slate-200']">오늘의 포인트 변효(動爻) 선택</h4>
-                <p :class="['text-xs mt-0.5', 'text-slate-600', 'dark:text-slate-400']">6개 효 중 오늘 가장 역동적으로 변화하고 주의해야 할 **핵심 변효(초효~상효)**를 포착하여 최적의 행운 조언을 제공합니다.</p>
+                <p :class="['text-xs mt-0.5', 'text-slate-600', 'dark:text-slate-400']">6개 효 중 오늘 가장 역동적으로 변화하고 주의해야 할 <strong>핵심 변효(초효~상효)</strong>를 포착하여 최적의 행운 조언을 제공합니다.</p>
               </div>
             </div>
           </div>
