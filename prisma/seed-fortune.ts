@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client'
+import fs from 'fs'
+import path from 'path'
 declare const process: any
 
 const prisma = new PrismaClient({
@@ -845,8 +847,44 @@ async function main() {
   }
 
   console.log(`✓ Seeded ${hexagramsToSeed.length} I Ching 64 Hexagrams.`)
+
+  // 384효 (IChingLine) 정통 시드 데이터 시딩
+  const linesJsonPath = path.join(process.cwd(), 'prisma', 'iching_384_lines.json')
+  if (fs.existsSync(linesJsonPath)) {
+    const rawLines = JSON.parse(fs.readFileSync(linesJsonPath, 'utf-8'))
+    for (let i = 0; i < rawLines.length; i += 20) {
+      const chunk = rawLines.slice(i, i + 20)
+      await Promise.all(
+        chunk.map((l: any) =>
+          tx.iChingLine.upsert({
+            where: {
+              hexagramId_lineNumber: {
+                hexagramId: l.hexagramId,
+                lineNumber: l.lineNumber
+              }
+            },
+            update: {
+              nameHanja: l.nameHanja,
+              textHanja: l.textHanja,
+              textKorean: l.textKorean,
+              modernAdvice: l.modernAdvice
+            },
+            create: {
+              hexagramId: l.hexagramId,
+              lineNumber: l.lineNumber,
+              nameHanja: l.nameHanja,
+              textHanja: l.textHanja,
+              textKorean: l.textKorean,
+              modernAdvice: l.modernAdvice
+            }
+          })
+        )
+      )
+    }
+    console.log(`✓ Seeded ${rawLines.length} I Ching 384 Lines.`)
+  }
     }, {
-      timeout: 60000 // 60초 타임아웃
+      timeout: 90000 // 90초 타임아웃
     })
 
     console.log('✅ Database seeding completed successfully.')

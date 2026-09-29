@@ -107,8 +107,9 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
         })
       }
     }
+    console.warn('[Gemini API] ⚠️ 모든 Gemini 모델 시도 실패. 2순위 Claude API로 전환합니다.')
   } else {
-    console.warn('[Gemini API] ⚠️ No API key configured, skipping Gemini')
+    console.warn('[Gemini API] ⚠️ GEMINI_API_KEY 미설정, 2순위 Claude API로 진행합니다.')
   }
 
   // 2. Claude API (2순위 fallback)

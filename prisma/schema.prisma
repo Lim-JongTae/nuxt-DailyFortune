@@ -111,10 +111,10 @@ model SajuIlju {
 
 // 어뷰징 및 쿼터 방지 IP 사용 제한 기록
 model FortuneRateLimit {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   ip        String
-  type      FortuneType // saju | iching
-  createdAt DateTime    @default(now()) @map("created_at")
+  type      String   // saju | iching
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@index([ip, type, createdAt])
   @@map("fortune_rate_limits")
@@ -122,11 +122,11 @@ model FortuneRateLimit {
 
 // 결과지 공감/좋아요 기록
 model FortuneLike {
-  id        String      @id @default(uuid())
-  type      FortuneType // saju | iching
-  targetKey String      @map("target_key") // 예: "iching_3_2" 또는 사주 일진 키
-  ip        String      @default("")       // 중복 클릭 방지용 IP
-  createdAt DateTime    @default(now()) @map("created_at")
+  id        String   @id @default(uuid())
+  type      String   // saju | iching
+  targetKey String   @map("target_key") // 예: "iching_3_2" 또는 사주 일진 키
+  ip        String   @default("")       // 중복 클릭 방지용 IP
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@index([type, targetKey, ip])
   @@map("fortune_likes")
