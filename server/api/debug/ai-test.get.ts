@@ -45,8 +45,8 @@ export default defineEventHandler(async (event) => {
   // 2. Gemini API 연결 테스트
   const geminiApiKey = config.geminiApiKey || ''
   try {
-    // Gemini 모델: 최신 모델부터 fallback
-    const geminiModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest']
+    // Gemini 모델: 최신 모델 사용 (Google 권장 - 2025년 기준)
+    const geminiModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
 
     let geminiSuccess = false
     let lastError: any = null

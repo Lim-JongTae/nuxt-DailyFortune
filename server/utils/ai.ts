@@ -107,10 +107,10 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
     console.warn('[Claude API] ⚠️ No API key configured, skipping to Gemini')
   }
 
-  // 2. Gemini API (2순위 fallback - 구글 직연결: gemini-2.5-flash / gemini-2.0-flash / gemini-1.5-flash-latest)
+  // 2. Gemini API (2순위 fallback - 구글 직연결: gemini-3.8-flash / gemini-2.5-flash / gemini-2.0-flash)
   if (geminiApiKey) {
     const configuredModel = (config.geminiModel || process.env.GEMINI_MODEL || '').trim()
-    const defaultModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash']
+    const defaultModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
     const models = configuredModel
       ? Array.from(new Set([configuredModel, ...defaultModels]))
       : defaultModels
