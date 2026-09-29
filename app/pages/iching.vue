@@ -820,7 +820,7 @@ const copyToClipboard = () => {
         <div class="text-center">
           <span class="text-[9px] font-bold tracking-widest pg-text-gold block uppercase">변화의 이치</span>
           <h1 class="font-serif-kr text-base sm:text-lg font-bold pg-text tracking-wide">
-            주역점 결과
+            주역괘 분석
           </h1>
         </div>
         <button type="button" class="p-1.5 rounded-full pg-text-muted hover:pg-text transition-colors">
@@ -842,7 +842,7 @@ const copyToClipboard = () => {
             <span class="inline-block px-3 py-1 rounded-full pg-card-inner border pg-border pg-text-gold text-xs font-bold font-serif-kr mb-2">
               ☯️ 하늘과 땅의 지혜, 64괘
             </span>
-            <h2 class="font-serif-kr text-xl font-bold pg-text mb-2">
+            <h2 class="font-serif-kr text-lg sm:text-xl font-bold pg-text mb-2">
               풀어내고자 하는 고민을 떠올려보세요
             </h2>
             <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-normal">

@@ -36,11 +36,21 @@ export default defineEventHandler(async (event) => {
     const lastRequestCookie = getCookie(event, cookieName)
     const now = Date.now()
 
+    const getKstDateStr = (ts: number): string => {
+      const kstOffset = 9 * 60 * 60 * 1000
+      return new Date(ts + kstOffset).toISOString().split('T')[0] || ''
+    }
+    const todayKstStr = getKstDateStr(now)
+
+    // 1) 쿠키 검증: KST 기준 날짜가 변경되었으면 무조건 허가, 동일 날짜 내에서만 12시간 이내 차단
     if (!isDev && lastRequestCookie) {
       const cookieTime = Number(lastRequestCookie)
       if (!isNaN(cookieTime)) {
+        const cookieKstDate = getKstDateStr(cookieTime)
+        const isSameDate = cookieKstDate === todayKstStr
         const timeDiff = now - cookieTime
-        if (timeDiff >= 0 && timeDiff < limitDurationMs) {
+
+        if (isSameDate && timeDiff >= 0 && timeDiff < limitDurationMs) {
           const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
           throw createError({
             statusCode: 429,
@@ -50,9 +60,23 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    // 2) DB IP 검증: 오늘 이전의 오래된 제한 데이터는 자동 삭제 청소하고, 동일 날짜 내에서 12시간 미만인 경우만 차단
     const clientIp = getRequestIP(event, { xForwardedFor: true }) || '127.0.0.1'
     if (!isDev) {
       try {
+        // 오늘 자정 KST 기준 시각
+        const startOfTodayKst = new Date(new Date(now + 9 * 60 * 60 * 1000).setUTCHours(0, 0, 0, 0) - 9 * 60 * 60 * 1000)
+
+        // 날짜가 지난 이전 제한 데이터 자동 삭제 (DB 정리)
+        await prisma.fortuneRateLimit.deleteMany({
+          where: {
+            type: 'saju',
+            createdAt: {
+              lt: startOfTodayKst
+            }
+          }
+        })
+
         const dbLimit = await prisma.fortuneRateLimit.findFirst({
           where: {
             ip: clientIp,
@@ -67,8 +91,11 @@ export default defineEventHandler(async (event) => {
         })
 
         if (dbLimit) {
+          const dbKstDate = getKstDateStr(dbLimit.createdAt.getTime())
+          const isSameDate = dbKstDate === todayKstStr
           const timeDiff = now - dbLimit.createdAt.getTime()
-          if (timeDiff >= 0 && timeDiff < limitDurationMs) {
+
+          if (isSameDate && timeDiff >= 0 && timeDiff < limitDurationMs) {
             const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
             throw createError({
               statusCode: 429,

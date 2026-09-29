@@ -41,10 +41,10 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
     return clean.length > 20
   }
 
-  // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색: gemini-2.5-flash / gemini-1.5-flash-latest / gemini-2.0-flash)
+  // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색: gemini-2.0-flash / gemini-1.5-flash-latest)
   if (geminiApiKey) {
     const configuredModel = (config.geminiModel || process.env.GEMINI_MODEL || '').trim()
-    const defaultModels = ['gemini-2.5-flash', 'gemini-1.5-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash']
+    const defaultModels = ['gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash', 'gemini-flash']
     const models = configuredModel
       ? Array.from(new Set([configuredModel, ...defaultModels]))
       : defaultModels

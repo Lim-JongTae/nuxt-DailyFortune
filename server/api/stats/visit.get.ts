@@ -8,9 +8,11 @@ export default defineEventHandler(async (event) => {
     const kstOffset = 9 * 60 * 60 * 1000 // KST UTC+9
     const todayKstStr = new Date(nowUtc + kstOffset).toISOString().split('T')[0] || ''
 
-    // 중복 카운트 방지 쿠키 먼저 확인
+    // 중복 카운트 방지 쿠키 확인 (저장된 날짜 string)
     const cookieName = 'fortune_visited_today'
-    const hasVisitedCookie = getCookie(event, cookieName)
+    const visitedDateCookie = getCookie(event, cookieName)
+    // 오늘 첫 방문 여부 (쿠키가 없거나, 저장된 날짜가 오늘 KST 날짜와 다를 때)
+    const isNewVisitToday = !visitedDateCookie || visitedDateCookie !== todayKstStr
 
     let stats = await prisma.siteStats.findUnique({
       where: { id: 1 }
@@ -21,20 +23,18 @@ export default defineEventHandler(async (event) => {
       stats = await prisma.siteStats.create({
         data: {
           id: 1,
-          totalViews: hasVisitedCookie ? 0 : 1,
-          todayViews: hasVisitedCookie ? 0 : 1,
+          totalViews: 1,
+          todayViews: 1,
           todayDate: todayKstStr
         }
       })
 
-      if (!hasVisitedCookie) {
-        setCookie(event, cookieName, todayKstStr, {
-          maxAge: 24 * 60 * 60,
-          path: '/'
-        })
-      }
+      setCookie(event, cookieName, todayKstStr, {
+        maxAge: 30 * 60, // 30분 동안 중복 카운트 방지
+        path: '/'
+      })
 
-      await recordDailyVisit(!hasVisitedCookie)
+      await recordDailyVisit(true)
 
       console.log('[Visit Stats] Initial create:', {
         todayViews: stats.todayViews,
@@ -48,33 +48,34 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // 날짜가 바뀌었는지 확인
+    // DB 기준 날짜가 바뀌었는지 확인 (00:00 자정 경과)
     const dateChanged = stats.todayDate !== todayKstStr
 
-    // 날짜가 바뀌었으면 todayViews 리셋
+    // 날짜가 바뀌었으면 오늘 첫 방문자 여부에 따라 todayViews 세팅
     if (dateChanged) {
       stats = await prisma.siteStats.update({
         where: { id: 1 },
         data: {
-          todayViews: hasVisitedCookie ? 0 : 1,
+          todayViews: isNewVisitToday ? 1 : 0,
           todayDate: todayKstStr,
-          totalViews: hasVisitedCookie ? stats.totalViews : { increment: 1 }
+          totalViews: isNewVisitToday ? { increment: 1 } : stats.totalViews
         }
       })
 
-      if (!hasVisitedCookie) {
+      if (isNewVisitToday) {
         setCookie(event, cookieName, todayKstStr, {
-          maxAge: 24 * 60 * 60,
+          maxAge: 30 * 60, // 30분 동안 중복 카운트 방지
           path: '/'
         })
       }
 
-      await recordDailyVisit(!hasVisitedCookie)
+      await recordDailyVisit(isNewVisitToday)
 
       console.log('[Visit Stats] Date changed:', {
         date: todayKstStr,
         todayViews: stats.todayViews,
-        totalViews: stats.totalViews
+        totalViews: stats.totalViews,
+        isNewVisitToday
       })
 
       return {
@@ -84,8 +85,8 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // 같은 날짜 && 쿠키 없음 → 새 방문자
-    if (!hasVisitedCookie) {
+    // 같은 날짜 && 오늘 첫 방문자 (쿠키가 없거나 어제 자 쿠키였을 경우)
+    if (isNewVisitToday) {
       stats = await prisma.siteStats.update({
         where: { id: 1 },
         data: {
@@ -95,13 +96,13 @@ export default defineEventHandler(async (event) => {
       })
 
       setCookie(event, cookieName, todayKstStr, {
-        maxAge: 24 * 60 * 60,
+        maxAge: 30 * 60, // 30분 동안 중복 카운트 방지
         path: '/'
       })
 
       await recordDailyVisit(true)
 
-      console.log('[Visit Stats] New visitor:', {
+      console.log('[Visit Stats] New visitor today:', {
         todayViews: stats.todayViews,
         totalViews: stats.totalViews
       })
