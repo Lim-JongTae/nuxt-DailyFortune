@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 
 definePageMeta({
   layout: 'default'
@@ -29,36 +29,45 @@ interface SummaryStats {
   totalIchingViews: number
 }
 
-const loading = ref(true)
-const summary = ref<SummaryStats>({
-  todayDate: '',
-  todayViews: 0,
-  yesterdayViews: 0,
-  growthRate: 0,
-  totalViewsAllTime: 0,
-  totalSajuViews: 0,
-  totalIchingViews: 0
-})
-const dailyLogs = ref<DailyLog[]>([])
-
-const fetchMetrics = async () => {
-  loading.value = true
-  try {
-    const res: any = await $fetch('/api/secret-metrics/daily')
-    if (res?.success) {
-      summary.value = res.summary
-      dailyLogs.value = res.dailyLogs || []
-    }
-  } catch (err) {
-    console.error('Failed to load metrics:', err)
-  } finally {
-    loading.value = false
-  }
+interface MetricsResponse {
+  success: boolean
+  summary?: SummaryStats
+  dailyLogs?: DailyLog[]
+  error?: string
 }
 
-onMounted(() => {
-  fetchMetrics()
+// Nuxt useFetch를 사용하여 중복 API 요청 방지 (Deduplication) 및 캐시/SSR 처리
+const { data: metricsData, status, error, refresh: fetchMetrics } = await useFetch<MetricsResponse>('/api/secret-metrics/daily', {
+  key: 'secret-metrics-daily'
 })
+
+const loading = computed(() => status.value === 'pending')
+const hasError = computed(() => status.value === 'error' || metricsData.value?.success === false)
+
+const summary = computed<SummaryStats>(() => {
+  if (metricsData.value?.success && metricsData.value?.summary) {
+    return metricsData.value.summary
+  }
+  return {
+    todayDate: '',
+    todayViews: 0,
+    yesterdayViews: 0,
+    growthRate: 0,
+    totalViewsAllTime: 0,
+    totalSajuViews: 0,
+    totalIchingViews: 0
+  }
+})
+
+const dailyLogs = computed<DailyLog[]>(() => {
+  if (metricsData.value?.success && Array.isArray(metricsData.value?.dailyLogs)) {
+    return metricsData.value.dailyLogs
+  }
+  return []
+})
+
+// 역순 정렬된 일별 로그 (테이블용 - 최신순)
+const reversedDailyLogs = computed(() => [...dailyLogs.value].reverse())
 
 // 최고 방문자 수 (그래프 비율 계산용)
 const maxViewsInLogs = computed(() => {
@@ -75,6 +84,14 @@ const sajuRatio = computed(() => {
 })
 
 const ichingRatio = computed(() => 100 - sajuRatio.value)
+
+// 일별 비율 계산 헬퍼 함수
+const calculateDailyRatio = (sajuViews: number, ichingViews: number) => {
+  const total = sajuViews + ichingViews
+  if (total === 0) return { saju: 0, iching: 0 }
+  const sajuPercent = Math.round((sajuViews / total) * 100)
+  return { saju: sajuPercent, iching: 100 - sajuPercent }
+}
 
 // 호버 중인 로그
 const hoveredLog = ref<DailyLog | null>(null)
@@ -99,9 +116,11 @@ const hoveredLog = ref<DailyLog | null>(null)
           </p>
         </div>
 
-        <button 
-          @click="fetchMetrics" 
-          class="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors border border-neutral-700 self-start md:self-auto"
+        <button
+          @click="() => fetchMetrics()"
+          :disabled="loading"
+          :aria-label="loading ? '데이터 새로고침 중' : '데이터 새로고침'"
+          class="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors border border-neutral-700 self-start md:self-auto disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <UIcon name="i-heroicons-arrow-path" class="w-4 h-4" :class="{ 'animate-spin': loading }" />
           데이터 새로고침
@@ -111,6 +130,22 @@ const hoveredLog = ref<DailyLog | null>(null)
       <!-- 로딩 스켈레톤 -->
       <div v-if="loading" class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div v-for="i in 4" :key="i" class="h-32 rounded-xl bg-neutral-900 border border-neutral-800 animate-pulse"></div>
+      </div>
+
+      <!-- 에러 상태 -->
+      <div v-else-if="hasError" class="bg-red-950/30 border border-red-800 rounded-xl p-6 text-center">
+        <UIcon name="i-heroicons-exclamation-triangle" class="w-12 h-12 text-red-400 mx-auto mb-3" />
+        <h3 class="text-lg font-bold text-red-300 mb-2">데이터 로딩 실패</h3>
+        <p class="text-sm text-neutral-400 mb-4">
+          {{ error?.message || metricsData?.error || '시스템 지표를 불러오는 중 문제가 발생했습니다.' }}
+        </p>
+        <button
+          @click="() => fetchMetrics()"
+          class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-red-800 hover:bg-red-700 text-white transition-colors"
+        >
+          <UIcon name="i-heroicons-arrow-path" class="w-4 h-4" />
+          다시 시도
+        </button>
       </div>
 
       <template v-else>
@@ -208,12 +243,17 @@ const hoveredLog = ref<DailyLog | null>(null)
               기록된 일별 방문 통계 데이터가 아직 없습니다. 오늘 첫 방문자부터 자동으로 축적됩니다.
             </div>
 
-            <div 
-              v-for="log in dailyLogs" 
+            <div
+              v-for="log in dailyLogs"
               :key="log.date"
               @mouseenter="hoveredLog = log"
               @mouseleave="hoveredLog = null"
-              class="flex-1 min-w-8 flex flex-col items-center gap-1 group cursor-pointer h-full justify-end"
+              @focus="hoveredLog = log"
+              @blur="hoveredLog = null"
+              tabindex="0"
+              :aria-label="`${log.date}: 방문 ${log.totalViews}명, 사주 ${log.sajuViews}회, 주역 ${log.ichingViews}회`"
+              role="button"
+              class="flex-1 min-w-12 flex flex-col items-center gap-1 group cursor-pointer h-full justify-end focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-neutral-900 rounded"
             >
               <!-- 수치 툴팁 (그룹 호버시) -->
               <span class="text-[10px] font-mono text-neutral-400 group-hover:text-amber-400 transition-colors">
@@ -221,11 +261,11 @@ const hoveredLog = ref<DailyLog | null>(null)
               </span>
 
               <!-- 막대 그래프 바 -->
-              <div class="w-full bg-neutral-800 group-hover:bg-neutral-700 rounded-t-md relative flex flex-col justify-end overflow-hidden transition-all duration-300"
+              <div :class="['w-full bg-neutral-800 rounded-t-md relative flex flex-col justify-end overflow-hidden transition-all duration-300', 'group-hover:bg-neutral-700 group-focus:bg-neutral-700']"
                    :style="{ height: `${Math.max(10, Math.round((log.totalViews / maxViewsInLogs) * 100))}%` }"
               >
                 <!-- 막대 내부 그라데이션 -->
-                <div class="w-full bg-linear-gradient-to-t from-amber-600/40 to-amber-400 group-hover:from-amber-500 group-hover:to-amber-300 h-full transition-colors"></div>
+                <div :class="['w-full bg-linear-to-t from-amber-600/40 to-amber-400 h-full transition-colors', 'group-hover:from-amber-500 group-hover:to-amber-300 group-focus:from-amber-500 group-focus:to-amber-300']"></div>
               </div>
 
               <!-- 날짜 라벨 -->
@@ -260,8 +300,8 @@ const hoveredLog = ref<DailyLog | null>(null)
                     아직 수집된 일별 통계가 없습니다.
                   </td>
                 </tr>
-                <tr 
-                  v-for="log in [...dailyLogs].reverse()" 
+                <tr
+                  v-for="log in reversedDailyLogs"
                   :key="log.date"
                   class="hover:bg-neutral-800/40 transition-colors"
                 >
@@ -280,7 +320,7 @@ const hoveredLog = ref<DailyLog | null>(null)
                   </td>
                   <td class="py-3 px-4 text-right font-mono text-neutral-400">
                     <span v-if="log.sajuViews + log.ichingViews > 0">
-                      {{ Math.round((log.sajuViews / (log.sajuViews + log.ichingViews)) * 100) }}% : {{ 100 - Math.round((log.sajuViews / (log.sajuViews + log.ichingViews)) * 100) }}%
+                      {{ calculateDailyRatio(log.sajuViews, log.ichingViews).saju }}% : {{ calculateDailyRatio(log.sajuViews, log.ichingViews).iching }}%
                     </span>
                     <span v-else class="text-neutral-600">-</span>
                   </td>

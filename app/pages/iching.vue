@@ -142,6 +142,35 @@ const hexagramNames: Record<number, { nameKorean: string; nameHanji: string; des
   64: { nameKorean: '화수미제', nameHanji: '火水未濟', desc: '미완의 상태 / 새로운 도전 희망' }
 }
 
+interface IChingResultResponse {
+  success: boolean
+  isAiGenerated?: boolean
+  error?: string
+  hexagram?: {
+    id: number
+    lineNumber: number
+    nameKorean: string
+    nameHanji: string
+    summary: string
+    careerFate?: string
+    wealthFate?: string
+    loveFate?: string
+    generalFate?: string
+    lineNameHanja?: string
+    lineTextHanja?: string
+    lineTextKorean?: string
+    lineAdvice?: string
+  }
+  aiInterpretation?: string
+}
+
+interface LikeResponse {
+  success: boolean
+  likeCount?: number
+  alreadyLiked?: boolean
+  error?: string
+}
+
 const store = useFortuneStore()
 const { ichingWorry: worry, ichingResult: result } = storeToRefs(store)
 const toast = useToast()
@@ -155,7 +184,7 @@ const formattedInterpretation = computed(() => {
 const currentStep = ref(0)
 const loading = ref(false)
 const activeTab = ref('iching')
-const disclaimerModalRef = ref<any>(null)
+const disclaimerModalRef = ref<{ openModal: () => void } | null>(null)
 
 // 아코디언 열림 상태
 const accordionOpen = ref({
@@ -326,7 +355,7 @@ const handleStickClick = async (stick: any) => {
       const hexagramId = trigramToHexagramMap[upper.id]?.[lower.id] || 1
 
       try {
-        const res: any = await $fetch('/api/fortune/iching', {
+        const res = await $fetch<IChingResultResponse>('/api/fortune/iching', {
           method: 'POST',
           body: {
             worry: worry.value,
@@ -375,10 +404,11 @@ const handleStickClick = async (stick: any) => {
           }
           loading.value = false
         }, remainingTime)
-      } catch (error: any) {
+      } catch (error: unknown) {
         loading.value = false
-        const statusCode = error?.statusCode || error?.status || error?.response?.status
-        const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
+        const errObj = error as Record<string, any>
+        const statusCode = errObj?.statusCode || errObj?.status || errObj?.response?.status
+        const statusMessage = errObj?.statusMessage || errObj?.data?.statusMessage || errObj?.data?.message || errObj?.message || ''
 
         if (statusCode === 429) {
           toast.clear()
@@ -440,11 +470,11 @@ const fetchLikeStats = async (hexId: number, lineNum: number) => {
   const targetKey = `iching_${hexId}_${lineNum}`
   loadLikeState(targetKey)
   try {
-    const res: any = await $fetch('/api/fortune/like', {
+    const res = await $fetch<LikeResponse>('/api/fortune/like', {
       params: { type: 'iching', targetKey }
     })
     if (res?.success) {
-      likeCount.value = res.likeCount
+      likeCount.value = res.likeCount || 0
       // 서버 alreadyLiked 값도 반영 (localStorage와 OR)
       if (res.alreadyLiked) alreadyLiked.value = true
     }
@@ -511,7 +541,7 @@ const resetAll = () => {
 // 6효 라인 배열 계산 (본괘 & 변괘)
 const hexagramLinesDetail = computed(() => {
   if (!result.value?.hexagram) {
-    // 기본 디폴트 지천태(11) -> 지풍승(46)
+    // [의도적 디폴트] 조회 전 예시 괘상 프리뷰용 기본값: 지천태(11) -> 지풍승(46)
     return {
       origin: {
         id: 11,
@@ -689,23 +719,38 @@ const fateCategories = computed(() => {
   ]
 })
 
-// KST(한국 표준시) 기준 날짜 및 시간 계산
+// KST(한국 표준시) 기준 날짜 및 시간 계산 (Intl.DateTimeFormat 적용으로 일관성 유지)
 const formattedKstDateTime = computed(() => {
   const now = new Date()
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000)
-  const kst = new Date(utc + (9 * 60 * 60 * 1000))
 
-  const year = kst.getFullYear()
-  const month = String(kst.getMonth() + 1).padStart(2, '0')
-  const date = String(kst.getDate()).padStart(2, '0')
-  const hours = String(kst.getHours()).padStart(2, '0')
-  const minutes = String(kst.getMinutes()).padStart(2, '0')
+  // KST 년/월/일/시/분/요일 정보 획득
+  const dateParts = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    weekday: 'long',
+    hour12: false
+  }).formatToParts(now)
+
+  const partMap: Record<string, string> = {}
+  for (const part of dateParts) {
+    partMap[part.type] = part.value
+  }
+
+  const year = parseInt(partMap.year || '2026', 10)
+  const month = partMap.month || '01'
+  const date = partMap.day || '01'
+  const hours = partMap.hour || '00'
+  const minutes = partMap.minute || '00'
+  const dayOfWeek = partMap.weekday || '월요일'
 
   const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
   const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
-  const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
-  const dayOfWeek = dayNames[kst.getDay()]!
-  
+
+  // 전통 육십간지 연도 계산법 (기준년도 -4 오프셋 검증: 2024년 -> (2024-4)%10=0(甲), (2024-4)%12=4(辰) -> 갑진년(甲辰年) 정확함)
   let stemIdx = (year - 4) % 10
   if (stemIdx < 0) stemIdx += 10
   let branchIdx = (year - 4) % 12

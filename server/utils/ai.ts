@@ -10,7 +10,7 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
   const config = useRuntimeConfig()
   const claudeEndPoint = (config.claudeApiEndPoint || process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com').replace(/\/$/, '')
   const claudeApiKey = config.claudeApiKey || process.env.CLAUDE_API_KEY
-  const claudeModel = config.claudeModel || process.env.CLAUDE_MODEL || 'claude-sonnet-5'
+  const claudeModel = config.claudeModel || process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001'
   const geminiApiKey = config.geminiApiKey || process.env.GEMINI_API_KEY
 
   const timeout = Number(config.aiApiTimeoutMs) || Number(process.env.AI_API_TIMEOUT_MS) || 90000

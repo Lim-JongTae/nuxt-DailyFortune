@@ -2,29 +2,31 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  const nowUtc = Date.now()
-  const kstOffset = 9 * 60 * 60 * 1000
-  const todayStr = new Date(nowUtc + kstOffset).toISOString().split('T')[0]
+  // KST(한국 표준시) 기준 오늘 날짜 (YYYY-MM-DD)
+  const todayStr = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date())
 
   const currentStats = await prisma.siteStats.findUnique({ where: { id: 1 } })
-  const views = currentStats && currentStats.todayViews > 0 ? currentStats.todayViews : 84
+  const views = currentStats?.todayViews ?? 0
 
   await prisma.dailyVisitLog.upsert({
     where: { date: todayStr },
     create: {
       date: todayStr,
       totalViews: views,
-      sajuViews: 12,
-      ichingViews: 8
+      sajuViews: 0,
+      ichingViews: 0
     },
     update: {
       totalViews: views
     }
   })
 
-  console.log('Successfully seeded today daily log with views:', views, 'date:', todayStr)
+  console.log(`✅ Successfully seeded today daily log (${todayStr}) - Views: ${views}`)
 }
 
 main()
-  .catch(console.error)
+  .catch((e) => {
+    console.error('❌ Failed to seed daily log:', e)
+    process.exit(1)
+  })
   .finally(() => prisma.$disconnect())

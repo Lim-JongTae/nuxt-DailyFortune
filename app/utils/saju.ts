@@ -13,7 +13,7 @@ export interface GanzhiResult {
 
 /**
  * 특정 날짜(KST 기준 YYYY-MM-DD)의 일진(일주)을 계산합니다.
- * 기준일: 2000년 1월 1일 (무오일 - 천간 4 戊, 지지 6 午)
+ * 기준일: 2000년 1월 1일 (무진일 - 천간 4 戊, 지지 4 辰)
  */
 export function getGanzhiOfDay(dateStr: string): GanzhiResult {
   const targetDate = new Date(`${dateStr}T00:00:00+09:00`);
@@ -25,9 +25,9 @@ export function getGanzhiOfDay(dateStr: string): GanzhiResult {
   const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"];
   const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"];
 
-  // 2000년 1월 1일은 戊(4) 午(6) 일
+  // 2000년 1월 1일(양력)은 戊辰(무진)일 (천간 戊:4, 지지 辰:4)
   const stemIdx = (4 + (diffDays % 10) + 10) % 10;
-  const branchIdx = (6 + (diffDays % 12) + 12) % 12;
+  const branchIdx = (4 + (diffDays % 12) + 12) % 12;
 
   return {
     stem: stems[stemIdx]!,
@@ -64,6 +64,7 @@ export function getHourBranch(hourStr: string | null | undefined): string {
 
 /**
  * 특정 연도(YYYY)의 연주(년주) 및 12지신 띠를 계산합니다.
+ * 검증: 2024년 -> (2024-4)%10=0(甲), (2024-4)%12=4(辰) -> 갑진년(甲辰年) 정확함
  */
 export function getGanzhiOfYear(year: number): GanzhiResult & { animal: string; zodiacName: string } {
   const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"];
@@ -94,19 +95,17 @@ export function getGanzhiOfYear(year: number): GanzhiResult & { animal: string; 
 
 /**
  * 오늘 날짜의 동적 음력 날짜 문자열(한자 및 음력 표시)을 계산합니다.
- * Intl.DateTimeFormat 표준 음력 달력(ca-chinese)을 활용하여 음력 월/일을 산출합니다.
+ * Intl.DateTimeFormat 표준 음력 달력(ca-chinese) 및 KST(Asia/Seoul) 타임존을 활용하여 음력 월/일을 산출합니다.
  */
 export function getTodayLunarDateString(inputDate: Date = new Date()): string {
   try {
-    const kstUtc = inputDate.getTime() + (inputDate.getTimezoneOffset() * 60000) + (9 * 60 * 60 * 1000);
-    const kstDate = new Date(kstUtc);
-
     const formatter = new Intl.DateTimeFormat('ko-KR-u-ca-chinese', {
+      timeZone: 'Asia/Seoul',
       month: 'numeric',
       day: 'numeric'
     });
     
-    const parts = formatter.formatToParts(kstDate);
+    const parts = formatter.formatToParts(inputDate);
     let monthNum = 1;
     let dayNum = 1;
 
@@ -118,7 +117,9 @@ export function getTodayLunarDateString(inputDate: Date = new Date()): string {
       }
     }
 
+    // 전통 음력 12개월 한자 명칭 (一~十二)
     const hanjaMonths = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"];
+    // 전통 음력 30일자 한자 명칭 (朔日 ~ 三十日)
     const hanjaDays = [
       "朔日", "初二日", "初三日", "初四日", "初五日", "初六日", "初七日", "初八日", "初九日", "初十日",
       "十一日", "十二日", "十三日", "十四日", "十五日", "十六日", "十七日", "十八日", "十九日", "二十日",
@@ -130,6 +131,6 @@ export function getTodayLunarDateString(inputDate: Date = new Date()): string {
 
     return `陰曆 ${mHanja}月 ${dHanja} · 음력 ${monthNum}월 ${dayNum}일`;
   } catch (e) {
-    return `陰曆 八月 朔日`;
+    return '';
   }
 }

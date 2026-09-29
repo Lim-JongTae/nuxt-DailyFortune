@@ -93,7 +93,7 @@ export default defineNuxtConfig({
     geminiApiKey: process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
     claudeApiKey: process.env.NUXT_CLAUDE_API_KEY || process.env.CLAUDE_API_KEY || '',
     claudeApiEndPoint: process.env.NUXT_CLAUDE_API_END_POINT || process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com',
-    claudeModel: process.env.NUXT_CLAUDE_MODEL || process.env.CLAUDE_MODEL || 'claude-sonnet-5',
+    claudeModel: process.env.NUXT_CLAUDE_MODEL || process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001',
     aiApiTimeoutMs: process.env.NUXT_AI_API_TIMEOUT_MS || process.env.AI_API_TIMEOUT_MS || '90000',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://sajuapp.co.kr',

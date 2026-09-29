@@ -53,28 +53,42 @@ useHead({
   ]
 })
 
+interface VisitStatsResponse {
+  success: boolean
+  todayViews?: number
+  totalViews?: number
+  error?: string
+}
+
 // KST 오늘 일진 간지 및 오행 기운 동적 계산 (useState 활용으로 SSR-Client 하이드레이션 일치)
 const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
 const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
 const elemNames = ['木', '火', '土', '金', '水']
 
-const todayGanzhi = useState('todayGanzhi', () => {
-  const nowUtc = new Date().getTime()
-  const kstOffset = 9 * 60 * 60 * 1000
-  const todayKst = new Date(nowUtc + kstOffset)
-  const todayStr = todayKst.toISOString().split('T')[0] || ''
+// 12지지별 오행 인덱스 매핑 (0:木, 1:火, 2:土, 3:金, 4:水)
+// 인덱스: 0:子(수:4), 1:丑(토:2), 2:寅(목:0), 3:卯(목:0), 4:辰(토:2), 5:巳(화:1),
+//        6:午(화:1), 7:未(토:2), 8:申(금:3), 9:酉(금:3), 10:戌(토:2), 11:亥(수:4)
+const BRANCH_ELEMENT_MAP: readonly number[] = [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4]
 
+const todayGanzhi = useState('todayGanzhi', () => {
+  // Intl.DateTimeFormat을 활용한 간결하고 정확한 KST YYYY-MM-DD 구하기
+  const todayStr = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date())
+
+  // 기준일: 2000-01-01 (양력) = 무진(戊辰)일
+  // 천간 戊 = Index 4 (갑0, 을1, 병2, 정3, 무4)
+  // 지지 辰 = Index 4 (자0, 축1, 인2, 묘3, 진4)
   const targetDate = new Date(`${todayStr}T00:00:00+09:00`)
   const refDate = new Date('2000-01-01T00:00:00+09:00')
   const diffDays = Math.round((targetDate.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24))
 
-  const todayStemIdx = (4 + (diffDays % 10) + 10) % 10
-  const todayBranchIdx = (6 + (diffDays % 12) + 12) % 12
+  const REF_STEM_IDX = 4
+  const REF_BRANCH_IDX = 4
+
+  const todayStemIdx = (REF_STEM_IDX + (diffDays % 10) + 10) % 10
+  const todayBranchIdx = (REF_BRANCH_IDX + (diffDays % 12) + 12) % 12
 
   const stemElemIdx = Math.floor(todayStemIdx / 2) // 0:목, 1:화, 2:토, 3:금, 4:수
-  // 지지 오행 인덱스 (자:수4, 축:토2, 인:목0, 묘:목0, 진:토2, 사:화1, 오:화1, 미:토2, 신:금3, 유:금3, 술:토2, 해:수4)
-  const branchElemMap = [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4]
-  const branchElemIdx = branchElemMap[todayBranchIdx] ?? 0
+  const branchElemIdx = BRANCH_ELEMENT_MAP[todayBranchIdx] ?? 0
 
   return {
     ganzhi: `${stems[todayStemIdx]}${branches[todayBranchIdx]}`,
@@ -163,9 +177,9 @@ onMounted(async () => {
     isAnimated.value = true
   }, 100)
 
-  // 방문자 통계 데이터 로드
+  // 방문자 통계 데이터 로드 (타입 안정성 및 실패 시 Fallback 기본값 대응)
   try {
-    const res: any = await $fetch('/api/stats/visit')
+    const res = await $fetch<VisitStatsResponse>('/api/stats/visit')
     if (res?.success) {
       const targetToday = res.todayViews || 0
       const targetTotal = res.totalViews || 0
@@ -182,9 +196,14 @@ onMounted(async () => {
         }
       }
       requestAnimationFrame(step)
+    } else {
+      todayViews.value = 0
+      totalViews.value = 0
     }
   } catch (e) {
     console.warn('Failed to fetch visitor stats:', e)
+    todayViews.value = 0
+    totalViews.value = 0
   }
 
   // 150ms 지연 후 0도(0%)에서 시작하여 88%까지 부드럽게 채워짐

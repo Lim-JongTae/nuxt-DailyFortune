@@ -4,6 +4,36 @@ import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 import { getGanzhiOfDay, getGanzhiOfYear, getTodayLunarDateString } from '~/utils/saju'
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
+
+interface SajuResultResponse {
+  success: boolean
+  isAiGenerated?: boolean
+  error?: string
+  userSaju?: {
+    ilgan: string
+    ilganElement: string
+    birthGanzhi: string
+    siji?: string
+  }
+  todaySaju?: {
+    ganzhi: string
+    shipsin: string
+  }
+  parsedData?: {
+    categories?: {
+      wealth?: { score: number; summary?: string }
+      love?: { score: number; summary?: string }
+      health?: { score: number; summary?: string }
+      business?: { score: number; summary?: string }
+    }
+  }
+  aiInterpretation?: string
+}
+
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/saju`
 
@@ -88,6 +118,7 @@ const userZodiacInfo = computed(() => {
   const animals = ["쥐띠", "소띠", "호랑이띠", "토끼띠", "용띠", "뱀띠", "말띠", "양띠", "원숭이띠", "닭띠", "개띠", "돼지띠"]
   const emoji = ["🐭", "🐮", "🐯", "🐰", "🐲", "🐍", "🐴", "🐑", "🐒", "🐔", "🐶", "🐷"]
 
+  // 전통 육십간지 연도 계산법 (기준년도 -4 오프셋 검증: 2024년 -> (2024-4)%10=0(甲), (2024-4)%12=4(辰) -> 갑진년(甲辰年) 정확함)
   let sIdx = (y - 4) % 10
   if (sIdx < 0) sIdx += 10
   let bIdx = (y - 4) % 12
@@ -256,7 +287,7 @@ const startSajuFortune = async () => {
   })
 
   try {
-    const res: any = await $fetch('/api/fortune/saju', {
+    const res = await $fetch<SajuResultResponse>('/api/fortune/saju', {
       method: 'POST',
       body: {
         birthDate: birthDate.value,
@@ -286,14 +317,15 @@ const startSajuFortune = async () => {
       loading.value = false
     }, remainingTime)
 
-  } catch (error: any) {
-    const statusCode = error?.statusCode || error?.status || error?.response?.status
-    const statusMessage = error?.statusMessage || error?.data?.statusMessage || error?.data?.message || error?.message || ''
+  } catch (error: unknown) {
+    const errObj = error as Record<string, any>
+    const statusCode = errObj?.statusCode || errObj?.status || errObj?.response?.status
+    const statusMessage = errObj?.statusMessage || errObj?.data?.statusMessage || errObj?.data?.message || errObj?.message || ''
 
     console.error('[Saju Frontend] API call failed', {
       statusCode,
       statusMessage,
-      errorType: error?.name,
+      errorType: errObj?.name,
       error: error
     })
 
@@ -325,7 +357,7 @@ const startSajuFortune = async () => {
   }
 }
 
-const deferredPrompt = ref<any>(null)
+const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null)
 
 const onInstallPWA = async () => {
   if (deferredPrompt.value) {
@@ -654,7 +686,7 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('beforeinstallprompt', (e: Event) => {
       e.preventDefault()
-      deferredPrompt.value = e
+      deferredPrompt.value = e as BeforeInstallPromptEvent
     })
   }
 
@@ -672,20 +704,31 @@ const formattedInterpretation = computed(() => {
   return markdownFormatter.formatMarkdown(result.value?.aiInterpretation)
 })
 
-// 오늘 날짜 및 일진 헤더 동적 계산 (KST 기준)
+// 오늘 날짜 및 일진 헤더 동적 계산 (KST 기준 - Intl.DateTimeFormat 적용으로 통일)
 const todayHeaderInfo = computed(() => {
   const now = new Date()
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000)
-  const kst = new Date(utc + (9 * 60 * 60 * 1000))
 
-  const year = kst.getFullYear()
-  const month = kst.getMonth() + 1
-  const date = kst.getDate()
-  
-  const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
-  const dayOfWeek = dayNames[kst.getDay()]!
+  const dateParts = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'long'
+  }).formatToParts(now)
 
-  const todayStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`
+  const partMap: Record<string, string> = {}
+  for (const part of dateParts) {
+    partMap[part.type] = part.value
+  }
+
+  const year = parseInt(partMap.year || '2026', 10)
+  const monthStr = partMap.month || '01'
+  const dateStr = partMap.day || '01'
+  const month = parseInt(monthStr, 10)
+  const date = parseInt(dateStr, 10)
+  const dayOfWeek = partMap.weekday || '월요일'
+
+  const todayStr = `${year}-${monthStr}-${dateStr}`
   const todaySaju = getGanzhiOfDay(todayStr)
   const yearSaju = getGanzhiOfYear(year)
 

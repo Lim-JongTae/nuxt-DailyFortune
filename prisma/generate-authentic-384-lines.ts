@@ -147,13 +147,13 @@ function buildAuthentic384Lines(): LineEntry[] {
         ]
         const textHanja = `${nameHanja} ${lineKeywords[(hexId + lineNum) % lineKeywords.length]}`
         const textKorean = `${nameHanja}: ${hex.korean} ${lineNum}효 - 바른 원칙과 겸손함을 지켜 길함을 얻는다`
-        const modernAdvice = `${hex.korean}(${hex.hanja}) ${lineNum}효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다.`
+        const advice = `${hex.korean}(${hex.hanja}) ${lineNum}효의 기운입니다. 조급한 마음을 내려놓고 원칙과 조화를 중시할 때 좋은 성과를 이룹니다.`
 
         entry = {
           nameHanja,
           textHanja,
           textKorean,
-          modernAdvice
+          advice
         }
       }
 
@@ -165,7 +165,7 @@ function buildAuthentic384Lines(): LineEntry[] {
         nameHanja: entry.nameHanja,
         textHanja: entry.textHanja,
         textKorean: entry.textKorean,
-        modernAdvice: entry.advice || (entry as any).modernAdvice || ''
+        modernAdvice: entry.advice
       })
     }
   }

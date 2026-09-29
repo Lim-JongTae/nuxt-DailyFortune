@@ -119,9 +119,9 @@ function buildFull384Lines(): LineData[] {
       } else {
         // 64괘별 고유 효사 명칭 규칙 (1: 初, 2~5: 二~五, 6: 上, 陰/陽에 따라 六/九)
         const isYang = (hexId + lineNum) % 2 === 1
-        const linePrefix = lineNum === 1 ? '初' : lineNum === 6 ? '上' : `${['', '一', '二', '三', '四', '五', '六'][lineNum]}`
+        const linePositions = ['初', '二', '三', '四', '五', '上']
         const yinYangChar = isYang ? '九' : '六'
-        const nameHanja = lineNum === 1 ? `初${yinYangChar}` : lineNum === 6 ? `上${yinYangChar}` : `${yinYangChar}${linePrefix}`
+        const nameHanja = `${yinYangChar}${linePositions[lineNum - 1]}`
 
         lineObj = {
           nameHanja,
@@ -148,64 +148,80 @@ function buildFull384Lines(): LineData[] {
 }
 
 async function main() {
-  console.log('Generating I Ching 384 lines CSV and seeding database...')
+  try {
+    console.log('Generating I Ching 384 lines CSV and seeding database...')
 
-  const linesData = buildFull384Lines()
+    const linesData = buildFull384Lines()
 
-  // 1. CSV 파일 생성
-  const csvHeader = 'hexagram_id,line_number,hexagram_name_hanja,hexagram_name_korean,line_name_hanja,line_text_hanja,line_text_korean,modern_advice\n'
-  const csvRows = linesData.map(l => {
-    const escapeCsv = (str: string) => `"${str.replace(/"/g, '""')}"`
-    return [
-      l.hexagramId,
-      l.lineNumber,
-      escapeCsv(l.hexagramNameHanja),
-      escapeCsv(l.hexagramNameKorean),
-      escapeCsv(l.nameHanja),
-      escapeCsv(l.textHanja),
-      escapeCsv(l.textKorean),
-      escapeCsv(l.modernAdvice)
-    ].join(',')
-  }).join('\n')
+    // 1. CSV 파일 생성
+    const csvHeader = 'hexagram_id,line_number,hexagram_name_hanja,hexagram_name_korean,line_name_hanja,line_text_hanja,line_text_korean,modern_advice\n'
+    const csvRows = linesData.map(l => {
+      const escapeCsv = (str: string) => `"${str.replace(/"/g, '""')}"`
+      return [
+        l.hexagramId,
+        l.lineNumber,
+        escapeCsv(l.hexagramNameHanja),
+        escapeCsv(l.hexagramNameKorean),
+        escapeCsv(l.nameHanja),
+        escapeCsv(l.textHanja),
+        escapeCsv(l.textKorean),
+        escapeCsv(l.modernAdvice)
+      ].join(',')
+    }).join('\n')
 
-  const outputCsvPath = path.join(process.cwd(), 'prisma', 'iching_384_lines.csv')
-  fs.writeFileSync(outputCsvPath, csvHeader + csvRows, 'utf-8')
-  console.log(`✅ CSV file successfully written to: ${outputCsvPath}`)
+    const outputCsvPath = path.join(process.cwd(), 'prisma', 'iching_384_lines.csv')
+    fs.writeFileSync(outputCsvPath, csvHeader + csvRows, 'utf-8')
+    console.log(`✅ CSV file successfully written to: ${outputCsvPath}`)
 
-  // 2. JSON 파일 생성
-  const outputJsonPath = path.join(process.cwd(), 'prisma', 'iching_384_lines.json')
-  fs.writeFileSync(outputJsonPath, JSON.stringify(linesData, null, 2), 'utf-8')
-  console.log(`✅ JSON file successfully written to: ${outputJsonPath}`)
+    // 2. JSON 파일 생성
+    const outputJsonPath = path.join(process.cwd(), 'prisma', 'iching_384_lines.json')
+    fs.writeFileSync(outputJsonPath, JSON.stringify(linesData, null, 2), 'utf-8')
+    console.log(`✅ JSON file successfully written to: ${outputJsonPath}`)
 
-  // 2. Prisma DB 시딩 (Prisma Client를 통해 iching_lines 테이블에 삽입)
-  let seededCount = 0
-  for (const line of linesData) {
-    await prisma.iChingLine.upsert({
-      where: {
-        hexagramId_lineNumber: {
-          hexagramId: line.hexagramId,
-          lineNumber: line.lineNumber
-        }
-      },
-      update: {
-        nameHanja: line.nameHanja,
-        textHanja: line.textHanja,
-        textKorean: line.textKorean,
-        modernAdvice: line.modernAdvice
-      },
-      create: {
-        hexagramId: line.hexagramId,
-        lineNumber: line.lineNumber,
-        nameHanja: line.nameHanja,
-        textHanja: line.textHanja,
-        textKorean: line.textKorean,
-        modernAdvice: line.modernAdvice
+    // 3. Prisma DB 시딩 (트랜잭션 + 배치 병렬 처리)
+    console.log('Seeding database...')
+    await prisma.$transaction(async (tx) => {
+      const batchSize = 50
+      for (let i = 0; i < linesData.length; i += batchSize) {
+        const batch = linesData.slice(i, i + batchSize)
+        await Promise.all(
+          batch.map(line =>
+            tx.iChingLine.upsert({
+              where: {
+                hexagramId_lineNumber: {
+                  hexagramId: line.hexagramId,
+                  lineNumber: line.lineNumber
+                }
+              },
+              update: {
+                nameHanja: line.nameHanja,
+                textHanja: line.textHanja,
+                textKorean: line.textKorean,
+                modernAdvice: line.modernAdvice
+              },
+              create: {
+                hexagramId: line.hexagramId,
+                lineNumber: line.lineNumber,
+                nameHanja: line.nameHanja,
+                textHanja: line.textHanja,
+                textKorean: line.textKorean,
+                modernAdvice: line.modernAdvice
+              }
+            })
+          )
+        )
+        console.log(`  Progress: ${Math.min(i + batchSize, linesData.length)}/${linesData.length}`)
       }
+    }, {
+      timeout: 60000 // 60초 타임아웃
     })
-    seededCount++
-  }
 
-  console.log(`✅ Successfully seeded ${seededCount} lines into Database (iching_lines)!`)
+    console.log(`✅ Successfully seeded ${linesData.length} lines into Database (iching_lines)!`)
+  } catch (error) {
+    console.error('❌ Failed to generate or seed I Ching data:')
+    console.error(error)
+    throw error
+  }
 }
 
 main()

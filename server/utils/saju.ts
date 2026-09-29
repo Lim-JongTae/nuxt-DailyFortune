@@ -12,7 +12,7 @@ export interface GanzhiResult {
 
 /**
  * 특정 날짜(KST 기준 YYYY-MM-DD)의 일진(일주)을 계산합니다.
- * 기준일: 2000년 1월 1일 (무오일 - 천간 4 戊, 지지 6 午)
+ * 기준일: 2000년 1월 1일 (무진일 - 천간 4 戊, 지지 4 辰)
  */
 export function getGanzhiOfDay(dateStr: string): GanzhiResult {
   // 날짜 파싱 (KST 00시 기준)
@@ -26,9 +26,9 @@ export function getGanzhiOfDay(dateStr: string): GanzhiResult {
   const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"];
   const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"];
 
-  // 2000년 1월 1일은 戊(4) 午(6) 일
+  // 2000년 1월 1일(양력)은 戊辰(무진)일 (천간 戊:4, 지지 辰:4)
   const stemIdx = (4 + (diffDays % 10) + 10) % 10;
-  const branchIdx = (6 + (diffDays % 12) + 12) % 12;
+  const branchIdx = (4 + (diffDays % 12) + 12) % 12;
 
   return {
     stem: stems[stemIdx]!,

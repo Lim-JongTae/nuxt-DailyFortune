@@ -10,10 +10,12 @@ const prisma = new PrismaClient({
 })
 
 async function main() {
-  console.log('Seeding fortune data...')
+  try {
+    console.log('Seeding fortune data...')
 
-  // 1. Saju Stems (천간 10종)
-  const stems = [
+    await prisma.$transaction(async (tx) => {
+      // 1. Saju Stems (천간 10종)
+      const stems = [
     { stem: '갑', element: '목', tendency: '뿌리를 깊게 내린 큰 나무처럼 추진력과 독립심이 강하고 우두머리 기질이 있습니다. 타인에게 굽히기 싫어하며 시작하는 힘이 뛰어납니다.' },
     { stem: '을', element: '목', tendency: '바람에 흔들려도 꺾이지 않는 유연한 화초나 넝쿨 식물처럼 적응력이 뛰어나고 외유내강형입니다. 끈기 있고 실속을 챙기는 능력이 있습니다.' },
     { stem: '병', element: '화', tendency: '세상을 두루 밝히는 태양처럼 정열적이고 화려하며, 솔직담백하고 자신감이 넘칩니다. 성격이 급한 면이 있으나 뒤끝이 없고 공명정대합니다.' },
@@ -26,14 +28,16 @@ async function main() {
     { stem: '계', element: '수', tendency: '만물을 적시는 단비나 맑은 옹달샘처럼 지혜롭고 상상력이 풍부합니다. 다정다감하고 세심하며 남을 배려하고 보듬는 심성이 뛰어납니다.' }
   ]
 
-  for (const s of stems) {
-    await prisma.sajuIlgan.upsert({
-      where: { stem: s.stem },
-      update: s,
-      create: s
-    })
-  }
-  console.log('Seeded Saju Stems.')
+  await Promise.all(
+    stems.map(s =>
+      tx.sajuIlgan.upsert({
+        where: { stem: s.stem },
+        update: s,
+        create: s
+      })
+    )
+  )
+  console.log(`✓ Seeded ${stems.length} Saju Stems.`)
 
   // 2. Saju Shipsin (십신 10종)
   const shipsins = [
@@ -49,14 +53,16 @@ async function main() {
     { name: '정인', meaning: '귀인의 도움, 문서운, 그리고 학업운이 따르는 안정적인 날입니다. 상사나 어머니 같은 윗사람의 따뜻한 조력을 받기 쉬우며 자격증 취득, 계약 서명 등 문서상의 계약에서 매우 유리한 작용을 합니다.' }
   ]
 
-  for (const sh of shipsins) {
-    await prisma.sajuShipsin.upsert({
-      where: { name: sh.name },
-      update: sh,
-      create: sh
-    })
-  }
-  console.log('Seeded Saju Shipsins.')
+  await Promise.all(
+    shipsins.map(sh =>
+      tx.sajuShipsin.upsert({
+        where: { name: sh.name },
+        update: sh,
+        create: sh
+      })
+    )
+  )
+  console.log(`✓ Seeded ${shipsins.length} Saju Shipsins.`)
 
   // 3. Saju Jiji (지지 12종)
   const jijis = [
@@ -74,14 +80,16 @@ async function main() {
     { name: '해', animal: '돼지', element: '수', description: '해수(亥水)를 가진 사람은 넓은 포용력과 낙천적인 성향이 있으며 지혜가 깊습니다. 남을 돕는 봉사 정신과 예술적 감수성이 발달했습니다.' }
   ]
 
-  for (const j of jijis) {
-    await prisma.sajuJiji.upsert({
-      where: { name: j.name },
-      update: j,
-      create: j
-    })
-  }
-  console.log('Seeded Saju Jijis.')
+  await Promise.all(
+    jijis.map(j =>
+      tx.sajuJiji.upsert({
+        where: { name: j.name },
+        update: j,
+        create: j
+      })
+    )
+  )
+  console.log(`✓ Seeded ${jijis.length} Saju Jijis.`)
 
   // 3-1. Saju Ilju (육십갑자 60일주 상세 원천 데이터)
   const iljus = [
@@ -640,14 +648,20 @@ async function main() {
     }
   ]
 
-  for (const ilju of iljus) {
-    await prisma.sajuIlju.upsert({
-      where: { order: ilju.order },
-      update: ilju,
-      create: ilju
-    })
+  // 10개씩 청크 단위 병렬 처리
+  for (let i = 0; i < iljus.length; i += 10) {
+    const chunk = iljus.slice(i, i + 10)
+    await Promise.all(
+      chunk.map(ilju =>
+        tx.sajuIlju.upsert({
+          where: { order: ilju.order },
+          update: ilju,
+          create: ilju
+        })
+      )
+    )
   }
-  console.log('Seeded 60 Saju Iljus.')
+  console.log(`✓ Seeded ${iljus.length} Saju Iljus.`)
 
   // 4. I Ching 64 Hexagrams (주역 64괘)
   const hexagrams = [
@@ -800,9 +814,9 @@ async function main() {
     { id: 64, nameHanji: '火水未濟', nameKorean: '화수미제', summary: '물과 불이 엇갈려 아직 밥을 짓지 못했으니, 미완성의 상태라 희망을 갖고 다시 도전합니다.' }
   ]
 
-  for (const h of allHexNames) {
+  const hexagramsToSeed = allHexNames.map(h => {
     const exists = hexagrams.find(item => item.id === h.id)
-    const targetData = exists || {
+    return exists || {
       id: h.id,
       nameHanji: h.nameHanji,
       nameKorean: h.nameKorean,
@@ -811,26 +825,36 @@ async function main() {
       generalFate: `이 시기는 ${h.summary.replace('입니다.', '')}과 같은 흐름이므로 무리하기보다는 현재 상황을 냉정히 분석하고 대처하는 것이 길합니다.`,
       businessFate: '철저한 계획과 내부의 조화로운 조율을 거쳐 일을 도모해야 손해가 없습니다.',
       loveFate: '과도한 열정이나 급박한 고백보다는 서로의 신뢰를 천천히 쌓아갈 필요가 있는 때입니다.',
-      wealthFate: '충동적인 소비를 줄하고 지출 관리를 단단히 함으로써 재정적 안정을 이뤄야 합니다.'
+      wealthFate: '충동적인 소비를 줄이고 지출 관리를 단단히 함으로써 재정적 안정을 이뤄야 합니다.'
     }
+  })
 
-    await prisma.iChingHexagram.upsert({
-      where: { id: targetData.id },
-      update: targetData,
-      create: targetData
-    })
+  // 10개씩 청크 단위 병렬 처리
+  const chunkSize = 10
+  for (let i = 0; i < hexagramsToSeed.length; i += chunkSize) {
+    const chunk = hexagramsToSeed.slice(i, i + chunkSize)
+    await Promise.all(
+      chunk.map(h =>
+        tx.iChingHexagram.upsert({
+          where: { id: h.id },
+          update: h,
+          create: h
+        })
+      )
+    )
   }
 
-  for (const h of hexagrams.slice(0, 8)) {
-    await prisma.iChingHexagram.upsert({
-      where: { id: h.id },
-      update: h,
-      create: h
+  console.log(`✓ Seeded ${hexagramsToSeed.length} I Ching 64 Hexagrams.`)
+    }, {
+      timeout: 60000 // 60초 타임아웃
     })
-  }
 
-  console.log('Seeded I Ching 64 Hexagrams.')
-  console.log('Database seeding completed successfully.')
+    console.log('✅ Database seeding completed successfully.')
+  } catch (error) {
+    console.error('❌ Database seeding failed:')
+    console.error(error)
+    throw error
+  }
 }
 
 main()
