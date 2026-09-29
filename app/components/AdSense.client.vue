@@ -18,17 +18,27 @@ const insRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   nextTick(() => {
-    try {
-      if (insRef.value && !insRef.value.getAttribute('data-adsbygoogle-status')) {
-        ;(window as any).adsbygoogle = (window as any).adsbygoogle || []
-        ;(window as any).adsbygoogle.push({})
-      }
-    } catch (e: any) {
-      // Google AdSense 중복 push 에러 콘솔 방지
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn('AdSense duplicate push ignored:', e?.message || e)
+    let retries = 0
+    const maxRetries = 10
+
+    const checkAndPush = () => {
+      const el = insRef.value
+      if (el && !el.getAttribute('data-adsbygoogle-status')) {
+        const width = el.offsetWidth || (el.parentElement ? el.parentElement.offsetWidth : 0)
+        if (width > 0) {
+          try {
+            ;(window as any).adsbygoogle = (window as any).adsbygoogle || []
+            ;(window as any).adsbygoogle.push({})
+          } catch (e: any) {
+            // 중복 푸시 에러 정숙 처리
+          }
+        } else if (retries < maxRetries) {
+          retries++
+          requestAnimationFrame(checkAndPush)
+        }
       }
     }
+    checkAndPush()
   })
 })
 </script>

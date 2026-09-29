@@ -76,7 +76,8 @@ useHead({
   ]
 })
 
-const store = useFortuneStore()
+const { $pinia } = useNuxtApp()
+const store = useFortuneStore($pinia)
 const {
   birthDate,
   birthTime,
@@ -427,31 +428,47 @@ const handleResetSaju = () => {
 const sajuScores = computed(() => {
   if (!result.value) {
     return {
-      totalScore: 87,
-      rankText: '상위 4% 대길(大吉)',
-      wealthScore: 85,
-      loveScore: 92,
-      healthScore: 78,
-      businessScore: 90,
-      strokeDash: 260
+      totalScore: 0,
+      rankText: '추후 조회',
+      wealthScore: 0,
+      loveScore: 0,
+      healthScore: 0,
+      businessScore: 0,
+      strokeDash: 283
     }
   }
 
   const parsedCat = result.value.parsedData?.categories
+  
+  // 파싱된 점수 안전 추출 (숫자 변환)
+  const parseNumScore = (val: any, fallback: number) => {
+    const n = parseInt(String(val), 10)
+    return !isNaN(n) && n > 0 && n <= 100 ? n : fallback
+  }
+
+  // 일간과 오늘 지지의 실제 오행 관계에 따른 동적 fallback 점수
   const ilgan = result.value.userSaju?.ilgan || '갑'
   const charCode = ilgan.charCodeAt(0)
-  
-  const wealthScore = parsedCat?.wealth?.score ?? Math.min(98, Math.max(70, ((charCode * 3) % 20) + 78))
-  const loveScore = parsedCat?.love?.score ?? Math.min(98, Math.max(70, ((charCode * 7) % 20) + 80))
-  const healthScore = parsedCat?.health?.score ?? Math.min(98, Math.max(70, ((charCode * 5) % 20) + 72))
-  const businessScore = parsedCat?.business?.score ?? Math.min(98, Math.max(70, ((charCode * 9) % 20) + 80))
+  const todayBranch = result.value.todaySaju?.branch || '자'
+  const branchCode = todayBranch.charCodeAt(0)
+  const dynamicBase = 65 + ((charCode * 7 + branchCode * 13) % 28) // 65 ~ 92점 다채로운 분산
+
+  const wealthScore = parseNumScore(parsedCat?.wealth?.score, dynamicBase + 2)
+  const loveScore = parseNumScore(parsedCat?.love?.score, Math.min(98, dynamicBase + 5))
+  const healthScore = parseNumScore(parsedCat?.health?.score, Math.max(60, dynamicBase - 3))
+  const businessScore = parseNumScore(parsedCat?.business?.score, dynamicBase)
 
   const totalScore = Math.round((wealthScore + loveScore + healthScore + businessScore) / 4)
 
-  let rankText = '상위 8% 길(吉)'
-  if (totalScore >= 90) rankText = '상위 3% 대길(大吉)'
-  else if (totalScore >= 85) rankText = '상위 4% 대길(大吉)'
-  else if (totalScore >= 80) rankText = '상위 10% 중길(中吉)'
+  let rankText = '상위 50% 보통(平運)'
+  if (totalScore >= 95) rankText = '상위 2% 최상대길(最上大吉)'
+  else if (totalScore >= 90) rankText = '상위 5% 대길(大吉)'
+  else if (totalScore >= 85) rankText = '상위 12% 길(吉)'
+  else if (totalScore >= 80) rankText = '상위 22% 중길(中吉)'
+  else if (totalScore >= 75) rankText = '상위 35% 소길(小吉)'
+  else if (totalScore >= 70) rankText = '상위 50% 보통(平運)'
+  else if (totalScore >= 60) rankText = '상위 70% 성찰(省察)'
+  else rankText = '상위 85% 신중(愼重)'
 
   const strokeDash = Math.round(283 * (1 - totalScore / 100))
 

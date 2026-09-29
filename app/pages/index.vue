@@ -363,7 +363,7 @@ onMounted(async () => {
                 <div class="relative w-16 h-16 flex items-center justify-center rounded-full score-glow-ring shrink-0">
                   <svg class="w-full h-full -rotate-90 origin-center" viewBox="0 0 36 36">
                     <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" class="pg-text-soft opacity-25" />
-                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="100" stroke-dashoffset="20" stroke-linecap="round" class="pg-text-gold opacity-80" />
+                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="100" :stroke-dashoffset="strokeDashoffset" stroke-linecap="round" class="pg-text-gold opacity-80 transition-all duration-75 ease-out" />
                   </svg>
                   <svg 
                     class="absolute w-9 h-9 animate-element-color-swing" 

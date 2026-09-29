@@ -171,7 +171,8 @@ interface LikeResponse {
   error?: string
 }
 
-const store = useFortuneStore()
+const { $pinia } = useNuxtApp()
+const store = useFortuneStore($pinia)
 const { ichingWorry: worry, ichingResult: result } = storeToRefs(store)
 const toast = useToast()
 
