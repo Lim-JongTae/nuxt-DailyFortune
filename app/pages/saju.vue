@@ -703,6 +703,7 @@ const formattedInterpretation = computed(() => {
 // 오늘 날짜 및 일진 헤더 동적 계산 (사주 실제 조회 시각 독립 보존)
 const todayHeaderInfo = computed(() => {
   const targetTime = store.getFortuneSavedTime('saju')
+  const now = targetTime ? new Date(targetTime) : new Date()
 
   const dateParts = new Intl.DateTimeFormat('ko-KR', {
     timeZone: 'Asia/Seoul',

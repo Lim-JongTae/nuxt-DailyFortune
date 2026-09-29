@@ -722,6 +722,7 @@ const fateCategories = computed(() => {
 // KST(한국 표준시) 기준 날짜 및 시간 계산 (주역 실제 조회 시각 독립 보존)
 const formattedKstDateTime = computed(() => {
   const targetTime = store.getFortuneSavedTime('iching')
+  const now = targetTime ? new Date(targetTime) : new Date()
 
   // KST 년/월/일/시/분/요일 정보 획득
   const dateParts = new Intl.DateTimeFormat('ko-KR', {
