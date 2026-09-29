@@ -360,12 +360,23 @@ onMounted(async () => {
             <!-- Score Preview -->
             <div class="mt-6 flex items-center justify-between pg-card-inner p-4 rounded-2xl border pg-border">
               <div class="flex items-center gap-4">
-                <div class="relative w-14 h-14 flex items-center justify-center rounded-full score-glow-ring">
+                <div class="relative w-16 h-16 flex items-center justify-center rounded-full score-glow-ring shrink-0">
                   <svg class="w-full h-full -rotate-90 origin-center" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3.5" class="pg-text-soft opacity-30" />
-                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3.5" stroke-dasharray="100" :stroke-dashoffset="strokeDashoffset" stroke-linecap="round" class="pg-text-gold" />
+                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" class="pg-text-soft opacity-25" />
+                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="100" stroke-dashoffset="20" stroke-linecap="round" class="pg-text-gold opacity-80" />
                   </svg>
-                  <span class="absolute pg-text font-bold text-base font-serif-kr">{{ animatedScore }}</span>
+                  <svg 
+                    class="absolute w-9 h-9 animate-element-color-swing" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2.8" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="3.5" />
+                  </svg>
                 </div>
                 <div>
                   <div class="text-sm pg-text-gold font-bold font-serif-kr">오늘({{ todayGanzhiText }}일) 일진 & 십신 분석</div>
@@ -801,5 +812,39 @@ onMounted(async () => {
 
 .hex-text-delay-quote.is-active {
   animation-delay: 1.75s; /* 텍스트 도출 후 명언 상자 등장 */
+}
+
+/* 물음표 아이콘 좌우 흔들림 + 오행 4색(녹색->빨강->금색->파랑) 순환 애니메이션 */
+@keyframes element-color-swing {
+  0% {
+    stroke: #16a34a;
+    filter: drop-shadow(0 0 10px rgba(22, 163, 74, 0.8));
+    transform: rotate(-10deg);
+  }
+  25% {
+    stroke: #dc2626;
+    filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.8));
+    transform: rotate(10deg);
+  }
+  50% {
+    stroke: #f59e0b;
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8));
+    transform: rotate(-10deg);
+  }
+  75% {
+    stroke: #0284c7;
+    filter: drop-shadow(0 0 10px rgba(2, 132, 199, 0.8));
+    transform: rotate(10deg);
+  }
+  100% {
+    stroke: #16a34a;
+    filter: drop-shadow(0 0 10px rgba(22, 163, 74, 0.8));
+    transform: rotate(-10deg);
+  }
+}
+
+.animate-element-color-swing {
+  animation: element-color-swing 7s ease-in-out infinite;
+  transform-origin: center center;
 }
 </style>
