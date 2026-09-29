@@ -15,10 +15,7 @@ export default defineEventHandler(async (event) => {
     const res: any = await $fetch(`${claudeEndPoint}/v1/messages`, {
       method: 'POST',
       headers: {
-        ...(isDirectApi
-          ? { 'authorization': `Bearer ${claudeApiKey}` }
-          : { 'x-api-key': claudeApiKey }
-        ),
+        'x-api-key': claudeApiKey,
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json'
       },
@@ -42,53 +39,95 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  // 2. Gemini API 연결 테스트
+  // 2. Gemini API 연결 테스트 (ModelService.ListModels 사전 탐색 지원)
   const geminiApiKey = config.geminiApiKey || ''
-  try {
-    // Gemini 모델: 최신 모델 사용 (Google 권장 - 2025년 기준)
-    const geminiModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
-
-    let geminiSuccess = false
-    let lastError: any = null
-
-    for (const model of geminiModels) {
+  if (geminiApiKey) {
+    try {
+      // 1) 발급받은 API 키로 구글 서버에서 이용 가능한 모델 목록 사전 조회
+      let availableModels: string[] = []
       try {
-        const controller = new AbortController()
-        const timeoutId = setTimeout(() => controller.abort(), 10000)
-        const res: any = await $fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiApiKey}`, {
-          method: 'POST',
-          body: {
-            contents: [{ parts: [{ text: 'hi' }] }],
-            generationConfig: { maxOutputTokens: 10 }
-          },
-          signal: controller.signal
-        })
-        clearTimeout(timeoutId)
-        results.gemini = { status: 'success', model, hasContent: !!res?.candidates?.[0]?.content?.parts?.[0]?.text }
-        geminiSuccess = true
-        break
-      } catch (err: any) {
-        lastError = err
-        continue
+        const listRes: any = await $fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${geminiApiKey}`)
+        if (listRes?.models && Array.isArray(listRes.models)) {
+          availableModels = listRes.models
+            .filter((m: any) => m.supportedGenerationMethods?.includes('generateContent'))
+            .map((m: any) => m.name.replace(/^models\//, ''))
+        }
+      } catch (listErr: any) {
+        console.warn('[Gemini Test] ListModels failed, using fallback list:', listErr.message)
       }
-    }
 
-    if (!geminiSuccess) {
+      // 후보 모델 순서 (조회된 지원 모델 우선 + fallback)
+      const candidateModels = Array.from(new Set([
+        ...availableModels,
+        'gemini-1.5-flash-latest',
+        'gemini-1.5-flash',
+        'gemini-2.0-flash',
+        'gemini-2.5-flash',
+        'gemini-1.5-flash-001',
+        'gemini-flash'
+      ]))
+
+      let geminiSuccess = false
+      let lastError: any = null
+      let matchedModel = ''
+
+      for (const model of candidateModels) {
+        // v1beta 및 v1 엔드포인트 순차 시도
+        const apiVersions = ['v1beta', 'v1']
+        for (const ver of apiVersions) {
+          try {
+            const controller = new AbortController()
+            const timeoutId = setTimeout(() => controller.abort(), 10000)
+            const res: any = await $fetch(`https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${geminiApiKey}`, {
+              method: 'POST',
+              body: {
+                contents: [{ parts: [{ text: 'hi' }] }],
+                generationConfig: { maxOutputTokens: 10 }
+              },
+              signal: controller.signal
+            })
+            clearTimeout(timeoutId)
+            const text = res?.candidates?.[0]?.content?.parts?.[0]?.text || ''
+            if (text) {
+              results.gemini = {
+                status: 'success',
+                model,
+                apiVersion: ver,
+                hasContent: true,
+                availableModelsCount: availableModels.length
+              }
+              geminiSuccess = true
+              matchedModel = model
+              break
+            }
+          } catch (err: any) {
+            lastError = err
+          }
+        }
+        if (geminiSuccess) break
+      }
+
+      if (!geminiSuccess) {
+        results.gemini = {
+          status: 'error',
+          message: lastError?.message || String(lastError),
+          statusCode: lastError?.statusCode || lastError?.status,
+          cause: lastError?.cause?.message || lastError?.data?.error?.message || null,
+          availableModelsSample: availableModels.slice(0, 5)
+        }
+      }
+    } catch (err: any) {
       results.gemini = {
         status: 'error',
-        message: lastError?.message || String(lastError),
-        statusCode: lastError?.statusCode || lastError?.status,
-        cause: lastError?.cause?.message || lastError?.data?.error?.message || null,
-        type: lastError?.name || null
+        message: err?.message || String(err),
+        statusCode: err?.statusCode || err?.status,
+        cause: err?.cause?.message || err?.data?.error?.message || null
       }
     }
-  } catch (err: any) {
+  } else {
     results.gemini = {
       status: 'error',
-      message: err?.message || String(err),
-      statusCode: err?.statusCode || err?.status,
-      cause: err?.cause?.message || err?.data?.error?.message || null,
-      type: err?.name || null
+      message: 'GEMINI_API_KEY가 설정되지 않았습니다.'
     }
   }
 

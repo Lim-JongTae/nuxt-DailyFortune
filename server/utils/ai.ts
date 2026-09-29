@@ -8,7 +8,7 @@ export interface AiResponse {
 export async function callAiModel(prompt: string): Promise<AiResponse> {
   // useRuntimeConfig()를 사용해야 Nuxt 프로덕션에서도 환경변수가 올바르게 주입됨
   const config = useRuntimeConfig()
-  const claudeEndPoint = (config.claudeApiEndPoint || process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com').replace(/\/$/, '')
+  const claudeEndPoint = (config.claudeApiEndPoint || process.env.CLAUDE_API_END_POINT || 'https://api.anthropic.com').replace(/\/$/, '')
   const claudeApiKey = config.claudeApiKey || process.env.CLAUDE_API_KEY
   const claudeModel = config.claudeModel || process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001'
   const geminiApiKey = config.geminiApiKey || process.env.GEMINI_API_KEY
@@ -41,76 +41,10 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
     return clean.length > 20
   }
 
-  // 1. Claude API (1순위) - Vercel 동적 IP 환경에서는 403이 발생할 수 있으나,
-  //    에러 시 자동으로 Gemini fallback으로 전환됨
-  if (claudeApiKey) {
-    const startTime = Date.now()
-    try {
-      const endpoint = `${claudeEndPoint}/v1/messages`
-      console.log('[Claude API] Request starting:', {
-        endpoint,
-        model: claudeModel,
-        maxTokens: maxTokens,
-        promptLength: prompt.length,
-        timeout
-      })
-
-      const response: any = await fetchWithTimeout(endpoint, {
-        method: 'POST',
-        headers: {
-          'x-api-key': claudeApiKey,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json'
-        },
-        body: {
-          model: claudeModel,
-          max_tokens: maxTokens,
-          messages: [{ role: 'user', content: prompt }]
-        }
-      }, timeout)
-
-      const elapsed = Date.now() - startTime
-      console.log('[Claude API] Response received:', {
-        elapsed: `${elapsed}ms`,
-        hasContent: !!response?.content,
-        contentLength: response?.content?.length,
-        textLength: response?.content?.[0]?.text?.length,
-        usage: response?.usage
-      })
-
-      const text = response?.content?.[0]?.text || ''
-      if (isValidAiText(text)) {
-        console.log(`[Claude API] ✅ Success - Valid text generated (${elapsed}ms)`)
-        return { text, isAiGenerated: true, model: claudeModel, latencyMs: elapsed }
-      }
-      console.warn('[Claude API] ⚠️ Invalid or insufficient text content in response, falling back to Gemini')
-    } catch (claudeError: any) {
-      const elapsed = Date.now() - startTime
-      const statusCode = claudeError?.statusCode || claudeError?.status
-      const errorMsg = claudeError?.message || claudeError?.data?.error?.message || String(claudeError)
-      const errorData = claudeError?.data || claudeError?.response?.data
-
-      console.error('[Claude API Error] ❌ Falling back to Gemini', {
-        elapsed: `${elapsed}ms`,
-        endpoint: `${claudeEndPoint}/v1/messages`,
-        message: errorMsg,
-        statusCode,
-        errorType: claudeError?.name,
-        errorData: errorData ? JSON.stringify(errorData).slice(0, 200) : undefined,
-        hint: statusCode === 403 ? 'Vercel dynamic IP blocked by proxy. Auto-switching to Gemini.' :
-              statusCode === 429 ? 'Rate limit exceeded' :
-              statusCode === 401 ? 'Invalid API key' :
-              claudeError?.name === 'AbortError' ? 'Request timeout' : undefined
-      })
-    }
-  } else {
-    console.warn('[Claude API] ⚠️ No API key configured, skipping to Gemini')
-  }
-
-  // 2. Gemini API (2순위 fallback - 구글 직연결: gemini-3.8-flash / gemini-2.5-flash / gemini-2.0-flash)
+  // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색: gemini-2.5-flash / gemini-1.5-flash-latest / gemini-2.0-flash)
   if (geminiApiKey) {
     const configuredModel = (config.geminiModel || process.env.GEMINI_MODEL || '').trim()
-    const defaultModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
+    const defaultModels = ['gemini-2.5-flash', 'gemini-1.5-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash']
     const models = configuredModel
       ? Array.from(new Set([configuredModel, ...defaultModels]))
       : defaultModels
@@ -175,6 +109,71 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
     }
   } else {
     console.warn('[Gemini API] ⚠️ No API key configured, skipping Gemini')
+  }
+
+  // 2. Claude API (2순위 fallback)
+  if (claudeApiKey) {
+    const startTime = Date.now()
+    try {
+      const endpoint = `${claudeEndPoint}/v1/messages`
+      console.log('[Claude API] Request starting:', {
+        endpoint,
+        model: claudeModel,
+        maxTokens: maxTokens,
+        promptLength: prompt.length,
+        timeout
+      })
+
+      const response: any = await fetchWithTimeout(endpoint, {
+        method: 'POST',
+        headers: {
+          'x-api-key': claudeApiKey,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json'
+        },
+        body: {
+          model: claudeModel,
+          max_tokens: maxTokens,
+          messages: [{ role: 'user', content: prompt }]
+        }
+      }, timeout)
+
+      const elapsed = Date.now() - startTime
+      console.log('[Claude API] Response received:', {
+        elapsed: `${elapsed}ms`,
+        hasContent: !!response?.content,
+        contentLength: response?.content?.length,
+        textLength: response?.content?.[0]?.text?.length,
+        usage: response?.usage
+      })
+
+      const text = response?.content?.[0]?.text || ''
+      if (isValidAiText(text)) {
+        console.log(`[Claude API] ✅ Success - Valid text generated (${elapsed}ms)`)
+        return { text, isAiGenerated: true, model: claudeModel, latencyMs: elapsed }
+      }
+      console.warn('[Claude API] ⚠️ Invalid or insufficient text content in response')
+    } catch (claudeError: any) {
+      const elapsed = Date.now() - startTime
+      const statusCode = claudeError?.statusCode || claudeError?.status
+      const errorMsg = claudeError?.message || claudeError?.data?.error?.message || String(claudeError)
+      const errorData = claudeError?.data || claudeError?.response?.data
+
+      console.error('[Claude API Error] ❌ Claude API failed', {
+        elapsed: `${elapsed}ms`,
+        endpoint: `${claudeEndPoint}/v1/messages`,
+        message: errorMsg,
+        statusCode,
+        errorType: claudeError?.name,
+        errorData: errorData ? JSON.stringify(errorData).slice(0, 200) : undefined,
+        hint: statusCode === 403 ? 'Dynamic IP blocked' :
+              statusCode === 429 ? 'Rate limit exceeded' :
+              statusCode === 401 ? 'Invalid API key' :
+              claudeError?.name === 'AbortError' ? 'Request timeout' : undefined
+      })
+    }
+  } else {
+    console.warn('[Claude API] ⚠️ No API key configured')
   }
 
   console.error('[AI Models] ❌ All AI services failed or unavailable')
