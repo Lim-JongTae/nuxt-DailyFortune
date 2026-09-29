@@ -89,10 +89,10 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    // Server-only (AI API keys) - injected from .env or server env vars
+    // Server-only (AI API keys) - Vercel 환경에서는 공식 API 직연결 권장 (프록시는 동적 IP 차단 가능)
     geminiApiKey: process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
     claudeApiKey: process.env.NUXT_CLAUDE_API_KEY || process.env.CLAUDE_API_KEY || '',
-    claudeApiEndPoint: process.env.NUXT_CLAUDE_API_END_POINT || process.env.CLAUDE_API_END_POINT || 'https://aiapiflow.com',
+    claudeApiEndPoint: process.env.NUXT_CLAUDE_API_END_POINT || process.env.CLAUDE_API_END_POINT || 'https://api.anthropic.com',
     claudeModel: process.env.NUXT_CLAUDE_MODEL || process.env.CLAUDE_MODEL || 'claude-haiku-4-5-20251001',
     aiApiTimeoutMs: process.env.NUXT_AI_API_TIMEOUT_MS || process.env.AI_API_TIMEOUT_MS || '90000',
     public: {
