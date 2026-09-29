@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
+  title?: string
   aiInterpretation?: string
   isAiGenerated?: boolean
   watermarkText?: string
@@ -27,19 +28,17 @@ const cleanMarkdownContent = computed(() => {
   text = text.replace(/```json\s*[\s\S]*/gi, '')
 
   // 3. 백틱 없이 시작하는 생 JSON 구조 ({ "headline": ... }) 탐지 및 제거
-  // { 로 시작하고 "headline" 또는 "categories" 키를 포함하는 블록 제거
-  if (/^\s*\{\s*"headline"/i.test(text) || /^\s*\{\s*"categories"/i.test(text)) {
-    // 중괄호 쌍을 찾아 제거하거나 첫 번째 닫는 중괄호 이후의 마크다운 텍스트만 추출
+  if (/^\s*\{\s*"(headline|categories|hexagram)"/i.test(text)) {
     const lastBraceIdx = text.lastIndexOf('}')
     if (lastBraceIdx !== -1) {
-      text = text.substring(lastBraceIdx + 1).trim()
+      const remaining = text.substring(lastBraceIdx + 1).trim()
+      if (remaining.length > 0) {
+        text = remaining
+      }
     } else {
-      // 닫는 중괄호가 없으면 첫 번째 마크다운 헤더(### 또는 ##) 위치 찾기
       const headerIdx = text.search(/^#+/m)
       if (headerIdx !== -1) {
         text = text.substring(headerIdx).trim()
-      } else {
-        text = '' // JSON만 있고 마크다운이 끊긴 경우
       }
     }
   }
@@ -52,19 +51,20 @@ const cleanMarkdownContent = computed(() => {
     .replace(/[\s,`]+$/g, '')
     .trim()
 
-  return text
+  return text || props.aiInterpretation || ''
 })
 
 const formattedHtml = computed(() => {
-  if (!cleanMarkdownContent.value) return ''
-  return markdownFormatter.formatMarkdown(cleanMarkdownContent.value)
+  const rawText = cleanMarkdownContent.value || props.aiInterpretation || ''
+  if (!rawText) return ''
+  return markdownFormatter.formatMarkdown(rawText)
 })
 </script>
 
 <template>
   <div
     v-if="formattedHtml"
-    class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden reveal-on-scroll"
+    class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden transition-all duration-300"
   >
     <!-- Background Watermark (z-0) -->
     <div
@@ -76,7 +76,7 @@ const formattedHtml = computed(() => {
     <div class="relative z-10">
       <h3 class="font-serif-kr text-base font-bold pg-text mb-4 border-b pg-border pb-3 flex items-center gap-2">
         <UIcon name="i-heroicons-document-text" class="w-5 h-5 pg-text-gold" />
-        <span>AI 맞춤 사주명리 보고서</span>
+        <span>{{ title || 'AI 맞춤 보고서' }}</span>
         <span
           v-if="isAiGenerated === false"
           class="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30 font-normal"

@@ -719,9 +719,9 @@ const fateCategories = computed(() => {
   ]
 })
 
-// KST(한국 표준시) 기준 날짜 및 시간 계산 (Intl.DateTimeFormat 적용으로 일관성 유지)
+// KST(한국 표준시) 기준 날짜 및 시간 계산 (주역 실제 조회 시각 독립 보존)
 const formattedKstDateTime = computed(() => {
-  const now = new Date()
+  const targetTime = store.getFortuneSavedTime('iching')
 
   // KST 년/월/일/시/분/요일 정보 획득
   const dateParts = new Intl.DateTimeFormat('ko-KR', {
@@ -1079,6 +1079,7 @@ const copyToClipboard = () => {
         <!-- 3. AI 주역 지혜 보고서 (공용 리포트 컴포넌트) -->
         <FortuneReportContent
           v-if="result.aiInterpretation"
+          title="AI 맞춤 주역비결 보고서"
           :ai-interpretation="result?.aiInterpretation"
           :is-ai-generated="result?.isAiGenerated"
           watermark-text="易"

@@ -304,18 +304,14 @@ const startSajuFortune = async () => {
       success: res?.success
     })
 
-    const remainingTime = Math.max(2000 - elapsedTime, 0)
-
-    setTimeout(() => {
-      if (res.success) {
-        result.value = res
-        store.recordFortuneSuccess('saju')
-        store.saveToLocalStorage()
-      } else {
-        alert(res.error || '오류가 발생했습니다.')
-      }
-      loading.value = false
-    }, remainingTime)
+    if (res.success) {
+      result.value = res
+      store.recordFortuneSuccess('saju')
+      store.saveToLocalStorage()
+    } else {
+      alert(res.error || '오류가 발생했습니다.')
+    }
+    loading.value = false
 
   } catch (error: unknown) {
     const errObj = error as Record<string, any>
@@ -704,9 +700,9 @@ const formattedInterpretation = computed(() => {
   return markdownFormatter.formatMarkdown(result.value?.aiInterpretation)
 })
 
-// 오늘 날짜 및 일진 헤더 동적 계산 (KST 기준 - Intl.DateTimeFormat 적용으로 통일)
+// 오늘 날짜 및 일진 헤더 동적 계산 (사주 실제 조회 시각 독립 보존)
 const todayHeaderInfo = computed(() => {
-  const now = new Date()
+  const targetTime = store.getFortuneSavedTime('saju')
 
   const dateParts = new Intl.DateTimeFormat('ko-KR', {
     timeZone: 'Asia/Seoul',
@@ -1295,6 +1291,7 @@ watch(result, (newVal) => {
 
         <!-- 7. 세부 AI 보고서 본문 컴포넌트 -->
         <FortuneReportContent
+          title="AI 맞춤 사주명리 보고서"
           :ai-interpretation="result?.aiInterpretation"
           :is-ai-generated="result?.isAiGenerated"
           watermark-text="命"

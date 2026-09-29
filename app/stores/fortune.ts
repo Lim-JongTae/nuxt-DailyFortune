@@ -165,6 +165,13 @@ export const useFortuneStore = defineStore('fortune', () => {
     if (!import.meta.client) return false
 
     try {
+      // 자정(KST 날짜 변경) 여부 우선 확인: 저장된 날짜와 오늘 KST 날짜가 다르면 쿨다운 적용 해제
+      const todayStr = getKstDateString()
+      const savedDate = localStorage.getItem('fortune_savedDate')
+      if (savedDate && savedDate !== todayStr) {
+        return false
+      }
+
       const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
       const savedTime = Number(localStorage.getItem(timeKey))
       if (!savedTime || isNaN(savedTime)) return false
@@ -184,6 +191,17 @@ export const useFortuneStore = defineStore('fortune', () => {
     if (!import.meta.client) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
 
     try {
+      // 자정(KST 날짜 변경) 여부 우선 확인: 저장된 날짜와 오늘 KST 날짜가 다르면 쿨다운 즉시 해제
+      const todayStr = getKstDateString()
+      const savedDate = localStorage.getItem('fortune_savedDate')
+      if (savedDate && savedDate !== todayStr) {
+        const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
+        const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+        localStorage.removeItem(backupKey)
+        localStorage.removeItem(timeKey)
+        return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
+      }
+
       const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
       const savedTime = Number(localStorage.getItem(timeKey))
       if (!savedTime || isNaN(savedTime)) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
@@ -212,6 +230,21 @@ export const useFortuneStore = defineStore('fortune', () => {
       console.error('[Store] Error getting remaining cooltime:', e)
       return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
     }
+  }
+
+  const getFortuneSavedTime = (type: 'saju' | 'iching'): Date => {
+    if (import.meta.client) {
+      try {
+        const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+        const savedTime = Number(localStorage.getItem(timeKey))
+        if (savedTime && !isNaN(savedTime)) {
+          return new Date(savedTime)
+        }
+      } catch (e) {
+        console.error('[Store] Error getting fortune saved time:', e)
+      }
+    }
+    return new Date()
   }
 
   const resetAllInputs = () => {
@@ -252,6 +285,7 @@ export const useFortuneStore = defineStore('fortune', () => {
     clearIching,
     hasRecentResult,
     getRemainingCoolTime,
+    getFortuneSavedTime,
     resetAllInputs
   }
 })
