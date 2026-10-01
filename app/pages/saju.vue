@@ -1478,7 +1478,7 @@ watch(result, (newVal) => {
         <div :class="['mt-12 p-6 sm:p-8 rounded-2xl border transition-colors shadow-sm', 'bg-amber-50/40 border-amber-200/60', 'dark:bg-[#12162B] dark:border-amber-900/30']">
           <div :class="['flex items-center gap-2 mb-4 pb-3 border-b', 'border-amber-200/50', 'dark:border-slate-700']">
             <UIcon name="i-heroicons-academic-cap" :class="['w-6 h-6', 'text-amber-700', 'dark:text-[#FFDE9E]']" />
-            <h2 :class="['font-serif-kr text-md sm:text-lg font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
+            <h2 :class="['font-serif-kr text-[18] sm:text-lg font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
               오늘의 사주명리학(四柱命理學) 원리와 해설
             </h2>
           </div>
