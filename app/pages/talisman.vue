@@ -79,28 +79,36 @@ const categories: Array<{ id: TalismanCategory; label: string; icon: string; tit
   { id: 'business', label: '사업/성공부', icon: '🔵', title: '官運亨通' }
 ]
 
-// 사주점 분석 결과에 따른 자동 발급 카테고리 결정 (Read-Only)
+// 사주점 분석 결과에 따른 자동 발급 카테고리 결정 (Option A: 가장 낮은 점수 보완/처방)
 const generatedCategory = computed<TalismanCategory>(() => {
   if (hasSajuResult.value && sajuResult.value) {
     const cats = sajuResult.value.parsedData?.categories
-    if (cats) {
-      let bestCat: TalismanCategory = 'wealth'
-      let maxScore = -1
-      for (const k of ['wealth', 'love', 'health', 'business'] as TalismanCategory[]) {
-        if (cats[k] && typeof cats[k].score === 'number' && cats[k].score > maxScore) {
-          maxScore = cats[k].score
-          bestCat = k
-        }
-      }
-      return bestCat
+    if (!cats) {
+      throw new Error('[Saju Talisman Error] 사주 분석 결과에 카테고리(parsedData.categories) 데이터가 존재하지 않습니다.')
     }
 
-    // 십신 기운별 자동 보정
-    const shipsin = todayShipsin.value
-    if (shipsin.includes('재')) return 'wealth'
-    if (shipsin.includes('관') || shipsin.includes('비')) return 'business'
-    if (shipsin.includes('식') || shipsin.includes('상')) return 'love'
-    if (shipsin.includes('인')) return 'health'
+    let minScore = Infinity
+    let worstCat: TalismanCategory | null = null
+
+    for (const k of ['wealth', 'love', 'health', 'business'] as TalismanCategory[]) {
+      const rawScore = cats[k]?.score
+      const numScore = parseInt(String(rawScore), 10)
+
+      if (isNaN(numScore) || numScore <= 0 || numScore > 100) {
+        throw new Error(`[Saju Talisman Error] ${k} 카테고리의 운세 점수(${rawScore})가 유효한 숫자 형태가 아닙니다.`)
+      }
+
+      if (numScore < minScore) {
+        minScore = numScore
+        worstCat = k
+      }
+    }
+
+    if (worstCat) {
+      return worstCat
+    }
+
+    throw new Error('[Saju Talisman Error] 최저 점수 카테고리를 결정할 수 없습니다.')
   }
   return 'wealth'
 })

@@ -480,23 +480,19 @@ const sajuScores = computed(() => {
 
   const parsedCat = result.value.parsedData?.categories
   
-  // 파싱된 점수 안전 추출 (숫자 변환)
-  const parseNumScore = (val: any, fallback: number) => {
+  // 파싱된 점수 안전 추출 (숫자 변환, 하드코딩 가짜 점수 fallback 배치 금지)
+  const parseNumScore = (val: any, categoryName: string) => {
     const n = parseInt(String(val), 10)
-    return !isNaN(n) && n > 0 && n <= 100 ? n : fallback
+    if (isNaN(n) || n <= 0 || n > 100) {
+      throw new Error(`[Saju Score Parse Error] ${categoryName} 운세 점수(${val})가 올바른 숫자 형태가 아닙니다.`)
+    }
+    return n
   }
 
-  // 일간과 오늘 지지의 실제 오행 관계에 따른 동적 fallback 점수
-  const ilgan = result.value.userSaju?.ilgan || '갑'
-  const charCode = ilgan.charCodeAt(0)
-  const todayBranch = result.value.todaySaju?.branch || '자'
-  const branchCode = todayBranch.charCodeAt(0)
-  const dynamicBase = 65 + ((charCode * 7 + branchCode * 13) % 28) // 65 ~ 92점 다채로운 분산
-
-  const wealthScore = parseNumScore(parsedCat?.wealth?.score, dynamicBase + 2)
-  const loveScore = parseNumScore(parsedCat?.love?.score, Math.min(98, dynamicBase + 5))
-  const healthScore = parseNumScore(parsedCat?.health?.score, Math.max(60, dynamicBase - 3))
-  const businessScore = parseNumScore(parsedCat?.business?.score, dynamicBase)
+  const wealthScore = parseNumScore(parsedCat?.wealth?.score, '재물운')
+  const loveScore = parseNumScore(parsedCat?.love?.score, '애정운')
+  const healthScore = parseNumScore(parsedCat?.health?.score, '건강운')
+  const businessScore = parseNumScore(parsedCat?.business?.score, '직업운')
 
   const totalScore = Math.round((wealthScore + loveScore + healthScore + businessScore) / 4)
 
