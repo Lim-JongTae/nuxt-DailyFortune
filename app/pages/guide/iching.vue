@@ -33,7 +33,7 @@ const trigrams = [
       <!-- 헤더 -->
       <div :class="['text-center mb-10 pb-6 border-b', 'border-amber-200/40', 'dark:border-slate-700/50']">
         <span class="inline-block seal-stamp text-xs px-2.5 py-1 mb-2">주역비결 백과</span>
-        <h1 :class="['text-2xl sm:text-4xl font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
+        <h1 :class="['text-[16] sm:text-2xl font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
           주역(周易) 64괘 원리와 괘상 해설 가이드
         </h1>
         <p :class="['mt-3 text-sm sm:text-base', 'text-slate-600', 'dark:text-slate-300']">
@@ -77,7 +77,7 @@ const trigrams = [
 
         <!-- 3. 3단계 드로우 구조 -->
         <section class="space-y-4">
-          <h2 :class="['text-xl font-serif-kr font-bold flex items-center gap-2 border-b pb-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
+          <h2 :class="['text-[22] font-serif-kr font-bold flex items-center gap-2 border-b pb-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span class="text-amber-600">3.</span> 3단계 대나무 점대 드로우와 변효(動爻)의 이치
           </h2>
           <p>
