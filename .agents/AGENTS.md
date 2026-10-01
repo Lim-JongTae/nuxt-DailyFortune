@@ -14,4 +14,7 @@
 - **Tailwind CSS 클래스 작성 및 Linter 충돌 방지 규칙**:
   - 단일 `class` 문자열 내에서 라이트 모드 유틸리티 클래스와 `dark:` 다크 모드 수식어 클래스가 동일 CSS 속성(`background-color`, `color`, `border-color` 등)을 다루어 IDE/Linter에서 충돌 오진 경고가 발생하는 경우, Vue 동적 `:class="[...]"` 배열 형태로 일반 클래스와 `dark:` 클래스를 분리하여 작성한다.
   - `<UIcon>` 등 자식 컴포넌트 요소는 부모 요소의 텍스트 색상(`currentColor`)을 자동으로 상속받으므로, 부모와 동일한 중복 텍스트 색상 클래스(`text-*`, `dark:text-*`) 작성을 지양하고 상속을 활용한다.
+  - `border-r last:border-r-0`처럼 동일 속성(`border-right-width`)을 중복 지정해 Linter 경고가 발생하는 경우, Tailwind v4 수식어인 `not-last:border-r` 클래스를 활용해 마지막 요소 분기 충돌 경고를 원천 차단한다.
+  - 테두리 및 배경 색상 충돌 방지를 위해 프로젝트 공통 테마 클래스(`pg-border`, `pg-bg`, `pg-text` 등) 및 CSS 변수를 최우선 적용한다.
+
 

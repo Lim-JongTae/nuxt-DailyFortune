@@ -79,13 +79,6 @@ export default defineNuxtConfig({
       link: [
         { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
         { rel: 'icon', type: 'image/png', href: '/favicon-badge.png' }
-      ],
-      script: [
-        {
-          async: true,
-          src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9938049374204211',
-          crossorigin: 'anonymous'
-        }
       ]
     }
   },

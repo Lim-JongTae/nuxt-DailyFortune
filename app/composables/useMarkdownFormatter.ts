@@ -18,6 +18,57 @@ export const sanitizeKoreanText = (str: string | undefined | null): string => {
 }
 
 /**
+ * 마크다운 표 (| col1 | col2 | ...) 구문을 아름다운 HTML <table> 요소로 변환하는 함수
+ */
+const parseMarkdownTables = (input: string): string => {
+  const tableRegex = /((?:^[ \t]*\|.*\|[ \t]*\r?\n)+)/gm
+  return input.replace(tableRegex, (match) => {
+    const lines = match.trim().split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+    if (lines.length < 2) return match
+
+    const separatorIdx = lines.findIndex(l => /^[ \t]*\|?[ \t]*:?-+:?[ \t]*(\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$/.test(l))
+    if (separatorIdx === -1) return match
+
+    const headerLines = lines.slice(0, separatorIdx)
+    const bodyLines = lines.slice(separatorIdx + 1)
+
+    const parseCells = (line: string) => {
+      let trimmed = line.trim()
+      if (trimmed.startsWith('|')) trimmed = trimmed.substring(1)
+      if (trimmed.endsWith('|')) trimmed = trimmed.substring(0, trimmed.length - 1)
+      return trimmed.split('|').map(c => c.trim())
+    }
+
+    let html = '<div class="my-4 overflow-x-auto rounded-2xl border pg-border shadow-xs"><table class="w-full text-xs text-left border-collapse">'
+
+    if (headerLines.length > 0) {
+      html += '<thead class="pg-card-inner border-b pg-border font-serif-kr pg-text-gold font-bold"><tr>'
+      for (const hLine of headerLines) {
+        for (const cell of parseCells(hLine)) {
+          html += `<th class="px-3.5 py-2.5 font-bold not-last:border-r pg-border">${cell}</th>`
+        }
+      }
+      html += '</tr></thead>'
+    }
+
+    if (bodyLines.length > 0) {
+      html += '<tbody>'
+      for (const bLine of bodyLines) {
+        html += '<tr class="hover:bg-amber-500/5 transition-colors not-last:border-b pg-border">'
+        for (const cell of parseCells(bLine)) {
+          html += `<td class="px-3.5 py-2.5 pg-text not-last:border-r pg-border leading-relaxed">${cell}</td>`
+        }
+        html += '</tr>'
+      }
+      html += '</tbody>'
+    }
+
+    html += '</table></div>'
+    return html
+  })
+}
+
+/**
  * AI 운세 마크다운 텍스트를 라이트/다크 모드 가독성에 최적화된 HTML로 변환하는 Composable
  */
 export const useMarkdownFormatter = () => {
@@ -35,6 +86,9 @@ export const useMarkdownFormatter = () => {
       text = text.replace(/```[\s\S]*?```/g, '').trim()
       text = text.replace(/^```json\s*/gi, '').replace(/^```\s*/g, '').replace(/```$/g, '').trim()
       text = text.replace(/^>\s*/gim, '')
+
+      // 1.5. 마크다운 표 구문을 HTML <table>로 우선 자동 파싱
+      text = parseMarkdownTables(text)
 
       // 2. 수평선 (---, ***, ___) -> 세련된 구분선 HR로 변환
       text = text.replace(/^(---|\*\*\*|___)\s*$/gim, '<hr class="my-6 border-t pg-border opacity-70" />')
@@ -57,7 +111,7 @@ export const useMarkdownFormatter = () => {
       `)
 
       text = text.replace(/^## (.*$)/gim, `
-        <h2 class="font-serif-kr text-lg sm:text-xl font-extrabold pg-text-gold mt-8 mb-4 pl-3 border-l-4 border-[var(--fortune-gold)]">
+        <h2 class="font-serif-kr text-lg sm:text-xl font-extrabold pg-text-gold mt-8 mb-4 pl-3 border-l-4 border-(--fortune-gold)">
           $1
         </h2>
       `)
@@ -73,7 +127,7 @@ export const useMarkdownFormatter = () => {
 
       // 5. 불릿 리스트 (* item 또는 - item) -> 불릿 아이콘 리스트 변환
       text = text.replace(/^[\*\-] (.*$)/gim, `
-        <li class="ml-2 my-2 flex items-start gap-2 text-gray-900 dark:text-gray-100 text-xs sm:text-sm leading-relaxed font-normal">
+        <li class="ml-2 my-2 flex items-start gap-2 pg-text text-xs sm:text-sm leading-relaxed font-medium">
           <span class="pg-text-gold font-bold select-none">•</span>
           <span>$1</span>
         </li>
@@ -87,11 +141,20 @@ export const useMarkdownFormatter = () => {
           trimmed.startsWith('<h') ||
           trimmed.startsWith('<li') ||
           trimmed.startsWith('<hr') ||
+          trimmed.startsWith('<div') ||
+          trimmed.startsWith('<table') ||
+          trimmed.startsWith('<thead') ||
+          trimmed.startsWith('<tbody') ||
+          trimmed.startsWith('<tr') ||
+          trimmed.startsWith('<td') ||
+          trimmed.startsWith('<th') ||
+          trimmed.startsWith('</table') ||
+          trimmed.startsWith('</div') ||
           trimmed === ''
         ) {
           return line
         }
-        return `<p class="text-gray-900 dark:text-gray-100 leading-relaxed my-2.5 text-xs sm:text-sm font-normal tracking-normal">${line}</p>`
+        return `<p class="pg-text leading-relaxed my-2.5 text-xs sm:text-sm font-medium tracking-normal">${line}</p>`
       }).join('\n')
 
       return formattedHtml
@@ -101,7 +164,7 @@ export const useMarkdownFormatter = () => {
         stack: error.stack
       })
       // 에러 발생 시 원본 텍스트를 안전하게 반환
-      return `<p class="text-gray-900 dark:text-gray-100">${String(rawText).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`
+      return `<p class="pg-text">${String(rawText).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`
     }
   }
 

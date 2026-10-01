@@ -325,6 +325,7 @@ onMounted(async () => {
               <span class="pg-text-gold">✦</span> AI 총평 & 부적 조언
             </span>
           </div>
+
         </div>
       </section>
 

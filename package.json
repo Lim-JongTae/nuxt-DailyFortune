@@ -20,6 +20,7 @@
     "@unhead/vue": "^3.4.1",
     "nuxt": "^4.5.2",
     "nuxt-og-image": "^6.8.0",
+    "omggif": "^1.0.10",
     "pinia": "^4.0.3",
     "playwright-core": "^1.63.0",
     "tailwindcss": "^4.3.3",

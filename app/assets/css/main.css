@@ -7,7 +7,7 @@
   --bg-canvas: #f8fafc;
   --bg-card: #ffffff;
   --text-primary: #0f172a;
-  --text-muted: #475569;
+  --text-muted: #334155;
   --border-card: rgba(203, 213, 225, 0.8);
   --gold-accent: #d97706;
   --seal-red: #B23A2E;
@@ -19,9 +19,9 @@
   --fortune-card-inner: #FFF0F6;
   --fortune-border: rgba(210, 165, 185, 0.35);
   --fortune-border-strong: rgba(210, 165, 185, 0.55);
-  --fortune-text: #1a1035;
-  --fortune-text-muted: #6B5A72;
-  --fortune-text-soft: #8B7A92;
+  --fortune-text: #0F172A;
+  --fortune-text-muted: #334155;
+  --fortune-text-soft: #475569;
   --fortune-gold: #9A5C00;
   --fortune-gold-light: #C4820A;
   --fortune-btn-soft: #F5E0ED;
@@ -34,8 +34,8 @@
 .dark {
   --bg-canvas: #0F1226;
   --bg-card: #181C38;
-  --text-primary: #dfe0fd;
-  --text-muted: #d1c5b3;
+  --text-primary: #f8fafc;
+  --text-muted: #e2e8fo;
   --border-card: rgba(232, 193, 112, 0.22);
   --gold-accent: #FFDE9E;
 
@@ -46,9 +46,9 @@
   --fortune-card-inner: #0A1A1A;
   --fortune-border: #1A3030;
   --fortune-border-strong: #153838;
-  --fortune-text: #E2E8F0;
-  --fortune-text-muted: #94A3B8;
-  --fortune-text-soft: #64748B;
+  --fortune-text: #F8FAFC;
+  --fortune-text-muted: #E2E8F0;
+  --fortune-text-soft: #CBD5E1;
   --fortune-gold: #E8C170;
   --fortune-gold-light: #FFDE9E;
   --fortune-btn-soft: #0F2323;
@@ -58,11 +58,14 @@
   --fortune-chip-border: #1A3030;
 }
 
-/* Base Body Transition */
-body {
+/* Base Body Transition & Font Rendering Sharpness */
+html, body {
   background-color: var(--bg-canvas);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeLegibility;
 }
 
 /* Subtle Hanji texture and starry atmosphere */
@@ -369,7 +372,8 @@ body {
 
 .reveal-on-scroll.is-visible {
   opacity: 1 !important;
-  transform: translateY(0) !important;
+  transform: none !important;
+  will-change: auto !important;
 }
 
 /* ===================================================
@@ -418,3 +422,76 @@ body {
   display: inline-block;
   will-change: opacity;
 }
+
+/* ===================================================
+   Global Hexagram Bar & Assembly Animation Utilities
+   =================================================== */
+.trigram-bar-broken {
+  background-color: #9333ea;
+}
+.dark .trigram-bar-broken {
+  background-color: #c084fc;
+}
+
+.trigram-bar-solid {
+  background: linear-gradient(to right, #9333ea, #4f46e5);
+}
+.dark .trigram-bar-solid {
+  background: linear-gradient(to right, #c084fc, #818cf8);
+}
+
+@keyframes hexLineAssembleOdd {
+  0% {
+    opacity: 0;
+    filter: blur(12px) brightness(220%);
+    transform: translateX(-28px) scaleX(0.3);
+  }
+  60% {
+    opacity: 0.8;
+    filter: blur(3px) brightness(140%);
+    transform: translateX(4px) scaleX(1.06);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(100%);
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+@keyframes hexLineAssembleEven {
+  0% {
+    opacity: 0;
+    filter: blur(12px) brightness(220%);
+    transform: translateX(28px) scaleX(0.3);
+  }
+  60% {
+    opacity: 0.8;
+    filter: blur(3px) brightness(140%);
+    transform: translateX(-4px) scaleX(1.06);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(100%);
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+.hex-line-item {
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.hex-line-1.is-active, .hex-line-3.is-active, .hex-line-5.is-active {
+  animation: hexLineAssembleOdd 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hex-line-2.is-active, .hex-line-4.is-active, .hex-line-6.is-active {
+  animation: hexLineAssembleEven 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hex-line-1.is-active { animation-delay: 0.15s; }
+.hex-line-2.is-active { animation-delay: 0.35s; }
+.hex-line-3.is-active { animation-delay: 0.55s; }
+.hex-line-4.is-active { animation-delay: 0.75s; }
+.hex-line-5.is-active { animation-delay: 0.95s; }
+.hex-line-6.is-active { animation-delay: 1.15s; }

@@ -41,12 +41,12 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
     return clean.length > 20
   }
 
-  // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색: gemini-2.0-flash / gemini-1.5-flash-latest)
+  // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색)
   if (geminiApiKey) {
     const configuredModel = (config.geminiModel || process.env.GEMINI_MODEL || '').trim()
-    const defaultModels = ['gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash', 'gemini-flash']
+    const defaultModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest']
     const models = configuredModel
-      ? Array.from(new Set([configuredModel, ...defaultModels]))
+      ? [configuredModel, ...defaultModels.filter(m => m !== configuredModel)]
       : defaultModels
 
     for (const model of models) {
@@ -94,15 +94,20 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
       } catch (geminiError: any) {
         const elapsed = Date.now() - startTime
         const errorMsg = geminiError?.message || geminiError?.data?.error?.message || String(geminiError)
-        const statusCode = geminiError?.statusCode || geminiError?.status
+        const statusCode = geminiError?.statusCode ||
+                           geminiError?.status ||
+                           geminiError?.response?.status ||
+                           geminiError?.data?.error?.code ||
+                           'Unknown'
 
         console.error(`[Gemini API Error] ❌ Model ${model} failed`, {
           elapsed: `${elapsed}ms`,
           message: errorMsg,
           statusCode,
           errorType: geminiError?.name,
-          hint: statusCode === 429 ? 'Rate limit exceeded' :
-                statusCode === 400 ? 'Invalid request format' :
+          hint: (statusCode === 404 || /\b404\b/.test(String(errorMsg))) ? 'Model not found (404)' :
+                (statusCode === 429 || /\b429\b/.test(String(errorMsg))) ? 'Rate limit exceeded (429)' :
+                (statusCode === 400 || /\b400\b/.test(String(errorMsg))) ? 'Invalid request format (400)' :
                 geminiError?.name === 'AbortError' ? 'Request timeout' : undefined
         })
       }
@@ -156,8 +161,12 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
       console.warn('[Claude API] ⚠️ Invalid or insufficient text content in response')
     } catch (claudeError: any) {
       const elapsed = Date.now() - startTime
-      const statusCode = claudeError?.statusCode || claudeError?.status
       const errorMsg = claudeError?.message || claudeError?.data?.error?.message || String(claudeError)
+      const statusCode = claudeError?.statusCode ||
+                         claudeError?.status ||
+                         claudeError?.response?.status ||
+                         claudeError?.data?.error?.code ||
+                         'Unknown'
       const errorData = claudeError?.data || claudeError?.response?.data
 
       console.error('[Claude API Error] ❌ Claude API failed', {
@@ -167,9 +176,9 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
         statusCode,
         errorType: claudeError?.name,
         errorData: errorData ? JSON.stringify(errorData).slice(0, 200) : undefined,
-        hint: statusCode === 403 ? 'Dynamic IP blocked' :
-              statusCode === 429 ? 'Rate limit exceeded' :
-              statusCode === 401 ? 'Invalid API key' :
+        hint: (statusCode === 403 || /\b403\b/.test(String(errorMsg))) ? 'Dynamic IP blocked' :
+              (statusCode === 429 || /\b429\b/.test(String(errorMsg))) ? 'Rate limit exceeded' :
+              (statusCode === 401 || /\b401\b/.test(String(errorMsg))) ? 'Invalid API key' :
               claudeError?.name === 'AbortError' ? 'Request timeout' : undefined
       })
     }

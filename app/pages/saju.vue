@@ -88,6 +88,22 @@ const {
 } = storeToRefs(store)
 
 const toast = useToast()
+const router = useRouter()
+
+const goToTalisman = () => {
+  if (!result.value || !result.value.userSaju) {
+    toast.clear()
+    toast.add({
+      title: '✦ 사주 운세 조회 필요',
+      description: '먼저 오늘의 사주 운세를 조회하신 후 맞춤 부적을 발급받으실 수 있습니다.',
+      icon: 'i-heroicons-information-circle',
+      color: 'warning',
+      duration: 4500
+    })
+    return
+  }
+  router.push('/talisman')
+}
 
 const birthYear = ref('')
 const birthMonth = ref('')
@@ -355,6 +371,29 @@ const startSajuFortune = async () => {
 }
 
 const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null)
+const isPwaInstalled = ref(false)
+const isTalismanDownloaded = ref(false)
+
+const updateTalismanStatus = () => {
+  isTalismanDownloaded.value = store.isTalismanDownloadedToday()
+}
+
+onMounted(() => {
+  updateTalismanStatus()
+  if (typeof window !== 'undefined') {
+    if (window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone) {
+      isPwaInstalled.value = true
+    }
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
+      e.preventDefault()
+      deferredPrompt.value = e as BeforeInstallPromptEvent
+    })
+    window.addEventListener('appinstalled', () => {
+      isPwaInstalled.value = true
+      deferredPrompt.value = null
+    })
+  }
+})
 
 const onInstallPWA = async () => {
   if (deferredPrompt.value) {
@@ -362,6 +401,7 @@ const onInstallPWA = async () => {
     const choice = await deferredPrompt.value.userChoice
     if (choice?.outcome === 'accepted') {
       deferredPrompt.value = null
+      isPwaInstalled.value = true
     }
   } else {
     if (typeof window !== 'undefined') {
@@ -614,6 +654,7 @@ const timeFlowSlots = computed(() => {
 
 const isAnimated = ref(false)
 const disclaimerModalRef = ref<any>(null)
+const animatedStrokeDashoffset = ref(283)
 const animatedScores = ref({
   totalScore: 0,
   wealthScore: 0,
@@ -624,6 +665,7 @@ const animatedScores = ref({
 
 const triggerScoreAnimation = () => {
   isAnimated.value = false
+  animatedStrokeDashoffset.value = 283
   animatedScores.value = {
     totalScore: 0,
     wealthScore: 0,
@@ -635,9 +677,10 @@ const triggerScoreAnimation = () => {
   nextTick(() => {
     setTimeout(() => {
       isAnimated.value = true
-      const duration = 2000
+      const duration = 1600
       const start = performance.now()
       const target = sajuScores.value
+      const targetDash = target.strokeDash
 
       const step = (now: number) => {
         const progress = Math.min((now - start) / duration, 1)
@@ -649,12 +692,22 @@ const triggerScoreAnimation = () => {
         animatedScores.value.healthScore = Math.round(target.healthScore * easeOut)
         animatedScores.value.businessScore = Math.round(target.businessScore * easeOut)
 
+        // 283 (0점 빈 원) -> targetDash (85점 42.45 채워진 원)
+        animatedStrokeDashoffset.value = 283 - (283 - targetDash) * easeOut
+
         if (progress < 1) {
           requestAnimationFrame(step)
+        } else {
+          animatedScores.value.totalScore = target.totalScore
+          animatedScores.value.wealthScore = target.wealthScore
+          animatedScores.value.loveScore = target.loveScore
+          animatedScores.value.healthScore = target.healthScore
+          animatedScores.value.businessScore = target.businessScore
+          animatedStrokeDashoffset.value = targetDash
         }
       }
       requestAnimationFrame(step)
-    }, 200)
+    }, 150)
   })
 }
 
@@ -1077,7 +1130,7 @@ watch(result, (newVal) => {
         </div>
 
         <!-- 2. 중앙 종합 점수 & 원형 게이지 링 카드 -->
-        <div class="pg-card border rounded-3xl p-6 text-center relative overflow-hidden shadow-2xl reveal-on-scroll">
+        <div class="pg-card border rounded-3xl p-4 sm:p-6 text-center relative overflow-hidden shadow-2xl reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
           <div class="absolute -right-3 -top-5 pg-watermark-text animate-watermark-pulse text-9xl font-serif-kr select-none pointer-events-none z-0">
             命
@@ -1103,8 +1156,7 @@ watch(result, (newVal) => {
                 stroke-width="6"
                 stroke-linecap="round"
                 :stroke-dasharray="283"
-                :stroke-dashoffset="isAnimated ? sajuScores.strokeDash : 283"
-                class="transition-all duration-2000ms ease-out"
+                :stroke-dashoffset="animatedStrokeDashoffset"
               />
               <defs>
                 <linearGradient id="goldGradientSaju" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1129,8 +1181,8 @@ watch(result, (newVal) => {
             </div>
           </div>
 
-          <!-- 메인 총평 문구 -->
-          <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text-gold mb-2 leading-snug">
+          <!-- 메인 총평 문구 (무조건 1줄 고정) -->
+          <h2 class="font-serif-kr text-[13px] sm:text-base md:text-xl font-bold pg-text-gold mb-2 leading-snug tracking-tighter whitespace-nowrap">
             "{{ sajuDynamicData.headline }}"
           </h2>
           <p class="text-xs pg-text-muted font-bold max-w-sm mx-auto leading-relaxed">
@@ -1318,7 +1370,7 @@ watch(result, (newVal) => {
         <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
         <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">
           <div class="flex items-center gap-2">
-            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold pg-text-gold">{{ likeCount }}</span>명의 방문자가 이 운세 조언에 공감했습니다.</span>
+            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold pg-text-gold">{{ likeCount }}</span>명의 방문자가 사주명리 운세 조언에 공감했습니다.</span>
           </div>
           <div class="relative group shrink-0" @click="handleLikeClick">
             <!-- 1.5초 후 사라지는 이벤트 말풍선 (Tooltip Bubble) -->
@@ -1348,34 +1400,69 @@ watch(result, (newVal) => {
           </div>
         </div>
 
-        <!-- 8. 하단 버튼 영역 (이미지 2 1:1) -->
-        <div class="space-y-3 pt-2">
+        <!-- 8. 하단 버튼 영역 (컴팩트 2열 메인 버튼 + 동적 PWA 버튼) -->
+        <div class="space-y-2.5 pt-2">
+          <!-- 1행: 메인 버튼 영역 (오늘 부적 다운로드 시 부적 버튼 숨김 & 공유 버튼 반응형 확대) -->
+          <div :class="!isTalismanDownloaded ? 'grid grid-cols-2 gap-2' : 'block'">
+            <button
+              v-if="!isTalismanDownloaded"
+              type="button"
+              @click="goToTalisman"
+              :class="[
+                'py-3.5 px-3 rounded-2xl font-bold text-xs sm:text-sm transition-all shadow-lg flex items-center justify-center gap-1.5 shrink-0 cursor-pointer',
+                result && result.userSaju
+                  ? ['text-[#0F1226] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 active:scale-95 shadow-[#E8C170]/20']
+                  : ['pg-card-deep border pg-border pg-text-muted hover:border-amber-500/40 opacity-75']
+              ]"
+            >
+              <UIcon name="i-heroicons-sparkles" class="w-4 h-4" :class="result && result.userSaju ? 'text-[#0F1226]' : 'pg-text-gold'" />
+              <span>📜 맞춤 부적 발급</span>
+            </button>
+
+            <button
+              type="button"
+              :class="[
+                'py-3.5 px-3 rounded-2xl font-bold text-xs sm:text-sm pg-card border pg-border pg-text hover:bg-amber-500/10 hover:border-amber-500/60 hover:shadow-md hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer',
+                !isTalismanDownloaded ? 'w-full' : 'w-full shadow-md'
+              ]"
+              @click="copyToClipboard"
+            >
+              <UIcon name="i-heroicons-share" class="w-4 h-4 pg-text-gold" />
+              <span>💬 운세 결과 공유</span>
+            </button>
+          </div>
+
+          <!-- 부적 다운로드 완료 시 서브 안내 뱃지 -->
+          <div v-if="isTalismanDownloaded" class="flex items-center justify-center px-3.5 py-2 rounded-xl pg-card-deep border pg-border text-[11px] pg-text-muted">
+            <span class="flex items-center gap-1 font-semibold">
+              <span>✨ 오늘 맞춤 부적 저장 완료</span>
+            </span>
+          </div>
+
+          <!-- 12시간 경과 또는 날짜 변경 시에만 노출되는 '오늘 사주 다시 보기' 버튼 -->
           <button
+            v-if="!store.getRemainingCoolTime('saju').isLimited"
             type="button"
-            class="w-full py-4 rounded-full font-bold text-sm text-[#0F1226] bg-linear-to-r from-[#FFE5A3] via-[#E8C170] to-[#C99632] hover:brightness-110 transition-all shadow-xl shadow-[#E8C170]/20 flex items-center justify-center gap-2"
-            @click="copyToClipboard"
+            :class="[
+              'w-full py-3 px-4 rounded-xl font-bold text-xs pg-card border pg-border hover:bg-amber-500/10 active:scale-95 transition-all flex items-center justify-center gap-1.5 cursor-pointer mb-3 shadow-xs',
+              'text-amber-900',
+              'dark:text-amber-300'
+            ]"
+            @click="handleResetSaju"
           >
-            <UIcon name="i-heroicons-share" class="w-5 h-5 text-[#0F1226]" />
-            오늘의 운세 나누기 (결과 공유)
+            <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
+            <span>🔄 오늘 사주 다시 보기 (재조회 입력)</span>
           </button>
 
-          <div class="grid grid-cols-2 gap-2">
+          <!-- 2행: 미설치 사용자에게만 우측 하단 동적 소형 노출 -->
+          <div v-if="!isPwaInstalled" class="flex justify-end pt-1">
             <button
               type="button"
-              class="py-3 rounded-full pg-card border text-xs font-semibold pg-text-muted hover:pg-text transition-colors flex items-center justify-center gap-1.5 pg-hover-gold"
+              class="py-1.5 px-3 rounded-full pg-card-deep border pg-border text-[11px] font-medium pg-text-muted hover:pg-text hover:border-amber-500/60 hover:bg-amber-500/15 hover:shadow-sm hover:scale-[1.03] active:scale-95 transition-all flex items-center gap-1 cursor-pointer shadow-xs"
               @click="onInstallPWA"
             >
-              <UIcon name="i-heroicons-device-phone-mobile" class="w-4 h-4 pg-text-gold" />
-              홈 화면에 앱 추가
-            </button>
-            <button
-              type="button"
-              class="py-3 rounded-full pg-card border text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none"
-              :class="store.getRemainingCoolTime('saju').isLimited ? 'opacity-70 pg-text-muted hover:border-amber-500/50' : 'pg-text-muted hover:pg-text pg-hover-gold'"
-              @click="handleResetSaju"
-            >
-              <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
-              <span>내 사주 다시 입력</span>
+              <UIcon name="i-heroicons-device-phone-mobile" class="w-3.5 h-3.5 pg-text-gold" />
+              <span>📱 앱(홈 화면)에 추가</span>
             </button>
           </div>
         </div>
@@ -1395,7 +1482,7 @@ watch(result, (newVal) => {
         <div :class="['mt-12 p-6 sm:p-8 rounded-2xl border transition-colors shadow-sm', 'bg-amber-50/40 border-amber-200/60', 'dark:bg-[#12162B] dark:border-amber-900/30']">
           <div :class="['flex items-center gap-2 mb-4 pb-3 border-b', 'border-amber-200/50', 'dark:border-slate-700']">
             <UIcon name="i-heroicons-academic-cap" :class="['w-6 h-6', 'text-amber-700', 'dark:text-[#FFDE9E]']" />
-            <h2 :class="['font-serif-kr text-lg sm:text-xl font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
+            <h2 :class="['font-serif-kr text-md sm:text-lg font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
               오늘의 사주명리학(四柱命理學) 원리와 해설
             </h2>
           </div>
@@ -1529,13 +1616,14 @@ watch(result, (newVal) => {
 /* 마우스 스크롤을 아래로 내릴 때 수직으로 스르륵 솟아오르는 효과 (Scroll Reveal) */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(24px);
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .reveal-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: none !important;
+  will-change: auto !important;
 }
 </style>
