@@ -104,9 +104,113 @@ export default defineNuxtConfig({
     defaultLocale: 'ko'
   },
   sitemap: {
+    discoverImages: true,
+    autoLastmod: true,
     exclude: [
       '/admin/**',
-      '/api/**'
+      '/api/**',
+      '/internal-sys-metrics/**'
+    ],
+    urls: [
+      {
+        loc: '/guide',
+        images: [
+          {
+            loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
+            title: '동양철학 명리 주역 백과사전 가이드 캘리그라피 서화 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/guide/ten-gods',
+        images: [
+          {
+            loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
+            title: '사주명리학 십신 10가지 성향과 운세 백과 캘리그라피 서화 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/guide/five-elements',
+        images: [
+          {
+            loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
+            title: '오행 상생상극 백과 캘리그라피 서화 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/guide/hexagrams',
+        images: [
+          {
+            loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
+            title: '주역 64괘 백과 캘리그라피 서화 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/guide/stems-branches',
+        images: [
+          {
+            loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
+            title: '10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/guide/saju',
+        images: [
+          {
+            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
+            title: '사주명리학 기초 가이드 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/guide/iching',
+        images: [
+          {
+            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
+            title: '주역 64괘 가이드 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/',
+        images: [
+          {
+            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
+            title: '일일운세 ✦ 天命 메인 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/about',
+        images: [
+          {
+            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
+            title: '일일운세 ✦ 天命 사이트 소개 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/saju',
+        images: [
+          {
+            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
+            title: '오늘의 사주명리학 운세 대표 이미지'
+          }
+        ]
+      },
+      {
+        loc: '/iching',
+        images: [
+          {
+            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
+            title: '오늘의 주역 64괘 대표 이미지'
+          }
+        ]
+      }
     ]
   }
 })
