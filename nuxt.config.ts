@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     manifest: {
       name: '일일운세 ✦ 天命',
       short_name: '일일운세',
-      description: '생년월일로 짚어보는 나의 사주명리와 주역 64괘 맞춤 AI 일일 운세',
+      description: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.',
       theme_color: '#0F1226',
       background_color: '#0F1226',
       display: 'standalone',
@@ -66,8 +66,10 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '생년월일로 짚어보는 나의 사주명리와 주역 64괘 맞춤 AI 일일 운세. 오늘의 일진, 십신, 오행 흐름을 통해 하루의 에너지와 처세의 지혜를 확인하세요.' },
-        { name: 'keywords', content: '사주, 사주명리, 주역, 64괘, 일일운세, 오늘의 운세, 일진, 십신, 오행, AI 운세, 무료 운세' },
+        { name: 'description', content: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.' },
+        { name: 'keywords', content: '오늘의 사주, 무료 사주팔자, 일일 운세 무료, 신년운세, 오늘의 주역, 사주 궁합, AI 사주, 사주명리 주역, 생년월일 운세, 띠별 오늘의 운세' },
+        { property: 'og:description', content: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.' },
+        { name: 'twitter:description', content: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.' },
         { name: 'author', content: 'sajuapp.co.kr' },
         { name: 'theme-color', content: '#0F1226' },
         { name: 'mobile-web-app-capable', content: 'yes' },
