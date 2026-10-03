@@ -2,7 +2,7 @@
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/`
 const fortuneTitle = '일일운세 ✦ 天命'
-const fortuneDesc = '생년월일로 짚어보는 하루의 에너지와 오행의 균형, 그리고 64괘의 괘상이 전하는 오늘 하루의 깊은 처세와 지혜를 마주합니다.'
+const fortuneDesc = '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.'
 
 useSeoMeta({
   title: fortuneTitle,
@@ -27,7 +27,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         name: '일일운세 ✦ 天命',
-        description: '생년월일로 짚어보는 나의 사주명리와 주역 64괘 맞춤 AI 일일 운세',
+        description: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.',
         url: pageUrl,
         applicationCategory: 'LifestyleApplication',
         operatingSystem: 'Web',
