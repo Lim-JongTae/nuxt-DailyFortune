@@ -44,7 +44,7 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
   // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색)
   if (geminiApiKey) {
     const configuredModel = (config.geminiModel || process.env.GEMINI_MODEL || '').trim()
-    const defaultModels = ['gemini-3.5-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest', 'gemini-3.8-flash']
+    const defaultModels = ['gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-2.5-flash']
     const models = configuredModel
       ? [configuredModel, ...defaultModels.filter(m => m !== configuredModel)]
       : defaultModels
