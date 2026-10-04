@@ -57,11 +57,11 @@ export default defineEventHandler(async (event) => {
       }
 
       // 후보 모델 순서 (조회된 지원 모델 우선 + fallback)
-      const candidateModels = Array.from(new Set([
-        ...availableModels,
+      const candidateModels = Array.from(new Set([        
         'gemini-3.1-flash-lite',
         'gemini-3.8-flash',
-        'gemini-2.5-flash'        
+        'gemini-2.5-flash',
+        ...availableModels,        
       ]))
 
       let geminiSuccess = false
