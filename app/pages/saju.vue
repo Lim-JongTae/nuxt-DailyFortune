@@ -766,10 +766,13 @@ const formattedInterpretation = computed(() => {
   return markdownFormatter.formatMarkdown(result.value?.aiInterpretation)
 })
 
-// 오늘 날짜 및 일진 헤더 동적 계산 (사주 실제 조회 시각 독립 보존)
+// 오늘 날짜 및 일진 헤더 동적 계산 (KST 실시간 오늘 날짜 기준 정밀 계산)
 const todayHeaderInfo = computed(() => {
-  const targetTime = store.getFortuneSavedTime('saju')
-  const now = targetTime ? new Date(targetTime) : new Date()
+  const now = new Date()
+
+  const todayStr = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Asia/Seoul'
+  }).format(now)
 
   const dateParts = new Intl.DateTimeFormat('ko-KR', {
     timeZone: 'Asia/Seoul',
@@ -784,14 +787,13 @@ const todayHeaderInfo = computed(() => {
     partMap[part.type] = part.value
   }
 
-  const year = parseInt(partMap.year || '2026', 10)
-  const monthStr = partMap.month || '01'
-  const dateStr = partMap.day || '01'
+  const year = parseInt(partMap.year || todayStr.split('-')[0] || '2026', 10)
+  const monthStr = partMap.month || todayStr.split('-')[1] || '01'
+  const dateStr = partMap.day || todayStr.split('-')[2] || '01'
   const month = parseInt(monthStr, 10)
   const date = parseInt(dateStr, 10)
-  const dayOfWeek = partMap.weekday || '월요일'
+  const dayOfWeek = partMap.weekday || ''
 
-  const todayStr = `${year}-${monthStr}-${dateStr}`
   const todaySaju = getGanzhiOfDay(todayStr)
   const yearSaju = getGanzhiOfYear(year)
 

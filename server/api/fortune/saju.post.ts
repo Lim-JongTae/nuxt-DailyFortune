@@ -37,8 +37,7 @@ export default defineEventHandler(async (event) => {
     const now = Date.now()
 
     const getKstDateStr = (ts: number): string => {
-      const kstOffset = 9 * 60 * 60 * 1000
-      return new Date(ts + kstOffset).toISOString().split('T')[0] || ''
+      return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date(ts))
     }
     const todayKstStr = getKstDateStr(now)
 
@@ -121,10 +120,7 @@ export default defineEventHandler(async (event) => {
     const userYearSaju = getGanzhiOfYear(birthYearNum)
 
     // 2. 오늘의 일진 계산 (KST 기준 날짜 계산)
-    const nowUtc = new Date().getTime()
-    const kstOffset = 9 * 60 * 60 * 1000 // UTC+9
-    const todayKst = new Date(nowUtc + kstOffset)
-    const todayStr = todayKst.toISOString().split('T')[0] || ''
+    const todayStr = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date())
     const todaySaju = getGanzhiOfDay(todayStr)
 
     // 3. 일간과 오늘 일진의 십신 관계 계산

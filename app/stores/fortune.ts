@@ -64,25 +64,21 @@ export const useFortuneStore = defineStore('fortune', () => {
         const isSajuExpired = !ignoreExpiration && (!sajuSavedDate || sajuSavedDate !== todayStr)
         const isIchingExpired = !ignoreExpiration && (!ichingSavedDate || ichingSavedDate !== todayStr)
 
-        // 사주 데이터 처리
-        if (isSajuExpired) {
+        // 사주 데이터 처리 (오늘 날짜가 아니거나 간지가 일치하지 않으면 무조건 파기)
+        const storedSaju = parseStoredJson('fortune_sajuResult') || parseStoredJson('fortune_backup_sajuResult')
+        const isSajuGanzhiMismatch = storedSaju?.todaySaju?.ganzhi && storedSaju.todaySaju.ganzhi !== todayGanzhi
+
+        if (isSajuExpired || isSajuGanzhiMismatch) {
           localStorage.removeItem('fortune_sajuResult')
           localStorage.removeItem('fortune_backup_sajuResult')
           localStorage.removeItem('fortune_saju_savedTime')
+          localStorage.removeItem('fortune_saju_savedDate')
           localStorage.removeItem('fortune_sajuWorry')
           sajuWorry.value = ''
           sajuResult.value = null
         } else {
           sajuWorry.value = localStorage.getItem('fortune_sajuWorry') || ''
           sajuResult.value = parseStoredJson('fortune_sajuResult')
-
-          // 이중 안전 검증: 사주 데이터의 오늘 일진이 실제 오늘과 다르면 파기
-          if (sajuResult.value?.todaySaju?.ganzhi && sajuResult.value.todaySaju.ganzhi !== todayGanzhi) {
-            sajuResult.value = null
-            localStorage.removeItem('fortune_sajuResult')
-            localStorage.removeItem('fortune_backup_sajuResult')
-            localStorage.removeItem('fortune_saju_savedTime')
-          }
         }
 
         // 주역 데이터 처리
