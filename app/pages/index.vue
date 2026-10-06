@@ -60,105 +60,15 @@ interface VisitStatsResponse {
   error?: string
 }
 
-// KST 오늘 일진 간지 및 오행 기운 동적 계산 (useState 활용으로 SSR-Client 하이드레이션 일치)
-const stems = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"]
-const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"]
-const elemNames = ['木', '火', '土', '金', '水']
+// KST 오늘 일진 간지 및 오행 기운 동적 계산 (단일 중앙 유틸리티 getTodaySajuSummary 연동)
+import { getTodaySajuSummary } from '~/utils/saju'
 
-// 12지지별 오행 인덱스 매핑 (0:木, 1:火, 2:土, 3:金, 4:水)
-// 인덱스: 0:子(수:4), 1:丑(토:2), 2:寅(목:0), 3:卯(목:0), 4:辰(토:2), 5:巳(화:1),
-//        6:午(화:1), 7:未(토:2), 8:申(금:3), 9:酉(금:3), 10:戌(토:2), 11:亥(수:4)
-const BRANCH_ELEMENT_MAP: readonly number[] = [4, 2, 0, 0, 2, 1, 1, 2, 3, 3, 2, 4]
+const sajuSummary = computed(() => getTodaySajuSummary())
 
-const todayGanzhi = useState('todayGanzhi', () => {
-  // Intl.DateTimeFormat을 활용한 간결하고 정확한 KST YYYY-MM-DD 구하기
-  const todayStr = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date())
-
-  // 기준일: 2000-01-01 (양력) = 무진(戊辰)일
-  // 천간 戊 = Index 4 (갑0, 을1, 병2, 정3, 무4)
-  // 지지 辰 = Index 4 (자0, 축1, 인2, 묘3, 진4)
-  const targetDate = new Date(`${todayStr}T00:00:00+09:00`)
-  const refDate = new Date('2000-01-01T00:00:00+09:00')
-  const diffDays = Math.round((targetDate.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24))
-
-  const REF_STEM_IDX = 4
-  const REF_BRANCH_IDX = 4
-
-  const todayStemIdx = (REF_STEM_IDX + (diffDays % 10) + 10) % 10
-  const todayBranchIdx = (REF_BRANCH_IDX + (diffDays % 12) + 12) % 12
-
-  const stemElemIdx = Math.floor(todayStemIdx / 2) // 0:목, 1:화, 2:토, 3:금, 4:수
-  const branchElemIdx = BRANCH_ELEMENT_MAP[todayBranchIdx] ?? 0
-
-  return {
-    ganzhi: `${stems[todayStemIdx]}${branches[todayBranchIdx]}`,
-    stemIdx: todayStemIdx,
-    branchIdx: todayBranchIdx,
-    stemElemIdx,
-    branchElemIdx
-  }
-})
-
-const todayGanzhiText = computed(() => todayGanzhi.value.ganzhi)
-
-// 오행별 명사, 특성, 동작 맵
-const ELEMENT_MAP = [
-  { name: '나무', trait: '유연함과 푸른 생명력', action: '새로운 기운을 뻗어내는 날' },
-  { name: '불', trait: '뜨거운 열정과 밝은 빛', action: '환하게 세상을 밝히는 날' },
-  { name: '대지', trait: '든든한 포용력과 안정감', action: '중심을 굳건히 잡아주는 날' },
-  { name: '바위', trait: '단단한 결단력', action: '알찬 결실을 이뤄내는 날' },
-  { name: '샘물', trait: '깊은 지혜와 유유함', action: '지혜롭게 흘러가는 날' }
-]
-
-const todayElementSentence = computed(() => {
-  const s = todayGanzhi.value.stemElemIdx ?? 0
-  const b = todayGanzhi.value.branchElemIdx ?? 1
-  const ganzhi = todayGanzhi.value.ganzhi
-
-  const defaultAttr = ELEMENT_MAP[0]!
-  const stemAttr = ELEMENT_MAP[s % 5] ?? defaultAttr
-  const branchAttr = ELEMENT_MAP[b % 5] ?? defaultAttr
-
-  if (s === b) {
-    return `${ganzhi}일 · ${stemAttr.name}의 ${stemAttr.trait}이(가) 배가되어 ${stemAttr.action}`
-  }
-  return `${stemAttr.name}의 ${stemAttr.trait}이(가) ${branchAttr.name}의 ${branchAttr.trait}과(와) 만나 ${branchAttr.action}`
-})
-
-const elementBadge = computed(() => {
-  const s = todayGanzhi.value.stemElemIdx
-  const b = todayGanzhi.value.branchElemIdx
-  const ganzhi = todayGanzhi.value.ganzhi
-
-  if (s === b) {
-    return `${ganzhi} · ${elemNames[s]} 기운 왕성`
-  }
-  return `${ganzhi} · ${elemNames[s]}${elemNames[b]} 상생 조화`
-})
-
-// 오늘 일진(천간+지지) 60간지 명리학 오행 비율 동적 계산
-const elementRatios = computed(() => {
-  const s = todayGanzhi.value.stemElemIdx ?? 0
-  const b = todayGanzhi.value.branchElemIdx ?? 0
-
-  const ratios = [10, 10, 10, 10, 10]
-  if (ratios[s] !== undefined) ratios[s]! += 25
-  if (ratios[b] !== undefined) ratios[b]! += 25
-
-  // 상생 관계 추가 조율
-  if ((s + 1) % 5 === b) { // 천간이 지지를 생함 (예: 목생화)
-    if (ratios[b] !== undefined) ratios[b]! += 10
-  } else if ((b + 1) % 5 === s) { // 지지가 천간을 생함 (예: 수생목)
-    if (ratios[s] !== undefined) ratios[s]! += 10
-  } else {
-    if (ratios[s] !== undefined) ratios[s]! += 5
-    if (ratios[b] !== undefined) ratios[b]! += 5
-  }
-
-  // 총합 100% 정률 정산
-  const sum = ratios.reduce((acc, cur) => acc + cur, 0)
-  return ratios.map(r => Math.round((r / (sum || 1)) * 100))
-})
+const todayGanzhiText = computed(() => sajuSummary.value.ganzhi)
+const todayElementSentence = computed(() => sajuSummary.value.todayElementSentence)
+const elementBadge = computed(() => sajuSummary.value.elementBadge)
+const elementRatios = computed(() => sajuSummary.value.elementRatios)
 
 // 오늘 사주 운세 점수 (0% / 0도 -> 88% / 88점 카운트업 & 게이지 그리기 애니메이션)
 const animatedScore = ref(0)

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getGanzhiOfDay } from '~/utils/saju'
+import { getGanzhiOfDay, getKstTodayDateString } from '~/utils/saju'
 
 // 상수 정의
 const COOLDOWN_DURATION_MS = 12 * 60 * 60 * 1000 // 12시간
@@ -12,9 +12,7 @@ interface FortuneResult {
 
 // 헬퍼 함수: KST 날짜 문자열 반환 (YYYY-MM-DD)
 const getKstDateString = (): string => {
-  return new Intl.DateTimeFormat('sv-SE', {
-    timeZone: 'Asia/Seoul'
-  }).format(new Date())
+  return getKstTodayDateString()
 }
 
 // 헬퍼 함수: localStorage에서 JSON 파싱
