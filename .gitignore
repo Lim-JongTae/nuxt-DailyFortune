@@ -50,3 +50,6 @@ $RECYCLE.BIN/
 
 # myReference
 myReference/
+
+# AI Agent Configs
+.agents/

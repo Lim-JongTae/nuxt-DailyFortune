@@ -2,7 +2,7 @@
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/`
 const fortuneTitle = '일일운세 ✦ 天命'
-const fortuneDesc = '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.'
+const fortuneDesc = '피흉추길(避凶趨吉·재앙을 피하고 길함을 쫓음)의 지혜. 사주명리와 주역 64괘로 보는 오늘의 맞춤 운세.'
 
 useSeoMeta({
   title: fortuneTitle,
@@ -27,7 +27,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         name: '일일운세 ✦ 天命',
-        description: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.',
+        description: fortuneDesc,
         url: pageUrl,
         applicationCategory: 'LifestyleApplication',
         operatingSystem: 'Web',
@@ -492,6 +492,8 @@ onMounted(async () => {
               이를 조합하여 64가지 상황(64괘)을 설명합니다. 각 괘는 6개의 효(爻)로 구성되며,
               변화하는 효를 통해 현재 상황에서 미래로 나아가는 처세의 지혜를 제시합니다.
             </p>
+            <!-- 역사 속 위인들의 주역 점괘 활용 사례 아코디언 컴포넌트 -->
+            <IChingHistoryAccordion />
           </div>
 
           <div class="mt-4">
