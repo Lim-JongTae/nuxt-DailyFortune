@@ -965,20 +965,27 @@ const copyToClipboard = () => {
 
         <!-- 1. 질문 카드 (상단 인풋 요약) -->
         <div class="pg-card border rounded-2xl p-4 relative reveal-on-scroll">
-          <div class="flex justify-between items-start mb-2">
-            <h2 class="font-serif-kr text-sm sm:text-base font-bold pg-text leading-snug">
-              "{{ worry || '오늘 하루의 운세와 지혜' }}"
-            </h2>
-          </div>
-          <div class="flex items-center justify-between text-[12px] pg-text-muted">
-            <span class="flex items-center gap-1.5">
-              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 pg-text-gold" />
-              {{ formattedKstDateTime }}
+          <!-- 상단: 시각 정보 & 녹색 문사(問事) 뱃지 바 -->
+          <div class="flex items-center justify-between text-[11px] sm:text-[12px] pg-text-muted mb-3 pb-2.5 border-b pg-border">
+            <span class="flex items-center gap-1.5 min-w-0">
+              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 pg-text-gold shrink-0" />
+              <span class="truncate font-medium">{{ formattedKstDateTime }}</span>
             </span>
-            <span class="px-2 py-0.5 rounded-md pg-chip pg-text-gold border pg-border text-[11px]">
+            <span
+              :class="[
+                'px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-[11px] font-bold shrink-0 ml-2 shadow-xs',
+                'text-emerald-400',
+                'dark:text-emerald-300'
+              ]"
+            >
               문사 (問事)
             </span>
           </div>
+
+          <!-- 하단: 질문 내용 -->
+          <h2 class="font-serif-kr text-sm sm:text-base font-bold pg-text leading-snug">
+            "{{ worry || '오늘 하루의 운세와 지혜' }}"
+          </h2>
         </div>
 
         <!-- 2. 본괘 & 변괘 6효 카드 (이미지 메인 1:1) -->
