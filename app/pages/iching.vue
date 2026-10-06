@@ -965,20 +965,20 @@ const copyToClipboard = () => {
 
         <!-- 1. 질문 카드 (상단 인풋 요약) -->
         <div class="pg-card border rounded-2xl p-4 relative reveal-on-scroll">
-          <!-- 상단: 시각 정보 & 녹색 문사(問事) 뱃지 바 -->
-          <div class="flex items-center justify-between text-[11px] sm:text-[12px] pg-text-muted mb-3 pb-2.5 border-b pg-border">
-            <span class="flex items-center gap-1.5 min-w-0">
-              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 pg-text-gold shrink-0" />
-              <span class="truncate font-medium">{{ formattedKstDateTime }}</span>
-            </span>
+          <!-- 상단: 녹색 문사(問事) 뱃지 & 시각 정보 바 -->
+          <div class="flex flex-col items-start gap-1.5 text-[11px] sm:text-[12px] pg-text-muted mb-3 pb-2.5 border-b pg-border">
             <span
               :class="[
-                'px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-[11px] font-bold shrink-0 ml-2 shadow-xs',
+                'px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-[11px] font-bold shrink-0 shadow-xs',
                 'text-emerald-400',
                 'dark:text-emerald-300'
               ]"
             >
               문사 (問事)
+            </span>
+            <span class="flex items-center gap-1.5 min-w-0">
+              <UIcon name="i-heroicons-clock" class="w-3.5 h-3.5 pg-text-gold shrink-0" />
+              <span class="truncate font-medium">{{ formattedKstDateTime }}</span>
             </span>
           </div>
 
