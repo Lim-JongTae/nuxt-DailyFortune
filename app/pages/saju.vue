@@ -859,19 +859,21 @@ const handleLikeClick = () => {
 
 const toggleLike = async () => {
   if (alreadyLiked.value) return
+
+  alreadyLiked.value = true
+  likeCount.value++
+  if (import.meta.client) {
+    localStorage.setItem(`like_${targetKey.value}`, 'true')
+  }
+  triggerLikeTooltip('공감이 반영되었습니다! ❤️')
+
   try {
     const res: any = await $fetch('/api/fortune/like', {
       method: 'POST',
       body: { type: 'saju', targetKey: targetKey.value }
     })
-    if (res?.success) {
-      likeCount.value = res.likeCount ?? res.count ?? (likeCount.value + 1)
-      alreadyLiked.value = true
-      // localStorage에 좋아요 상태 저장
-      if (import.meta.client) {
-        localStorage.setItem(`like_${targetKey.value}`, 'true')
-      }
-      triggerLikeTooltip('공감이 반영되었습니다! ❤️')
+    if (res?.success && (res.likeCount !== undefined || res.count !== undefined)) {
+      likeCount.value = res.likeCount ?? res.count ?? likeCount.value
     }
   } catch (err) {
     console.error('Failed to toggle saju like:', err)
