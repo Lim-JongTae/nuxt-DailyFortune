@@ -620,8 +620,10 @@ const hexagramLinesDetail = computed(() => {
     desc: result.value.hexagram.summary
   }
 
-  const lineNames = ['초구(初九)', '구이(九二)', '구삼(九三)', '육사(六四)', '육오(六五)', '상육(上六)']
-  const lineText = `${lineNames[idx] || `${lineNum}효`} 변효`
+  const yangLineNames = ['초구(初九)', '구이(九二)', '구삼(九三)', '구사(九四)', '구오(九五)', '상구(上九)']
+  const yinLineNames = ['초육(初六)', '육이(六二)', '육삼(六三)', '육사(六四)', '육오(六五)', '상육(上六)']
+  const isYangLine = originLines[idx] === 1
+  const lineText = `${(isYangLine ? yangLineNames[idx] : yinLineNames[idx]) || `${lineNum}효`} 변효`
 
   const yangCount = originLines.filter(l => l === 1).length
   const yinCount = 6 - yangCount
