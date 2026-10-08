@@ -76,7 +76,8 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
         { name: 'apple-mobile-web-app-title', content: '일일운세' },
-        { name: 'format-detection', content: 'telephone=no' }
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'naver-site-verification', content: '7a48916e25d66b253a5f524eaeaf7a341636d272' }
       ],
       link: [
         { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
