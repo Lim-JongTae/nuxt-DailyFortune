@@ -62,3 +62,33 @@ export async function recordIchingView(): Promise<void> {
     console.error('[DailyVisitLog] Error recording iching view:', error.message)
   }
 }
+
+export interface AiLogParams {
+  serviceType?: string
+  provider: 'gemini' | 'claude'
+  model: string
+  status: 'success' | 'error'
+  statusCode?: string
+  errorMessage?: string
+  latencyMs?: number
+}
+
+export async function recordAiUsageLog(params: AiLogParams): Promise<void> {
+  const todayStr = getTodayKstString()
+  try {
+    await prisma.aiUsageLog.create({
+      data: {
+        date: todayStr,
+        serviceType: params.serviceType || 'general',
+        provider: params.provider,
+        model: params.model,
+        status: params.status,
+        statusCode: params.statusCode || (params.status === 'success' ? '200' : 'Unknown'),
+        errorMessage: params.errorMessage ? String(params.errorMessage).slice(0, 500) : null,
+        latencyMs: params.latencyMs || null
+      }
+    })
+  } catch (error: any) {
+    console.error('[AiUsageLog] Error recording AI log:', error.message)
+  }
+}

@@ -246,7 +246,7 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
     console.log(`[${requestId}] Calling AI model with prompt length: ${prompt.length}`)
     const aiStartTime = Date.now()
 
-    let { text: rawAiText, isAiGenerated } = await callAiModel(prompt)
+    let { text: rawAiText, isAiGenerated } = await callAiModel(prompt, 'saju')
 
     const aiElapsed = Date.now() - aiStartTime
     console.log(`[${requestId}] AI model response received`, {

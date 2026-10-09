@@ -183,7 +183,7 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
 
 주의: 답변이 중간에 뚝 끊기지 않도록 문장을 반드시 완결하고, 마크다운 문법의 끝을 맞춰주십시오.`
 
-    let { text: rawAiText, isAiGenerated } = await callAiModel(prompt)
+    let { text: rawAiText, isAiGenerated } = await callAiModel(prompt, 'iching')
     let aiInterpretation = rawAiText || ''
 
     if (isAiGenerated && aiInterpretation) {

@@ -1,3 +1,5 @@
+import { recordAiUsageLog } from './stats'
+
 export interface AiResponse {
   text: string;
   isAiGenerated: boolean;
@@ -5,7 +7,7 @@ export interface AiResponse {
   latencyMs?: number;
 }
 
-export async function callAiModel(prompt: string): Promise<AiResponse> {
+export async function callAiModel(prompt: string, serviceType: string = 'general'): Promise<AiResponse> {
   // useRuntimeConfig()를 사용해야 Nuxt 프로덕션에서도 환경변수가 올바르게 주입됨
   const config = useRuntimeConfig()
   const claudeEndPoint = (config.claudeApiEndPoint || process.env.CLAUDE_API_END_POINT || 'https://api.anthropic.com').replace(/\/$/, '')
@@ -88,9 +90,26 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
 
         if (isValidAiText(text)) {
           console.log(`[Gemini API] ✅ Success using model: ${model} (${elapsed}ms)`)
+          recordAiUsageLog({
+            serviceType,
+            provider: 'gemini',
+            model,
+            status: 'success',
+            statusCode: '200',
+            latencyMs: elapsed
+          }).catch(() => {})
           return { text, isAiGenerated: true, model, latencyMs: elapsed }
         }
         console.warn(`[Gemini API] ⚠️ No valid text content using model: ${model}`)
+        recordAiUsageLog({
+          serviceType,
+          provider: 'gemini',
+          model,
+          status: 'error',
+          statusCode: '204',
+          errorMessage: 'No valid text content generated',
+          latencyMs: elapsed
+        }).catch(() => {})
       } catch (geminiError: any) {
         const elapsed = Date.now() - startTime
         const errorMsg = geminiError?.message || geminiError?.data?.error?.message || String(geminiError)
@@ -100,19 +119,42 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
                            geminiError?.data?.error?.code ||
                            'Unknown'
 
+        const is503 = statusCode === 503 || /\b503\b/.test(String(errorMsg))
+        const is429 = statusCode === 429 || /\b429\b/.test(String(errorMsg))
+        const is404 = statusCode === 404 || /\b404\b/.test(String(errorMsg))
+
         console.error(`[Gemini API Error] ❌ Model ${model} failed`, {
           elapsed: `${elapsed}ms`,
           message: errorMsg,
           statusCode,
           errorType: geminiError?.name,
-          hint: (statusCode === 404 || /\b404\b/.test(String(errorMsg))) ? 'Model not found (404)' :
-                (statusCode === 429 || /\b429\b/.test(String(errorMsg))) ? 'Rate limit exceeded (429)' :
+          hint: is404 ? 'Model not found (404)' :
+                is429 ? 'Rate limit exceeded (429)' :
+                is503 ? 'Service Unavailable (503)' :
                 (statusCode === 400 || /\b400\b/.test(String(errorMsg))) ? 'Invalid request format (400)' :
                 geminiError?.name === 'AbortError' ? 'Request timeout' : undefined
         })
+
+        // DB에 실패 로그 저장
+        recordAiUsageLog({
+          serviceType,
+          provider: 'gemini',
+          model,
+          status: 'error',
+          statusCode: String(statusCode),
+          errorMessage: errorMsg,
+          latencyMs: elapsed
+        }).catch(() => {})
+
+        // 503(서버 과부하) 또는 429(요청 제한) 발생 시 구글 인프라 전역 일시 문제이므로
+        // 지연 시간 누적으로 인한 사용자 이탈을 방지하기 위해 즉시 2순위 Claude API로 전환(Fast Failover)
+        if (is503 || is429) {
+          console.warn(`[Gemini API] ⚠️ 구글 Gemini 서버 일시 장애/제한(${statusCode}) 감지. 지연 이탈 방지를 위해 즉시 Claude API로 전환합니다.`)
+          break
+        }
       }
     }
-    console.warn('[Gemini API] ⚠️ 모든 Gemini 모델 시도 실패. 2순위 Claude API로 전환합니다.')
+    console.warn('[Gemini API] ⚠️ Gemini 시도 종료. 2순위 Claude API로 전환하여 처리합니다.')
   } else {
     console.warn('[Gemini API] ⚠️ GEMINI_API_KEY 미설정, 2순위 Claude API로 진행합니다.')
   }
@@ -156,9 +198,26 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
       const text = response?.content?.[0]?.text || ''
       if (isValidAiText(text)) {
         console.log(`[Claude API] ✅ Success - Valid text generated (${elapsed}ms)`)
+        recordAiUsageLog({
+          serviceType,
+          provider: 'claude',
+          model: claudeModel,
+          status: 'success',
+          statusCode: '200',
+          latencyMs: elapsed
+        }).catch(() => {})
         return { text, isAiGenerated: true, model: claudeModel, latencyMs: elapsed }
       }
       console.warn('[Claude API] ⚠️ Invalid or insufficient text content in response')
+      recordAiUsageLog({
+        serviceType,
+        provider: 'claude',
+        model: claudeModel,
+        status: 'error',
+        statusCode: '204',
+        errorMessage: 'Invalid or insufficient text content in response',
+        latencyMs: elapsed
+      }).catch(() => {})
     } catch (claudeError: any) {
       const elapsed = Date.now() - startTime
       const errorMsg = claudeError?.message || claudeError?.data?.error?.message || String(claudeError)
@@ -181,6 +240,16 @@ export async function callAiModel(prompt: string): Promise<AiResponse> {
               (statusCode === 401 || /\b401\b/.test(String(errorMsg))) ? 'Invalid API key' :
               claudeError?.name === 'AbortError' ? 'Request timeout' : undefined
       })
+
+      recordAiUsageLog({
+        serviceType,
+        provider: 'claude',
+        model: claudeModel,
+        status: 'error',
+        statusCode: String(statusCode),
+        errorMessage: errorMsg,
+        latencyMs: elapsed
+      }).catch(() => {})
     }
   } else {
     console.warn('[Claude API] ⚠️ No API key configured')
