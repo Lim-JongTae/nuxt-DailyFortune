@@ -77,7 +77,8 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
         { name: 'apple-mobile-web-app-title', content: '일일운세' },
         { name: 'format-detection', content: 'telephone=no' },
-        { name: 'naver-site-verification', content: 'ea6763d7e259350dc0e2766965915fc937bf0d3b' }        
+        { name: 'naver-site-verification', content: 'ea6763d7e259350dc0e2766965915fc937bf0d3b' },
+        { name: 'google-site-verification', content: '2CLnDz_vPIDxGXp7WFbJj7xJj2SNc0pnNVF-Wh7HwCI' }
       ],
       link: [
         { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
