@@ -152,14 +152,18 @@ interface IChingResultResponse {
     nameKorean: string
     nameHanji: string
     summary: string
+    meaning?: string
+    businessFate?: string
     careerFate?: string
     wealthFate?: string
     loveFate?: string
     generalFate?: string
+    lineHanja?: string
+    lineKorean?: string
+    lineAdvice?: string
     lineNameHanja?: string
     lineTextHanja?: string
     lineTextKorean?: string
-    lineAdvice?: string
   }
   aiInterpretation?: string
 }
@@ -1225,12 +1229,23 @@ const copyToClipboard = () => {
                   :class="accordionOpen.line ? 'rotate-180' : ''"
                 />
               </button>
-              <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs pg-text font-serif-kr space-y-2 leading-relaxed">
-                <p class="pg-text-gold font-bold">● 동효: {{ hexagramLinesDetail.lineText }}</p>
-                <p class="font-sans-kr font-normal pg-text">
+              <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs pg-text font-serif-kr space-y-2.5 leading-relaxed">
+                <p class="pg-text-gold font-bold">● 동효: {{ hexagramLinesDetail.lineText }} <span v-if="result.hexagram?.lineNameHanja">({{ result.hexagram.lineNameHanja }})</span></p>
+                <div v-if="result.hexagram?.lineHanja || result.hexagram?.lineTextHanja" class="p-3 rounded-xl pg-card-inner border pg-border space-y-1">
+                  <p class="text-[11px] font-bold pg-text-gold tracking-wide">
+                    한자 원문: <span class="font-normal font-serif-kr pg-text">{{ result.hexagram?.lineHanja || result.hexagram?.lineTextHanja }}</span>
+                  </p>
+                  <p v-if="result.hexagram?.lineKorean || result.hexagram?.lineTextKorean" class="text-[11px] font-sans-kr pg-text-muted">
+                    효사 풀이: "{{ result.hexagram?.lineKorean || result.hexagram?.lineTextKorean }}"
+                  </p>
+                  <p v-if="result.hexagram?.lineAdvice" class="text-[11px] font-sans-kr pg-text-gold pt-0.5">
+                    💡 처세 지침: {{ result.hexagram.lineAdvice }}
+                  </p>
+                </div>
+                <p class="font-sans-kr font-normal pg-text text-[11px]">
                   "{{ hexagramLinesDetail.lineText }}가 움직여 {{ hexagramLinesDetail.changed.nameKorean }}({{ hexagramLinesDetail.changed.nameHanji }}) 괘의 기운으로 변화합니다."
                 </p>
-                <p class="font-sans-kr font-normal pg-text-muted">
+                <p class="font-sans-kr font-normal pg-text-muted text-[11px]">
                   {{ hexagramLinesDetail.changed.desc }}
                 </p>
               </div>

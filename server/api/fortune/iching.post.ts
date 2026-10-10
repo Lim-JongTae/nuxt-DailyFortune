@@ -149,6 +149,7 @@ export default defineEventHandler(async (event) => {
     const lineHanjaText = lineDetail?.textHanja || `${hexagram.nameHanji} ${lineNumber}爻`
     const lineKoreanText = lineDetail?.textKorean || `${lineNumber}번째 효사 기운`
     const lineModernAdvice = lineDetail?.modernAdvice || ''
+    const lineNameHanja = lineDetail?.nameHanja || `${lineNumber}효`
 
     // 5. AI 모델 호출 (Claude / Gemini 통합)
     const prompt = `당신은 주역(I Ching)과 명리학에 정통한 고결한 역학자입니다.
@@ -164,7 +165,7 @@ export default defineEventHandler(async (event) => {
 - 괘의 부문별 일반 운세: 전체운(${hexagram.generalFate}), 사업운(${hexagram.businessFate}), 연애운(${hexagram.loveFate}), 금전운(${hexagram.wealthFate})
 
 [오늘의 동효 384효 원문 및 해석]
-- 동효 명칭: ${lineDetail?.nameHanja || `${lineNumber}효`}
+- 동효 명칭: ${lineNameHanja}
 - 효사 한자 원문 (漢字 原文): ${lineHanjaText}
 - 효사 한글 풀이: ${lineKoreanText}
 ${lineModernAdvice ? `- 원전 처세 지침: ${lineModernAdvice}` : ''}
@@ -172,14 +173,19 @@ ${lineModernAdvice ? `- 원전 처세 지침: ${lineModernAdvice}` : ''}
 [사용자의 고민]
 ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합니다."}
 
-답변 작성 시 주의사항:
-1. 사용자가 뽑은 **[오늘의 동효]인 ${lineNumber}번째 효의 한자 원문(${lineHanjaText})**을 반드시 상단에 언급하며 친절하게 풀어서 조언해 주세요.
+답변 작성 시 주의사항 (매우 중요):
+1. **[오늘의 동효]** 섹션을 작성할 때, "• 한자 원문:" 항목 뒤에는 괘 이름이나 효 이름이 아니라 **실제 효사의 한자 원문 전체문장 (${lineHanjaText})**을 토씨 하나 틀리지 않고 정확히 기재해 주세요.
+   - 올바른 예시: "• 한자 원문: ${lineHanjaText}"
+   - 올바른 예시: "• 효사 풀이: ${lineKoreanText}"
 2. 해당 효사가 사용자의 고민에 전하는 구체적인 해설과 행동 지침을 작성해 주세요.
 3. 답변은 마크다운(Markdown) 형식으로 작성하여 가독성을 높여주세요. 아래 단계를 포함해 작성해 주세요:
-   - 괘에 대한 친절한 설명과 요약
-   - 오늘의 동효(${lineNumber}번째 효: **${lineHanjaText}**)의 한자/한글 해석 및 직접적인 조언
-   - 전체적인 기운의 흐름(직업, 연애, 재물)과 행동 지침
-   - 오늘의 행운을 높여주는 키워드나 마음가짐 제안
+   - 1. 괘에 대한 친절한 설명과 요약
+   - 2. 오늘의 동효 (${hexagram.nameKorean} ${lineNameHanja}):
+     - • 한자 원문: ${lineHanjaText}
+     - • 효사 풀이: "${lineKoreanText}"
+     - [직접적인 조언]
+   - 3. 전체적인 기운의 흐름(직업, 연애, 재물)과 행동 지침
+   - 4. 오늘의 행운을 높여주는 키워드나 마음가짐 제안
 
 주의: 답변이 중간에 뚝 끊기지 않도록 문장을 반드시 완결하고, 마크다운 문법의 끝을 맞춰주십시오.`
 
@@ -201,7 +207,10 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
 
 ### 괘의 의미: ${hexagram.nameKorean} (${hexagram.nameHanji}) - ${hexagram.summary}
 * **기본 해설:** ${hexagram.meaning}
-* **오늘의 동효:** **${lineNumber}번째 효**가 움직였습니다.
+* **오늘의 동효:** **${lineNumber}번째 효 (${lineNameHanja})**
+  * **한자 원문:** ${lineHanjaText}
+  * **효사 풀이:** ${lineKoreanText}
+  ${lineModernAdvice ? `* **원전 처세 지침:** ${lineModernAdvice}` : ''}
 * **오늘의 운세 흐름:** ${hexagram.generalFate}
 
 ### 부문별 조언
@@ -255,7 +264,10 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
         lineNumber,
         lineHanja: lineHanjaText,
         lineKorean: lineKoreanText,
-        lineAdvice: lineModernAdvice
+        lineAdvice: lineModernAdvice,
+        lineTextHanja: lineHanjaText,
+        lineTextKorean: lineKoreanText,
+        lineNameHanja: lineNameHanja
       },
       aiInterpretation,
       isAiGenerated
