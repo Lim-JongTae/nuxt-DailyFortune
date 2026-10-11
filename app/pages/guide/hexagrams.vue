@@ -91,7 +91,7 @@ const trigrams = [
       <div :class="['space-y-8 text-sm sm:text-base leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
         
         <!-- 주역 개요 -->
-        <section class="space-y-4">
+        <section v-reveal class="space-y-4">
           <h2 :class="['text-xl font-serif-kr font-bold border-b pb-2 flex items-center gap-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span>☯</span> 주역(周易)의 근본 학술 원리
           </h2>
@@ -104,7 +104,7 @@ const trigrams = [
         </section>
 
         <!-- 8소성괘 상징 -->
-        <section class="space-y-4">
+        <section v-reveal class="space-y-4">
           <h2 :class="['text-xl font-serif-kr font-bold border-b pb-2 flex items-center gap-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span>☰</span> 근본이 되는 8소성괘(八小成卦)
           </h2>
@@ -114,8 +114,9 @@ const trigrams = [
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
             <div
-              v-for="t in trigrams"
+              v-for="(t, idx) in trigrams"
               :key="t.name"
+              v-reveal="{ delay: idx * 50 }"
               :class="[
                 'p-4 rounded-xl border',
                 'bg-amber-50/40 border-amber-200/60',
@@ -132,7 +133,7 @@ const trigrams = [
         </section>
 
         <!-- 3단계 점대 드로우와 동효 원리 -->
-        <section :class="['p-6 rounded-xl border space-y-4', 'bg-white border-amber-200/60', 'dark:bg-[#0F1226]/80 dark:border-slate-700']">
+        <section v-reveal :class="['p-6 rounded-xl border space-y-4', 'bg-white border-amber-200/60', 'dark:bg-[#0F1226]/80 dark:border-slate-700']">
           <h3 :class="['text-lg font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
             🎋 3변 드로우와 동효(動爻)의 미학
           </h3>
@@ -149,12 +150,14 @@ const trigrams = [
       </div>
 
       <!-- 하단 버튼 -->
-      <div :class="['mt-10 pt-6 border-t flex flex-wrap justify-center gap-4', 'border-amber-200/40', 'dark:border-slate-700/50']">
-        <NuxtLink to="/guide" :class="['inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white font-medium text-xs sm:text-sm transition-colors shadow-sm bg-slate-700 hover:bg-slate-800', 'dark:bg-slate-800 dark:hover:bg-slate-700']">
-          <span>목록으로</span>
+      <div v-reveal :class="['mt-10 pt-6 border-t flex flex-wrap justify-center items-center gap-3 w-full text-center', 'border-amber-200/40', 'dark:border-slate-700/50']">
+        <NuxtLink to="/guide" class="btn-gold-action">
+          <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
+          <span>가이드 목록으로 이동</span>
         </NuxtLink>
-        <NuxtLink to="/iching" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs sm:text-sm transition-colors shadow-md">
-          <span>오늘의 주역 64괘 뽑기 ➔</span>
+        <NuxtLink to="/" class="btn-gold-action">
+          <UIcon name="i-heroicons-home" class="w-4 h-4" />
+          <span>홈으로 이동</span>
         </NuxtLink>
       </div>
 

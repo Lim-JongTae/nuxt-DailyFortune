@@ -119,7 +119,7 @@ export default defineNuxtConfig({
         images: [
           {
             loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
-            title: '동양철학 명리 주역 백과사전 가이드 캘리그라피 서화 대표 이미지'
+            title: '동양철학 명리 주역 실전 가이드 캘리그라피 서화 대표 이미지'
           }
         ]
       },

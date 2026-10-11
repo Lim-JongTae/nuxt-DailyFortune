@@ -64,3 +64,9 @@ declare global {
     showSaveFilePicker?: (options?: SaveFilePickerOptions) => Promise<FileSystemFileHandle>
   }
 }
+
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    vReveal?: any
+  }
+}

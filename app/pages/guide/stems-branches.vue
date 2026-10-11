@@ -108,14 +108,15 @@ const branchesList = [
       <div :class="['space-y-8 text-sm sm:text-base leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
         
         <!-- 10천간 -->
-        <section class="space-y-4">
+        <section v-reveal class="space-y-4">
           <h2 :class="['text-xl font-serif-kr font-bold border-b pb-2 flex items-center gap-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span>☀️</span> 하늘의 10천간(十天干)
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
             <div
-              v-for="stem in stemsList"
+              v-for="(stem, idx) in stemsList"
               :key="stem.char"
+              v-reveal="{ delay: idx * 40 }"
               :class="[
                 'p-3.5 rounded-lg border',
                 'bg-amber-50/40 border-amber-200/60',
@@ -132,14 +133,15 @@ const branchesList = [
         </section>
 
         <!-- 12지간 -->
-        <section class="space-y-4">
+        <section v-reveal class="space-y-4">
           <h2 :class="['text-xl font-serif-kr font-bold border-b pb-2 flex items-center gap-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span>🌙</span> 땅의 12지간(十二支)
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
             <div
-              v-for="b in branchesList"
+              v-for="(b, idx) in branchesList"
               :key="b.char"
+              v-reveal="{ delay: idx * 40 }"
               :class="[
                 'p-3.5 rounded-lg border',
                 'bg-slate-50 border-slate-200',
@@ -158,12 +160,14 @@ const branchesList = [
       </div>
 
       <!-- 하단 버튼 -->
-      <div :class="['mt-10 pt-6 border-t flex flex-wrap justify-center gap-4', 'border-amber-200/40', 'dark:border-slate-700/50']">
-        <NuxtLink to="/guide" :class="['inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white font-medium text-xs sm:text-sm transition-colors shadow-sm bg-slate-700 hover:bg-slate-800', 'dark:bg-slate-800 dark:hover:bg-slate-700']">
-          <span>목록으로</span>
+      <div v-reveal :class="['mt-10 pt-6 border-t flex flex-wrap justify-center items-center gap-3 w-full text-center', 'border-amber-200/40', 'dark:border-slate-700/50']">
+        <NuxtLink to="/guide" class="btn-gold-action">
+          <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
+          <span>가이드 목록으로</span>
         </NuxtLink>
-        <NuxtLink to="/saju" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs sm:text-sm transition-colors shadow-md">
-          <span>오늘의 일진 확인하기 ➔</span>
+        <NuxtLink to="/" class="btn-gold-action">
+          <UIcon name="i-heroicons-home" class="w-4 h-4" />
+          <span>홈으로 이동</span>
         </NuxtLink>
       </div>
 

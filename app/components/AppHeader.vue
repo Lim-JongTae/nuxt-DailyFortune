@@ -4,13 +4,36 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const todayViews = ref(0)
 const isGuideMenuOpen = ref(false)
 const guideMenuRef = ref<HTMLElement | null>(null)
+let hoverTimeout: ReturnType<typeof setTimeout> | null = null
 
 const toggleGuideMenu = () => {
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+    hoverTimeout = null
+  }
   isGuideMenuOpen.value = !isGuideMenuOpen.value
 }
 
 const closeGuideMenu = () => {
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+    hoverTimeout = null
+  }
   isGuideMenuOpen.value = false
+}
+
+const handleMouseEnter = () => {
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+    hoverTimeout = null
+  }
+  isGuideMenuOpen.value = true
+}
+
+const handleMouseLeave = () => {
+  hoverTimeout = setTimeout(() => {
+    isGuideMenuOpen.value = false
+  }, 180)
 }
 
 // 클릭 아웃사이드 닫기 처리
@@ -46,6 +69,9 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
+  if (hoverTimeout) {
+    clearTimeout(hoverTimeout)
+  }
   document.removeEventListener('click', handleClickOutside)
 })
 </script>
@@ -79,7 +105,12 @@ onUnmounted(() => {
       <div class="flex items-center gap-2 shrink-0">
         
         <!-- 상단 '안내' 드롭다운 버튼 -->
-        <div ref="guideMenuRef" class="relative">
+        <div
+          ref="guideMenuRef"
+          class="relative"
+          @mouseenter="handleMouseEnter"
+          @mouseleave="handleMouseLeave"
+        >
           <button
             type="button"
             @click.stop="toggleGuideMenu"
@@ -109,21 +140,12 @@ onUnmounted(() => {
               </div>
 
               <NuxtLink
-                to="/guide/saju"
+                to="/guide"
                 @click="closeGuideMenu"
                 :class="['flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors font-medium', 'text-slate-700 hover:bg-amber-50 hover:text-amber-900', 'dark:text-slate-200 dark:hover:bg-[#232B4F] dark:hover:text-[#FFDE9E]']"
               >
-                <UIcon name="i-heroicons-academic-cap" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
-                <span>사주명리 가이드</span>
-              </NuxtLink>
-
-              <NuxtLink
-                to="/guide/iching"
-                @click="closeGuideMenu"
-                :class="['flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors font-medium', 'text-slate-700 hover:bg-amber-50 hover:text-amber-900', 'dark:text-slate-200 dark:hover:bg-[#232B4F] dark:hover:text-[#FFDE9E]']"
-              >
-                <UIcon name="i-heroicons-sparkles" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
-                <span>주역비결 가이드</span>
+                <UIcon name="i-heroicons-book-open" :class="['w-4 h-4', 'text-amber-600', 'dark:text-amber-400']" />
+                <span>사주·주역 가이드</span>
               </NuxtLink>
 
               <div :class="['my-1 border-t', 'border-amber-100', 'dark:border-slate-700']"></div>

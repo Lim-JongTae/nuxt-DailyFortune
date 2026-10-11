@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide`
-const imageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const lightImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const darkImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg'
 
 definePageMeta({
   sitemap: {
@@ -9,6 +10,10 @@ definePageMeta({
       {
         loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
         title: '동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지'
+      },
+      {
+        loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg',
+        title: '동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지 (다크모드)'
       }
     ]
   }
@@ -20,9 +25,9 @@ useSeoMeta({
   ogTitle: '동양철학 명리 & 주역 실전 처세 가이드 | 일일운세 ✦ 天命',
   ogDescription: '사주명리학의 10천간, 12지간, 오행, 십신 분석과 주역 64괘의 괘상 원리까지 동양철학의 깊은 지혜를 담은 운세 정보 실전 처세 가이드입니다.',
   ogUrl: pageUrl,
-  ogImage: imageUrl,
+  ogImage: lightImageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: imageUrl
+  twitterImage: lightImageUrl
 })
 
 useHead({
@@ -43,13 +48,6 @@ useHead({
 
 const guides = [
   {
-    title: '사주명리학 기초 가이드',
-    path: '/guide/saju',
-    category: '명리학 입문',
-    icon: 'i-heroicons-book-open',
-    desc: '태어난 연·월·일·시 4개의 기둥(四柱)과 8개의 글자(八字)에 담긴 선천적 기운과 운 흐름의 근본 원리를 해설합니다.'
-  },
-  {
     title: '주역 64괘와 변효 가이드',
     path: '/guide/iching',
     category: '주역 점학',
@@ -57,18 +55,19 @@ const guides = [
     desc: '3단계 대나무 점대 드로우(하괘 ➔ 상괘 ➔ 동효)로 도출되는 주역 64괘의 이치와 지혜로운 처세술을 배웁니다.'
   },
   {
-    title: '십신(十神) 10가지 역학 관계 해설',
-    path: '/guide/ten-gods',
-    category: '명리 심층',
-    icon: 'i-heroicons-academic-cap',
-    desc: '비견·겁재·식신·상관·편재·정재·편관·정관·편인·정인 등 나와 세상이 맺는 10가지 인간관계와 운의 별을 다룹니다.'
+    title: '주역 64괘 구성과 괘상 해설',
+    path: '/guide/hexagrams',
+    category: '주역 심층',
+    icon: 'i-heroicons-sparkles',
+    iconCustom: '☯',
+    desc: '음(陰)과 양(陽) 효가 6단계로 쌓여 빚어내는 64개 괘상의 이름과 그 안에 담긴 우주 자연의 대원칙을 해설합니다.'
   },
   {
-    title: '오행(五行) 상생상극과 운세 영향',
-    path: '/guide/five-elements',
-    category: '오행 원리',
-    icon: 'i-heroicons-sun',
-    desc: '목(木)·화(火)·토(土)·금(金)·수(水) 5가지 자연 에너지가 만물을 순환시키고 나의 기운을 조율하는 상생상극의 진리입니다.'
+    title: '사주명리학 60일주 실전 가이드',
+    path: '/guide/saju',
+    category: '명리학 입문',
+    icon: 'i-heroicons-book-open',
+    desc: '태어난 연·월·일·시 4개의 기둥(四柱)과 60일주(60柱論)에 담긴 선천적 기운과 운 흐름의 근본 원리를 해설합니다.'
   },
   {
     title: '10천간 & 12지간 60갑자 해설',
@@ -78,12 +77,18 @@ const guides = [
     desc: '하늘의 기운(십간)과 땅의 계절(십이지)이 빚어내는 60갑자의 순환 체계와 매일의 일진(日辰)에 담긴 의미를 설명합니다.'
   },
   {
-    title: '주역 64괘 구성과 괘상 해설',
-    path: '/guide/hexagrams',
-    category: '주역 심층',
-    icon: 'i-heroicons-[#FFDE9E]',
-    iconCustom: '☯',
-    desc: '음(陰)과 양(陽) 효가 6단계로 쌓여 빚어내는 64개 괘상의 이름과 그 안에 담긴 우주 자연의 대원칙을 상상합니다.'
+    title: '오행(五行) 상생상극과 운세 영향',
+    path: '/guide/five-elements',
+    category: '오행 원리',
+    icon: 'i-heroicons-sun',
+    desc: '목(木)·화(火)·토(土)·금(金)·수(水) 5가지 자연 에너지가 만물을 순환시키고 나의 기운을 조율하는 상생상극의 진리입니다.'
+  },
+  {
+    title: '십신(十神) 10가지 역학 관계 해설',
+    path: '/guide/ten-gods',
+    category: '명리 심층',
+    icon: 'i-heroicons-academic-cap',
+    desc: '비견·겁재·식신·상관·편재·정재·편관·정관·편인·정인 등 나와 세상이 맺는 10가지 인간관계와 운의 별을 다룹니다.'
   }
 ]
 </script>
@@ -94,20 +99,26 @@ const guides = [
       
       <!-- 상단 타이틀 -->
       <div :class="['text-center mb-10 pb-6 border-b', 'border-amber-200/40', 'dark:border-slate-700/50']">
-        <span class="inline-block seal-stamp text-xs px-2.5 py-1 mb-2">東洋哲學 處世</span>
-        <h1 :class="['text-2xl sm:text-4xl font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
-          운세 & 동양철학 실전 처세 가이드
+        <span class="inline-block seal-stamp text-[12px] sm:text-lg px-2.5 py-1 mb-2">東洋哲學 · 處世之智</span>
+        <h1 :class="['text-[17px] sm:text-2xl font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
+          사주 60일주와 주역 64괘, 삶의 지혜 가이드
         </h1>
         <p :class="['mt-3 text-sm sm:text-base max-w-2xl mx-auto', 'text-slate-600', 'dark:text-slate-300']">
-          수천 년 전승되어 온 정통 사주명리학(四柱命理學)과 주역(周易)의 기운 분석 지식을 누구나 쉽게 이해하도록 체계적으로 정리한 처세 지혜 센터입니다.
+          사주명리학(四柱命理學)의 일주별 성격·직업·재물운·연애·건강 풀이와 주역(周易)의 괘별 해설을 쉽고 차분하게 풀어 드립니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 -->
+        <!-- 대표 서화 캘리그라피 이미지 (라이트 / 다크 모드 분기) -->
         <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md max-w-3xl mx-auto', 'border-amber-200/60', 'dark:border-amber-900/40']">
           <img
-            :src="imageUrl"
+            :src="lightImageUrl"
             alt="동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지"
-            class="w-full h-auto rounded-xl object-contain block"
+            :class="['w-full h-auto rounded-xl object-contain block', 'dark:hidden']"
+            loading="eager"
+          />
+          <img
+            :src="darkImageUrl"
+            alt="동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지 (다크모드)"
+            :class="['w-full h-auto rounded-xl object-contain hidden', 'dark:block']"
             loading="eager"
           />
         </div>
@@ -116,9 +127,10 @@ const guides = [
       <!-- 처세 아티클 그리드 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <NuxtLink
-          v-for="g in guides"
+          v-for="(g, idx) in guides"
           :key="g.path"
           :to="g.path"
+          v-reveal="{ delay: idx * 80 }"
           :class="[
             'group p-6 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-md flex flex-col justify-between',
             'bg-amber-50/40 border-amber-200/60 hover:bg-amber-100/50 hover:border-amber-300',
@@ -151,20 +163,18 @@ const guides = [
       </div>
 
       <!-- FAQ 및 추가 학술 안내 -->
-      <section :class="['mt-12 p-6 rounded-xl border', 'bg-slate-50/80 border-slate-200', 'dark:bg-[#0F1226]/80 dark:border-slate-800']">
+      <section v-reveal :class="['mt-12 p-6 rounded-xl border', 'bg-slate-50/80 border-slate-200', 'dark:bg-[#0F1226]/80 dark:border-slate-800']">
         <h3 :class="['text-base sm:text-lg font-serif-kr font-bold mb-3 flex items-center gap-2', 'text-amber-900', 'dark:text-[#FFDE9E]']">
           <UIcon name="i-heroicons-information-circle" class="w-5 h-5 text-amber-600" />
-          <span>동양철학 운세 백과사전 활용 팁</span>
+          <span>동양철학 실전 운세 활용 팁 </span>
         </h3>
         <p :class="['text-xs sm:text-sm leading-relaxed mb-3', 'text-slate-600', 'dark:text-slate-300']">
-          sajuapp.co.kr 백과사전은 운세를 정해진 숙명으로 보는 시각에서 벗어나, 자신의 선천적 오행 기운을 성찰하고 오늘의 일진과 주역 64괘를 지혜롭게 다스리는 방법을 조명합니다.
+          sajuapp.co.kr 은 운세를 정해진 숙명으로 보는 시각에서 벗어나, 자신의 선천적 오행 기운을 성찰하고 오늘의 일진과 주역 64괘를 지혜롭게 다스리는 방법을 조명합니다.
         </p>
-        <div class="flex flex-wrap gap-3 pt-2">
-          <NuxtLink to="/saju" class="text-xs px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium transition-colors">
-            오늘의 사주명리 보러가기 ➔
-          </NuxtLink>
-          <NuxtLink to="/iching" :class="['text-xs px-4 py-2 rounded-lg text-white font-medium transition-colors bg-slate-700 hover:bg-slate-800', 'dark:bg-slate-800 dark:hover:bg-slate-700']">
-            오늘의 주역 64괘 드로우 ➔
+        <div class="pt-4 flex justify-center items-center w-full">
+          <NuxtLink to="/" class="btn-gold-action">
+            <UIcon name="i-heroicons-home" class="w-4 h-4" />
+            <span>홈으로 이동</span>
           </NuxtLink>
         </div>
       </section>

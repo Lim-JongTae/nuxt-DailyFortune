@@ -77,44 +77,44 @@ useSeoMeta({
   twitterCard: 'summary_large_image'
 })
 
-useHead({
-  link: [
-    { rel: 'canonical', href: pageUrl }
-  ],
-  script: [
+useHead(() => {
+  const schemaList: any[] = [
     {
-      type: 'application/ld+json',
-      innerHTML: computed(() => {
-        const schemaList: any[] = [
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Article',
-            headline: pageTitle.value,
-            description: pageDesc.value,
-            url: pageUrl,
-            inLanguage: 'ko-KR'
-          }
-        ]
-
-        if (hexData.value?.faqList && hexData.value.faqList.length > 0) {
-          schemaList.push({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: hexData.value.faqList.map(faq => ({
-              '@type': 'Question',
-              name: faq.q,
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: faq.a
-              }
-            }))
-          })
-        }
-
-        return JSON.stringify(schemaList)
-      })
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: pageTitle.value,
+      description: pageDesc.value,
+      url: pageUrl,
+      inLanguage: 'ko-KR'
     }
   ]
+
+  if (hexData.value?.faqList && hexData.value.faqList.length > 0) {
+    schemaList.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: hexData.value.faqList.map(faq => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.a
+        }
+      }))
+    })
+  }
+
+  return {
+    link: [
+      { rel: 'canonical', href: pageUrl }
+    ],
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(schemaList)
+      }
+    ]
+  }
 })
 
 // 8괘 기호 및 이름 맵
@@ -187,39 +187,12 @@ const triggerHexAnimation = () => {
     }, 60)
   })
 }
-
-// 스크롤 시 아래에서 솟아오르는 효과 (IntersectionObserver)
-const setupScrollObserver = () => {
-  if (typeof window === 'undefined') return
-  nextTick(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
-        }
-      })
-    }, {
-      threshold: 0.08,
-      rootMargin: '0px 0px -20px 0px'
-    })
-
-    const elements = document.querySelectorAll('.reveal-on-scroll')
-    elements.forEach(el => observer.observe(el))
-  })
-}
-
 onMounted(() => {
   triggerHexAnimation()
-  setupScrollObserver()
 })
 
 watch(hexId, () => {
   triggerHexAnimation()
-  setupScrollObserver()
-})
-
-watch(selectedLineTab, () => {
-  setupScrollObserver()
 })
 </script>
 
@@ -306,7 +279,7 @@ watch(selectedLineTab, () => {
       <main v-else-if="hexData" class="space-y-2.5 sm:space-y-4">
 
         <!-- [카드 1] 메인 괘 정보 Hero 카드 (6효 조립 애니메이션 - 1/3 축소 및 워터마크 강화) -->
-        <section class="pg-card border rounded-3xl p-3.5 sm:p-5 shadow-xl relative overflow-hidden reveal-on-scroll is-visible">
+        <section class="pg-card border rounded-3xl p-3.5 sm:p-5 shadow-xl relative overflow-hidden">
           <!-- 배경 워터마크 한자 (모바일: 살짝 우상단 이동 / 데스크톱: 정중앙 / 줌 호흡 애니메이션) -->
           <div
             class="absolute left-[54%] sm:left-1/2 top-[44%] sm:top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pg-watermark-text animate-watermark-zoom text-3xl sm:text-4xl md:text-5xl font-serif-kr select-none pointer-events-none tracking-tight leading-none whitespace-nowrap"
@@ -378,7 +351,7 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 2] 정통 괘사(卦辭) & 단전(彖傳) (Hero 카드와 곧바로 자연스럽게 이어지도록 배치) -->
-        <section class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5 reveal-on-scroll">
+        <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5">
           <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-book-open" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">1. 정통 괘사(卦辭)와 단전(彖傳) 해설</h3>
@@ -414,7 +387,7 @@ watch(selectedLineTab, () => {
         <AdSense adSlot="iching-guide-top" class="my-1 sm:my-2" />
 
         <!-- [카드 3] 상전(象傳) 처세와 리더십 지침 -->
-        <section v-if="hexData.xiangZhuan" class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5 reveal-on-scroll">
+        <section v-if="hexData.xiangZhuan" v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5">
           <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-scale" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">2. 대자연의 형상과 군자의 처세 (象傳)</h3>
@@ -431,7 +404,7 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 4] 4대 부문별 실전 운세 분석 (사업, 재물, 애정, 건강) -->
-        <section class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-3 reveal-on-scroll">
+        <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-3">
           <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">3. 4대 분야별 정밀 실전 운세</h3>
@@ -484,7 +457,7 @@ watch(selectedLineTab, () => {
         <AdSense adSlot="iching-guide-mid" class="my-1 sm:my-2" />
 
         <!-- [카드 5] 6개 효사(爻辭) 원문 및 현대적 처세 조언 -->
-        <section class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5 reveal-on-scroll">
+        <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5">
           <div class="flex items-center justify-between border-b pg-border pb-2 sm:pb-2.5">
             <div class="flex items-center gap-2">
               <UIcon name="i-heroicons-bars-3-bottom-left" class="w-5 h-5 pg-text-gold" />
@@ -500,12 +473,8 @@ watch(selectedLineTab, () => {
               class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border font-bold transition-all text-[11px] whitespace-nowrap cursor-pointer select-none"
               :class="selectedLineTab === 0
                 ? [
-                    'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
-                    'dark:from-amber-400 dark:via-yellow-400 dark:to-amber-500',
-                    'text-amber-950',
-                    'border-amber-300',
-                    'dark:border-amber-400',
-                    'shadow-md font-extrabold'
+                    'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400 text-amber-950 border-amber-300 shadow-md font-extrabold',
+                    'dark:from-amber-400 dark:via-yellow-400 dark:to-amber-500 dark:border-amber-400'
                   ]
                 : 'pg-card-inner pg-border pg-text-muted hover:pg-text'"
               @click="selectedLineTab = 0"
@@ -519,12 +488,8 @@ watch(selectedLineTab, () => {
               class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border font-bold transition-all text-[11px] whitespace-nowrap cursor-pointer select-none"
               :class="selectedLineTab === l.lineNumber
                 ? [
-                    'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
-                    'dark:from-amber-400 dark:via-yellow-400 dark:to-amber-500',
-                    'text-amber-950',
-                    'border-amber-300',
-                    'dark:border-amber-400',
-                    'shadow-md font-extrabold'
+                    'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400 text-amber-950 border-amber-300 shadow-md font-extrabold',
+                    'dark:from-amber-400 dark:via-yellow-400 dark:to-amber-500 dark:border-amber-400'
                   ]
                 : 'pg-card-inner pg-border pg-text-muted hover:pg-text'"
               @click="selectedLineTab = l.lineNumber"
@@ -585,7 +550,7 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 6] 서괘전(序卦傳) & 앞뒤 괘 순환 맥락 -->
-        <section v-if="hexData.xuGuaZhuan || hexData.prevNextCompare" class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5 reveal-on-scroll">
+        <section v-if="hexData.xuGuaZhuan || hexData.prevNextCompare" v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5">
           <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-arrows-right-left" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">5. 주역 64괘 인생 순환 주기 (序卦傳)</h3>
@@ -602,7 +567,7 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 7] 자주 묻는 질문 (FAQ 아코디언) -->
-        <section v-if="hexData.faqList && hexData.faqList.length > 0" class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5 reveal-on-scroll">
+        <section v-if="hexData.faqList && hexData.faqList.length > 0" v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5">
           <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-question-mark-circle" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">6. 자주 묻는 질문 (FAQ)</h3>
@@ -632,7 +597,7 @@ watch(selectedLineTab, () => {
         <AdSense adSlot="iching-guide-bottom" class="my-1 sm:my-2" />
 
         <!-- [카드 8] 이전 / 다음 괘 이동 네비게이션 -->
-        <nav class="flex justify-between items-center gap-2 sm:gap-3 pt-1 sm:pt-2 reveal-on-scroll" aria-label="괘 이동 네비게이션">
+        <nav v-reveal class="flex justify-between items-center gap-2 sm:gap-3 pt-1 sm:pt-2" aria-label="괘 이동 네비게이션">
           <NuxtLink
             :to="`/guide/iching/${prevHexId}`"
             class="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text hover:border-(--fortune-gold) transition-colors flex items-center justify-start gap-1.5"
@@ -664,21 +629,15 @@ watch(selectedLineTab, () => {
           </NuxtLink>
         </nav>
 
-        <!-- 64괘 홈으로 이동 버튼 -->
-        <div class="pt-2 sm:pt-4 text-center reveal-on-scroll">
-          <NuxtLink
-            to="/guide/iching"
-            class="inline-flex items-center gap-1.5 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs font-extrabold border shadow-md hover:opacity-95 hover:shadow-lg transition-all cursor-pointer"
-            :class="[
-              'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
-              'dark:from-amber-400 dark:via-yellow-400 dark:to-amber-500',
-              'text-amber-950',
-              'border-amber-300',
-              'dark:border-amber-400'
-            ]"
-          >
+        <!-- 64괘 목록 및 홈으로 이동 버튼 -->
+        <div v-reveal class="pt-2 sm:pt-4 flex flex-wrap justify-center items-center gap-3 w-full text-center">
+          <NuxtLink to="/guide/iching" class="btn-gold-action">
             <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
             <span>64괘 목록으로 이동</span>
+          </NuxtLink>
+          <NuxtLink to="/" class="btn-gold-action">
+            <UIcon name="i-heroicons-home" class="w-4 h-4" />
+            <span>홈으로 이동</span>
           </NuxtLink>
         </div>
 

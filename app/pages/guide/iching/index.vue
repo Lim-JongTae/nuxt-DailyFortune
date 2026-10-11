@@ -181,7 +181,7 @@ const filteredList = computed(() => {
       </div>
 
       <!-- 정통 해설 안내 히어로 박스 -->
-      <div class="pg-card border rounded-3xl p-5 shadow-xl mb-6 relative overflow-hidden">
+      <div v-reveal class="pg-card border rounded-3xl p-5 shadow-xl mb-6 relative overflow-hidden">
         <div class="absolute -right-3 -top-5 pg-watermark-text text-8xl font-serif-kr select-none pointer-events-none opacity-20">
           易
         </div>
@@ -207,7 +207,7 @@ const filteredList = computed(() => {
       </div>
 
       <!-- 검색 및 카테고리 탭 -->
-      <div class="space-y-3 mb-6">
+      <div v-reveal class="space-y-3 mb-6">
         <!-- 검색 인풋 -->
         <div class="relative">
           <input
@@ -278,9 +278,10 @@ const filteredList = computed(() => {
       <!-- 64괘 그리드 목록 -->
       <div v-if="filteredList.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <NuxtLink
-          v-for="hex in filteredList"
+          v-for="(hex, idx) in filteredList"
           :key="hex.id"
           :to="`/guide/iching/${hex.id}`"
+          v-reveal="{ delay: (idx % 10) * 40 }"
           class="pg-card border rounded-2xl p-4 hover:border-(--fortune-gold) transition-all duration-200 shadow-sm flex flex-col justify-between group cursor-pointer"
         >
           <div>
@@ -322,6 +323,18 @@ const filteredList = computed(() => {
         <p class="text-xs pg-text-muted font-medium">
           검색어와 일치하는 주역 괘를 찾을 수 없습니다.
         </p>
+      </div>
+
+      <!-- 하단 네비게이션 버튼 -->
+      <div v-reveal class="mt-10 pt-6 border-t pg-border flex flex-wrap justify-center items-center gap-3 w-full text-center">
+        <NuxtLink to="/guide" class="btn-gold-action">
+          <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
+          <span>가이드 메인으로</span>
+        </NuxtLink>
+        <NuxtLink to="/" class="btn-gold-action">
+          <UIcon name="i-heroicons-home" class="w-4 h-4" />
+          <span>홈으로 이동</span>
+        </NuxtLink>
       </div>
 
     </div>

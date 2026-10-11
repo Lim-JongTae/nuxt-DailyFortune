@@ -495,3 +495,68 @@ html, body {
 .hex-line-4.is-active { animation-delay: 0.75s; }
 .hex-line-5.is-active { animation-delay: 0.95s; }
 .hex-line-6.is-active { animation-delay: 1.15s; }
+
+/* ==========================================================================
+   Scroll Reveal Text/Element Animation (v-reveal Directive)
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Global Golden Action Button (홈으로 이동 / 가이드 목록 이동 공통 스타일)
+   ========================================================================== */
+.btn-gold-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #fcd34d;
+  background-image: linear-gradient(to right, #fde68a, #fcd34d, #facc15);
+  color: #451a03;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .btn-gold-action {
+    padding: 0.625rem 1.5rem;
+  }
+}
+
+.btn-gold-action:hover {
+  opacity: 0.95;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.dark .btn-gold-action {
+  background-image: linear-gradient(to right, #fbbf24, #facc15, #f59e0b);
+  border-color: #fbbf24;
+  color: #451a03;
+}

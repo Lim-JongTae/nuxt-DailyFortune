@@ -123,7 +123,7 @@ const elements = [
       <div :class="['space-y-8 text-sm sm:text-base leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
         
         <!-- 오행 개요 -->
-        <section class="space-y-4">
+        <section v-reveal class="space-y-4">
           <h2 :class="['text-xl font-serif-kr font-bold border-b pb-2 flex items-center gap-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span>🌿</span> 오행(五行)이란 무엇인가
           </h2>
@@ -136,15 +136,16 @@ const elements = [
         </section>
 
         <!-- 5가지 오행 세부 해설 -->
-        <section class="space-y-4">
+        <section v-reveal class="space-y-4">
           <h2 :class="['text-xl font-serif-kr font-bold border-b pb-2 flex items-center gap-2', 'text-amber-900 border-amber-300/40', 'dark:text-[#FFDE9E] dark:border-slate-700']">
             <span>☯</span> 5가지 오행별 상징과 본질
           </h2>
 
           <div class="grid grid-cols-1 gap-4">
             <div
-              v-for="el in elements"
+              v-for="(el, idx) in elements"
               :key="el.name"
+              v-reveal="{ delay: idx * 60 }"
               :class="[
                 'p-5 rounded-xl border',
                 'bg-amber-50/40 border-amber-200/60',
@@ -175,7 +176,7 @@ const elements = [
         </section>
 
         <!-- 상생과 상극 -->
-        <section :class="['p-6 rounded-xl border space-y-4', 'bg-white border-amber-200/60', 'dark:bg-[#0F1226]/80 dark:border-slate-700']">
+        <section v-reveal :class="['p-6 rounded-xl border space-y-4', 'bg-white border-amber-200/60', 'dark:bg-[#0F1226]/80 dark:border-slate-700']">
           <h2 :class="['text-lg font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
             🔄 상생(相生)과 상극(相剋)의 조화
           </h2>
@@ -198,12 +199,14 @@ const elements = [
       </div>
 
       <!-- 하단 버튼 -->
-      <div :class="['mt-10 pt-6 border-t flex flex-wrap justify-center gap-4', 'border-amber-200/40', 'dark:border-slate-700/50']">
-        <NuxtLink to="/guide" :class="['inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white font-medium text-xs sm:text-sm transition-colors shadow-sm bg-slate-700 hover:bg-slate-800', 'dark:bg-slate-800 dark:hover:bg-slate-700']">
-          <span>목록으로</span>
+      <div v-reveal :class="['mt-10 pt-6 border-t flex flex-wrap justify-center items-center gap-3 w-full text-center', 'border-amber-200/40', 'dark:border-slate-700/50']">
+        <NuxtLink to="/guide" class="btn-gold-action">
+          <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
+          <span>가이드 목록으로</span>
         </NuxtLink>
-        <NuxtLink to="/saju" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs sm:text-sm transition-colors shadow-md">
-          <span>내 오행 기운 진단하기 ➔</span>
+        <NuxtLink to="/" class="btn-gold-action">
+          <UIcon name="i-heroicons-home" class="w-4 h-4" />
+          <span>홈으로 이동</span>
         </NuxtLink>
       </div>
 
