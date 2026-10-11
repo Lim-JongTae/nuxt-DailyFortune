@@ -1023,13 +1023,13 @@ const copyToClipboard = () => {
                     <p class="text-[11px] pg-text-muted leading-tight">{{ hexagramLinesDetail.origin.desc }}</p>
                   </div>
 
-                  <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로 - 시네마틱 모자이크 조합) -->
+                  <!-- 6효 그리기 (상효 ~ 초효: 아래에서 위로 - 상/하괘 미세 간격 분리) -->
                   <div class="space-y-1.5 max-w-28 mx-auto mb-3 select-none">
                     <div
                       v-for="(val, index) in [...hexagramLinesDetail.origin.lines].reverse()"
                       :key="index"
                       class="h-2.5 rounded-xs flex items-center justify-between overflow-hidden relative hex-line-item is-active"
-                      :class="`hex-line-${6 - index}`"
+                      :class="[`hex-line-${6 - index}`, index === 3 ? 'mt-2.5' : '']"
                     >
                       <!-- 양효 (1): 통 줄 -->
                       <template v-if="val === 1">
@@ -1080,13 +1080,13 @@ const copyToClipboard = () => {
                     <p class="text-[11px] pg-text-muted leading-tight">{{ hexagramLinesDetail.changed.desc }}</p>
                   </div>
 
-                  <!-- 6효 그리기 (변괘: 변효 반영 완료) -->
+                  <!-- 6효 그리기 (변괘: 변효 반영 완료 - 상/하괘 미세 간격 분리) -->
                   <div class="space-y-1.5 max-w-28 mx-auto mb-3 select-none">
                     <div
                       v-for="(val, index) in [...hexagramLinesDetail.changed.lines].reverse()"
                       :key="index"
                       class="h-2.5 rounded-xs flex items-center justify-between overflow-hidden relative hex-line-item is-active"
-                      :class="`hex-line-${6 - index}`"
+                      :class="[`hex-line-${6 - index}`, index === 3 ? 'mt-2.5' : '']"
                     >
                       <template v-if="val === 1">
                         <div class="w-full h-full trigram-bar-solid rounded-xs opacity-95 shadow-xs"></div>

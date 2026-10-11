@@ -3,13 +3,11 @@ export default defineNuxtConfig({
   srcDir: 'app/',
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: [
-    '@nuxt/ui',
-    '@pinia/nuxt',
-    'nuxt-og-image',
-    '@vite-pwa/nuxt',
-    '@nuxtjs/sitemap'
-  ],
+  routeRules: {
+    '/ko/iching/:slug': { redirect: '/guide/iching/:slug' },
+    '/ko/saju/**': { redirect: '/guide/saju' }
+  },
+  modules: ['@nuxt/ui', '@pinia/nuxt', 'nuxt-og-image', '@vite-pwa/nuxt', '@nuxtjs/sitemap', '@nuxt/content'],
   css: ['~/assets/css/main.css'],
   pwa: {
     registerType: 'autoUpdate',

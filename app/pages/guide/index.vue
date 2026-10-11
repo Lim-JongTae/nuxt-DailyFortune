@@ -8,17 +8,17 @@ definePageMeta({
     images: [
       {
         loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
-        title: '동양철학 명리 주역 백과사전 가이드 캘리그라피 서화 대표 이미지'
+        title: '동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지'
       }
     ]
   }
 })
 
 useSeoMeta({
-  title: '동양철학 명리 & 주역 백과사전 가이드 - 일일운세 ✦ 天命',
-  description: '사주명리학의 10천간, 12지간, 오행, 십신 분석과 주역 64괘의 괘상 원리까지 동양철학의 깊은 지혜를 담은 운세 정보 백과 가이드입니다.',
-  ogTitle: '동양철학 명리 & 주역 백과사전 가이드 | 일일운세 ✦ 天命',
-  ogDescription: '사주명리학의 10천간, 12지간, 오행, 십신 분석과 주역 64괘의 괘상 원리까지 동양철학의 깊은 지혜를 담은 운세 정보 백과 가이드입니다.',
+  title: '동양철학 명리 & 주역 실전 처세 가이드 - 일일운세 ✦ 天命',
+  description: '사주명리학의 10천간, 12지간, 오행, 십신 분석과 주역 64괘의 괘상 원리까지 동양철학의 깊은 지혜를 담은 운세 정보 실전 처세 가이드입니다.',
+  ogTitle: '동양철학 명리 & 주역 실전 처세 가이드 | 일일운세 ✦ 天命',
+  ogDescription: '사주명리학의 10천간, 12지간, 오행, 십신 분석과 주역 64괘의 괘상 원리까지 동양철학의 깊은 지혜를 담은 운세 정보 실전 처세 가이드입니다.',
   ogUrl: pageUrl,
   ogImage: imageUrl,
   twitterCard: 'summary_large_image',
@@ -33,8 +33,8 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: '동양철학 명리 & 주역 백과사전 가이드',
-        description: '사주명리학과 주역 64괘의 기초 원리와 정통 해석을 다루는 종합 백과 지식 센터',
+        name: '동양철학 명리 & 주역 실전 처세 가이드',
+        description: '사주명리학과 주역 64괘의 기초 원리와 정통 해석을 다루는 종합 지혜 센터',
         url: pageUrl
       })
     }
@@ -57,7 +57,7 @@ const guides = [
     desc: '3단계 대나무 점대 드로우(하괘 ➔ 상괘 ➔ 동효)로 도출되는 주역 64괘의 이치와 지혜로운 처세술을 배웁니다.'
   },
   {
-    title: '십신(十神) 10가지 역학 관계 백과',
+    title: '십신(十神) 10가지 역학 관계 해설',
     path: '/guide/ten-gods',
     category: '명리 심층',
     icon: 'i-heroicons-academic-cap',
@@ -71,7 +71,7 @@ const guides = [
     desc: '목(木)·화(火)·토(土)·금(金)·수(水) 5가지 자연 에너지가 만물을 순환시키고 나의 기운을 조율하는 상생상극의 진리입니다.'
   },
   {
-    title: '10천간 & 12지간 60갑자 백과',
+    title: '10천간 & 12지간 60갑자 해설',
     path: '/guide/stems-branches',
     category: '갑자 순환',
     icon: 'i-heroicons-clock',
@@ -94,26 +94,26 @@ const guides = [
       
       <!-- 상단 타이틀 -->
       <div :class="['text-center mb-10 pb-6 border-b', 'border-amber-200/40', 'dark:border-slate-700/50']">
-        <span class="inline-block seal-stamp text-xs px-2.5 py-1 mb-2">東洋哲學 百科</span>
+        <span class="inline-block seal-stamp text-xs px-2.5 py-1 mb-2">東洋哲學 處世</span>
         <h1 :class="['text-2xl sm:text-4xl font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
-          운세 & 동양철학 학술 백과사전
+          운세 & 동양철학 실전 처세 가이드
         </h1>
         <p :class="['mt-3 text-sm sm:text-base max-w-2xl mx-auto', 'text-slate-600', 'dark:text-slate-300']">
-          수천 년 전승되어 온 정통 사주명리학(四柱命理學)과 주역(周易)의 기운 분석 지식을 누구나 쉽게 이해하도록 체계적으로 정리한 백과 지식 센터입니다.
+          수천 년 전승되어 온 정통 사주명리학(四柱命理學)과 주역(周易)의 기운 분석 지식을 누구나 쉽게 이해하도록 체계적으로 정리한 처세 지혜 센터입니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 (Googlebot 크롤러 인덱싱 및 백과 표지용) -->
+        <!-- 대표 서화 캘리그라피 이미지 -->
         <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md max-w-3xl mx-auto', 'border-amber-200/60', 'dark:border-amber-900/40']">
           <img
             :src="imageUrl"
-            alt="동양철학 명리 주역 백과사전 가이드 캘리그라피 서화 대표 이미지"
+            alt="동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지"
             class="w-full h-auto rounded-xl object-contain block"
             loading="eager"
           />
         </div>
       </div>
 
-      <!-- 백과 아티클 그리드 -->
+      <!-- 처세 아티클 그리드 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <NuxtLink
           v-for="g in guides"
@@ -144,7 +144,7 @@ const guides = [
           </div>
 
           <div :class="['text-xs font-medium flex items-center gap-1 mt-2 pt-3 border-t transition-transform border-amber-200/40 text-amber-700 group-hover:translate-x-1', 'dark:border-slate-700/60 dark:text-amber-300']">
-            <span>상세 백과 읽기</span>
+            <span>상세 가이드 읽기</span>
             <span>➔</span>
           </div>
         </NuxtLink>

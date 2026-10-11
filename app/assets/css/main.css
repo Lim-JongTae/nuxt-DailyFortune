@@ -128,8 +128,8 @@ html, body {
   transition: all 0.2s ease;
 }
 .trigram-solid {
-  background: linear-gradient(90deg, #d97706 0%, #b45309 100%);
-  box-shadow: 0 0 6px rgba(217, 119, 6, 0.25);
+  background: linear-gradient(90deg, #047857 0%, #10b981 100%);
+  box-shadow: 0 0 6px rgba(4, 120, 87, 0.25);
 }
 .dark .trigram-solid {
   background: linear-gradient(90deg, #E8C170 0%, #FFDF9E 100%);
@@ -137,8 +137,8 @@ html, body {
 }
 
 .trigram-broken-segment {
-  background: #e2e8f0;
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
 .dark .trigram-broken-segment {
   background: #303349;
@@ -427,17 +427,17 @@ html, body {
    Global Hexagram Bar & Assembly Animation Utilities
    =================================================== */
 .trigram-bar-broken {
-  background-color: #9333ea;
+  background-color: #047857;
 }
 .dark .trigram-bar-broken {
-  background-color: #c084fc;
+  background-color: #E8C170;
 }
 
 .trigram-bar-solid {
-  background: linear-gradient(to right, #9333ea, #4f46e5);
+  background: linear-gradient(to right, #047857, #10b981);
 }
 .dark .trigram-bar-solid {
-  background: linear-gradient(to right, #c084fc, #818cf8);
+  background: linear-gradient(to right, #E8C170, #FFDE9E);
 }
 
 @keyframes hexLineAssembleOdd {

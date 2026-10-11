@@ -13,11 +13,13 @@
     "db:seed": "tsx prisma/seed-fortune.ts"
   },
   "dependencies": {
+    "@nuxt/content": "^3.16.1",
     "@nuxt/ui": "^4.11.1",
     "@nuxtjs/sitemap": "^8.5.1",
     "@pinia/nuxt": "^1.0.2",
     "@prisma/client": "6.19.2",
     "@unhead/vue": "^3.4.1",
+    "better-sqlite3": "^13.0.3",
     "nuxt": "^4.5.2",
     "nuxt-og-image": "^6.8.0",
     "omggif": "^1.0.10",

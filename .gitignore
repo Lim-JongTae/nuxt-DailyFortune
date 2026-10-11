@@ -53,3 +53,4 @@ myReference/
 
 # AI Agent Configs
 .agents/
+.playwright-mcp/
