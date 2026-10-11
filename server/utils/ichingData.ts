@@ -1,11 +1,10 @@
-import fs from 'fs'
-import path from 'path'
 import {
   hexagramNames,
   verifiedClassicMap,
   type ClassicExtInfo,
   type IChingLine
 } from './ichingClassicData'
+import { ichingLinesByHexagram } from './iching384LinesData'
 
 export interface IChingLineDetail {
   lineNumber: number
@@ -45,9 +44,6 @@ export interface IChingDetailResponseData {
   relatedHexagrams?: Array<{ id: number; name: string; slug: string }>
 }
 
-// 384효 데이터 메모리 캐시 (서버 최초 로드 시 1회만 파싱)
-let cachedLinesByHex: Record<number, IChingLine[]> | null = null
-
 function getKoreanLineName(nameHanja: string = '', lineNumber: number): string {
   const map: Record<string, string> = {
     '初': '초',
@@ -63,41 +59,15 @@ function getKoreanLineName(nameHanja: string = '', lineNumber: number): string {
   return nameHanja.split('').map(char => map[char] || char).join('')
 }
 
-function load384Lines(): Record<number, IChingLine[]> {
-  if (cachedLinesByHex) return cachedLinesByHex
-
-  try {
-    const jsonPath = path.resolve(process.cwd(), 'prisma/iching_384_lines.json')
-    if (fs.existsSync(jsonPath)) {
-      const rawLines: IChingLine[] = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))
-      const map: Record<number, IChingLine[]> = {}
-      for (const line of rawLines) {
-        if (!map[line.hexagramId]) {
-          map[line.hexagramId] = []
-        }
-        map[line.hexagramId]!.push(line)
-      }
-      cachedLinesByHex = map
-      return map
-    }
-  } catch (err: any) {
-    console.error('[IChingData] Failed to load 384 lines JSON:', err.message)
-  }
-
-  cachedLinesByHex = {}
-  return cachedLinesByHex
-}
-
 /**
- * 64괘 고유 상세 정보 및 6개 효사 데이터를 0.001초 만에 반환하는 초고속 조회 함수
+ * 64괘 고유 상세 정보 및 6개 효사 데이터를 0.0001초 만에 반환하는 초고속 인메모리 조회 함수
  */
 export function getIChingHexagramDetail(id: number): IChingDetailResponseData | null {
   if (id < 1 || id > 64) return null
 
   const base = hexagramNames[id]
   const classic = verifiedClassicMap[id] as ClassicExtInfo | undefined
-  const linesMap = load384Lines()
-  const rawLines = linesMap[id] || []
+  const rawLines = [...(ichingLinesByHexagram[id] || [])]
   rawLines.sort((a, b) => a.lineNumber - b.lineNumber)
 
   const lines: IChingLineDetail[] = rawLines.map((l) => {

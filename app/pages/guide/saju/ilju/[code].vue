@@ -309,7 +309,7 @@ useHead(() => {
         </section>
 
         <!-- [광고 1] 본문 상단 AdSense 슬롯 -->
-        <AdSense adSlot="saju-guide-top" class="my-1 sm:my-2" />
+        <AdSense adSlot="saju-guide-top" />
 
         <!-- [카드 3] 지장간(支藏干) 구조 및 십신(十神) 심층 분석 -->
         <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3">
@@ -413,7 +413,7 @@ useHead(() => {
         </section>
 
         <!-- [광고 2] 본문 중간 AdSense 슬롯 -->
-        <AdSense adSlot="saju-guide-mid" class="my-1 sm:my-2" />
+        <AdSense adSlot="saju-guide-mid" />
 
         <!-- [카드 6] 실전 처세 지침 및 개운법(開運法) -->
         <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3">

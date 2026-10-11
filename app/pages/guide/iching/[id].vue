@@ -384,7 +384,7 @@ watch(hexId, () => {
         </section>
 
         <!-- [광고 1] 본문 1번 해설 후 AdSense 슬롯 -->
-        <AdSense adSlot="iching-guide-top" class="my-1 sm:my-2" />
+        <AdSense adSlot="iching-guide-top" />
 
         <!-- [카드 3] 상전(象傳) 처세와 리더십 지침 -->
         <section v-if="hexData.xiangZhuan" v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5">
@@ -454,7 +454,7 @@ watch(hexId, () => {
         </section>
 
         <!-- [광고 2] 중간 AdSense 슬롯 -->
-        <AdSense adSlot="iching-guide-mid" class="my-1 sm:my-2" />
+        <AdSense adSlot="iching-guide-mid" />
 
         <!-- [카드 5] 6개 효사(爻辭) 원문 및 현대적 처세 조언 -->
         <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5">
@@ -594,7 +594,7 @@ watch(hexId, () => {
         </section>
 
         <!-- [광고 3] 하단 AdSense 슬롯 -->
-        <AdSense adSlot="iching-guide-bottom" class="my-1 sm:my-2" />
+        <AdSense adSlot="iching-guide-bottom" />
 
         <!-- [카드 8] 이전 / 다음 괘 이동 네비게이션 -->
         <nav v-reveal class="flex justify-between items-center gap-2 sm:gap-3 pt-1 sm:pt-2" aria-label="괘 이동 네비게이션">

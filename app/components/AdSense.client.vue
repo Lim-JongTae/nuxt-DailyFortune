@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 interface Props {
   adSlot: string
@@ -16,6 +16,9 @@ const runtimeConfig = useRuntimeConfig()
 const adClient = runtimeConfig.public?.adsenseClient as string
 const insRef = ref<HTMLElement | null>(null)
 const isLocal = ref(false)
+const isLoaded = ref(false)
+const isUnfilled = ref(false)
+let observer: MutationObserver | null = null
 
 onMounted(() => {
   if (typeof window !== 'undefined') {
@@ -35,13 +38,34 @@ onMounted(() => {
 
     nextTick(() => {
       if (!isLocal.value && adClient) {
+        const el = insRef.value
+        if (el && typeof MutationObserver !== 'undefined') {
+          observer = new MutationObserver(() => {
+            const status = el.getAttribute('data-ad-status')
+            if (status === 'unfilled') {
+              isUnfilled.value = true
+              isLoaded.value = false
+            } else if (status === 'filled' || el.querySelector('iframe')) {
+              isLoaded.value = true
+              isUnfilled.value = false
+            }
+          })
+
+          observer.observe(el, {
+            attributes: true,
+            attributeFilter: ['data-ad-status', 'data-adsbygoogle-status'],
+            childList: true,
+            subtree: true
+          })
+        }
+
         let retries = 0
         const maxRetries = 10
 
         const checkAndPush = () => {
-          const el = insRef.value
-          if (el && !el.getAttribute('data-adsbygoogle-status')) {
-            const width = el.offsetWidth || (el.parentElement ? el.parentElement.offsetWidth : 0)
+          const targetEl = insRef.value
+          if (targetEl && !targetEl.getAttribute('data-adsbygoogle-status')) {
+            const width = targetEl.offsetWidth || (targetEl.parentElement ? targetEl.parentElement.offsetWidth : 0)
             if (width > 0) {
               try {
                 ;(window as any).adsbygoogle = (window as any).adsbygoogle || []
@@ -60,14 +84,26 @@ onMounted(() => {
     })
   }
 })
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+})
 </script>
 
 <template>
-  <div v-if="adClient && !isLocal" class="ad-container my-2 sm:my-4 min-h-14 sm:min-h-22.5">
+  <div
+    v-if="adClient && !isLocal && !isUnfilled"
+    class="ad-container overflow-hidden text-center transition-all duration-300"
+    :class="[
+      isLoaded ? 'my-2 sm:my-3' : 'm-0 h-0 min-h-0 max-h-0'
+    ]"
+  >
     <ins
       ref="insRef"
-      class="adsbygoogle"
-      style="display: block"
+      class="adsbygoogle block mx-auto"
       :data-ad-client="adClient"
       :data-ad-slot="props.adSlot"
       :data-ad-format="props.adFormat"
@@ -75,3 +111,15 @@ onMounted(() => {
     />
   </div>
 </template>
+
+<style scoped>
+/* 광고가 채워지지 않았거나 빈 상태일 때 공간 완전 숨김 */
+.ad-container:has(ins[data-ad-status="unfilled"]),
+ins[data-ad-status="unfilled"] {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+}
+</style>
