@@ -15,14 +15,15 @@ const props = withDefaults(defineProps<Props>(), {
 const runtimeConfig = useRuntimeConfig()
 const adClient = runtimeConfig.public?.adsenseClient as string
 const insRef = ref<HTMLElement | null>(null)
+const isLocal = ref(false)
 
 onMounted(() => {
   if (typeof window !== 'undefined') {
     const host = window.location.hostname
-    const isLocal = host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.')
+    isLocal.value = host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.')
 
     // localhost 환경에서는 구글 서버 대기로 인한 탭 로딩 휠 방지를 위해 스크립트 수동 로딩 및 AdSense 스킵
-    if (!isLocal && adClient) {
+    if (!isLocal.value && adClient) {
       if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
         const script = document.createElement('script')
         script.async = true
@@ -33,7 +34,7 @@ onMounted(() => {
     }
 
     nextTick(() => {
-      if (!isLocal && adClient) {
+      if (!isLocal.value && adClient) {
         let retries = 0
         const maxRetries = 10
 
@@ -62,7 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="adClient" class="ad-container my-6 min-h-22.5">
+  <div v-if="adClient && !isLocal" class="ad-container my-2 sm:my-4 min-h-14 sm:min-h-22.5">
     <ins
       ref="insRef"
       class="adsbygoogle"

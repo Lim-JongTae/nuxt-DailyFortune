@@ -224,11 +224,11 @@ watch(selectedLineTab, () => {
 </script>
 
 <template>
-  <div class="pg-bg min-h-screen font-sans-kr pb-24 transition-colors duration-300">
-    <div class="max-w-md sm:max-w-2xl mx-auto px-4 py-4 sm:py-6">
+  <div class="pg-bg min-h-screen font-sans-kr pb-16 sm:pb-24 transition-colors duration-300">
+    <div class="max-w-md sm:max-w-2xl mx-auto px-3.5 sm:px-4 py-3 sm:py-6">
 
       <!-- 1. 상단 네비게이션 헤더 -->
-      <header class="flex items-center justify-between pb-3 border-b pg-border mb-4">
+      <header class="flex items-center justify-between pb-2.5 sm:pb-3 border-b pg-border mb-3 sm:mb-4">
         <NuxtLink
           to="/guide/iching"
           class="p-1.5 rounded-full pg-back-btn transition-colors flex items-center gap-1 text-xs font-bold pg-text hover:text-(--fortune-gold)"
@@ -254,14 +254,14 @@ watch(selectedLineTab, () => {
       </header>
 
       <!-- 2. 로딩 상태 스켈레톤 효과 (Skeleton UI) -->
-      <div v-if="status === 'pending'" class="space-y-6 animate-pulse" aria-busy="true" aria-label="운세 자료를 불러오는 중입니다">
+      <div v-if="status === 'pending'" class="space-y-3.5 sm:space-y-6 animate-pulse" aria-busy="true" aria-label="운세 자료를 불러오는 중입니다">
         <!-- Hero 카드 스켈레톤 -->
-        <div class="pg-card border rounded-3xl p-5 shadow-xl space-y-4">
+        <div class="pg-card border rounded-3xl p-4 sm:p-5 shadow-xl space-y-3 sm:space-y-4">
           <div class="flex justify-between items-center">
             <div class="h-5 w-28 skeleton-bar rounded-full"></div>
             <div class="h-6 w-16 skeleton-bar rounded-lg"></div>
           </div>
-          <div class="p-4 rounded-2xl pg-card-inner border pg-border flex justify-between items-center gap-4">
+          <div class="p-3.5 sm:p-4 rounded-2xl pg-card-inner border pg-border flex justify-between items-center gap-4">
             <div class="space-y-2 flex-1">
               <div class="h-6 w-32 skeleton-bar rounded-lg"></div>
               <div class="h-3.5 w-44 skeleton-bar rounded-md"></div>
@@ -271,17 +271,17 @@ watch(selectedLineTab, () => {
               <div v-for="i in 6" :key="i" class="h-1.5 w-full skeleton-bar rounded-xs" :class="i === 4 ? 'mt-1.5' : ''"></div>
             </div>
           </div>
-          <div class="p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
+          <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
             <div class="h-3.5 w-full skeleton-bar rounded-md"></div>
             <div class="h-3.5 w-4/5 skeleton-bar rounded-md"></div>
           </div>
         </div>
 
         <!-- 4대 운세 카드 스켈레톤 -->
-        <div class="pg-card border rounded-2xl p-5 shadow-md space-y-3">
+        <div class="pg-card border rounded-2xl p-4 sm:p-5 shadow-md space-y-2.5 sm:space-y-3">
           <div class="h-5 w-36 skeleton-bar rounded-md"></div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div v-for="i in 4" :key="i" class="p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+            <div v-for="i in 4" :key="i" class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
               <div class="h-4 w-20 skeleton-bar rounded-md"></div>
               <div class="h-3 w-full skeleton-bar rounded-md"></div>
               <div class="h-3 w-3/4 skeleton-bar rounded-md"></div>
@@ -290,10 +290,10 @@ watch(selectedLineTab, () => {
         </div>
 
         <!-- 6효사 스켈레톤 -->
-        <div class="pg-card border rounded-2xl p-5 shadow-md space-y-3">
+        <div class="pg-card border rounded-2xl p-4 sm:p-5 shadow-md space-y-2.5 sm:space-y-3">
           <div class="h-5 w-40 skeleton-bar rounded-md"></div>
-          <div class="space-y-2.5">
-            <div v-for="i in 2" :key="i" class="p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
+          <div class="space-y-2">
+            <div v-for="i in 2" :key="i" class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
               <div class="h-4 w-28 skeleton-bar rounded-md"></div>
               <div class="h-3.5 w-full skeleton-bar rounded-md"></div>
               <div class="h-3 w-2/3 skeleton-bar rounded-md"></div>
@@ -303,13 +303,13 @@ watch(selectedLineTab, () => {
       </div>
 
       <!-- 3. 메인 콘텐츠 (데이터 로드 완료 시) -->
-      <main v-else-if="hexData" class="space-y-6">
+      <main v-else-if="hexData" class="space-y-2.5 sm:space-y-4">
 
         <!-- [카드 1] 메인 괘 정보 Hero 카드 (6효 조립 애니메이션 - 1/3 축소 및 워터마크 강화) -->
-        <section class="pg-card border rounded-3xl p-5 shadow-xl relative overflow-hidden reveal-on-scroll is-visible">
+        <section class="pg-card border rounded-3xl p-3.5 sm:p-5 shadow-xl relative overflow-hidden reveal-on-scroll is-visible">
           <!-- 배경 워터마크 한자 (모바일: 살짝 우상단 이동 / 데스크톱: 정중앙 / 줌 호흡 애니메이션) -->
           <div
-            class="absolute left-[40%] sm:left-1/2 top-[44%] sm:top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pg-watermark-text animate-watermark-zoom text-3xl sm:text-4xl md:text-5xl font-serif-kr select-none pointer-events-none tracking-tight leading-none whitespace-nowrap"
+            class="absolute left-[54%] sm:left-1/2 top-[44%] sm:top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pg-watermark-text animate-watermark-zoom text-3xl sm:text-4xl md:text-5xl font-serif-kr select-none pointer-events-none tracking-tight leading-none whitespace-nowrap"
             aria-hidden="true"
           >
             {{ hexData.nameHanji }}
@@ -317,8 +317,8 @@ watch(selectedLineTab, () => {
 
           <div class="relative z-20">
             <!-- 괘 상단 메타 라벨 -->
-            <div class="flex items-center justify-between mb-3 relative z-20">
-              <span class="px-3 py-0.5 rounded-full pg-card-inner border pg-border text-xs font-bold pg-text-gold">
+            <div class="flex items-center justify-between mb-2 relative z-20">
+              <span class="px-2.5 sm:px-3 py-0.5 rounded-full pg-card-inner border pg-border text-xs font-bold pg-text-gold">
                 제{{ hexId }}괘 · {{ hexData.desc }}
               </span>
               <span class="text-xs font-semibold pg-text-muted">
@@ -328,19 +328,16 @@ watch(selectedLineTab, () => {
 
             <!-- 6효 서서히 조합되는 실시간 조립 디스플레이 (뒤의 워터마크 한자가 전체 다 보이도록 투명 배경 적용) -->
             <div
-              class="p-3.5 rounded-2xl border pg-border mb-3.5 flex items-center justify-between gap-3 relative z-20"
+              class="p-2.5 sm:p-3.5 rounded-2xl border pg-border mb-2 sm:mb-3 flex items-center justify-between gap-3 relative z-20"
               :class="['bg-white/5', 'dark:bg-black/10']"
             >
               <div class="relative z-20">
-                <h2 class="font-serif-kr text-xl sm:text-2xl font-extrabold pg-text mb-1 drop-shadow-xs">
+                <h2 class="font-serif-kr text-xl sm:text-2xl font-extrabold pg-text mb-0.5 drop-shadow-xs">
                   {{ hexData.nameKorean }}
                 </h2>
-                <p class="mt-2 text-xs font-medium pg-text-gold">
+                <p class="mt-1 sm:mt-1.5 text-xs font-medium pg-text-gold">
                   상괘: {{ currentTrigramInfo.upper.name }}({{ currentTrigramInfo.upper.symbol }}) · 하괘: {{ currentTrigramInfo.lower.name }}({{ currentTrigramInfo.lower.symbol }})
                 </p>
-                <!-- <p class="text-[10px] pg-text-muted mt-0.5">
-                  6개 효(爻) 순차 조립상
-                </p> -->
               </div>
 
               <!-- 6효 조립 바 (z-30으로 괘가 한자 위에 선명하게 얹혀 한자가 괘의 아래에 위치) -->
@@ -370,7 +367,7 @@ watch(selectedLineTab, () => {
 
             <!-- 괘 핵심 의미 총평 -->
             <div
-              class="p-3.5 rounded-2xl border pg-border relative z-20 backdrop-blur-[2px]"
+              class="p-2.5 sm:p-3 rounded-2xl border pg-border relative z-20 backdrop-blur-[2px]"
               :class="['bg-white/10', 'dark:bg-black/10']"
             >
               <p class="text-xs sm:text-sm font-semibold pg-text-gold leading-relaxed">
@@ -380,18 +377,15 @@ watch(selectedLineTab, () => {
           </div>
         </section>
 
-        <!-- [광고 1] 상단 AdSense 슬롯 -->
-        <AdSense adSlot="iching-guide-top" />
-
-        <!-- [카드 2] 정통 괘사(卦辭) & 단전(彖傳) -->
-        <section class="pg-card border rounded-2xl p-5 shadow-md space-y-4 reveal-on-scroll">
-          <div class="flex items-center gap-2 border-b pg-border pb-2.5">
+        <!-- [카드 2] 정통 괘사(卦辭) & 단전(彖傳) (Hero 카드와 곧바로 자연스럽게 이어지도록 배치) -->
+        <section class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5 reveal-on-scroll">
+          <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-book-open" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">1. 정통 괘사(卦辭)와 단전(彖傳) 해설</h3>
           </div>
 
           <!-- 괘사 원문 -->
-          <div class="p-4 rounded-xl pg-card-inner border pg-border space-y-2">
+          <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-1 sm:space-y-1.5">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-500/15 pg-text-gold">괘사 원문 (卦辭)</span>
               <span class="text-[10px] pg-text-muted">문왕(文王)의 괘사 원문</span>
@@ -402,7 +396,7 @@ watch(selectedLineTab, () => {
           </div>
 
           <!-- 단전 해설 -->
-          <div v-if="hexData.tuanZhuan" class="p-4 rounded-xl pg-card-inner border pg-border space-y-2">
+          <div v-if="hexData.tuanZhuan" class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-1 sm:space-y-1.5">
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-amber-500/15 pg-text-gold">단전(彖傳) 철학 풀이</span>
               <span class="text-[10px] pg-text-muted">공자(孔子) 십익</span>
@@ -410,20 +404,23 @@ watch(selectedLineTab, () => {
             <p class="font-serif-kr text-xs pg-text-muted leading-relaxed italic border-l-2 border-amber-500/40 pl-3 my-1">
               "{{ hexData.tuanZhuan }}"
             </p>
-            <p class="text-xs sm:text-sm pg-text leading-relaxed font-normal pt-1">
+            <p class="text-xs sm:text-sm pg-text leading-relaxed font-normal pt-0.5">
               {{ hexData.tuanExplanation }}
             </p>
           </div>
         </section>
 
+        <!-- [광고 1] 본문 1번 해설 후 AdSense 슬롯 -->
+        <AdSense adSlot="iching-guide-top" class="my-1 sm:my-2" />
+
         <!-- [카드 3] 상전(象傳) 처세와 리더십 지침 -->
-        <section v-if="hexData.xiangZhuan" class="pg-card border rounded-2xl p-5 shadow-md space-y-3 reveal-on-scroll">
-          <div class="flex items-center gap-2 border-b pg-border pb-2.5">
+        <section v-if="hexData.xiangZhuan" class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5 reveal-on-scroll">
+          <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-scale" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">2. 대자연의 형상과 군자의 처세 (象傳)</h3>
           </div>
 
-          <div class="p-4 rounded-xl pg-card-inner border pg-border space-y-2">
+          <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-1 sm:space-y-1.5">
             <p class="font-serif-kr text-xs sm:text-sm font-semibold pg-text-gold leading-relaxed">
               象曰: {{ hexData.xiangZhuan }}
             </p>
@@ -434,15 +431,15 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 4] 4대 부문별 실전 운세 분석 (사업, 재물, 애정, 건강) -->
-        <section class="pg-card border rounded-2xl p-5 shadow-md space-y-3 reveal-on-scroll">
-          <div class="flex items-center gap-2 border-b pg-border pb-2.5">
+        <section class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-3 reveal-on-scroll">
+          <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">3. 4대 분야별 정밀 실전 운세</h3>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-3.5 rounded-xl pg-card-inner border pg-border">
-              <div class="flex items-center gap-1.5 mb-1.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs">
+            <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border">
+              <div class="flex items-center gap-1.5 mb-1 sm:mb-1.5">
                 <UIcon name="i-heroicons-briefcase" class="w-4 h-4 pg-text-gold" />
                 <strong class="pg-text-gold text-xs">사업 · 직업운</strong>
               </div>
@@ -451,8 +448,8 @@ watch(selectedLineTab, () => {
               </p>
             </div>
 
-            <div class="p-3.5 rounded-xl pg-card-inner border pg-border">
-              <div class="flex items-center gap-1.5 mb-1.5">
+            <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border">
+              <div class="flex items-center gap-1.5 mb-1 sm:mb-1.5">
                 <UIcon name="i-heroicons-banknotes" class="w-4 h-4 pg-text-gold" />
                 <strong class="pg-text-gold text-xs">재물 · 투자운</strong>
               </div>
@@ -461,8 +458,8 @@ watch(selectedLineTab, () => {
               </p>
             </div>
 
-            <div class="p-3.5 rounded-xl pg-card-inner border pg-border">
-              <div class="flex items-center gap-1.5 mb-1.5">
+            <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border">
+              <div class="flex items-center gap-1.5 mb-1 sm:mb-1.5">
                 <UIcon name="i-heroicons-heart" class="w-4 h-4 pg-text-gold" />
                 <strong class="pg-text-gold text-xs">인간관계 · 애정운</strong>
               </div>
@@ -471,8 +468,8 @@ watch(selectedLineTab, () => {
               </p>
             </div>
 
-            <div class="p-3.5 rounded-xl pg-card-inner border pg-border">
-              <div class="flex items-center gap-1.5 mb-1.5">
+            <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border">
+              <div class="flex items-center gap-1.5 mb-1 sm:mb-1.5">
                 <UIcon name="i-heroicons-shield-check" class="w-4 h-4 pg-text-gold" />
                 <strong class="pg-text-gold text-xs">건강 · 심신 조언</strong>
               </div>
@@ -484,11 +481,11 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [광고 2] 중간 AdSense 슬롯 -->
-        <AdSense adSlot="iching-guide-mid" />
+        <AdSense adSlot="iching-guide-mid" class="my-1 sm:my-2" />
 
         <!-- [카드 5] 6개 효사(爻辭) 원문 및 현대적 처세 조언 -->
-        <section class="pg-card border rounded-2xl p-5 shadow-md space-y-4 reveal-on-scroll">
-          <div class="flex items-center justify-between border-b pg-border pb-2.5">
+        <section class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5 reveal-on-scroll">
+          <div class="flex items-center justify-between border-b pg-border pb-2 sm:pb-2.5">
             <div class="flex items-center gap-2">
               <UIcon name="i-heroicons-bars-3-bottom-left" class="w-5 h-5 pg-text-gold" />
               <h3 class="font-serif-kr text-sm font-bold pg-text">4. 주역 6개 효사(爻辭) 심층 분석</h3>
@@ -500,7 +497,7 @@ watch(selectedLineTab, () => {
           <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
             <button
               type="button"
-              class="px-3 py-1.5 rounded-xl border font-bold transition-all text-[11px] whitespace-nowrap cursor-pointer select-none"
+              class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border font-bold transition-all text-[11px] whitespace-nowrap cursor-pointer select-none"
               :class="selectedLineTab === 0
                 ? [
                     'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
@@ -519,7 +516,7 @@ watch(selectedLineTab, () => {
               v-for="l in hexData.lines"
               :key="l.lineNumber"
               type="button"
-              class="px-3 py-1.5 rounded-xl border font-bold transition-all text-[11px] whitespace-nowrap cursor-pointer select-none"
+              class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border font-bold transition-all text-[11px] whitespace-nowrap cursor-pointer select-none"
               :class="selectedLineTab === l.lineNumber
                 ? [
                     'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
@@ -537,12 +534,12 @@ watch(selectedLineTab, () => {
           </div>
 
           <!-- 효사 카드 목록 -->
-          <div class="space-y-3">
+          <div class="space-y-2 sm:space-y-2.5">
             <div
               v-for="line in hexData.lines"
               v-show="selectedLineTab === 0 || selectedLineTab === line.lineNumber"
               :key="line.lineNumber"
-              class="p-4 rounded-xl pg-card-inner border pg-border transition-all hover:border-amber-500/40 space-y-2.5"
+              class="p-3 sm:p-4 rounded-xl pg-card-inner border pg-border transition-all hover:border-amber-500/40 space-y-2 sm:space-y-2.5"
             >
               <div class="flex items-center justify-between">
                 <span class="font-serif-kr text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 pg-text-gold">
@@ -555,7 +552,7 @@ watch(selectedLineTab, () => {
 
               <!-- 한자 원문 -->
               <p
-                class="font-serif-kr text-xs sm:text-sm font-semibold pg-text tracking-wide p-2 rounded-lg"
+                class="font-serif-kr text-xs sm:text-sm font-semibold pg-text tracking-wide p-1.5 sm:p-2 rounded-lg"
                 :class="['bg-black/5', 'dark:bg-white/5']"
               >
                 {{ line.textHanja }}
@@ -574,7 +571,7 @@ watch(selectedLineTab, () => {
               <!-- 현대적 처세 조언 -->
               <div
                 v-if="line.modernAdvice"
-                class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-xs leading-relaxed"
+                class="p-2 sm:p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-xs leading-relaxed"
                 :class="['text-amber-900', 'dark:text-amber-200']"
               >
                 <div class="flex items-center gap-1 font-bold mb-0.5">
@@ -588,13 +585,13 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 6] 서괘전(序卦傳) & 앞뒤 괘 순환 맥락 -->
-        <section v-if="hexData.xuGuaZhuan || hexData.prevNextCompare" class="pg-card border rounded-2xl p-5 shadow-md space-y-3 reveal-on-scroll">
-          <div class="flex items-center gap-2 border-b pg-border pb-2.5">
+        <section v-if="hexData.xuGuaZhuan || hexData.prevNextCompare" class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5 reveal-on-scroll">
+          <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-arrows-right-left" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">5. 주역 64괘 인생 순환 주기 (序卦傳)</h3>
           </div>
 
-          <div class="p-4 rounded-xl pg-card-inner border pg-border space-y-2 text-xs">
+          <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-1 sm:space-y-1.5 text-xs">
             <p v-if="hexData.xuGuaZhuan" class="font-serif-kr text-xs font-semibold pg-text-gold">
               序卦曰: {{ hexData.xuGuaZhuan }}
             </p>
@@ -605,8 +602,8 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [카드 7] 자주 묻는 질문 (FAQ 아코디언) -->
-        <section v-if="hexData.faqList && hexData.faqList.length > 0" class="pg-card border rounded-2xl p-5 shadow-md space-y-3 reveal-on-scroll">
-          <div class="flex items-center gap-2 border-b pg-border pb-2.5">
+        <section v-if="hexData.faqList && hexData.faqList.length > 0" class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2 sm:space-y-2.5 reveal-on-scroll">
+          <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
             <UIcon name="i-heroicons-question-mark-circle" class="w-5 h-5 pg-text-gold" />
             <h3 class="font-serif-kr text-sm font-bold pg-text">6. 자주 묻는 질문 (FAQ)</h3>
           </div>
@@ -615,7 +612,7 @@ watch(selectedLineTab, () => {
             <details
               v-for="(faq, fIdx) in hexData.faqList"
               :key="fIdx"
-              class="group p-3.5 rounded-xl pg-card-inner border pg-border cursor-pointer transition-colors open:border-amber-500/40"
+              class="group p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border cursor-pointer transition-colors open:border-amber-500/40"
             >
               <summary class="font-bold text-xs pg-text flex items-center justify-between list-none cursor-pointer">
                 <span class="flex items-center gap-2">
@@ -624,7 +621,7 @@ watch(selectedLineTab, () => {
                 </span>
                 <UIcon name="i-heroicons-chevron-down" class="w-4 h-4 pg-text-gold transition-transform group-open:rotate-180" />
               </summary>
-              <div class="mt-2.5 pt-2 border-t pg-border text-xs pg-text-muted leading-relaxed font-normal">
+              <div class="mt-2 pt-1.5 border-t pg-border text-xs pg-text-muted leading-relaxed font-normal">
                 <strong class="pg-text-gold">A.</strong> {{ faq.a }}
               </div>
             </details>
@@ -632,13 +629,13 @@ watch(selectedLineTab, () => {
         </section>
 
         <!-- [광고 3] 하단 AdSense 슬롯 -->
-        <AdSense adSlot="iching-guide-bottom" />
+        <AdSense adSlot="iching-guide-bottom" class="my-1 sm:my-2" />
 
         <!-- [카드 8] 이전 / 다음 괘 이동 네비게이션 -->
-        <nav class="flex justify-between items-center gap-3 pt-2 reveal-on-scroll" aria-label="괘 이동 네비게이션">
+        <nav class="flex justify-between items-center gap-2 sm:gap-3 pt-1 sm:pt-2 reveal-on-scroll" aria-label="괘 이동 네비게이션">
           <NuxtLink
             :to="`/guide/iching/${prevHexId}`"
-            class="flex-1 py-3 px-4 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text hover:border-(--fortune-gold) transition-colors flex items-center justify-start gap-1.5"
+            class="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text hover:border-(--fortune-gold) transition-colors flex items-center justify-start gap-1.5"
           >
             <UIcon name="i-heroicons-chevron-left" class="w-4 h-4 pg-text-gold shrink-0" />
             <div class="text-left overflow-hidden">
@@ -649,7 +646,7 @@ watch(selectedLineTab, () => {
 
           <NuxtLink
             to="/guide/iching"
-            class="py-3 px-3 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text-gold hover:border-(--fortune-gold) transition-colors flex items-center justify-center shrink-0"
+            class="py-2.5 sm:py-3 px-3 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text-gold hover:border-(--fortune-gold) transition-colors flex items-center justify-center shrink-0"
             title="64괘 전체 목록"
           >
             <UIcon name="i-heroicons-squares-2x2" class="w-4 h-4" />
@@ -657,7 +654,7 @@ watch(selectedLineTab, () => {
 
           <NuxtLink
             :to="`/guide/iching/${nextHexId}`"
-            class="flex-1 py-3 px-4 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text hover:border-(--fortune-gold) transition-colors flex items-center justify-end gap-1.5"
+            class="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border pg-border pg-card-inner text-xs font-bold pg-text hover:border-(--fortune-gold) transition-colors flex items-center justify-end gap-1.5"
           >
             <div class="text-right overflow-hidden">
               <span class="block text-[9px] pg-text-muted">다음 괘</span>
@@ -668,10 +665,10 @@ watch(selectedLineTab, () => {
         </nav>
 
         <!-- 64괘 홈으로 이동 버튼 -->
-        <div class="pt-4 text-center reveal-on-scroll">
+        <div class="pt-2 sm:pt-4 text-center reveal-on-scroll">
           <NuxtLink
             to="/guide/iching"
-            class="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full text-xs font-extrabold border shadow-md hover:opacity-95 hover:shadow-lg transition-all cursor-pointer"
+            class="inline-flex items-center gap-1.5 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs font-extrabold border shadow-md hover:opacity-95 hover:shadow-lg transition-all cursor-pointer"
             :class="[
               'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
               'dark:from-amber-400 dark:via-yellow-400 dark:to-amber-500',
