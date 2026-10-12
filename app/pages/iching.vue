@@ -549,10 +549,67 @@ const resetAll = () => {
   currentStep.value = 0
 }
 
+// 64괘 상수역학 정통 길흉 분류 맵 (전체 64괘 완벽 매핑)
+const GREAT_FORTUNE_HEXAGRAMS = new Set([1, 8, 11, 14, 15, 19, 42, 46, 50, 55]) // 대길 (10괘: 건, 비, 태, 대유, 겸, 림, 익, 승, 정, 풍)
+const GOOD_FORTUNE_HEXAGRAMS = new Set([2, 13, 16, 17, 24, 26, 30, 31, 32, 35, 40, 45, 53, 57, 58]) // 길 (15괘: 곤, 동인, 예, 수, 복, 대축, 리, 함, 항, 진, 해, 췌, 점, 손, 태)
+const CAUTION_HEXAGRAMS = new Set([3, 4, 6, 7, 12, 18, 21, 23, 28, 29, 33, 36, 38, 39, 43, 44, 47, 48, 49, 51, 54]) // 주의 (21괘: 4대 난괘 준·몽·감·곤 및 고난/경계 괘)
+// 그 외 18괘는 평 (수, 소축, 리, 관, 비, 무망, 이, 대장, 가인, 손, 간, 려, 환, 절, 중부, 소과, 기제, 미제)
+
+/**
+ * 64괘 고유 길흉과 동효(動爻) 효사의 길흉 어휘를 결합한 정밀 운세 뱃지 계산 함수
+ */
+function getHexagramFortuneBadge(hexId: number, lineText?: string | null) {
+  let score = 2 // 기본값: 2 (평 平)
+  if (GREAT_FORTUNE_HEXAGRAMS.has(hexId)) {
+    score = 4
+  } else if (GOOD_FORTUNE_HEXAGRAMS.has(hexId)) {
+    score = 3
+  } else if (CAUTION_HEXAGRAMS.has(hexId)) {
+    score = 1
+  }
+
+  // 동효(動爻) 효사 원전 풀이 텍스트에 따른 정밀 보정
+  if (lineText) {
+    const text = lineText.trim()
+    if (/원길|대길|크게 길|무불리|형통|빛나|도약|성공|승진|기쁨/i.test(text)) {
+      score = Math.min(score + 1, 4)
+    } else if (/대흉|흉|위태|어려움|후회|낭패|위험|재앙|실패|인\(吝\)|려\(厲\)/i.test(text)) {
+      score = Math.max(score - 1, 1)
+    } else if (/무구|허물이 없|재앙이 없|벗어나|해소/i.test(text) && score === 1) {
+      score = 2 // 주의 -> 평으로 완화
+    }
+  }
+
+  switch (score) {
+    case 4:
+      return {
+        label: '대길(大吉) 쾌조',
+        class: 'text-amber-500 dark:text-amber-400'
+      }
+    case 3:
+      return {
+        label: '길(吉) 호조',
+        class: 'text-emerald-600 dark:text-emerald-400'
+      }
+    case 2:
+      return {
+        label: '평(平) 신중',
+        class: 'text-sky-600 dark:text-sky-400'
+      }
+    case 1:
+    default:
+      return {
+        label: '주의(注意) 자중',
+        class: 'text-rose-600 dark:text-rose-400'
+      }
+  }
+}
+
 // 6효 라인 배열 계산 (본괘 & 변괘)
 const hexagramLinesDetail = computed(() => {
   if (!result.value?.hexagram) {
     // [의도적 디폴트] 조회 전 예시 괘상 프리뷰용 기본값: 지천태(11) -> 지풍승(46)
+    const previewBadge = getHexagramFortuneBadge(11, '발모여 길')
     return {
       origin: {
         id: 11,
@@ -575,7 +632,8 @@ const hexagramLinesDetail = computed(() => {
       lineNum: 1,
       lineText: '초구(初九) 변효',
       harmonyText: '3양 3음 음양 조화',
-      fortuneBadge: '대길(大吉) 쾌조'
+      fortuneBadge: previewBadge.label,
+      fortuneBadgeClass: previewBadge.class
     }
   }
 
@@ -632,6 +690,10 @@ const hexagramLinesDetail = computed(() => {
   const yangCount = originLines.filter(l => l === 1).length
   const yinCount = 6 - yangCount
 
+  // 정통 64괘 길흉 및 동효 효사 풀이에 기반한 정밀 뱃지 산출
+  const lineDetailText = result.value.hexagram.lineTextKorean || result.value.hexagram.lineKorean || result.value.hexagram.lineAdvice || ''
+  const badgeInfo = getHexagramFortuneBadge(hId, lineDetailText)
+
   return {
     origin: {
       id: hId,
@@ -654,7 +716,8 @@ const hexagramLinesDetail = computed(() => {
     lineNum,
     lineText,
     harmonyText: `${yangCount}양 ${yinCount}음 음양 조화`,
-    fortuneBadge: yangCount >= 3 ? '대길(大吉) 쾌조' : '길(吉) 유망'
+    fortuneBadge: badgeInfo.label,
+    fortuneBadgeClass: badgeInfo.class
   }
 })
 
@@ -780,7 +843,7 @@ const copyToClipboard = () => {
     alert('이 브라우저는 복사 기능을 지원하지 않습니다.')
     return
   }
-  if (!result.value) return
+  if (!result.value?.hexagram) return
 
   const hex = result.value.hexagram
   const detail = hexagramLinesDetail.value
@@ -1108,7 +1171,7 @@ const copyToClipboard = () => {
             <!-- 하단 요약 정보 -->
             <div class="flex justify-between items-center px-2 pt-2 border-t pg-border text-[11px]">
               <span class="pg-text-muted">{{ hexagramLinesDetail.harmonyText }}</span>
-              <span class="pg-text-gold font-bold">{{ hexagramLinesDetail.fortuneBadge }}</span>
+              <span :class="['font-bold', hexagramLinesDetail.fortuneBadgeClass || 'pg-text-gold']">{{ hexagramLinesDetail.fortuneBadge }}</span>
             </div>
           </div>
         </div>
@@ -1155,7 +1218,7 @@ const copyToClipboard = () => {
               <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
               <div>
                 <strong class="pg-text-gold font-bold">본괘의 지혜:</strong>
-                <span class="pg-text font-normal"> {{ result.hexagram.nameKorean }} 괘의 뜻을 되새겨 차분하게 중심을 잡으세요.</span>
+                <span class="pg-text font-normal"> {{ result.hexagram?.nameKorean }} 괘의 뜻을 되새겨 차분하게 중심을 잡으세요.</span>
               </div>
             </div>
 
@@ -1193,7 +1256,7 @@ const copyToClipboard = () => {
               >
                 <span class="flex items-center gap-2">
                   <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">괘사 (卦辭)</span>
-                  {{ result.hexagram.nameKorean }} 본괘 총론
+                  {{ result.hexagram?.nameKorean }} 본괘 총론
                 </span>
                 <UIcon
                   name="i-heroicons-chevron-down"
@@ -1202,12 +1265,12 @@ const copyToClipboard = () => {
                 />
               </button>
               <div v-if="accordionOpen.total" class="p-4 pt-0 text-xs pg-text font-serif-kr space-y-2 leading-relaxed">
-                <p class="pg-text-gold font-bold">{{ result.hexagram.nameHanji }} - {{ result.hexagram.nameKorean }}</p>
+                <p class="pg-text-gold font-bold">{{ result.hexagram?.nameHanji }} - {{ result.hexagram?.nameKorean }}</p>
                 <p class="font-sans-kr font-normal pg-text">
-                  "{{ result.hexagram.summary }}"
+                  "{{ result.hexagram?.summary }}"
                 </p>
                 <p class="font-sans-kr font-normal pg-text-muted">
-                  {{ result.hexagram.meaning }}
+                  {{ result.hexagram?.meaning }}
                 </p>
               </div>
             </div>
@@ -1269,7 +1332,7 @@ const copyToClipboard = () => {
                 />
               </button>
               <div v-if="accordionOpen.symbol" class="p-4 pt-0 text-xs pg-text font-sans-kr font-normal leading-relaxed">
-                {{ hexagramLinesDetail.origin.upperName }}와 {{ hexagramLinesDetail.origin.lowerName }}가 상응하는 형상으로, {{ result.hexagram.generalFate }}
+                {{ hexagramLinesDetail.origin.upperName }}와 {{ hexagramLinesDetail.origin.lowerName }}가 상응하는 형상으로, {{ result.hexagram?.generalFate }}
               </div>
             </div>
           </div>
@@ -1297,10 +1360,10 @@ const copyToClipboard = () => {
               괘도 핵심 요약
             </div>
             <h2 class="font-serif-kr text-base sm:text-lg font-bold pg-text-gold mb-2 leading-snug">
-              "{{ result.hexagram.summary }}"
+              "{{ result.hexagram?.summary }}"
             </h2>
             <p class="text-xs pg-text font-normal leading-relaxed">
-              {{ result.hexagram.nameKorean }}({{ result.hexagram.nameHanji }}) - {{ result.hexagram.meaning }}
+              {{ result.hexagram?.nameKorean }}({{ result.hexagram?.nameHanji }}) - {{ result.hexagram?.meaning }}
             </p>
           </div>
         </div>
