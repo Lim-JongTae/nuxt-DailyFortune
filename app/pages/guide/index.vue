@@ -4,6 +4,30 @@ const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide`
 const lightImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
 const darkImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg'
 
+// 9:16 비디오 (라이트 / 다크)
+const lightVideoUrl = 'https://res.cloudinary.com/hoopoe/video/upload/v1791810935/light_prhxns.mp4'
+const darkVideoUrl = 'https://res.cloudinary.com/hoopoe/video/upload/v1791810935/black_vzhg7h.mp4'
+
+const isMuted = ref(true)
+const lightVideoRef = ref<HTMLVideoElement | null>(null)
+const darkVideoRef = ref<HTMLVideoElement | null>(null)
+
+const toggleMute = () => {
+  isMuted.value = !isMuted.value
+  if (lightVideoRef.value) {
+    lightVideoRef.value.muted = isMuted.value
+    if (!isMuted.value) {
+      lightVideoRef.value.play().catch(() => {})
+    }
+  }
+  if (darkVideoRef.value) {
+    darkVideoRef.value.muted = isMuted.value
+    if (!isMuted.value) {
+      darkVideoRef.value.play().catch(() => {})
+    }
+  }
+}
+
 definePageMeta({
   sitemap: {
     images: [
@@ -108,20 +132,42 @@ const guides = [
           사주명리학(四柱命理學)의 일주별 성격·직업·재물운·연애·건강 풀이와 주역(周易)의 괘별 해설을 쉽고 차분하게 풀어 드립니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 (라이트 / 다크 모드 분기) -->
-        <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md max-w-3xl mx-auto', 'border-amber-200/60', 'dark:border-amber-900/40']">
-          <img
-            :src="lightImageUrl"
-            alt="동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지"
-            :class="['w-full h-auto rounded-xl object-contain block', 'dark:hidden']"
-            loading="eager"
+        <!-- 대표 서화 9:16 세로 비디오 프레임 (라이트 / 다크 모드 분기 & 사운드 토글) -->
+        <div :class="['relative mt-6 max-w-70 sm:max-w-80 aspect-9/16 mx-auto overflow-hidden rounded-2xl border shadow-2xl', 'border-amber-300/60 bg-amber-50/30', 'dark:border-[#FFDE9E]/30 dark:bg-slate-900/60']">
+          <!-- 라이트 모드 영상 -->
+          <video
+            ref="lightVideoRef"
+            :src="lightVideoUrl"
+            :poster="lightImageUrl"
+            autoplay
+            loop
+            muted
+            playsinline
+            :class="['w-full h-full object-cover block', 'dark:hidden']"
           />
-          <img
-            :src="darkImageUrl"
-            alt="동양철학 명리 주역 실전 처세 가이드 캘리그라피 서화 대표 이미지 (다크모드)"
-            :class="['w-full h-auto rounded-xl object-contain hidden', 'dark:block']"
-            loading="eager"
+
+          <!-- 다크 모드 영상 -->
+          <video
+            ref="darkVideoRef"
+            :src="darkVideoUrl"
+            :poster="darkImageUrl"
+            autoplay
+            loop
+            muted
+            playsinline
+            :class="['w-full h-full object-cover hidden', 'dark:block']"
           />
+
+          <!-- 사운드 On/Off 토글 버튼 (우측 하단) -->
+          <button
+            type="button"
+            @click="toggleMute"
+            class="absolute bottom-3 right-3 px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-md bg-black/60 text-white/95 hover:bg-black/80 transition-all flex items-center gap-1.5 shadow-lg border border-white/20 active:scale-95"
+            :aria-label="isMuted ? '소리 켜기' : '음소거'"
+          >
+            <span class="text-sm leading-none">{{ isMuted ? '🔈' : '🔊' }}</span>
+            <span>{{ isMuted ? '소리 켜기' : '음소거' }}</span>
+          </button>
         </div>
       </div>
 
