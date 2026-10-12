@@ -87,6 +87,11 @@ export const useMarkdownFormatter = () => {
       text = text.replace(/^```json\s*/gi, '').replace(/^```\s*/g, '').replace(/```$/g, '').trim()
       text = text.replace(/^>\s*/gim, '')
 
+      // 1.8. 중복 불릿 기호 및 볼드 내부 불릿 기호 사전 정제 (예: • • -> -, **• 한자 -> **한자)
+      text = text.replace(/\*\*[ \t]*[•·●][ \t]*/g, '**')
+      text = text.replace(/^[ \t]*[-*•·●][ \t]+[•·●][ \t]*/gm, '- ')
+      text = text.replace(/^[ \t]*[•·●][ \t]+/gm, '- ')
+
       // 1.5. 마크다운 표 구문을 HTML <table>로 우선 자동 파싱
       text = parseMarkdownTables(text)
 
@@ -125,13 +130,8 @@ export const useMarkdownFormatter = () => {
       // 4. 볼드 강조 (**text**) -> 가독성 뛰어난 텍스트로 변환
       text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold pg-text-gold-light px-0.5">$1</strong>')
 
-      // 5. 불릿 리스트 (* item 또는 - item) -> 불릿 아이콘 리스트 변환
-      text = text.replace(/^[\*\-] (.*$)/gim, `
-        <li class="ml-2 my-2 flex items-start gap-2 pg-text text-xs sm:text-sm leading-relaxed font-medium">
-          <span class="pg-text-gold font-bold select-none">•</span>
-          <span>$1</span>
-        </li>
-      `)
+      // 5. 불릿 리스트 (* item, - item, • item) -> 불릿 아이콘 리스트 변환 (단일 점 • 보장)
+      text = text.replace(/^[ \t]*[-*•]\s+(.*$)/gim, '<li class="list-none ml-2 my-2 flex items-start gap-2 pg-text text-xs sm:text-sm leading-relaxed font-medium"><span class="pg-text-gold font-bold select-none">•</span><span>$1</span></li>')
 
       // 6. 줄 단위 단락 및 여백 정제
       const lines = text.split('\n')
