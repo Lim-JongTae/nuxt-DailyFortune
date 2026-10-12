@@ -75,71 +75,71 @@ const trigramToHexagramMap: Record<number, Record<number, number>> = {
   8: { 1: 11, 2: 19, 3: 36, 4: 24, 5: 46, 6: 7, 7: 15, 8: 2 }
 }
 
-const hexagramNames: Record<number, { nameKorean: string; nameHanji: string; desc: string }> = {
-  1: { nameKorean: '중천건', nameHanji: '乾爲天', desc: '강건함 / 만물의 시작' },
-  2: { nameKorean: '중지곤', nameHanji: '坤爲地', desc: '포용함 / 수용과 순응' },
-  3: { nameKorean: '수뢰준', nameHanji: '水雷屯', desc: '시련의 시작 / 기초 다지기' },
-  4: { nameKorean: '산수몽', nameHanji: '山水蒙', desc: '미숙함 / 배움과 자문' },
-  5: { nameKorean: '수천수', nameHanji: '水天需', desc: '여유로운 기다림 / 때를 도모함' },
-  6: { nameKorean: '천수송', nameHanji: '天水訟', desc: '시비와 다툼 / 타협과 양보' },
-  7: { nameKorean: '지수사', nameHanji: '地水師', desc: '엄중한 결단 / 대중 지휘' },
-  8: { nameKorean: '수지비', nameHanji: '水地比', desc: '조화와 친밀 / 상생과 협력' },
-  9: { nameKorean: '풍천소축', nameHanji: '風天小畜', desc: '소소한 축적 / 조심스러운 준비' },
-  10: { nameKorean: '천택리', nameHanji: '天澤履', desc: '예의범절 / 조심스러운 행보' },
-  11: { nameKorean: '지천태', nameHanji: '地天泰', desc: '태평성대 / 만사 형통' },
-  12: { nameKorean: '천지비', nameHanji: '天地否', desc: '소통 단절 / 자중과 쇄국' },
-  13: { nameKorean: '천화동인', nameHanji: '天火同人', desc: '동료와의 협력 / 위대한 단결' },
-  14: { nameKorean: '화천대유', nameHanji: '火天大有', desc: '크게 소유함 / 풍요의 전성기' },
-  15: { nameKorean: '지산겸', nameHanji: '地山謙', desc: '겸손의 덕 / 자신을 낮춤' },
-  16: { nameKorean: '뇌지예', nameHanji: '雷地豫', desc: '기쁨과 예비 / 즐거운 대비' },
-  17: { nameKorean: '택뢰수', nameHanji: '澤雷隨', desc: '대세 순응 / 순리에 따름' },
-  18: { nameKorean: '산풍고', nameHanji: '山風蠱', desc: '폐단 개혁 / 쇄신과 보수' },
-  19: { nameKorean: '지택림', nameHanji: '地澤臨', desc: '기회의 도래 / 군림과 관용' },
-  20: { nameKorean: '풍지관', nameHanji: '風地觀', desc: '정세 관망 / 성찰과 깊은 관찰' },
-  21: { nameKorean: '화뢰서합', nameHanji: '火雷噬嗑', desc: '장애 단죄 / 결단력과 돌파' },
-  22: { nameKorean: '산화비', nameHanji: '山火賁', desc: '화려한 장식 / 외양의 내실화' },
-  23: { nameKorean: '산지박', nameHanji: '山地剝', desc: '쇠락과 침체 / 은신과 내실' },
-  24: { nameKorean: '지뢰복', nameHanji: '地雷復', desc: '희망의 회복 / 새로운 출발' },
-  25: { nameKorean: '천뢰무망', nameHanji: '天雷無妄', desc: '순리 순응 / 인위적 욕심 비움' },
-  26: { nameKorean: '산천대축', nameHanji: '山天大畜', desc: '역량 비축 / 학문과 힘의 축적' },
-  27: { nameKorean: '산뢰이', nameHanji: '山雷頤', desc: '몸과 마음의 수양 / 언행 자제' },
-  28: { nameKorean: '택풍대과', nameHanji: '澤風大過', desc: '막중한 책임 / 고난 극복' },
-  29: { nameKorean: '중수감', nameHanji: '重水坎', desc: '겹친 험난함 / 자중과 신중' },
-  30: { nameKorean: '중화리', nameHanji: '重火離', desc: '타오르는 불길 / 명석함과 안착' },
-  31: { nameKorean: '택산함', nameHanji: '澤山咸', desc: '호감과 만남 / 마음의 교감' },
-  32: { nameKorean: '뇌풍항', nameHanji: '雷風恒', desc: '한결같은 지조 / 지속적인 노력' },
-  33: { nameKorean: '천산둔', nameHanji: '天山遯', desc: '한 걸음 물러섬 / 양보와 피함' },
-  34: { nameKorean: '뇌천대장', nameHanji: '雷天大壯', desc: '장대한 기세 / 경거망동 경계' },
-  35: { nameKorean: '화지진', nameHanji: '火地晉', desc: '솟구치는 기운 / 적극적 전진' },
-  36: { nameKorean: '지화명이', nameHanji: '地火明夷', desc: '빛의 은구 / 어둠 속 인내' },
-  37: { nameKorean: '풍화가인', nameHanji: '風火家人', desc: '가화만사성 / 내부의 안정' },
-  38: { nameKorean: '화택규', nameHanji: '火澤睽', desc: '뜻의 분열 / 대립과 구설 경계' },
-  39: { nameKorean: '수산건', nameHanji: '水山蹇', desc: '얼어붙은 난관 / 멈춤과 지혜' },
-  40: { nameKorean: '뇌수해', nameHanji: '雷水解', desc: '매듭의 풀림 / 해소와 봄날' },
-  41: { nameKorean: '산택손', nameHanji: '山澤損', desc: '절제와 희생 / 덜어내어 채움' },
-  42: { nameKorean: '풍뢰익', nameHanji: '風雷益', desc: '실질적 이득 / 번영과 도약' },
-  43: { nameKorean: '택천쾌', nameHanji: '澤天夬', desc: '결연한 단판 / 단호한 결단' },
-  44: { nameKorean: '천풍구', nameHanji: '天風姤', desc: '예기치 못한 인연 / 뜻밖의 만남' },
-  45: { nameKorean: '택지췌', nameHanji: '澤地萃', desc: '인재와 재물 결집 / 번창함' },
-  46: { nameKorean: '지풍승', nameHanji: '地風升', desc: '싹을 틔우는 상승 / 도약과 성장' },
-  47: { nameKorean: '택수곤', nameHanji: '澤水困', desc: '곤경과 막힘 / 자금/상황 차단' },
-  48: { nameKorean: '수풍정', nameHanji: '水風井', desc: '마르지 않는 샘물 / 지속적 공유' },
-  49: { nameKorean: '택화혁', nameHanji: '澤火革', desc: '판도 개혁 / 체제와 혁신' },
-  50: { nameKorean: '화풍정', nameHanji: '火風鼎', desc: '새로운 안착 / 솥을 거는 번창' },
-  51: { nameKorean: '중뢰진', nameHanji: '重雷震', desc: '두 번의 천둥 / 스스로의 각성' },
-  52: { nameKorean: '중산간', nameHanji: '重山艮', desc: '첩첩산중 / 멈추어 서는 고요' },
-  53: { nameKorean: '풍산점', nameHanji: '風山漸', desc: '점진적 성숙 / 단계별 발전' },
-  54: { nameKorean: '뇌택귀매', nameHanji: '雷澤歸妹', desc: '절차 무시 경계 / 급한 결정 자제' },
-  55: { nameKorean: '뇌화풍', nameHanji: '雷火豊', desc: '최절정의 풍요 / 몰락 그늘 경계' },
-  56: { nameKorean: '화산려', nameHanji: '火山旅', desc: '외로운 나그네 / 겸손한 처신' },
-  57: { nameKorean: '중풍손', nameHanji: '重風巽', desc: '부드러운 유연성 / 침투와 적응' },
-  58: { nameKorean: '중택태', nameHanji: '重澤兌', desc: '즐거운 화합 / 다정한 소통' },
-  59: { nameKorean: '풍수환', nameHanji: '風水渙', desc: '걱정의 산화 / 해묵은 앙금 해소' },
-  60: { nameKorean: '수택절', nameHanji: '水澤節', desc: '적절한 절제 / 규범과 도리' },
-  61: { nameKorean: '풍택중부', nameHanji: '風澤中孚', desc: '맑은 신뢰 / 진심 어린 믿음' },
-  62: { nameKorean: '뇌산소과', nameHanji: '雷山小過', desc: '낮게 내림 / 소소한 과오 넘김' },
-  63: { nameKorean: '수화기제', nameHanji: '水火旣濟', desc: '만사 완성 / 쇠퇴 대비' },
-  64: { nameKorean: '화수미제', nameHanji: '火水未濟', desc: '미완의 상태 / 새로운 도전 희망' }
+const hexagramNames: Record<number, { nameKorean: string; nameHanji: string; desc: string; meaning: string }> = {
+  1: { nameKorean: '중천건', nameHanji: '乾爲天', desc: '강건함 / 만물의 시작', meaning: '하늘의 무한한 강건함과 번창함의 기운으로, 주저함 없이 원칙을 지키며 전진할 때 크게 형통합니다.' },
+  2: { nameKorean: '중지곤', nameHanji: '坤爲地', desc: '포용함 / 수용과 순응', meaning: '땅의 온화하고 넓은 포용력으로 모든 것을 받아들이며, 순리에 따라 협력할 때 비로소 평안함을 얻습니다.' },
+  3: { nameKorean: '수뢰준', nameHanji: '水雷屯', desc: '시련의 시작 / 기초 다지기', meaning: '새로운 만물이 싹을 틔울 때 겪는 창업의 시련처럼, 서두르지 말고 조력자를 확보하여 튼튼한 기반을 다지십시오.' },
+  4: { nameKorean: '산수몽', nameHanji: '山水蒙', desc: '미숙함 / 배움과 자문', meaning: '아직 미숙하고 몽매한 상태이므로 자신을 낮추고 훌륭한 스승이나 전문가의 배움과 자문을 구하는 것이 이롭습니다.' },
+  5: { nameKorean: '수천수', nameHanji: '水天需', desc: '여유로운 기다림 / 때를 도모함', meaning: '앞에 험난함이 기다리고 있으나 조급하게 나아가지 말고 여유로운 마음으로 내실을 비축하며 때를 기다리십시오.' },
+  6: { nameKorean: '천수송', nameHanji: '天水訟', desc: '시비와 다툼 / 타협과 양보', meaning: '서로의 뜻이 대립하여 시비와 다툼이 생기기 쉬우니 무리하게 다투지 말고 중도에 타협하고 화해하는 것이 길합니다.' },
+  7: { nameKorean: '지수사', nameHanji: '地水師', desc: '엄중한 결단 / 대중 지휘', meaning: '대중을 이끌고 험난함을 헤쳐나가는 중책을 맡았으니, 엄격한 규율과 군자의 덕목으로 결단하십시오.' },
+  8: { nameKorean: '수지비', nameHanji: '水地比', desc: '조화와 친밀 / 상생과 협력', meaning: '물이 땅으로 스며들듯 친밀하게 화합하고 협력하는 시기입니다. 맑은 마음으로 뜻이 같은 정다운 동료와 상생하십시오.' },
+  9: { nameKorean: '풍천소축', nameHanji: '風天小畜', desc: '소소한 축적 / 조심스러운 준비', meaning: '아직 커다란 도약을 이루기는 어려우나 소소한 힘과 자원을 차곡차곡 축적하며 조심스럽게 인내하는 때입니다.' },
+  10: { nameKorean: '천택리', nameHanji: '天澤履', desc: '예의범절 / 조심스러운 행보', meaning: '호랑이 꼬리를 밟듯 위태로운 상황에서도 범절과 예의를 지키며 자중하면 화를 면하고 무사함을 누립니다.' },
+  11: { nameKorean: '지천태', nameHanji: '地天泰', desc: '태평성대 / 만사 형통', meaning: '하늘과 땅의 기운이 조화롭게 통하여 태평성대를 이루니, 소인은 물러가고 군자의 도리가 형통하게 빛납니다.' },
+  12: { nameKorean: '천지비', nameHanji: '天地否', desc: '소통 단절 / 자중과 쇄국', meaning: '하늘과 땅의 기운이 상하로 꽉 막혀 소통이 단절된 시기입니다. 억지로 추진하지 말고 내실을 다지며 때를 자중하십시오.' },
+  13: { nameKorean: '천화동인', nameHanji: '天火同人', desc: '동료와의 협력 / 위대한 단결', meaning: '마음을 열고 들판에서 여럿이 뜻을 같이하는 형국입니다. 사심을 비우고 공정한 단결을 도모하면 큰 이로움이 있습니다.' },
+  14: { nameKorean: '화천대유', nameHanji: '火天大有', desc: '크게 소유함 / 풍요의 전성기', meaning: '태양이 하늘 높이 솟아 세상을 고루 밝히듯 풍요롭고 커다란 결실을 소유하게 되는 밝은 전성기입니다.' },
+  15: { nameKorean: '지산겸', nameHanji: '地山謙', desc: '겸손의 덕 / 자신을 낮춤', meaning: '높은 산이 높은 자세를 낮추어 땅 아래로 들어가 있는 겸손의 덕을 상징합니다. 자신을 낮출 때 만인이 따르고 길합니다.' },
+  16: { nameKorean: '뇌지예', nameHanji: '雷地豫', desc: '기쁨과 예비 / 즐거운 대비', meaning: '봄 천둥이 땅을 깨우듯 기쁨과 즐거움이 찾아오는 시기입니다. 즐거움에 빠져 방심하지 말고 미래를 예비하십시오.' },
+  17: { nameKorean: '택뢰수', nameHanji: '澤雷隨', desc: '대세 순응 / 순리에 따름', meaning: '때의 흐름과 대세에 부드럽게 순응하는 지혜가 필요합니다. 고집을 버리고 순리에 맞추어 나아갈 때 탈이 없습니다.' },
+  18: { nameKorean: '산풍고', nameHanji: '山風蠱', desc: '폐단 개혁 / 쇄신과 보수', meaning: '오랫동안 쌓여온 폐단과 부패를 과감히 개혁하고 쇄신해야 할 때입니다. 초심으로 돌이켜 새로운 기틀을 마련하십시오.' },
+  19: { nameKorean: '지택림', nameHanji: '地澤臨', desc: '기회의 도래 / 군림과 관용', meaning: '희망찬 운기와 좋은 기회가 가까이 다가오는 시기입니다. 관용과 정성스러운 태도로 아랫사람을 돌보면 형통합니다.' },
+  20: { nameKorean: '풍지관', nameHanji: '風地觀', desc: '정세 관망 / 성찰과 깊은 관찰', meaning: '바람이 땅 위를 살피듯 성급한 행동을 멈추고 상황과 정세를 깊이 관망하며 성찰하는 지혜가 필요한 때입니다.' },
+  21: { nameKorean: '화뢰서합', nameHanji: '火雷噬嗑', desc: '장애 단죄 / 결단력과 돌파', meaning: '음식을 씹어 방해물을 단호히 제거하듯, 장애물이나 부정함을 결단력 있게 적발하고 과감히 정리하십시오.' },
+  22: { nameKorean: '산화비', nameHanji: '山火賁', desc: '화려한 장식 / 외양의 내실화', meaning: '산 아래 문채가 빛나듯 화려함으로 장식하는 형국입니다. 외형의 화려함에만 치중하지 말고 내실을 알차게 기르십시오.' },
+  23: { nameKorean: '산지박', nameHanji: '山地剝', desc: '쇠락과 침체 / 은신과 내실', meaning: '산이 무너져 내리고 기운이 깎여나가는 쇠락의 시기입니다. 무리한 확장을 자제하고 은신하여 스스로를 보호하십시오.' },
+  24: { nameKorean: '지뢰복', nameHanji: '地雷復', desc: '희망의 회복 / 새로운 출발', meaning: '어둠 속에서 양(陽)의 한 기운이 되돌아오는 회복의 때입니다. 허물을 깨닫고 초심의 바른 길로 돌아오면 희망이 솟아납니다.' },
+  25: { nameKorean: '천뢰무망', nameHanji: '天雷無妄', desc: '순리 순응 / 인위적 욕심 비움', meaning: '인위적인 욕심이나 허망함을 버리고 순수한 자연의 이치에 따르십시오. 순리를 지키면 뜻밖의 재앙도 면하게 됩니다.' },
+  26: { nameKorean: '산천대축', nameHanji: '山天大畜', desc: '역량 비축 / 학문과 힘의 축적', meaning: '산 속에 커다란 하늘의 기운을 담아두듯 학문, 역량, 자산을 대규모로 비축하는 시기입니다. 크게 축적하여 인재를 기르십시오.' },
+  27: { nameKorean: '산뢰이', nameHanji: '山雷頤', desc: '몸과 마음의 수양 / 언행 자제', meaning: '턱으로 음식과 말을 다스리듯 몸과 마음을 기르는 수양의 시기입니다. 올바른 식생활과 언행의 자제가 귀함의 핵심입니다.' },
+  28: { nameKorean: '택풍대과', nameHanji: '澤風大過', desc: '막중한 책임 / 고난 극복', meaning: '대들보가 지나친 무게로 들뜨는 상으로, 지나치게 중차대한 임무를 맡아 위태로우나 정직한 중용으로 헤쳐나가하십시오.' },
+  29: { nameKorean: '중수감', nameHanji: '重水坎', desc: '겹친 험난함 / 자중과 신중', meaning: '험난한 물길이 겹겹이 밀려오는 중첩된 난관의 때입니다. 두려움에 사로잡히지 말고 굳건한 신념으로 자중하며 신중하십시오.' },
+  30: { nameKorean: '중화리', nameHanji: '重火離', desc: '타오르는 불길 / 명석함과 안착', meaning: '타오르는 불꽃처럼 명석한 지혜와 분별력을 발휘할 때입니다. 바른 인자에 안착할 때 더욱 환하게 빛납니다.' },
+  31: { nameKorean: '택산함', nameHanji: '澤山咸', desc: '호감과 만남 / 마음의 교감', meaning: '산 위에 연못이 있어 연못과 산이 서로 감응하듯 남녀 간, 타인 간의 마음이 맑게 통하고 교감하는 길한 분위기입니다.' },
+  32: { nameKorean: '뇌풍항', nameHanji: '雷風恒', desc: '한결같은 지조 / 지속적인 노력', meaning: '바람과 천둥이 어우러져 한결같음을 유지하듯, 초심의 조화로운 지조와 끈기를 오랜 기간 지속하는 것이 이롭습니다.' },
+  33: { nameKorean: '천산둔', nameHanji: '天山遯', desc: '한 걸음 물러섬 / 양보와 피함', meaning: '소인의 기운이 자라나므로 무리하게 정면충돌하지 말고 한 걸음 지혜롭게 물러서며 양보하는 것이 상책입니다.' },
+  34: { nameKorean: '뇌천대장', nameHanji: '雷天大壯', desc: '장대한 기세 / 경거망동 경계', meaning: '하늘 위에서 천둥이 울리듯 강성한 기세와 힘이 넘칩니다. 힘만 믿고 경거망동하지 말고 올바른 예의를 지키십시오.' },
+  35: { nameKorean: '화지진', nameHanji: '火地晉', desc: '솟구치는 기운 / 적극적 전진', meaning: '밝은 태양이 땅 위로 찬란히 솟구쳐 전진하는 형상입니다. 상사의 인정을 받고 적극적으로 나아가 능력을 발휘하십시오.' },
+  36: { nameKorean: '지화명이', nameHanji: '地火明夷', desc: '빛의 은구 / 어둠 속 인내', meaning: '밝은 빛이 땅속으로 들어가 어두워진 상황입니다. 자신의 지혜를 드러내지 말고 은신하여 마음을 가다듬으십시오.' },
+  37: { nameKorean: '풍화가인', nameHanji: '風火家人', desc: '가화만사성 / 내부의 안정', meaning: '바람이 불꽃을 부채질하며 내부에서 일어나는 형국입니다. 가정과 조직 내부의 도리와 질서를 기르는 것이 근본입니다.' },
+  38: { nameKorean: '화택규', nameHanji: '火澤睽', desc: '뜻의 분열 / 대립과 구설 경계', meaning: '불은 위로 솟고 물은 아래로 흘러 반목하고 대립하는 상입니다. 불필요한 구설을 경계하고 작은 조화를 추구하십시오.' },
+  39: { nameKorean: '수산건', nameHanji: '水山蹇', desc: '얼어붙은 난관 / 멈춤과 지혜', meaning: '앞에는 험한 물이 있고 뒤에는 높은 산이 막힌 난관의 상입니다. 나아감을 멈추고 반성하며 내실을 다지십시오.' },
+  40: { nameKorean: '뇌수해', nameHanji: '雷水解', desc: '매듭의 풀림 / 해소와 봄날', meaning: '봄 천둥과 비가 얼어붙은 대지를 녹이듯 오랫동안 묵은 난관과 매듭이 시원하게 풀리는 시기입니다.' },
+  41: { nameKorean: '산택손', nameHanji: '山澤損', desc: '절제와 희생 / 덜어내어 채움', meaning: '아랫사람이나 소소한 이익을 덜어내어 큰 도리를 채우는 희생과 절제의 상입니다. 덜어냄이 결국 유익함으로 되돌아옵니다.' },
+  42: { nameKorean: '풍뢰익', nameHanji: '風雷益', desc: '실질적 이득 / 번영과 도약', meaning: '바람과 천둥이 서로 도와 풍요로움을 더해주는 형국입니다. 적극적으로 좋은 일을 도모하면 도약의 결실이 있습니다.' },
+  43: { nameKorean: '택천쾌', nameHanji: '澤天夬', desc: '결연한 단판 / 단호한 결단', meaning: '못의 물이 하늘 높이 올라 차올라 마침내 단판을 짓는 결단의 때입니다. 사심을 없애고 단호하고 공정하게 결단하십시오.' },
+  44: { nameKorean: '천풍구', nameHanji: '天風姤', desc: '예기치 못한 인연 / 뜻밖의 만남', meaning: '하늘 아래 바람이 불어 예기치 못한 인연과 상황이 부딪치는 때입니다. 유혹이나 성급한 결합을 주의깊게 관찰하십시오.' },
+  45: { nameKorean: '택지췌', nameHanji: '澤地萃', desc: '인재와 재물 결집 / 번창함', meaning: '땅 위에 인재와 재물이 물처럼 함께 모여 결집하는 번창의 상입니다. 모일수록 성실하고 중용한 자세를 지키십시오.' },
+  46: { nameKorean: '지풍승', nameHanji: '地風升', desc: '싹을 틔우는 상승 / 도약과 성장', meaning: '땅속의 나무 싹이 지면을 뚫고 솟아올라 커지듯 점진적으로 상승하는 도약의 시기입니다. 윗사람의 인도를 받으면 길합니다.' },
+  47: { nameKorean: '택수곤', nameHanji: '澤水困', desc: '곤경과 막힘 / 자금/상황 차단', meaning: '연못 아래로 물이 빠져나가 얼어붙은 극심한 곤경의 상입니다. 말로 변명하려 하지 말고 바른 마음으로 인내하십시오.' },
+  48: { nameKorean: '수풍정', nameHanji: '水風井', desc: '마르지 않는 샘물 / 지속적 공유', meaning: '마을은 옮겨가도 마르지 않고 무한히 솟아나는 샘물의 형국입니다. 내면의 혜안을 닦아 타인과 지혜를 지속 공유하십시오.' },
+  49: { nameKorean: '택화혁', nameHanji: '澤火革', desc: '판도 개혁 / 체제와 혁신', meaning: '못 가운데 불이 있어 가죽을 무두질하듯 구태를 철저히 쇄신하는 혁신의 시기입니다. 명분이 바르고 시기가 무르익었을 때 나아가하십시오.' },
+  50: { nameKorean: '화풍정', nameHanji: '火風鼎', desc: '새로운 안착 / 솥을 거는 번창', meaning: '솥 아래 불을 지펴 맛있는 음식을 대접하듯 새로운 기틀과 섭리를 안착시키는 번창의 상입니다. 인재를 등용하십시오.' },
+  51: { nameKorean: '중뢰진', nameHanji: '重雷震', desc: '두 번의 천둥 / 스스로의 각성', meaning: '두 번의 강렬한 천둥소리가 잇달아 진동하듯 주위를 놀라게 하는 소식이 오나, 자만하지 않고 경계하며 각성하면 길합니다.' },
+  52: { nameKorean: '중산간', nameHanji: '重山艮', desc: '첩첩산중 / 멈추어 서는 고요', meaning: '산 넘어 첩첩산중이 막혀 멈추어 서야 할 때입니다. 그침과 멈춤의 정돈을 통해 내면의 고요와 절제를 배우십시오.' },
+  53: { nameKorean: '풍산점', nameHanji: '風山漸', desc: '점진적 성숙 / 단계별 발전', meaning: '산 위에 나무가 나날이 자라나듯 무리하지 않고 단계별로 차분히 점진적으로 발전하는 정돈된 길운입니다.' },
+  54: { nameKorean: '뇌택귀매', nameHanji: '雷澤歸妹', desc: '절차 무시 경계 / 급한 결정 자제', meaning: '절차와 도리를 무시하고 성급하게 성사시키려다 도리어 불리해지는 상입니다. 조급한 탐욕을 버리고 순리를 지키십시오.' },
+  55: { nameKorean: '뇌화풍', nameHanji: '雷火豊', desc: '최절정의 풍요 / 몰락 그늘 경계', meaning: '천둥과 번개가 함께 작용하여 최절정의 화려함과 풍요를 누리는 전성기입니다. 해가 차면 지듯 그늘을 미리 대비하십시오.' },
+  56: { nameKorean: '화산려', nameHanji: '火山旅', desc: '외로운 나그네 / 겸손한 처신', meaning: '산 위에 불이 지나가는 객지의 외로운 나그네 상입니다. 자만하지 말고 주위 사람들에게 온화하고 겸손하게 처신하십시오.' },
+  57: { nameKorean: '중풍손', nameHanji: '重風巽', desc: '부드러운 유연성 / 침투와 적응', meaning: '바람이 겹쳐서 만물에 침투하듯 부드럽고 겸손한 태도로 적응하며 파고드는 이로운 처세의 시기입니다.' },
+  58: { nameKorean: '중택태', nameHanji: '重澤兌', desc: '즐거운 화합 / 다정한 소통', meaning: '두 연못이 서로를 적셔주듯 즐겁게 화합하고 진심 어린 다정한 소통을 통해 형통한 기쁨을 나누는 시기입니다.' },
+  59: { nameKorean: '풍수환', nameHanji: '風水渙', desc: '걱정의 산화 / 해묵은 앙금 해소', meaning: '바람이 물 위를 지나가 앙금과 얼음을 흩뿌려 해소하듯, 오랜 근심과 걱정이 맑게 산화되어 풀리는 상입니다.' },
+  60: { nameKorean: '수택절', nameHanji: '水澤節', desc: '적절한 절제 / 규범과 도리', meaning: '연못에 수량이 일정하여 넘치거나 마르지 않도록 알맞게 절제하는 상입니다. 규범과 자제를 지킬 때 형통함이 지속됩니다.' },
+  61: { nameKorean: '풍택중부', nameHanji: '風澤中孚', desc: '맑은 신뢰 / 진심 어린 믿음', meaning: '새가 알을 품듯 맑은 진심과 신뢰가 내면에 충만한 상태입니다. 진정성을 지니고 사람들을 대하면 만사가 통합니다.' },
+  62: { nameKorean: '뇌산소과', nameHanji: '雷山小過', desc: '낮게 내림 / 소소한 과오 넘김', meaning: '새가 높이 날지 않고 낮게 내리듯, 큰일보다는 작은 일에 집중하고 스스로를 낮추어 소소한 과오를 넘기는 시기입니다.' },
+  63: { nameKorean: '수화기제', nameHanji: '水火旣濟', desc: '만사 완성 / 쇠퇴 대비', meaning: '물이 위에 있고 불이 아래에 있어 만사가 이미 완벽하게 도달하고 성취된 상태입니다. 자만하지 말고 쇠퇴를 준비하십시오.' },
+  64: { nameKorean: '화수미제', nameHanji: '火水未濟', desc: '미완의 상태 / 새로운 도전 희망', meaning: '불이 위에 있고 물이 아래 있어 아직 완성되지 않은 미완의 상태입니다. 새로운 차원의 성공을 향해 도전을 준비하십시오.' }
 }
 
 interface IChingResultResponse {
@@ -679,7 +679,8 @@ const hexagramLinesDetail = computed(() => {
   const changedInfo = hexagramNames[changedHexId] || {
     nameKorean: result.value.hexagram.nameKorean,
     nameHanji: result.value.hexagram.nameHanji,
-    desc: result.value.hexagram.summary
+    desc: result.value.hexagram.summary,
+    meaning: result.value.hexagram.meaning || result.value.hexagram.summary
   }
 
   const yangLineNames = ['초구(初九)', '구이(九二)', '구삼(九三)', '구사(九四)', '구오(九五)', '상구(上九)']
@@ -709,6 +710,7 @@ const hexagramLinesDetail = computed(() => {
       nameKorean: changedInfo.nameKorean,
       nameHanji: changedInfo.nameHanji,
       desc: changedInfo.desc,
+      meaning: changedInfo.meaning || changedInfo.desc,
       upperName: `상${changedUpperTri.name}(${changedUpperTri.element.charAt(0)})`,
       lowerName: `하${changedLowerTri.name}(${changedLowerTri.element.charAt(0)})`,
       lines: changedLines
@@ -1208,33 +1210,60 @@ const copyToClipboard = () => {
 
         <!-- 7. 지금 취해야 할 3가지 자세 (處世 - 상단 배치) -->
         <div class="pg-card border pg-border rounded-2xl p-5 shadow-lg reveal-on-scroll" style="background: linear-gradient(to bottom, var(--fortune-card), var(--fortune-card-deep));">
-          <div class="flex items-center gap-1.5 text-xs font-bold pg-text mb-3">
-            <UIcon name="i-heroicons-check-circle" class="w-4 h-4 pg-text-gold" />
-            지금 취해야 할 3가지 자세 (處世)
+          <div class="flex items-center justify-between mb-3.5">
+            <div class="flex items-center gap-1.5 text-xs font-bold pg-text">
+              <UIcon name="i-heroicons-check-circle" class="w-4 h-4 pg-text-gold" />
+              지금 취해야 할 3가지 자세 (處世)
+            </div>
+            <span class="text-[10px] pg-text-muted font-serif-kr">체·용·변(體用變) 실천 지침</span>
           </div>
 
-          <div class="space-y-2.5 text-xs">
-            <div class="flex items-start gap-2">
+          <div class="space-y-3.5 text-xs">
+            <!-- 1. 본괘의 지혜 (체 體 - 현재 상황의 본질과 도리) -->
+            <div class="flex items-start gap-2.5">
               <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
-              <div>
-                <strong class="pg-text-gold font-bold">본괘의 지혜:</strong>
-                <span class="pg-text font-normal"> {{ result.hexagram?.nameKorean }} 괘의 뜻을 되새겨 차분하게 중심을 잡으세요.</span>
+              <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <strong class="pg-text-gold font-bold">본괘의 지혜</strong>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded pg-chip pg-text border pg-border font-serif-kr">
+                    {{ result.hexagram?.nameKorean }}<template v-if="result.hexagram?.nameHanji">({{ result.hexagram?.nameHanji }})</template>
+                  </span>
+                </div>
+                <p class="pg-text font-normal leading-relaxed">
+                  {{ result.hexagram?.meaning || result.hexagram?.summary || '자료가 없음' }}
+                </p>
               </div>
             </div>
 
-            <div class="flex items-start gap-2">
+            <!-- 2. 동효의 조언 (용 用 - 변화의 분기점에서 취할 구체적 행동강령) -->
+            <div class="flex items-start gap-2.5">
               <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
-              <div>
-                <strong class="pg-text-gold font-bold">동효의 조언:</strong>
-                <span class="pg-text font-normal"> {{ hexagramLinesDetail.lineText }}가 움직여 변화하는 기운에 맞춰 유연하게 순응하세요.</span>
+              <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <strong class="pg-text-gold font-bold">동효의 조언</strong>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded pg-chip pg-text border pg-border font-serif-kr">
+                    {{ hexagramLinesDetail.lineText }}
+                  </span>
+                </div>
+                <p class="pg-text font-normal leading-relaxed">
+                  {{ result.hexagram?.lineAdvice || result.hexagram?.lineKorean || '자료가 없음' }}
+                </p>
               </div>
             </div>
 
-            <div class="flex items-start gap-2">
+            <!-- 3. 변괘의 방향 (변 變 - 행동의 결실과 나아갈 지향점) -->
+            <div class="flex items-start gap-2.5">
               <span class="w-4 h-4 rounded-full pg-chip pg-text-gold border pg-border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
-              <div>
-                <strong class="pg-text-gold font-bold">변괘의 방향:</strong>
-                <span class="pg-text font-normal"> 결국 {{ hexagramLinesDetail.changed.nameKorean }} 괘상처럼 {{ hexagramLinesDetail.changed.desc }}의 결실로 지혜롭게 나아가게 됩니다.</span>
+              <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <strong class="pg-text-gold font-bold">변괘의 방향</strong>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded pg-chip pg-text border pg-border font-serif-kr">
+                    {{ hexagramLinesDetail.changed.nameKorean }}<template v-if="hexagramLinesDetail.changed.nameHanji">({{ hexagramLinesDetail.changed.nameHanji }})</template>
+                  </span>
+                </div>
+                <p class="pg-text font-normal leading-relaxed">
+                  {{ hexagramLinesDetail.changed.meaning || hexagramLinesDetail.changed.desc || '자료가 없음' }}
+                </p>
               </div>
             </div>
           </div>
@@ -1293,7 +1322,8 @@ const copyToClipboard = () => {
                 />
               </button>
               <div v-if="accordionOpen.line" class="p-4 pt-0 text-xs pg-text font-serif-kr space-y-2.5 leading-relaxed">
-                <p class="pg-text-gold font-bold">● 동효: {{ hexagramLinesDetail.lineText }} <span v-if="result.hexagram?.lineNameHanja">({{ result.hexagram.lineNameHanja }})</span></p>
+                <p class="pg-text-gold font-bold">● 동효: {{ hexagramLinesDetail.lineText }}</p>
+                <!-- <p class="pg-text-gold font-bold">● 동효: {{ hexagramLinesDetail.lineText }} <span v-if="result.hexagram?.lineNameHanja">({{ result.hexagram.lineNameHanja }})</span></p> -->
                 <div v-if="result.hexagram?.lineHanja || result.hexagram?.lineTextHanja" class="p-3 rounded-xl pg-card-inner border pg-border space-y-1">
                   <p class="text-[11px] font-bold pg-text-gold tracking-wide">
                     한자 원문: <span class="font-normal font-serif-kr pg-text">{{ result.hexagram?.lineHanja || result.hexagram?.lineTextHanja }}</span>
