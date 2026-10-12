@@ -60,7 +60,7 @@ const trigrams = [
   { name: '건괘 (乾 ☰)', element: '하늘 (天)', symbol: '강건함 · 주도성 · 창조' },
   { name: '태괘 (兌 ☱)', element: '못 (澤)', symbol: '기쁨 · 소통 · 너그러움' },
   { name: '리괘 (離 ☲)', element: '불 (火)', symbol: '밝음 · 지혜 · 명확함' },
-  { name: '진괘 (震 ☳)', element: '우레 (雷)', symbol: '도약 · 진동 · 신속함' },
+  { name: '진괘 (震 ☳)', element: '우뢰 (雷)', symbol: '도약 · 진동 · 신속함' },
   { name: '손괘 (巽 ☴)', element: '바람 (風)', symbol: '유연함 · 침투 · 겸손' },
   { name: '감괘 (坎 ☵)', element: '물 (水)', symbol: '험난함 · 지혜 · 묵직함' },
   { name: '간괘 (艮 ☶)', element: '산 (山)', symbol: '멈춤 · 고요함 · 중용' },
@@ -120,7 +120,7 @@ const trigrams = [
             <span>☰</span> 근본이 되는 8소성괘(八小成卦)
           </h2>
           <p :class="['text-xs sm:text-sm text-slate-600', 'dark:text-slate-400']">
-            하늘, 땅, 우레, 바람, 물, 불, 산, 못을 상징하는 8가지 소성괘는 주역 64괘를 형성하는 뼈대입니다.
+            하늘, 땅, 우뢰, 바람, 물, 불, 산, 못을 상징하는 8가지 소성괘는 주역 64괘를 형성하는 뼈대입니다.
           </p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
