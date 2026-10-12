@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide/stems-branches`
-const imageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const lightImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const darkImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg'
 
 definePageMeta({
   sitemap: {
@@ -9,6 +10,10 @@ definePageMeta({
       {
         loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
         title: '10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지'
+      },
+      {
+        loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg',
+        title: '10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지 (다크모드)'
       }
     ]
   }
@@ -20,9 +25,9 @@ useSeoMeta({
   ogTitle: '10천간 & 12지간 백과 | 일일운세 ✦ 天命',
   ogDescription: '하늘의 기운 10천간(甲乙丙丁戊己庚辛壬癸)과 땅의 계절 12지간(子丑寅卯辰巳午未申酉戌亥)이 이루는 60갑자 체계와 일진 분석 원리 가이드입니다.',
   ogUrl: pageUrl,
-  ogImage: imageUrl,
+  ogImage: lightImageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: imageUrl
+  twitterImage: lightImageUrl
 })
 
 useHead({
@@ -35,7 +40,7 @@ useHead({
         '@type': 'Article',
         headline: '10천간과 12지간 60갑자 순환 체계 학술 백과',
         description: '동양 시간관의 근본 체계인 십간과 십이지의 음양오행 결합과 하루의 일진을 읽는 역학적 지혜',
-        image: imageUrl,
+        image: [lightImageUrl, darkImageUrl],
         author: {
           '@type': 'Organization',
           name: 'sajuapp.co.kr 백과 연구팀'
@@ -94,12 +99,18 @@ const branchesList = [
           하늘의 기운 10가지와 땅의 계절 12가지가 짝을 이루어 60년, 60달, 60일 단위로 순환하는 동양의 시간 철학입니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 (Googlebot 크롤러 인덱싱 및 백과 표지용) -->
+        <!-- 대표 서화 캘리그라피 이미지 (라이트 / 다크 모드 분기) -->
         <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md', 'border-amber-200/60', 'dark:border-amber-900/40']">
           <img
-            :src="imageUrl"
+            :src="lightImageUrl"
             alt="10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지"
-            class="w-full h-auto rounded-xl object-contain block"
+            :class="['w-full h-auto rounded-xl object-contain block', 'dark:hidden']"
+            loading="eager"
+          />
+          <img
+            :src="darkImageUrl"
+            alt="10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지 (다크모드)"
+            :class="['w-full h-auto rounded-xl object-contain hidden', 'dark:block']"
             loading="eager"
           />
         </div>

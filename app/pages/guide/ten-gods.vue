@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide/ten-gods`
-const imageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const lightImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const darkImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg'
 
 definePageMeta({
   sitemap: {
@@ -9,6 +10,10 @@ definePageMeta({
       {
         loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
         title: '사주명리학 십신 10가지 성향과 운세 백과 캘리그라피 서화 대표 이미지'
+      },
+      {
+        loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg',
+        title: '사주명리학 십신 10가지 성향과 운세 백과 캘리그라피 서화 대표 이미지 (다크모드)'
       }
     ]
   }
@@ -20,10 +25,29 @@ useSeoMeta({
   ogTitle: '십신(十神) 백과 | 일일운세 ✦ 天命',
   ogDescription: '사주명리학의 핵심 체계인 십신(비견·겁재·식신·상관·편재·정재·편관·정관·편인·정인)의 개념과 자아, 재물, 직업, 인간관계 해석 원리를 상세히 해설합니다.',
   ogUrl: pageUrl,
-  ogImage: imageUrl,
+  ogImage: lightImageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: imageUrl
+  twitterImage: lightImageUrl
 })
+
+const faqList = [
+  {
+    q: '사주에 편관이나 겁재 같은 별이 많으면 무조건 나쁜가요?',
+    a: '절대 그렇지 않습니다. 편관은 강력한 카리스마와 엄격한 절제력, 결단력을 주며, 겁재는 누구에게도 뒤지지 않는 도전정신과 생존력을 선사합니다. 사주명리는 길(吉)과 흉(凶)의 이분법이 아닌 전체 오행 조화와 중용이 핵심입니다.'
+  },
+  {
+    q: '오늘 내 일진에서 식신이 들어오는 날은 어떤 날인가요?',
+    a: '식신(食神)이 활성화되는 날은 마음이 너그러워지고 표현력이 풍부해져 연구, 창작, 기획, 그리고 맛있는 음식을 나누며 대화하기에 아주 적합한 평화롭고 생산적인 하루가 됩니다.'
+  },
+  {
+    q: '십신(十神)이란 무엇이며 왜 중요한가요?',
+    a: '십신은 나 자신을 상징하는 일간(日干)을 기준으로, 다른 글자들과의 오행 생극(生剋) 및 음양 조화를 분석하여 인간의 성품, 재물, 직업 적성, 사회적 인간관계를 10가지 별로 기호화한 사주명리학의 핵심 분석 도구입니다.'
+  },
+  {
+    q: '내 사주에 없는 십신은 어떻게 보완할 수 있나요?',
+    a: '사주에 특정 십신이 없다고 낙담할 필요는 없습니다. 대운(大運)이나 세운(歲運)에서 들어오는 시기를 적극 활용하거나, 부족한 성향(예: 식상이 부족하면 의식적인 표현 활동, 인성이 부족하면 독서와 사색)을 일상 처세로 보완하여 얼마든지 조화로운 삶을 이룰 수 있습니다.'
+  }
+]
 
 useHead({
   link: [{ rel: 'canonical', href: pageUrl }],
@@ -35,7 +59,7 @@ useHead({
         '@type': 'Article',
         headline: '사주명리학 십신(十神) 10가지 성향과 인간관계·운세 심층 해설',
         description: '일간(日干)과 타 간지의 음양오행 상생상극 작용으로 도출되는 십신의 학술적 원리와 실전 운 해석법',
-        image: imageUrl,
+        image: [lightImageUrl, darkImageUrl],
         author: {
           '@type': 'Organization',
           name: 'sajuapp.co.kr 백과 연구팀'
@@ -53,24 +77,14 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: [
-          {
-            '@type': 'Question',
-            name: '십신(十神)이란 무엇인가요?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: '십신은 나 자신을 상징하는 일간(日干)을 기준으로, 다른 글자들과의 오행 생극(生剋) 및 음양(陰陽) 조화를 분석하여 인간의 성품, 재물, 명예, 사회적 관계를 10가지 형태의 별로 기호화한 사주명리학의 핵심 도구입니다.'
-            }
-          },
-          {
-            '@type': 'Question',
-            name: '오늘의 일진에서 십신은 어떻게 작용하나요?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: '오늘 날짜의 천간과 지지가 나의 일간과 만났을 때 형성되는 십신에 따라 오늘 하루 내가 주로 경험하게 될 마음가짐이나 사건의 성격이 결정됩니다.'
-            }
+        mainEntity: faqList.map(f => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: f.a
           }
-        ]
+        }))
       })
     }
   ]
@@ -164,12 +178,18 @@ const tenGodList = [
           나(일간)와 세상이 만날 때 생겨나는 10가지 심리적 특성과 인간관계 및 운의 흐름을 심층 분석합니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 (Googlebot 크롤러 인덱싱 및 백과 표지용) -->
+        <!-- 대표 서화 캘리그라피 이미지 (라이트 / 다크 모드 분기) -->
         <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md', 'border-amber-200/60', 'dark:border-amber-900/40']">
           <img
-            :src="imageUrl"
+            :src="lightImageUrl"
             alt="사주명리학 십신 10가지 성향과 운세 백과 캘리그라피 서화 대표 이미지"
-            class="w-full h-auto rounded-xl object-contain block"
+            :class="['w-full h-auto rounded-xl object-contain block', 'dark:hidden']"
+            loading="eager"
+          />
+          <img
+            :src="darkImageUrl"
+            alt="사주명리학 십신 10가지 성향과 운세 백과 캘리그라피 서화 대표 이미지 (다크모드)"
+            :class="['w-full h-auto rounded-xl object-contain hidden', 'dark:block']"
             loading="eager"
           />
         </div>
@@ -226,24 +246,36 @@ const tenGodList = [
           </div>
         </section>
 
-        <!-- FAQ 섹션 -->
-        <section v-reveal :class="['p-6 rounded-xl border space-y-4', 'bg-slate-50 border-slate-200', 'dark:bg-[#0F1226]/90 dark:border-slate-800']">
-          <h3 :class="['text-lg font-serif-kr font-bold flex items-center gap-2', 'text-amber-900', 'dark:text-[#FFDE9E]']">
-            <span>❓</span> 십신 관련 자주 묻는 질문 (FAQ)
-          </h3>
-          <div class="space-y-3 text-xs sm:text-sm">
-            <div class="border-l-3 border-amber-500 pl-3 py-1">
-              <p :class="['font-bold', 'text-slate-900', 'dark:text-white']">Q. 사주에 편관이나 겁재 같은 별이 많으면 무조건 나쁜가요?</p>
-              <p :class="['mt-1', 'text-slate-600', 'dark:text-slate-400']">
-                절대 그렇지 않습니다. 편관은 강력한 리더십과 절제력을 주며, 겁재는 누구에게도 뒤지지 않는 도전정신을 선사합니다. 사주명리는 길(吉)과 웅(凶)의 이분법이 아닌 전체 오행 조화가 핵심입니다.
-              </p>
-            </div>
-            <div class="border-l-3 border-amber-500 pl-3 py-1">
-              <p :class="['font-bold', 'text-slate-900', 'dark:text-white']">Q. 오늘 내 일진에서 식신이 들어오는 날은 어떤 날인가요?</p>
-              <p :class="['mt-1', 'text-slate-600', 'dark:text-slate-400']">
-                식신(食神)이 활성화되는 날은 마음이 너그러워지고 표현력이 풍부해져 연구, 창작, 맛있는 음식을 나누며 대화하기에 아주 적합한 평화로운 하루가 됩니다.
-              </p>
-            </div>
+        <!-- FAQ 아코디언 섹션 -->
+        <section v-reveal :class="['p-5 sm:p-7 rounded-2xl border space-y-4 shadow-sm', 'bg-amber-50/30 border-amber-200/60', 'dark:bg-[#0F1226]/90 dark:border-slate-800']">
+          <div :class="['flex items-center gap-2 border-b pb-3', 'border-amber-200/40', 'dark:border-slate-700/50']">
+            <UIcon name="i-heroicons-question-mark-circle" :class="['w-5 h-5 text-amber-600', 'dark:text-amber-400']" />
+            <h3 :class="['text-lg font-serif-kr font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
+              십신 관련 자주 묻는 질문 (FAQ)
+            </h3>
+          </div>
+
+          <div class="space-y-2.5">
+            <details
+              v-for="(faq, fIdx) in faqList"
+              :key="fIdx"
+              :class="[
+                'group p-3.5 sm:p-4 rounded-xl border cursor-pointer transition-all duration-200 open:border-amber-500/50',
+                'bg-white/80 border-amber-200/60',
+                'dark:bg-[#161B33] dark:border-slate-700/80'
+              ]"
+            >
+              <summary :class="['font-bold text-xs sm:text-sm flex items-center justify-between list-none cursor-pointer select-none', 'text-slate-900', 'dark:text-white']">
+                <span class="flex items-center gap-2.5 pr-2">
+                  <span :class="['font-extrabold text-sm sm:text-base text-amber-600', 'dark:text-amber-400']">Q.</span>
+                  <span>{{ faq.q }}</span>
+                </span>
+                <UIcon name="i-heroicons-chevron-down" :class="['w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-amber-600', 'dark:text-amber-400']" />
+              </summary>
+              <div :class="['mt-2.5 pt-2.5 border-t text-xs sm:text-sm leading-relaxed', 'border-amber-100 text-slate-600', 'dark:border-slate-700/60 dark:text-slate-300']">
+                <strong :class="['font-bold text-amber-600', 'dark:text-amber-400']">A.</strong> {{ faq.a }}
+              </div>
+            </details>
           </div>
         </section>
       </div>

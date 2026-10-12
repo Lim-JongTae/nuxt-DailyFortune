@@ -47,11 +47,17 @@ onUnmounted(() => {
           'dark:bg-emerald-900 dark:text-emerald-200 dark:border-emerald-600/60 dark:hover:bg-emerald-800'
         ]"
       >
-        <!-- 부드럽게 천천히 위아래로 떠오르는 수직 모션 애니메이션 화살표 -->
-        <UIcon
-          name="i-heroicons-arrow-up"
+        <!-- 부드럽게 천천히 위아래로 떠오르는 수직 모션 애니메이션 화살표 (인라인 SVG로 스크롤 시 불필요한 네트워크 fetch 원천 차단) -->
+        <svg
           class="w-6 h-6 shrink-0 transition-transform duration-300 animate-float-slow group-hover:-translate-y-1"
-        />
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+        </svg>
       </button>
     </Transition>
   </ClientOnly>

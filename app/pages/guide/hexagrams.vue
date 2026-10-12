@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide/hexagrams`
-const imageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const lightImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const darkImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg'
 
 definePageMeta({
   sitemap: {
@@ -9,6 +10,10 @@ definePageMeta({
       {
         loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
         title: '주역 64괘 백과 캘리그라피 서화 대표 이미지'
+      },
+      {
+        loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg',
+        title: '주역 64괘 백과 캘리그라피 서화 대표 이미지 (다크모드)'
       }
     ]
   }
@@ -20,9 +25,9 @@ useSeoMeta({
   ogTitle: '주역 64괘 백과 | 일일운세 ✦ 天命',
   ogDescription: '동양 최고의 경전 주역(周易) 64괘의 상괘·하괘 조합 원리, 음효와 양효, 동효(動爻)가 지닌 변화의 철학을 다루는 학술 가이드입니다.',
   ogUrl: pageUrl,
-  ogImage: imageUrl,
+  ogImage: lightImageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: imageUrl
+  twitterImage: lightImageUrl
 })
 
 useHead({
@@ -35,7 +40,7 @@ useHead({
         '@type': 'Article',
         headline: '주역 64괘 괘상 구조와 3변 드로우 동효 학술 백과',
         description: '자연의 8가지 상징(팔괘)이 중첩되어 형성되는 주역 64괘와 지혜로운 처세의 점학적 진리',
-        image: imageUrl,
+        image: [lightImageUrl, darkImageUrl],
         author: {
           '@type': 'Organization',
           name: 'sajuapp.co.kr 백과 연구팀'
@@ -77,12 +82,18 @@ const trigrams = [
           우주의 8가지 기본 상징인 소성괘가 6효 체계로 결합하여 빚어내는 64가지 인간세상의 괘상과 동효를 이해합니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 (Googlebot 크롤러 인덱싱 및 백과 표지용) -->
+        <!-- 대표 서화 캘리그라피 이미지 (라이트 / 다크 모드 분기) -->
         <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md', 'border-amber-200/60', 'dark:border-amber-900/40']">
           <img
-            :src="imageUrl"
+            :src="lightImageUrl"
             alt="주역 64괘 백과 캘리그라피 서화 대표 이미지"
-            class="w-full h-auto rounded-xl object-contain block"
+            :class="['w-full h-auto rounded-xl object-contain block', 'dark:hidden']"
+            loading="eager"
+          />
+          <img
+            :src="darkImageUrl"
+            alt="주역 64괘 백과 캘리그라피 서화 대표 이미지 (다크모드)"
+            :class="['w-full h-auto rounded-xl object-contain hidden', 'dark:block']"
             loading="eager"
           />
         </div>

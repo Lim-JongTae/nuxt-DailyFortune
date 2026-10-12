@@ -40,7 +40,8 @@ useHead({
         '@type': 'CollectionPage',
         name: '동양철학 명리 & 주역 실전 처세 가이드',
         description: '사주명리학과 주역 64괘의 기초 원리와 정통 해석을 다루는 종합 지혜 센터',
-        url: pageUrl
+        url: pageUrl,
+        image: [lightImageUrl, darkImageUrl]
       })
     }
   ]

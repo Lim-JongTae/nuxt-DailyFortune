@@ -9,7 +9,7 @@ import type { TalismanCategory } from '~/components/TalismanCanvas.vue'
 useHead({
   title: '오늘의 사주 맞춤 부적 | sajuapp.co.kr',
   meta: [
-    { name: 'description', content: '사주명리 일진과 오행 기운을 분석하여 오늘 당신에게 발급된 단 하나의 맞춤 행운 디지털 부적입니다.' }
+    { name: 'description', content: '사주명리 일진과 오행 기운을 분석하여 오늘 당신에게 발급된 맞춤 행운 디지털 부적입니다.' }
   ]
 })
 
@@ -124,7 +124,7 @@ const sajuSummaryText = computed(() => {
     const today = sajuResult.value.todaySaju
     const categoriesData = sajuResult.value.parsedData?.categories
 
-    let base = `오늘 내 일간(${user?.ilgan})과 오늘 일진(${today?.ganzhi}, ${today?.shipsin}) 기운을 정밀 분석하여 [${activeCategoryInfo.value.label}] 부적이 자동 발급되었습니다.`
+    let base = `오늘 내 일간(${user?.ilgan})과 오늘 일진(${today?.ganzhi}, ${today?.shipsin}) 기운을 정밀 분석하여 [${activeCategoryInfo.value.label}] 부적이 발급되었습니다.`
 
     const catKey = generatedCategory.value as keyof typeof categoriesData
     if (categoriesData && categoriesData[catKey]?.summary) {

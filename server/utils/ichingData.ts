@@ -72,8 +72,8 @@ export function getIChingHexagramDetail(id: number): IChingDetailResponseData | 
 
   const lines: IChingLineDetail[] = rawLines.map((l) => {
     const nameHanja = l.nameHanja || `${l.lineNumber}효`
-    const nameKorean = getKoreanLineName(nameHanja, l.lineNumber)
-    const traditionalInterp = classic?.lineExplanations?.[l.lineNumber] || ''
+    const nameKorean = l.nameKorean || getKoreanLineName(nameHanja, l.lineNumber)
+    const traditionalInterp = l.traditionalInterp || classic?.lineExplanations?.[l.lineNumber] || ''
 
     return {
       lineNumber: l.lineNumber,

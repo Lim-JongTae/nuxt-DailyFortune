@@ -87,9 +87,10 @@ onMounted(async () => {
     isAnimated.value = true
   }, 100)
 
-  // 방문자 통계 데이터 로드 (타입 안정성 및 실패 시 Fallback 기본값 대응)
+  // 방문자 통계 데이터 로드 (useVisitorStats 컴포저블 공유로 중복 API 호출 방지)
   try {
-    const res = await $fetch<VisitStatsResponse>('/api/stats/visit')
+    const { fetchStats } = useVisitorStats()
+    const res = await fetchStats()
     if (res?.success) {
       const targetToday = res.todayViews || 0
       const targetTotal = res.totalViews || 0
@@ -268,112 +269,114 @@ onMounted(async () => {
               </span>
             </div>
 
-            <!-- Score Preview -->
-            <div class="mt-6 flex items-center justify-between pg-card-inner p-4 rounded-2xl border pg-border">
-              <div class="flex items-center gap-4">
-                <div class="relative w-16 h-16 flex items-center justify-center rounded-full score-glow-ring shrink-0">
-                  <svg class="w-full h-full -rotate-90 origin-center" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" class="pg-text-soft opacity-25" />
-                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="100" :stroke-dashoffset="strokeDashoffset" stroke-linecap="round" class="pg-text-gold opacity-80 transition-all duration-75 ease-out" />
-                  </svg>
-                  <svg 
-                    class="absolute w-9 h-9 animate-element-color-swing" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    stroke-width="2.8" 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round"
-                  >
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                    <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="3.5" />
-                  </svg>
+            <!-- Score Preview & Five Elements (ClientOnly) -->
+            <ClientOnly>
+              <div class="mt-6 flex items-center justify-between pg-card-inner p-4 rounded-2xl border pg-border">
+                <div class="flex items-center gap-4">
+                  <div class="relative w-16 h-16 flex items-center justify-center rounded-full score-glow-ring shrink-0">
+                    <svg class="w-full h-full -rotate-90 origin-center" viewBox="0 0 36 36">
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" class="pg-text-soft opacity-25" />
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="100" :stroke-dashoffset="strokeDashoffset" stroke-linecap="round" class="pg-text-gold opacity-80 transition-all duration-75 ease-out" />
+                    </svg>
+                    <svg 
+                      class="absolute w-9 h-9 animate-element-color-swing" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      stroke-width="2.8" 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round"
+                    >
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="3.5" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="text-sm pg-text-gold font-bold font-serif-kr">오늘({{ todayGanzhiText }}일) 일진 & 십신 분석</div>
+                    <div class="text-xs pg-text-muted mt-0.5">나의 일간(日干)과 오늘 날짜의 조화</div>
+                  </div>
                 </div>
-                <div>
-                  <div class="text-sm pg-text-gold font-bold font-serif-kr">오늘({{ todayGanzhiText }}일) 일진 & 십신 분석</div>
-                  <div class="text-xs pg-text-muted mt-0.5">나의 일간(日干)과 오늘 날짜의 조화</div>
-                </div>
+                <UIcon name="i-heroicons-sparkles" class="w-6 h-6 pg-text-gold animate-pulse" />
               </div>
-              <UIcon name="i-heroicons-sparkles" class="w-6 h-6 pg-text-gold animate-pulse" />
-            </div>
 
-            <!-- Five Elements Bar -->
-            <div class="mt-6">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-xs pg-text-muted">오늘의 오행 5대 기운</span>
-                <span class="text-xs pg-text-gold">木火土金水</span>
+              <!-- Five Elements Bar -->
+              <div class="mt-6">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs pg-text-muted">오늘의 오행 5대 기운</span>
+                  <span class="text-xs pg-text-gold">木火土金水</span>
+                </div>
+                <div class="grid grid-cols-5 gap-2 text-center items-stretch">
+                  <!-- 木 (목) -->
+                  <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-emerald-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-xs font-serif-kr elem-text-wood font-bold leading-none">木</span>
+                    </div>
+                    <div class="h-5 flex items-center justify-center w-full">
+                      <div class="elem-dot-pulse w-2 h-2 rounded-full bg-emerald-500 text-emerald-500" style="animation-delay: 0s;"></div>
+                    </div>
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[0] }}%</span>
+                    </div>
+                  </div>
+                  <!-- 火 (화) -->
+                  <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-rose-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-xs font-serif-kr elem-text-fire font-bold leading-none">火</span>
+                    </div>
+                    <div class="h-5 flex items-center justify-center w-full">
+                      <div class="elem-dot-pulse w-2 h-2 rounded-full bg-rose-500 text-rose-500" style="animation-delay: 0.5s;"></div>
+                    </div>
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[1] }}%</span>
+                    </div>
+                  </div>
+                  <!-- 土 (토) -->
+                  <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-amber-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-xs font-serif-kr elem-text-earth font-bold leading-none">土</span>
+                    </div>
+                    <div class="h-5 flex items-center justify-center w-full">
+                      <div class="elem-dot-pulse w-2 h-2 rounded-full bg-amber-500 text-amber-500" style="animation-delay: 1.0s;"></div>
+                    </div>
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[2] }}%</span>
+                    </div>
+                  </div>
+                  <!-- 金 (금) -->
+                  <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border pg-border flex flex-col items-center justify-between select-none" style="height: 80px;">
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-xs font-serif-kr pg-text font-bold leading-none">金</span>
+                    </div>
+                    <div class="h-5 flex items-center justify-center w-full">
+                      <div class="elem-dot-pulse w-2 h-2 rounded-full bg-slate-500 text-slate-400" style="animation-delay: 1.5s;"></div>
+                    </div>
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[3] }}%</span>
+                    </div>
+                  </div>
+                  <!-- 水 (수) -->
+                  <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-sky-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-xs font-serif-kr elem-text-water font-bold leading-none">水</span>
+                    </div>
+                    <div class="h-5 flex items-center justify-center w-full">
+                      <div class="elem-dot-pulse w-2 h-2 rounded-full bg-sky-500 text-sky-500" style="animation-delay: 2.0s;"></div>
+                    </div>
+                    <div class="h-4 flex items-center justify-center">
+                      <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[4] }}%</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="grid grid-cols-5 gap-2 text-center items-stretch">
-                <!-- 木 (목) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-emerald-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-xs font-serif-kr elem-text-wood font-bold leading-none">木</span>
-                  </div>
-                  <div class="h-5 flex items-center justify-center w-full">
-                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-emerald-500 text-emerald-500" style="animation-delay: 0s;"></div>
-                  </div>
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[0] }}%</span>
-                  </div>
-                </div>
-                <!-- 火 (화) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-rose-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-xs font-serif-kr elem-text-fire font-bold leading-none">火</span>
-                  </div>
-                  <div class="h-5 flex items-center justify-center w-full">
-                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-rose-500 text-rose-500" style="animation-delay: 0.5s;"></div>
-                  </div>
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[1] }}%</span>
-                  </div>
-                </div>
-                <!-- 土 (토) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-amber-500/40 flex flex-col items-center justify-between select-none" style="height: 80px;">
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-xs font-serif-kr elem-text-earth font-bold leading-none">土</span>
-                  </div>
-                  <div class="h-5 flex items-center justify-center w-full">
-                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-amber-500 text-amber-500" style="animation-delay: 1.0s;"></div>
-                  </div>
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[2] }}%</span>
-                  </div>
-                </div>
-                <!-- 金 (금) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border pg-border flex flex-col items-center justify-between select-none" style="height: 80px;">
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-xs font-serif-kr pg-text font-bold leading-none">金</span>
-                  </div>
-                  <div class="h-5 flex items-center justify-center w-full">
-                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-slate-500 text-slate-400" style="animation-delay: 1.5s;"></div>
-                  </div>
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[3] }}%</span>
-                  </div>
-                </div>
-                <!-- 水 (수) -->
-                <div class="h-20 py-2.5 px-1 rounded-xl pg-card-inner border border-sky-500/30 flex flex-col items-center justify-between select-none" style="height: 80px;">
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-xs font-serif-kr elem-text-water font-bold leading-none">水</span>
-                  </div>
-                  <div class="h-5 flex items-center justify-center w-full">
-                    <div class="elem-dot-pulse w-2 h-2 rounded-full bg-sky-500 text-sky-500" style="animation-delay: 2.0s;"></div>
-                  </div>
-                  <div class="h-4 flex items-center justify-center">
-                    <span class="text-[11px] pg-text-muted font-medium leading-none">{{ elementRatios[4] }}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <!-- 오늘의 일진 오행 조화 동적 1줄 문구 -->
-            <div class="mt-4 p-3 rounded-2xl pg-card-inner border pg-border flex items-center gap-2.5 shadow-2xs">
-              <UIcon name="i-heroicons-sparkles" class="w-4 h-4 pg-text-gold shrink-0 animate-pulse" />
-              <p class="text-xs pg-text-gold font-serif-kr font-medium leading-relaxed">
-                {{ todayElementSentence }}
-              </p>
-            </div>
+              <!-- 오늘의 일진 오행 조화 동적 1줄 문구 -->
+              <div class="mt-4 p-3 rounded-2xl pg-card-inner border pg-border flex items-center gap-2.5 shadow-2xs">
+                <UIcon name="i-heroicons-sparkles" class="w-4 h-4 pg-text-gold shrink-0 animate-pulse" />
+                <p class="text-xs pg-text-gold font-serif-kr font-medium leading-relaxed">
+                  {{ todayElementSentence }}
+                </p>
+              </div>
+            </ClientOnly>
           </div>
 
           <!-- CTA Button (z-10) -->

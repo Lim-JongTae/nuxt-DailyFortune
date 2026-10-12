@@ -47,7 +47,8 @@ onMounted(async () => {
   document.addEventListener('click', handleClickOutside)
 
   try {
-    const res: any = await $fetch('/api/stats/visit')
+    const { fetchStats } = useVisitorStats()
+    const res = await fetchStats()
     if (res?.success) {
       const target = res.todayViews || 0
       const duration = 1200

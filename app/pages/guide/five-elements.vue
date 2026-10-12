@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide/five-elements`
-const imageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const lightImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg'
+const darkImageUrl = 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg'
 
 definePageMeta({
   sitemap: {
@@ -9,6 +10,10 @@ definePageMeta({
       {
         loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
         title: '오행 상생상극 백과 캘리그라피 서화 대표 이미지'
+      },
+      {
+        loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1791720835/Dark_20261011211100_clfi7e.jpg',
+        title: '오행 상생상극 백과 캘리그라피 서화 대표 이미지 (다크모드)'
       }
     ]
   }
@@ -20,9 +25,9 @@ useSeoMeta({
   ogTitle: '오행(五行) 백과 | 일일운세 ✦ 天命',
   ogDescription: '동양 우주론의 근간인 오행(木火土金水)의 의미, 상생(相生)과 상극(相剋) 순환 원리, 사주 불균형 보완법을 심층적으로 다루는 학술 가이드입니다.',
   ogUrl: pageUrl,
-  ogImage: imageUrl,
+  ogImage: lightImageUrl,
   twitterCard: 'summary_large_image',
-  twitterImage: imageUrl
+  twitterImage: lightImageUrl
 })
 
 useHead({
@@ -35,7 +40,7 @@ useHead({
         '@type': 'Article',
         headline: '오행(五行)의 상생상극 체계와 사주 운세 조율 학술 백과',
         description: '자연계 5가지 기본 기운(목화토금수)의 상호작용과 삶의 균형을 유지하는 오행 보완 처세법',
-        image: imageUrl,
+        image: [lightImageUrl, darkImageUrl],
         author: {
           '@type': 'Organization',
           name: 'sajuapp.co.kr 백과 연구팀'
@@ -109,12 +114,18 @@ const elements = [
           우주와 인체를 구성하는 5가지 순환 에너지 목·화·토·금·수의 법칙과 조화로운 균형을 살펴봅니다.
         </p>
 
-        <!-- 대표 서화 캘리그라피 이미지 (Googlebot 크롤러 인덱싱 및 백과 표지용) -->
+        <!-- 대표 서화 캘리그라피 이미지 (라이트 / 다크 모드 분기) -->
         <div :class="['mt-6 overflow-hidden rounded-xl border shadow-md', 'border-amber-200/60', 'dark:border-amber-900/40']">
           <img
-            :src="imageUrl"
+            :src="lightImageUrl"
             alt="오행 상생상극 백과 캘리그라피 서화 대표 이미지"
-            class="w-full h-auto rounded-xl object-contain block"
+            :class="['w-full h-auto rounded-xl object-contain block', 'dark:hidden']"
+            loading="eager"
+          />
+          <img
+            :src="darkImageUrl"
+            alt="오행 상생상극 백과 캘리그라피 서화 대표 이미지 (다크모드)"
+            :class="['w-full h-auto rounded-xl object-contain hidden', 'dark:block']"
             loading="eager"
           />
         </div>

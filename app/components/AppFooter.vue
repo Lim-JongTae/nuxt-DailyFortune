@@ -43,16 +43,10 @@ const currentYear = new Date().getFullYear()
           사이트 소개
         </NuxtLink>
         <NuxtLink
-          to="/guide/saju"
+          to="/guide"
           :class="['transition-colors', 'hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']"
         >
-          사주명리 가이드
-        </NuxtLink>
-        <NuxtLink
-          to="/guide/iching"
-          :class="['transition-colors', 'hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']"
-        >
-          주역비결 가이드
+          사주✦주역 가이드
         </NuxtLink>
         <NuxtLink
           to="/privacy"
