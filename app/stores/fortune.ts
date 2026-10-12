@@ -6,6 +6,34 @@ import { getGanzhiOfDay, getKstTodayDateString } from '~/utils/saju'
 const COOLDOWN_DURATION_MS = 12 * 60 * 60 * 1000 // 12시간
 
 // 타입 정의
+export interface IChingHexagramResult {
+  id: number
+  nameHanji: string
+  nameKorean: string
+  summary: string
+  meaning?: string
+  generalFate?: string
+  businessFate?: string
+  careerFate?: string
+  wealthFate?: string
+  loveFate?: string
+  lineNumber: number
+  lineHanja?: string
+  lineKorean?: string
+  lineAdvice?: string
+  lineTextHanja?: string
+  lineTextKorean?: string
+  lineNameHanja?: string
+}
+
+export interface IChingResultResponse {
+  success: boolean
+  hexagram?: IChingHexagramResult
+  aiInterpretation?: string
+  isAiGenerated?: boolean
+  error?: string
+}
+
 interface FortuneResult {
   [key: string]: any
 }
@@ -42,7 +70,7 @@ export const useFortuneStore = defineStore('fortune', () => {
   const ichingWorry = ref('')
 
   const sajuResult = ref<FortuneResult | null>(null)
-  const ichingResult = ref<FortuneResult | null>(null)
+  const ichingResult = ref<IChingResultResponse | null>(null)
 
   const loadFromLocalStorage = (ignoreExpiration = false) => {
     if (import.meta.client) {
@@ -53,7 +81,12 @@ export const useFortuneStore = defineStore('fortune', () => {
         gender.value = localStorage.getItem('fortune_gender') || 'man'
 
         const todayStr = getKstDateString()
-        const todayGanzhi = getGanzhiOfDay(todayStr).fullName
+        let todayGanzhi = ''
+        try {
+          todayGanzhi = getGanzhiOfDay(todayStr)?.fullName || ''
+        } catch (e) {
+          console.warn('[Store] Ganzhi calc bypassed:', e)
+        }
 
         // 타입별 날짜 확인: 각각 독립적으로 날짜 변경 검사
         const sajuSavedDate = localStorage.getItem('fortune_saju_savedDate')
@@ -64,7 +97,7 @@ export const useFortuneStore = defineStore('fortune', () => {
 
         // 사주 데이터 처리 (오늘 날짜가 아니거나 간지가 일치하지 않으면 무조건 파기)
         const storedSaju = parseStoredJson('fortune_sajuResult') || parseStoredJson('fortune_backup_sajuResult')
-        const isSajuGanzhiMismatch = storedSaju?.todaySaju?.ganzhi && storedSaju.todaySaju.ganzhi !== todayGanzhi
+        const isSajuGanzhiMismatch = !!(storedSaju?.todaySaju?.ganzhi && todayGanzhi && storedSaju.todaySaju.ganzhi !== todayGanzhi)
 
         if (isSajuExpired || isSajuGanzhiMismatch) {
           localStorage.removeItem('fortune_sajuResult')
@@ -79,17 +112,23 @@ export const useFortuneStore = defineStore('fortune', () => {
           sajuResult.value = parseStoredJson('fortune_sajuResult')
         }
 
-        // 주역 데이터 처리
+        // 주역 데이터 처리 (자정 경과 시 날짜/시간/결과 모두 정리)
         if (isIchingExpired) {
           localStorage.removeItem('fortune_ichingResult')
           localStorage.removeItem('fortune_backup_ichingResult')
           localStorage.removeItem('fortune_iching_savedTime')
+          localStorage.removeItem('fortune_iching_savedDate')
           localStorage.removeItem('fortune_ichingWorry')
           ichingWorry.value = ''
           ichingResult.value = null
         } else {
           ichingWorry.value = localStorage.getItem('fortune_ichingWorry') || ''
-          ichingResult.value = parseStoredJson('fortune_ichingResult')
+          const storedIching = parseStoredJson('fortune_ichingResult')
+          if (storedIching && storedIching.success === true && storedIching.hexagram) {
+            ichingResult.value = storedIching as IChingResultResponse
+          } else {
+            ichingResult.value = null
+          }
         }
 
         // 공유 날짜 업데이트 (호환성 유지용)

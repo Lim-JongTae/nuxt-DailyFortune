@@ -1,42 +1,7 @@
-import fs from 'fs'
-import path from 'path'
 import { defineEventHandler, readBody, getCookie, setCookie, getRequestIP, createError } from 'h3'
 import prisma from '../../utils/prisma'
 import { recordIchingView } from '../../utils/stats'
-
-export interface IChingLine {
-  hexagramId: number
-  lineNumber: number
-  hexagramNameHanja?: string
-  hexagramNameKorean?: string
-  nameHanja?: string
-  textHanja: string
-  textKorean: string
-  modernAdvice?: string
-}
-
-// 384효 데이터 캐싱 (서버 시작 시 한 번만 로드)
-let cachedLines: IChingLine[] | null = null
-
-function loadIchingLines(): IChingLine[] {
-  if (cachedLines !== null && cachedLines.length > 0) {
-    return cachedLines
-  }
-
-  try {
-    const jsonPath = path.resolve(process.cwd(), 'prisma/iching_384_lines.json')
-    if (fs.existsSync(jsonPath)) {
-      const rawJson = fs.readFileSync(jsonPath, 'utf8')
-      cachedLines = JSON.parse(rawJson) as IChingLine[]
-      console.log('[I Ching] Loaded 384 lines data successfully')
-      return cachedLines
-    }
-  } catch (e: any) {
-    console.error('[I Ching] Failed to load 384 lines data:', e.message)
-  }
-
-  return []
-}
+import { ichingLinesByHexagram, type IChingLine } from '../../utils/iching384LinesData'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -128,8 +93,15 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const hexagramId = Number(body.hexagramId) || Math.floor(Math.random() * 64) + 1
-    const lineNumber = Number(body.lineNumber) || Math.floor(Math.random() * 6) + 1
+    const rawHexId = Number(body.hexagramId)
+    const hexagramId = (!isNaN(rawHexId) && rawHexId >= 1 && rawHexId <= 64)
+      ? rawHexId
+      : Math.floor(Math.random() * 64) + 1
+
+    const rawLineNum = Number(body.lineNumber)
+    const lineNumber = (!isNaN(rawLineNum) && rawLineNum >= 1 && rawLineNum <= 6)
+      ? rawLineNum
+      : Math.floor(Math.random() * 6) + 1
 
     const hexagram = await prisma.iChingHexagram.findUnique({
       where: { id: hexagramId }
@@ -142,12 +114,16 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // 384효(爻) 원문 데이터 로드 (캐싱된 데이터 사용)
-    const allLines = loadIchingLines()
-    const lineDetail = allLines.find((l: IChingLine) => l.hexagramId === hexagramId && l.lineNumber === lineNumber)
+    // 384효(爻) 원문 데이터 로드 (인메모리 정통 데이터셋 직접 조회)
+    const hexLines = ichingLinesByHexagram[hexagramId] || []
+    const lineDetail = hexLines.find((l: IChingLine) => l.lineNumber === lineNumber)
 
-    const lineHanjaText = lineDetail?.textHanja || `${hexagram.nameHanji} ${lineNumber}爻`
-    const lineKoreanText = lineDetail?.textKorean || `${lineNumber}번째 효사 기운`
+    if (!lineDetail) {
+      console.error(`[I Ching Error] 효사 자료가 없음! hexagramId: ${hexagramId}, lineNumber: ${lineNumber}`)
+    }
+
+    const lineHanjaText = lineDetail?.textHanja || '자료가 없음'
+    const lineKoreanText = lineDetail?.textKorean || '자료가 없음'
     const lineModernAdvice = lineDetail?.modernAdvice || ''
     const lineNameHanja = lineDetail?.nameHanja || `${lineNumber}효`
 
@@ -194,11 +170,8 @@ ${worry || "오늘 하루의 종합적인 조언과 기운에 대해 질문합�
 
     if (isAiGenerated && aiInterpretation) {
       aiInterpretation = aiInterpretation
-        .replace(/```json\s*[\s\S]*?\s*```/gi, '')
-        .replace(/```json\s*[\s\S]*/gi, '')
-        .replace(/^```json\s*/gi, '')
-        .replace(/^```\s*/g, '')
-        .replace(/```$/g, '')
+        .replace(/^```(?:markdown|json)?\s*/i, '')
+        .replace(/\s*```$/i, '')
         .trim()
     }
 

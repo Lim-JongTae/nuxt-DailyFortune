@@ -379,7 +379,7 @@ const handleStickClick = async (stick: any) => {
         const remainingTime = Math.max(2000 - elapsedTime, 0)
 
         setTimeout(() => {
-          if (res.success) {
+          if (res.success && res.hexagram) {
             result.value = res
             store.recordFortuneSuccess('iching')
             store.saveToLocalStorage()
