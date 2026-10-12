@@ -12,6 +12,23 @@ const isMuted = ref(true)
 const lightVideoRef = ref<HTMLVideoElement | null>(null)
 const darkVideoRef = ref<HTMLVideoElement | null>(null)
 
+// Tab state: 'saju' | 'iching'
+const activeTab = ref<'saju' | 'iching'>('saju')
+
+// Dark mode detection for tab button styles
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
+
+const activeBtnStyle = computed(() => isDark.value
+  ? { backgroundImage: 'linear-gradient(to right, #166534, #15803d, #16a34a)', borderColor: '#16a34a', color: '#bbf7d0' }
+  : { backgroundImage: 'linear-gradient(to right, #fde68a, #fcd34d, #facc15)', borderColor: '#fcd34d', color: '#451a03' }
+)
+
+const inactiveBtnStyle = computed(() => isDark.value
+  ? { borderColor: '#16a34a50', color: '#86efac' }
+  : { borderColor: '#fcd34d80', color: '#92400e' }
+)
+
 const toggleMute = () => {
   isMuted.value = !isMuted.value
   if (lightVideoRef.value) {
@@ -70,52 +87,6 @@ useHead({
     }
   ]
 })
-
-const guides = [
-  {
-    title: '주역 64괘와 변효 가이드',
-    path: '/guide/iching',
-    category: '주역 점학',
-    icon: 'i-heroicons-sparkles',
-    desc: '3단계 대나무 점대 드로우(하괘 ➔ 상괘 ➔ 동효)로 도출되는 주역 64괘의 이치와 지혜로운 처세술을 배웁니다.'
-  },
-  {
-    title: '주역 64괘 구성과 괘상 해설',
-    path: '/guide/hexagrams',
-    category: '주역 심층',
-    icon: 'i-heroicons-sparkles',
-    iconCustom: '☯',
-    desc: '음(陰)과 양(陽) 효가 6단계로 쌓여 빚어내는 64개 괘상의 이름과 그 안에 담긴 우주 자연의 대원칙을 해설합니다.'
-  },
-  {
-    title: '사주명리학 60일주 실전 가이드',
-    path: '/guide/saju',
-    category: '명리학 입문',
-    icon: 'i-heroicons-book-open',
-    desc: '태어난 연·월·일·시 4개의 기둥(四柱)과 60일주(60柱論)에 담긴 선천적 기운과 운 흐름의 근본 원리를 해설합니다.'
-  },
-  {
-    title: '10천간 & 12지간 60갑자 해설',
-    path: '/guide/stems-branches',
-    category: '갑자 순환',
-    icon: 'i-heroicons-clock',
-    desc: '하늘의 기운(십간)과 땅의 계절(십이지)이 빚어내는 60갑자의 순환 체계와 매일의 일진(日辰)에 담긴 의미를 설명합니다.'
-  },
-  {
-    title: '오행(五行) 상생상극과 운세 영향',
-    path: '/guide/five-elements',
-    category: '오행 원리',
-    icon: 'i-heroicons-sun',
-    desc: '목(木)·화(火)·토(土)·금(金)·수(水) 5가지 자연 에너지가 만물을 순환시키고 나의 기운을 조율하는 상생상극의 진리입니다.'
-  },
-  {
-    title: '십신(十神) 10가지 역학 관계 해설',
-    path: '/guide/ten-gods',
-    category: '명리 심층',
-    icon: 'i-heroicons-academic-cap',
-    desc: '비견·겁재·식신·상관·편재·정재·편관·정관·편인·정인 등 나와 세상이 맺는 10가지 인간관계와 운의 별을 다룹니다.'
-  }
-]
 </script>
 
 <template>
@@ -171,43 +142,37 @@ const guides = [
         </div>
       </div>
 
-      <!-- 처세 아티클 그리드 -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <NuxtLink
-          v-for="(g, idx) in guides"
-          :key="g.path"
-          :to="g.path"
-          v-reveal="{ delay: idx * 80 }"
-          :class="[
-            'group p-6 rounded-xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-md flex flex-col justify-between',
-            'bg-amber-50/40 border-amber-200/60 hover:bg-amber-100/50 hover:border-amber-300',
-            'dark:bg-[#1A203C] dark:border-slate-700 dark:hover:bg-[#202747] dark:hover:border-amber-900/50'
-          ]"
+      <!-- 탭 선택 버튼 -->
+      <div class="flex gap-3 mb-8">
+        <button
+          type="button"
+          id="tab-saju"
+          @click="activeTab = 'saju'"
+          class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer"
+          :class="activeTab === 'saju' ? 'shadow-md scale-[1.02]' : 'hover:opacity-80'"
+          :style="activeTab === 'saju' ? activeBtnStyle : inactiveBtnStyle"
         >
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <span :class="['text-xs font-semibold px-2.5 py-0.5 rounded-full', 'bg-amber-100 text-amber-800', 'dark:bg-amber-900/40 dark:text-amber-300']">
-                {{ g.category }}
-              </span>
-              <span v-if="g.iconCustom" class="text-lg text-amber-600 font-serif-kr">{{ g.iconCustom }}</span>
-              <UIcon v-else :name="g.icon" :class="['w-5 h-5 text-amber-600', 'dark:text-[#FFDE9E]']" />
-            </div>
-
-            <h2 :class="['text-lg font-serif-kr font-bold mb-2 transition-colors text-amber-900 group-hover:text-amber-700', 'dark:text-[#FFDE9E] dark:group-hover:text-amber-300']">
-              {{ g.title }}
-            </h2>
-
-            <p :class="['text-xs sm:text-sm leading-relaxed mb-4', 'text-slate-600', 'dark:text-slate-300']">
-              {{ g.desc }}
-            </p>
-          </div>
-
-          <div :class="['text-xs font-medium flex items-center gap-1 mt-2 pt-3 border-t transition-transform border-amber-200/40 text-amber-700 group-hover:translate-x-1', 'dark:border-slate-700/60 dark:text-amber-300']">
-            <span>상세 가이드 읽기</span>
-            <span>➔</span>
-          </div>
-        </NuxtLink>
+          <UIcon name="i-heroicons-book-open" class="w-4 h-4" />
+          <span>사주명리</span>
+        </button>
+        <button
+          type="button"
+          id="tab-iching"
+          @click="activeTab = 'iching'"
+          class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer"
+          :class="activeTab === 'iching' ? 'shadow-md scale-[1.02]' : 'hover:opacity-80'"
+          :style="activeTab === 'iching' ? activeBtnStyle : inactiveBtnStyle"
+        >
+          <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
+          <span>주역 周易</span>
+        </button>
       </div>
+
+      <!-- 탭 콘텐츠 -->
+      <Transition name="fade-tab" mode="out-in">
+        <GuideCardsSaju v-if="activeTab === 'saju'" key="saju" />
+        <GuideCardsIching v-else key="iching" />
+      </Transition>
 
       <!-- FAQ 및 추가 학술 안내 -->
       <section v-reveal :class="['mt-12 p-6 rounded-xl border', 'bg-slate-50/80 border-slate-200', 'dark:bg-[#0F1226]/80 dark:border-slate-800']">
@@ -229,3 +194,19 @@ const guides = [
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Fade transition */
+.fade-tab-enter-active,
+.fade-tab-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.fade-tab-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.fade-tab-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+</style>
