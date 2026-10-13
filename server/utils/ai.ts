@@ -43,10 +43,10 @@ export async function callAiModel(prompt: string, serviceType: string = 'general
     return clean.length > 20
   }
 
-  // 1. Gemini API (1순위 - 구글 호환 모델 자동 검색)
+  // 1. Gemini API (1순위 - gemini-3.1-flash-lite 단독/우선 호출)
   if (geminiApiKey) {
     const configuredModel = (config.geminiModel || process.env.GEMINI_MODEL || '').trim()
-    const defaultModels = ['gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-2.5-flash']
+    const defaultModels = ['gemini-3.1-flash-lite']
     const models = configuredModel
       ? [configuredModel, ...defaultModels.filter(m => m !== configuredModel)]
       : defaultModels

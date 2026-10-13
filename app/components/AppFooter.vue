@@ -44,6 +44,12 @@ const currentYear = new Date().getFullYear()
           사이트 소개
         </NuxtLink>
         <NuxtLink
+          to="/match"
+          :class="['transition-colors', 'hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']"
+        >
+          사주 궁합
+        </NuxtLink>
+        <NuxtLink
           to="/guide"
           :class="['transition-colors', 'hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']"
         >

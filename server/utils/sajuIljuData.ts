@@ -2613,3 +2613,8 @@ export function getIljuDetailByOrder(order: number): SajuIljuDetail | null {
   if (order < 1 || order > 60) return null
   return iljuByOrderMap[order] || null
 }
+
+/**
+ * 하위 호환성 및 다목적 참조를 위한 별칭(alias)
+ */
+export const sajuIljuRecords = SAJU_ILJU_DATA

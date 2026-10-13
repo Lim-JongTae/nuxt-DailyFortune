@@ -141,6 +141,15 @@ onUnmounted(() => {
               </div>
 
               <NuxtLink
+                to="/match"
+                @click="closeGuideMenu"
+                :class="['flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors font-medium', 'text-rose-700 hover:bg-rose-50 hover:text-rose-900', 'dark:text-rose-300 dark:hover:bg-[#232B4F] dark:hover:text-rose-200']"
+              >
+                <UIcon name="i-heroicons-heart" :class="['w-4 h-4', 'text-rose-500', 'dark:text-rose-400']" />
+                <span>인연 사주궁합</span>
+              </NuxtLink>
+
+              <NuxtLink
                 to="/guide"
                 @click="closeGuideMenu"
                 :class="['flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors font-medium', 'text-slate-700 hover:bg-amber-50 hover:text-amber-900', 'dark:text-slate-200 dark:hover:bg-[#232B4F] dark:hover:text-[#FFDE9E]']"

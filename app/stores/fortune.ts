@@ -72,6 +72,12 @@ export const useFortuneStore = defineStore('fortune', () => {
   const sajuResult = ref<FortuneResult | null>(null)
   const ichingResult = ref<IChingResultResponse | null>(null)
 
+  // 2인 사주 궁합 상태
+  const matchPerson1 = ref({ name: '', birthDate: '', birthTime: '', gender: 'man' })
+  const matchPerson2 = ref({ name: '', birthDate: '', birthTime: '', gender: 'woman' })
+  const matchRelationType = ref('lover')
+  const matchResult = ref<FortuneResult | null>(null)
+
   const loadFromLocalStorage = (ignoreExpiration = false) => {
     if (import.meta.client) {
       try {
@@ -79,6 +85,13 @@ export const useFortuneStore = defineStore('fortune', () => {
         birthTime.value = localStorage.getItem('fortune_birthTime') || ''
         noTime.value = localStorage.getItem('fortune_noTime') === 'true'
         gender.value = localStorage.getItem('fortune_gender') || 'man'
+
+        // 2인 궁합 입력 복원
+        const storedP1 = parseStoredJson('fortune_match_person1')
+        if (storedP1) matchPerson1.value = { ...matchPerson1.value, ...storedP1 }
+        const storedP2 = parseStoredJson('fortune_match_person2')
+        if (storedP2) matchPerson2.value = { ...matchPerson2.value, ...storedP2 }
+        matchRelationType.value = localStorage.getItem('fortune_match_relationType') || 'lover'
 
         const todayStr = getKstDateString()
         let todayGanzhi = ''
@@ -91,9 +104,11 @@ export const useFortuneStore = defineStore('fortune', () => {
         // 타입별 날짜 확인: 각각 독립적으로 날짜 변경 검사
         const sajuSavedDate = localStorage.getItem('fortune_saju_savedDate')
         const ichingSavedDate = localStorage.getItem('fortune_iching_savedDate')
+        const matchSavedDate = localStorage.getItem('fortune_match_savedDate')
 
         const isSajuExpired = !ignoreExpiration && (!sajuSavedDate || sajuSavedDate !== todayStr)
         const isIchingExpired = !ignoreExpiration && (!ichingSavedDate || ichingSavedDate !== todayStr)
+        const isMatchExpired = !ignoreExpiration && (!matchSavedDate || matchSavedDate !== todayStr)
 
         // 사주 데이터 처리 (오늘 날짜가 아니거나 간지가 일치하지 않으면 무조건 파기)
         const storedSaju = parseStoredJson('fortune_sajuResult') || parseStoredJson('fortune_backup_sajuResult')
@@ -131,6 +146,17 @@ export const useFortuneStore = defineStore('fortune', () => {
           }
         }
 
+        // 2인 궁합 데이터 처리 (자정 경과 시 리셋)
+        if (isMatchExpired) {
+          localStorage.removeItem('fortune_matchResult')
+          localStorage.removeItem('fortune_backup_matchResult')
+          localStorage.removeItem('fortune_match_savedTime')
+          localStorage.removeItem('fortune_match_savedDate')
+          matchResult.value = null
+        } else {
+          matchResult.value = parseStoredJson('fortune_matchResult')
+        }
+
         // 공유 날짜 업데이트 (호환성 유지용)
         localStorage.setItem('fortune_savedDate', todayStr)
       } catch (e) {
@@ -149,6 +175,11 @@ export const useFortuneStore = defineStore('fortune', () => {
         localStorage.setItem('fortune_sajuWorry', sajuWorry.value)
         localStorage.setItem('fortune_ichingWorry', ichingWorry.value)
 
+        // 2인 궁합 입력 저장
+        localStorage.setItem('fortune_match_person1', JSON.stringify(matchPerson1.value))
+        localStorage.setItem('fortune_match_person2', JSON.stringify(matchPerson2.value))
+        localStorage.setItem('fortune_match_relationType', matchRelationType.value)
+
         // ✅ 실제 결과만 저장 (백업은 recordFortuneSuccess에서 관리)
         if (sajuResult.value) {
           const jsonStr = JSON.stringify(sajuResult.value)
@@ -163,28 +194,39 @@ export const useFortuneStore = defineStore('fortune', () => {
         } else {
           localStorage.removeItem('fortune_ichingResult')
         }
+
+        if (matchResult.value) {
+          const jsonStr = JSON.stringify(matchResult.value)
+          localStorage.setItem('fortune_matchResult', jsonStr)
+        } else {
+          localStorage.removeItem('fortune_matchResult')
+        }
       } catch (e) {
         console.error('[Store] Error saving to localStorage:', e)
       }
     }
   }
 
-  const recordFortuneSuccess = (type: 'saju' | 'iching') => {
+  const recordFortuneSuccess = (type: 'saju' | 'iching' | 'match') => {
     if (import.meta.client) {
       try {
         const now = Date.now()
         const todayStr = getKstDateString()
-        const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
-        const dateKey = type === 'saju' ? 'fortune_saju_savedDate' : 'fortune_iching_savedDate'
-        const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
-        const resultKey = type === 'saju' ? 'fortune_sajuResult' : 'fortune_ichingResult'
+        const timeKey = `fortune_${type}_savedTime`
+        const dateKey = `fortune_${type}_savedDate`
+        const backupKey = `fortune_backup_${type}Result`
+        const resultKey = `fortune_${type}Result`
 
         // ✅ 타입별 독립적인 날짜와 시간 기록
         localStorage.setItem(dateKey, todayStr)
         localStorage.setItem(timeKey, String(now))
 
         // ✅ 메인 결과 및 백업 결과 즉시 동기화 저장
-        const currentObj = type === 'saju' ? sajuResult.value : ichingResult.value
+        let currentObj: any = null
+        if (type === 'saju') currentObj = sajuResult.value
+        else if (type === 'iching') currentObj = ichingResult.value
+        else if (type === 'match') currentObj = matchResult.value
+
         if (currentObj) {
           const jsonStr = JSON.stringify(currentObj)
           localStorage.setItem(resultKey, jsonStr)
@@ -229,18 +271,29 @@ export const useFortuneStore = defineStore('fortune', () => {
     }
   }
 
-  const hasRecentResult = (type: 'saju' | 'iching'): boolean => {
+  const clearMatch = () => {
+    matchResult.value = null
+    if (import.meta.client) {
+      try {
+        localStorage.removeItem('fortune_matchResult')
+      } catch (e) {
+        console.error('[Store] Error clearing match:', e)
+      }
+    }
+  }
+
+  const hasRecentResult = (type: 'saju' | 'iching' | 'match'): boolean => {
     if (!import.meta.client) return false
 
     try {
       const todayStr = getKstDateString()
-      const dateKey = type === 'saju' ? 'fortune_saju_savedDate' : 'fortune_iching_savedDate'
+      const dateKey = `fortune_${type}_savedDate`
       const savedDate = localStorage.getItem(dateKey)
 
       // ✅ 1차 검증: 타입별 날짜 변경 확인 (자정 기준 리셋)
       if (savedDate && savedDate !== todayStr) {
-        const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
-        const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+        const backupKey = `fortune_backup_${type}Result`
+        const timeKey = `fortune_${type}_savedTime`
         localStorage.removeItem(backupKey)
         localStorage.removeItem(timeKey)
         localStorage.removeItem(dateKey)
@@ -248,14 +301,19 @@ export const useFortuneStore = defineStore('fortune', () => {
       }
 
       // ✅ 2차 검증: 12시간 쿨다운 확인
-      const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+      const timeKey = `fortune_${type}_savedTime`
       const savedTime = Number(localStorage.getItem(timeKey))
       if (!savedTime || isNaN(savedTime)) return false
 
       const isWithin12Hours = (Date.now() - savedTime) < COOLDOWN_DURATION_MS
-      const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
-      const resultKey = type === 'saju' ? 'fortune_sajuResult' : 'fortune_ichingResult'
-      const hasResultData = !!(type === 'saju' ? sajuResult.value : ichingResult.value) || !!localStorage.getItem(resultKey) || !!localStorage.getItem(backupKey)
+      const backupKey = `fortune_backup_${type}Result`
+      const resultKey = `fortune_${type}Result`
+      let storeVal: any = null
+      if (type === 'saju') storeVal = sajuResult.value
+      else if (type === 'iching') storeVal = ichingResult.value
+      else if (type === 'match') storeVal = matchResult.value
+
+      const hasResultData = !!storeVal || !!localStorage.getItem(resultKey) || !!localStorage.getItem(backupKey)
 
       return isWithin12Hours && hasResultData
     } catch (e) {
@@ -264,18 +322,18 @@ export const useFortuneStore = defineStore('fortune', () => {
     }
   }
 
-  const getRemainingCoolTime = (type: 'saju' | 'iching') => {
+  const getRemainingCoolTime = (type: 'saju' | 'iching' | 'match') => {
     if (!import.meta.client) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
 
     try {
       const todayStr = getKstDateString()
-      const dateKey = type === 'saju' ? 'fortune_saju_savedDate' : 'fortune_iching_savedDate'
+      const dateKey = `fortune_${type}_savedDate`
       const savedDate = localStorage.getItem(dateKey)
 
       // ✅ 1차 검증: 타입별 날짜 변경 확인 (자정 기준 리셋)
       if (savedDate && savedDate !== todayStr) {
-        const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
-        const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+        const backupKey = `fortune_backup_${type}Result`
+        const timeKey = `fortune_${type}_savedTime`
         localStorage.removeItem(backupKey)
         localStorage.removeItem(timeKey)
         localStorage.removeItem(dateKey)
@@ -283,7 +341,7 @@ export const useFortuneStore = defineStore('fortune', () => {
       }
 
       // ✅ 2차 검증: 12시간 쿨다운 확인
-      const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+      const timeKey = `fortune_${type}_savedTime`
       const savedTime = Number(localStorage.getItem(timeKey))
       if (!savedTime || isNaN(savedTime)) return { isLimited: false, hours: 0, minutes: 0, remainingMs: 0 }
 
@@ -297,7 +355,7 @@ export const useFortuneStore = defineStore('fortune', () => {
         return { isLimited: true, hours, minutes, remainingMs }
       } else {
         // 쿨다운이 끝났으면 시간/날짜/백업 키 정리
-        const backupKey = type === 'saju' ? 'fortune_backup_sajuResult' : 'fortune_backup_ichingResult'
+        const backupKey = `fortune_backup_${type}Result`
         localStorage.removeItem(backupKey)
         localStorage.removeItem(timeKey)
         localStorage.removeItem(dateKey)
@@ -309,10 +367,10 @@ export const useFortuneStore = defineStore('fortune', () => {
     }
   }
 
-  const getFortuneSavedTime = (type: 'saju' | 'iching'): Date => {
+  const getFortuneSavedTime = (type: 'saju' | 'iching' | 'match'): Date => {
     if (import.meta.client) {
       try {
-        const timeKey = type === 'saju' ? 'fortune_saju_savedTime' : 'fortune_iching_savedTime'
+        const timeKey = `fortune_${type}_savedTime`
         const savedTime = Number(localStorage.getItem(timeKey))
         if (savedTime && !isNaN(savedTime)) {
           return new Date(savedTime)
@@ -359,19 +417,26 @@ export const useFortuneStore = defineStore('fortune', () => {
     ichingWorry.value = ''
     sajuResult.value = null
     ichingResult.value = null
+    matchResult.value = null
+    matchPerson1.value = { name: '', birthDate: '', birthTime: '', gender: 'man' }
+    matchPerson2.value = { name: '', birthDate: '', birthTime: '', gender: 'woman' }
+    matchRelationType.value = 'lover'
+
     if (import.meta.client) {
       try {
         // ✅ 타입별 날짜와 시간 정리
-        localStorage.removeItem('fortune_saju_savedTime')
-        localStorage.removeItem('fortune_saju_savedDate')
-        localStorage.removeItem('fortune_iching_savedTime')
-        localStorage.removeItem('fortune_iching_savedDate')
-        localStorage.removeItem('fortune_backup_sajuResult')
-        localStorage.removeItem('fortune_backup_ichingResult')
-        localStorage.removeItem('fortune_sajuResult')
-        localStorage.removeItem('fortune_ichingResult')
+        const types = ['saju', 'iching', 'match']
+        types.forEach(t => {
+          localStorage.removeItem(`fortune_${t}_savedTime`)
+          localStorage.removeItem(`fortune_${t}_savedDate`)
+          localStorage.removeItem(`fortune_backup_${t}Result`)
+          localStorage.removeItem(`fortune_${t}Result`)
+        })
         localStorage.removeItem('fortune_sajuWorry')
         localStorage.removeItem('fortune_ichingWorry')
+        localStorage.removeItem('fortune_match_person1')
+        localStorage.removeItem('fortune_match_person2')
+        localStorage.removeItem('fortune_match_relationType')
         localStorage.removeItem('fortune_saju_talisman_downloadedDate')
       } catch (e) {
         console.error('[Store] Error resetting inputs:', e)
@@ -389,11 +454,16 @@ export const useFortuneStore = defineStore('fortune', () => {
     ichingWorry,
     sajuResult,
     ichingResult,
+    matchPerson1,
+    matchPerson2,
+    matchRelationType,
+    matchResult,
     loadFromLocalStorage,
     saveToLocalStorage,
     recordFortuneSuccess,
     clearSaju,
     clearIching,
+    clearMatch,
     hasRecentResult,
     getRemainingCoolTime,
     getFortuneSavedTime,

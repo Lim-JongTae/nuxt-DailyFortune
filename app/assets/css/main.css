@@ -556,7 +556,15 @@ html, body {
 }
 
 .dark .btn-gold-action {
-  background-image: linear-gradient(to right, #fbbf24, #facc15, #f59e0b);
-  border-color: #fbbf24;
-  color: #451a03;
+  background-image: linear-gradient(to right, #064e3b, #047857, #059669);
+  border-color: #10b981;
+  color: #a7f3d0;
+  box-shadow: 0 4px 12px -2px rgba(6, 78, 59, 0.5);
+}
+
+.dark .btn-gold-action:hover {
+  background-image: linear-gradient(to right, #047857, #059669, #10b981);
+  border-color: #34d399;
+  color: #ecfdf5;
+  box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.4);
 }

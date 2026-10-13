@@ -1,13 +1,4 @@
-export interface IChingLine {
-  hexagramId: number
-  lineNumber: number
-  hexagramNameHanja?: string
-  hexagramNameKorean?: string
-  nameHanja?: string
-  textHanja: string
-  textKorean: string
-  modernAdvice?: string
-}
+import type { IChingLine } from './iching384LinesData'
 
 // 1. 기본 64괘 메타데이터
 export const hexagramNames: Record<number, { slug: string; nameKorean: string; nameHanji: string; desc: string; meaning: string }> = {

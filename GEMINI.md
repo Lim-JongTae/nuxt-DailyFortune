@@ -19,7 +19,7 @@
 - **UI & Styling**: Nuxt UI (`@nuxt/ui`), Tailwind CSS v4, Stitch (StitchMCP) 디자인 연동
 - **State Management**: Pinia (`@pinia/nuxt`) - 자정 기준 자동 리셋 및 로컬 스토리지 연계
 - **Database & ORM**: Prisma (`@prisma/client`, SQLite / PostgreSQL/Supabase), `npx tsx prisma/seed-fortune.ts`
-- **AI Integration**: Google Gemini 2.5 Flash API
+- **AI Integration**: Google Gemini 3.1 Flash Lite API
 - **Analytics & Monitization**: Google AdSense, Google Analytics (GTag)
 
 ---
