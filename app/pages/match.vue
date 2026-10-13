@@ -404,9 +404,9 @@ const getZodiacAnimal = (ganzhiStr: string): string => {
   return (idx >= 0 ? animals[idx] : '') || ''
 }
 
-// 결과 복사 기능 (기본 명식 을사생/일주 + 4대 지표 상세 + AI 처세 솔루션 풀버전)
-const copyResultText = async () => {
-  if (!result.value) return false
+// 공유 텍스트 생성 (기본 명식 + 4대 지표 상세 + AI 처세 솔루션 풍부한 풀버전)
+const getMatchShareText = (): string => {
+  if (!result.value) return ''
   const comp = result.value.compatibility
   const p1 = comp?.person1
   const p2 = comp?.person2
@@ -416,42 +416,69 @@ const copyResultText = async () => {
   const p1Desc = `${p1?.name || '본인'}: ${p1?.yearGanzhi || ''}생${p1Animal ? `(${p1Animal}띠)` : ''} · ${p1?.dayGanzhi || ''}일주 (${p1?.stemElemName || '오행'} / ${p1?.gender === 'man' ? '남성' : '여성'})`
   const p2Desc = `${p2?.name || '상대방'}: ${p2?.yearGanzhi || ''}생${p2Animal ? `(${p2Animal}띠)` : ''} · ${p2?.dayGanzhi || ''}일주 (${p2?.stemElemName || '오행'} / ${p2?.gender === 'man' ? '남성' : '여성'})`
 
-  const text = `🔮 [사주앱 ✦ Daily-Fortune] 2인 사주명리 궁합 리포트 🔮
+  const headline = result.value.parsedData?.headline || comp?.tier?.summary || ''
+  const summary = result.value.parsedData?.summary || comp?.tier?.summary || ''
+
+  return `🔮 [사주앱 ✦ Daily-Fortune] 2인 사주명리 궁합 리포트 🔮
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ❤️ 두 사람의 기본 사주 명식:
 ● ${p1Desc}
 ● ${p2Desc}
 
-● 인연 궁합 점수: ${comp?.score}점 【${comp?.tier?.level}】
-● 한 줄 총평: "${result.value.parsedData?.headline || comp?.tier?.summary}"
+● 인연 궁합 점수: ${comp?.score}점 【${comp?.tier?.level || '궁합'}】
+● 한 줄 총평: "${headline}"
 
 [📜 4대 정통 명리학 핵심 지표 분석]
-1. 정신적 교감 (천간합): ${comp?.indicators?.stemHarmony?.relation}
-   - ${comp?.indicators?.stemHarmony?.description}
-2. 현실적 조화 (지지합·충): ${comp?.indicators?.branchHarmony?.relationName}
-   - ${comp?.indicators?.branchHarmony?.description}
-3. 에너지 시너지 (오행 보완): ${comp?.indicators?.elementSynergy?.description}
-4. 60일주 기질 조화: ${comp?.indicators?.iljuMatch?.advice}
+1. 정신적 교감 (천간합): ${comp?.indicators?.stemHarmony?.relation || '조화'} (${comp?.indicators?.stemHarmony?.score ?? 0}/25점)
+   - ${comp?.indicators?.stemHarmony?.description || '자료가 없음'}
+2. 현실적 조화 (지지합·충): ${comp?.indicators?.branchHarmony?.relationName || '조화'} (${comp?.indicators?.branchHarmony?.score ?? 0}/25점)
+   - ${comp?.indicators?.branchHarmony?.description || '자료가 없음'}
+3. 에너지 시너지 (오행 보완): ${comp?.indicators?.elementSynergy?.score ?? 0}/25점
+   - ${comp?.indicators?.elementSynergy?.description || '자료가 없음'}
+4. 60일주 기질 조화: ${comp?.indicators?.iljuMatch?.score ?? 0}/25점
+   - ${comp?.indicators?.iljuMatch?.advice || '자료가 없음'}
 
 [💡 두 사람을 위한 맞춤 처세 솔루션]
-${result.value.parsedData?.summary || comp?.tier?.summary}
+${summary}
 
 🏷️ #${p1?.yearGanzhi || ''}생 #${p2?.yearGanzhi || ''}생 #${p1?.dayGanzhi || ''}일주 #${p2?.dayGanzhi || ''}일주 #사주궁합
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✨ 우리 둘의 사주 궁합도 직접 확인해보기:
 👉 https://sajuapp.co.kr/match`
+}
 
-  const success = await copyToClipboardRobust(text)
+// 결과 공유 기능 (모바일은 네이티브 공유 시트, PC/미지원 시 즉시 클립보드 복사)
+const shareMatch = async () => {
+  if (!import.meta.client || !result.value) return
+
+  const shareText = getMatchShareText()
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
+
+  if (isMobile && navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Daily-Fortune ✦ 사주명리 궁합 리포트',
+        text: shareText,
+        url: 'https://sajuapp.co.kr/match'
+      })
+      return
+    } catch (e: any) {
+      if (e?.name === 'AbortError') return
+      // 공유창 취소 이외 에러 시 클립보드 복사 폴백 진행
+    }
+  }
+
+  // 데스크톱 PC 환경 또는 모바일 Web Share 미지원 시 클립보드 복사 실행
+  const success = await copyToClipboardRobust(shareText)
   if (success) {
     isCopied.value = true
     setTimeout(() => { isCopied.value = false }, 2500)
     toast.add({
       title: '📋 궁합 결과 복사 완료',
-      description: '사주 명식과 궁합 분석이 클립보드에 복사되었습니다. 카카오톡이나 SNS에 바로 붙여넣어 공유해 보세요!',
+      description: '사주 명식과 궁합 상세 리포트가 클립보드에 복사되었습니다. 카카오톡이나 SNS에 바로 붙여넣어 공유해 보세요!',
       color: 'success',
       icon: 'i-heroicons-clipboard-document-check'
     })
-    return true
   } else {
     toast.add({
       title: '복사 실패',
@@ -459,32 +486,7 @@ ${result.value.parsedData?.summary || comp?.tier?.summary}
       color: 'error',
       icon: 'i-heroicons-exclamation-triangle'
     })
-    return false
   }
-}
-
-// 카카오톡 / 외부 공유 (PC는 즉시 복사, 모바일은 네이티브 공유 시트)
-const shareMatch = async () => {
-  if (!import.meta.client) return
-
-  // 1. 모바일 환경 감지 (스마트폰 / 태블릿)
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
-
-  if (isMobile && navigator.share) {
-    try {
-      await navigator.share({
-        title: 'Daily-Fortune ✦ 사주명리 궁합 리포트',
-        text: `${result.value?.compatibility?.person1?.name || '본인'}과 ${result.value?.compatibility?.person2?.name || '상대방'}의 사주 궁합 점수는 ${result.value?.compatibility?.score}점입니다!`,
-        url: 'https://sajuapp.co.kr/match'
-      })
-      return
-    } catch (e: any) {
-      if (e?.name === 'AbortError') return
-    }
-  }
-
-  // 2. PC(데스크톱) 환경이거나 모바일 공유 미지원/실패 시 즉시 클립보드 복사 실행
-  await copyResultText()
 }
 
 const elemNames = ['木', '火', '土', '金', '水']
@@ -719,18 +721,10 @@ const displayModelName = computed(() => {
             <button 
               type="button" 
               @click="shareMatch" 
-              class="btn-gold-action cursor-pointer px-5 py-2.5 text-xs font-bold transition-all"
+              class="btn-gold-action cursor-pointer px-5 py-2.5 text-xs font-bold transition-all inline-flex items-center gap-1.5"
             >
               <UIcon :name="isCopied ? 'i-heroicons-check' : 'i-heroicons-share'" class="w-4 h-4" />
               <span>{{ isCopied ? '결과 복사 완료!' : '결과 공유하기' }}</span>
-            </button>
-            <button 
-              type="button" 
-              @click="copyResultText" 
-              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border pg-border pg-card-inner text-xs font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
-            >
-              <UIcon :name="isCopied ? 'i-heroicons-check' : 'i-heroicons-clipboard-document'" class="w-4 h-4 text-amber-500" />
-              <span>{{ isCopied ? '복사됨' : '텍스트 복사' }}</span>
             </button>
             <button 
               type="button" 
