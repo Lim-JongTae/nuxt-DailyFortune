@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     manifest: {
       name: '일일운세 ✦ 天命',
       short_name: '일일운세',
-      description: '한 치 앞도 모를 때, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.',
+      description: '모두가 행복할때 까지, 사주앱이 함께합니다. 사주명리와 주역 64괘로 보는 오늘의 운세.',
       theme_color: '#0F1226',
       background_color: '#0F1226',
       display: 'standalone',
