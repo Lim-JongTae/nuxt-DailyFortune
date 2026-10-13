@@ -153,7 +153,7 @@ onMounted(async () => {
   <div class="bg-celestial-canvas pg-text min-h-screen font-sans-kr py-10 px-4 md:px-8 transition-colors duration-300">
     <main class="max-w-6xl mx-auto space-y-12">
       <!-- 1. HERO SECTION: Celestial Harmony & Grand Title -->
-      <section class="relative pt-6 pb-12 text-center flex flex-col items-center overflow-hidden">
+      <section v-reveal class="relative pt-6 pb-12 text-center flex flex-col items-center overflow-hidden">
         <!-- Ambient Starry Grid & Rings -->
         <div class="absolute inset-0 pointer-events-none opacity-30 flex items-center justify-center">
           <div class="w-150 h-150 rounded-full border pg-border"></div>
@@ -174,7 +174,7 @@ onMounted(async () => {
 
           <!-- Subtitle -->
           <p class="font-serif-kr text-base sm:text-lg pg-text-muted max-w-2xl mx-auto mb-8 leading-relaxed font-light">
-            생년월일로 짚어보는 하루의 에너지와 오행의 균형, 그리고 64괘의 괘상이 전하는 오늘 하루의 깊은 처세와 지혜를 마주합니다.
+            생년월일로 살펴보는 하루의 흐름과 오행의 균형, 그리고 64괘의 괘상이 전하는 선택의 지혜를 만나 보세요.
           </p>
 
           <!-- Yin-Yang Celestial Ring Graphic (신비로운 동적 천기 회전 애니메이션) -->
@@ -244,6 +244,7 @@ onMounted(async () => {
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
         <NuxtLink 
           to="/saju"
+          v-reveal
           class="gold-filament-card p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group cursor-pointer"
         >
           <!-- Background Watermark (z-0) -->
@@ -391,6 +392,7 @@ onMounted(async () => {
         <!-- ================= CARD B: 오늘의 주역 괘 ================= -->
         <NuxtLink 
           to="/iching"
+          v-reveal="{ delay: 150 }"
           class="gold-filament-card p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group cursor-pointer"
         >
           <!-- Background Watermark (z-0) -->
@@ -471,7 +473,7 @@ onMounted(async () => {
       </section>
 
       <!-- 3. GUIDANCE SECTION -->
-      <section class="gold-filament-card p-6 sm:p-8">
+      <section v-reveal class="gold-filament-card p-6 sm:p-8">
         <h3 class="font-serif-kr text-lg sm:text-xl lg:text-2xl font-bold pg-text-gold mb-4 text-center">💡 운세를 지혜롭게 대하는 마음가짐</h3>
         <div class="space-y-4 text-sm sm:text-base pg-text-muted leading-relaxed max-w-3xl mx-auto">
           <p class="font-bold">
@@ -479,7 +481,7 @@ onMounted(async () => {
             길한 운은 감사히 활용하고, 삼가야 할 조언은 지혜롭게 대비하는 나침반으로 사용해 보세요.
           </p>
 
-          <div class="mt-6 pt-6 border-t pg-border">
+          <div v-reveal="{ delay: 100 }" class="mt-6 pt-6 border-t pg-border">
             <h4 class="font-serif-kr font-bold text-base pg-text mb-3">📖 사주명리란?</h4>
             <p>
               사주명리학은 생년월일시의 간지(干支)를 통해 타고난 성향과 운의 흐름을 파악하는 동양의 전통 학문입니다.
@@ -488,7 +490,7 @@ onMounted(async () => {
             </p>
           </div>
 
-          <div class="mt-4">
+          <div v-reveal="{ delay: 150 }" class="mt-4">
             <h4 class="font-serif-kr font-bold text-base pg-text mb-3">☯️ 주역 64괘란?</h4>
             <p>
               주역은 3천 년 전부터 전해져 내려온 동양 최고의 지혜서로, 하늘(☰)과 땅(☷)의 조화를 8괘로 나타내고
@@ -499,16 +501,14 @@ onMounted(async () => {
             <IChingHistoryAccordion />
           </div>
 
-          <div class="mt-4">
+          <div v-reveal="{ delay: 200 }" class="mt-4">
             <h4 class="font-serif-kr font-bold text-base pg-text mb-3">🤖 AI 운세 해석</h4>
-            <p>
-              본 서비스는 전통 명리학과 주역의 원전 자료를 AI가 학습하여, 사용자의 생년월일과 고민에 맞춤화된
-              해석을 제공합니다. 단순한 자동 생성이 아닌, 고전 원문의 의미를 현대적 상황에 적용한 실질적인
-              조언으로 일상의 의사결정에 도움을 드립니다.
+            <p class="text-xs sm:text-md">
+             명리학과 주역의 고전 자료를 바탕으로 AI가 풀이를 만듭니다. 생년월일과 고민을 반영해 고전의 뜻을 오늘의 상황으로 옮겨 드리니, 정해진 결과가 아니라 선택을 돌아보는 거울로 활용해 보세요.<br>모두가 행복한 세상을 바라며...
             </p>
           </div>
 
-          <div class="mt-6 pt-4 border-t pg-border flex flex-wrap justify-center gap-4 text-xs font-medium">
+          <div v-reveal="{ delay: 250 }" class="mt-6 pt-4 border-t pg-border flex flex-wrap justify-center gap-4 text-xs font-medium">
             <NuxtLink
               to="/guide/saju"
               :class="[
@@ -536,7 +536,7 @@ onMounted(async () => {
       </section>
 
       <!-- 5. FOOTER STATS: 누적 방문 수 (화면 제일 아래 우측 배치) -->
-      <footer class="flex justify-end items-center pt-4 pb-2 border-t pg-border text-xs">
+      <footer v-reveal class="flex justify-end items-center pt-4 pb-2 border-t pg-border text-xs">
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-inner border pg-border pg-text-muted shadow-2xs">
           <span class="w-1.5 h-1.5 rounded-full bg-amber-500/80"></span>
           <span>누적 방문 <span class="font-bold pg-text-gold">{{ totalViews.toLocaleString() }}</span>회</span>

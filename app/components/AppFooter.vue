@@ -27,7 +27,8 @@ const currentYear = new Date().getFullYear()
           </NuxtLink>
         </div>
         <p :class="['max-w-md leading-relaxed', 'text-slate-500', 'dark:text-slate-400']">
-          생년월일 기반 사주명리학과 3단계 점대 드로우 주역 64괘 분석으로 하루의 에너지와 처세의 지혜를 건네는 무료 AI 일일 운세 서비스입니다.
+          생년월일로 보는 사주명리와 3단계 점대 뽑기로 얻는 주역 64괘 풀이로, 오늘 하루의 흐름과 선택의 지혜를 전하는 무료 AI 일일 운세 서비스입니다. 모두가 행복한 세상을 바랍니다.
+          <br>AI가 생성한 해석이며 참고용입니다.<br> 중요한 결정은 본인의 판단과 전문가의 조언을 고려하세요.
         </p>
         <p :class="['text-[11px] mt-1', 'text-slate-400', 'dark:text-slate-500']">
           © {{ currentYear }} sajuapp.co.kr. All rights reserved.
