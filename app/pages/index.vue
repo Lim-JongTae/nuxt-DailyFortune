@@ -114,34 +114,39 @@ onMounted(async () => {
     isAnimated.value = true
   }, 100)
 
-  // 방문자 통계 데이터 로드 (useVisitorStats 컴포저블 공유로 중복 API 호출 방지)
-  try {
-    const { fetchStats } = useVisitorStats()
-    const res = await fetchStats()
-    if (res?.success) {
-      const targetToday = res.todayViews || 0
-      const targetTotal = res.totalViews || 0
-      const duration = 1200
-      const start = performance.now()
+  // 방문자 통계 카운트업 애니메이션 실행 헬퍼
+  const animateStats = (targetTotal: number, targetToday: number = 0) => {
+    if (totalViews.value > 0) return // 이미 애니메이션 실행 완료됨
+    const duration = 1200
+    const start = performance.now()
 
-      const step = (now: number) => {
-        const progress = Math.min((now - start) / duration, 1)
-        const easeOut = 1 - Math.pow(1 - progress, 3)
-        todayViews.value = Math.round(targetToday * easeOut)
-        totalViews.value = Math.round(targetTotal * easeOut)
-        if (progress < 1) {
-          requestAnimationFrame(step)
-        }
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const easeOut = 1 - Math.pow(1 - progress, 3)
+      todayViews.value = Math.round(targetToday * easeOut)
+      totalViews.value = Math.round(targetTotal * easeOut)
+      if (progress < 1) {
+        requestAnimationFrame(step)
       }
-      requestAnimationFrame(step)
-    } else {
-      todayViews.value = 0
-      totalViews.value = 0
+    }
+    requestAnimationFrame(step)
+  }
+
+  // 방문자 통계 데이터 로드 (useVisitorStats 컴포저블 싱글톤 공유로 중복 API 호출 방지)
+  try {
+    const { stats, fetchStats } = useVisitorStats()
+
+    // 이미 캐시된 데이터가 있다면 즉시 애니메이션 시작
+    if (stats.value?.totalViews) {
+      animateStats(stats.value.totalViews, stats.value.todayViews || 0)
+    }
+
+    const res = await fetchStats()
+    if (res?.success && typeof res.totalViews === 'number') {
+      animateStats(res.totalViews, res.todayViews || 0)
     }
   } catch (e) {
     console.warn('Failed to fetch visitor stats:', e)
-    todayViews.value = 0
-    totalViews.value = 0
   }
 
   // 150ms 지연 후 0도(0%)에서 시작하여 88%까지 부드럽게 채워짐

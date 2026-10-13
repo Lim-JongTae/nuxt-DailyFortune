@@ -46,23 +46,32 @@ const handleClickOutside = (e: MouseEvent) => {
 onMounted(async () => {
   document.addEventListener('click', handleClickOutside)
 
-  try {
-    const { fetchStats } = useVisitorStats()
-    const res = await fetchStats()
-    if (res?.success) {
-      const target = res.todayViews || 0
-      const duration = 1200
-      const start = performance.now()
+  const animateHeaderStats = (target: number) => {
+    if (todayViews.value > 0) return
+    const duration = 1200
+    const start = performance.now()
 
-      const step = (now: number) => {
-        const progress = Math.min((now - start) / duration, 1)
-        const easeOut = 1 - Math.pow(1 - progress, 3)
-        todayViews.value = Math.round(target * easeOut)
-        if (progress < 1) {
-          requestAnimationFrame(step)
-        }
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const easeOut = 1 - Math.pow(1 - progress, 3)
+      todayViews.value = Math.round(target * easeOut)
+      if (progress < 1) {
+        requestAnimationFrame(step)
       }
-      requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  }
+
+  try {
+    const { stats, fetchStats } = useVisitorStats()
+
+    if (stats.value?.todayViews) {
+      animateHeaderStats(stats.value.todayViews)
+    }
+
+    const res = await fetchStats()
+    if (res?.success && typeof res.todayViews === 'number') {
+      animateHeaderStats(res.todayViews)
     }
   } catch (err) {
     console.warn('Failed to load header visitor stats:', err)
