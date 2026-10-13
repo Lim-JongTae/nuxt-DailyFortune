@@ -314,20 +314,47 @@ onMounted(async () => {
       </section>
 
       <!-- 3. GUIDANCE SECTION -->
-      <section v-reveal class="gold-filament-card p-6 sm:p-8">
-        <h3 class="font-serif-kr text-md sm:text-xl lg:text-2xl font-bold pg-text-gold mb-4 text-center">💡 운세를 지혜롭게 대하는 마음가짐</h3>
-        <div class="space-y-4 text-xs sm:text-md pg-text-muted leading-relaxed max-w-3xl mx-auto">
-          <p class="font-bold">
-            한 치 앞을 알 수 없는 인생은 선택의 연속입니다. 매번 최선을 고를 수는 없어도 괜찮습니다. 지금 할 수 있는 차선을 고르는 지혜면 충분합니다.
-사주와 주역이 선택 앞에서 잠시 멈추어 생각해 보는 쉼표가 되기를 바랍니다. 그리고 모두의 하루가 조금 더 행복해지기를 소망합니다.
-          </p>
+      <section class="gold-filament-card p-5 sm:p-8">
+        <h3 class="font-serif-kr text-md sm:text-xl lg:text-2xl font-bold pg-text-gold mb-3 text-center flex items-center justify-center gap-2">
+          <span>💡</span>
+          <span>운세를 지혜롭게 대하는 마음가짐</span>
+        </h3>
 
-          <div class="mt-6 pt-6 border-t pg-border">
-            <Transition name="fade-tab" mode="out-in">
-              <HomeGuidanceIching v-if="activeTab === 'iching'" key="guidance-iching" />
-              <HomeGuidanceSaju v-else key="guidance-saju" />
-            </Transition>
+        <!-- 한 카드 내 2분할 듀얼 메시지 박스 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 my-4 max-w-3xl mx-auto">
+          <!-- 1. 선택과 차선의 지혜 -->
+          <div class="p-4 sm:p-5 rounded-xl pg-card-inner border pg-border flex flex-col justify-between shadow-2xs">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                <span class="font-bold font-serif-kr text-xs sm:text-sm pg-text-gold">선택과 차선의 지혜</span>
+              </div>
+              <p class="text-xs sm:text-sm pg-text leading-relaxed font-medium">
+                한 치 앞을 알 수 없는 인생은 선택의 연속입니다. 매번 최선을 고를 수는 없어도 괜찮습니다. 지금 할 수 있는 <strong class="pg-text-gold">차선을 고르는 지혜</strong>면 충분합니다.
+              </p>
+            </div>
           </div>
+
+          <!-- 2. 삶의 쉼표와 소망 -->
+          <div class="p-4 sm:p-5 rounded-xl pg-card-inner border pg-border flex flex-col justify-between shadow-2xs">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                <span class="font-bold font-serif-kr text-xs sm:text-sm pg-text-gold">삶의 쉼표와 소망</span>
+              </div>
+              <p class="text-xs sm:text-sm pg-text leading-relaxed font-medium">
+                사주와 주역이 선택 앞에서 잠시 멈추어 생각해 보는 <strong class="pg-text-gold">지혜로운 쉼표</strong>가 되기를 바랍니다. 그리고 모두의 하루가 조금 더 행복해지기를 소망합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-5 border-t pg-border max-w-3xl mx-auto">
+          <Transition name="fade-tab" mode="out-in">
+            <HomeGuidanceIching v-if="activeTab === 'iching'" key="guidance-iching" />
+            <HomeGuidanceMatch v-else-if="activeTab === 'match'" key="guidance-match" />
+            <HomeGuidanceSaju v-else key="guidance-saju" />
+          </Transition>
         </div>
       </section>
 

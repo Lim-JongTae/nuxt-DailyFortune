@@ -88,6 +88,7 @@ interface MatchResultResponse {
     }
   }
   aiInterpretation?: string
+  model?: string
 }
 
 const runtimeConfig = useRuntimeConfig()
@@ -494,6 +495,49 @@ const elemColorClasses = [
   'bg-slate-500 text-slate-100',
   'bg-sky-500 text-sky-100'
 ]
+
+// AI 마크다운 포맷터
+const markdownFormatter = useMarkdownFormatter()
+
+const formattedAiInterpretation = computed(() => {
+  if (!result.value?.aiInterpretation) return ''
+  let text = result.value.aiInterpretation
+  // 잔여 JSON 블록 및 찌꺼기 제거
+  text = text.replace(/```json\s*[\s\S]*?\s*```/gi, '')
+  text = text.replace(/```json\s*[\s\S]*/gi, '')
+  text = text.replace(/```[\s\S]*?```/g, '')
+  return markdownFormatter.formatMarkdown(text)
+})
+
+// 백엔드에서 전달받은 모델명 정제 표시 (1순위 Gemini -> 2순위 Claude -> 3순위 Daily-Fortune 역학 엔진)
+const displayModelName = computed(() => {
+  if (!result.value) return 'Daily-Fortune 역학 엔진'
+
+  if (result.value.isAiGenerated === false) {
+    return 'Daily-Fortune 역학 엔진'
+  }
+
+  const m = result.value.model || ''
+  if (!m) {
+    return result.value.isAiGenerated !== false ? 'Google Gemini 3.1 Flash Lite' : 'Daily-Fortune 역학 엔진'
+  }
+
+  // 1순위: Gemini
+  if (m.includes('gemini-3.1-flash-lite') || m === 'gemini-3.1-flash-lite') return 'Google Gemini 3.1 Flash Lite'
+  if (m.includes('gemini-2.5-flash')) return 'Google Gemini 2.5 Flash'
+  if (m.includes('gemini-1.5-flash')) return 'Google Gemini 1.5 Flash'
+  if (m.includes('gemini')) return 'Google Gemini'
+
+  // 2순위: Claude
+  if (m.includes('claude-haiku') || m.includes('claude-haiku-4-5')) return 'Anthropic Claude Haiku'
+  if (m.includes('claude-sonnet')) return 'Anthropic Claude Sonnet'
+  if (m.includes('claude')) return 'Anthropic Claude'
+
+  // 3순위: Daily-Fortune 역학 엔진
+  if (m.includes('Daily-Fortune') || m.includes('역학')) return 'Daily-Fortune 역학 엔진'
+
+  return m
+})
 </script>
 
 <template>
@@ -803,29 +847,49 @@ const elemColorClasses = [
           <AdSense adSlot="8877665544" />
         </div>
 
-        <!-- AI 심층 리포트 카드 (마크다운 원문 렌더링) -->
+        <!-- AI 심층 리포트 카드 (마크다운 파싱 렌더링) -->
         <section v-reveal class="gold-filament-card p-6 sm:p-8 space-y-6 relative overflow-hidden">
           <!-- Background Watermark (z-0: 우측 상단 & 동적 펄스 애니메이션) -->
           <div class="absolute -right-2 -top-4 sm:-right-3 sm:-top-5 pg-watermark-text animate-watermark-pulse text-8xl sm:text-9xl font-serif-kr select-none pointer-events-none z-0">
             合
           </div>
 
-          <div class="relative z-10 flex items-center gap-2 border-b pg-border pb-4">
-            <span class="seal-stamp text-xs px-2 py-0.5">秘訣</span>
-            <h3 class="font-serif-kr text-lg sm:text-xl font-bold pg-text">
-              AI 심층 명리 케미스트리 처세 보고서
-            </h3>
-          </div>
-
-          <div class="space-y-6 text-sm sm:text-base leading-relaxed pg-text-muted">
-            <div class="whitespace-pre-line font-serif-kr leading-loose">
-              {{ result.aiInterpretation }}
+          <div class="relative z-10 flex items-center justify-between border-b pg-border pb-4">
+            <div class="flex items-center gap-2">
+              <span class="seal-stamp text-xs px-2 py-0.5">秘訣</span>
+              <h3 class="font-serif-kr text-lg sm:text-xl font-bold pg-text">
+                AI 심층 명리 케미스트리 처세 보고서
+              </h3>
             </div>
+            <span
+              v-if="result.isAiGenerated !== false"
+              class="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30 font-medium"
+            >
+              <UIcon name="i-heroicons-sparkles" class="w-3.5 h-3.5 text-amber-500" />
+              <span>AI 실시간 분석</span>
+            </span>
+            <span
+              v-else
+              class="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-500/10 text-slate-400 border border-slate-500/30 font-normal"
+            >
+              역학 엔진 원천 해설
+            </span>
           </div>
 
-          <div class="pt-6 border-t pg-border flex flex-wrap justify-between items-center gap-3 text-xs pg-text-muted">
+          <!-- 마크다운 보고서 본문 렌더링 (###, **, - 등이 아름답게 스타일링됨) -->
+          <div class="relative z-10">
+            <div v-html="formattedAiInterpretation" class="markdown-body font-serif-kr"></div>
+          </div>
+
+          <div class="relative z-10 pt-6 border-t pg-border flex flex-wrap justify-between items-center gap-3 text-xs pg-text-muted">
             <span>✦ 정통 60일주론과 만세력 역학 데이터를 바탕으로 생성되었습니다.</span>
-            <span class="text-rose-500 font-medium">Daily-Fortune 궁합 엔진</span>
+            <span
+              class="inline-flex items-center gap-1.5 font-medium font-sans-kr"
+              :class="['text-rose-500', 'dark:text-rose-400']"
+            >
+              <UIcon v-if="result.isAiGenerated !== false" name="i-heroicons-sparkles" class="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+              <span>{{ displayModelName }}</span>
+            </span>
           </div>
         </section>
 

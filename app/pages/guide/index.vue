@@ -12,8 +12,8 @@ const isMuted = ref(true)
 const lightVideoRef = ref<HTMLVideoElement | null>(null)
 const darkVideoRef = ref<HTMLVideoElement | null>(null)
 
-// Tab state: 'saju' | 'iching'
-const activeTab = ref<'saju' | 'iching'>('saju')
+// Tab state: 'saju' | 'iching' | 'match'
+const activeTab = ref<'saju' | 'iching' | 'match'>('saju')
 
 // Dark mode detection for tab button styles
 const colorMode = useColorMode()
@@ -142,36 +142,48 @@ useHead({
         </div>
       </div>
 
-      <!-- 탭 선택 버튼 -->
-      <div class="flex gap-3 mb-8">
+      <!-- 탭 선택 버튼 (사주명리 / 주역 周易 / 사주 궁합) -->
+      <div class="flex gap-2 sm:gap-3 mb-8">
         <button
           type="button"
           id="tab-saju"
           @click="activeTab = 'saju'"
-          class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer"
+          class="flex-1 min-w-0 flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-2 sm:px-4 rounded-lg text-xs sm:text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer whitespace-nowrap"
           :class="activeTab === 'saju' ? 'shadow-md scale-[1.02]' : 'hover:opacity-80'"
           :style="activeTab === 'saju' ? activeBtnStyle : inactiveBtnStyle"
         >
-          <UIcon name="i-heroicons-book-open" class="w-4 h-4" />
-          <span>사주명리</span>
+          <UIcon name="i-heroicons-book-open" class="w-4 h-4 shrink-0" />
+          <span class="truncate">사주명리</span>
         </button>
         <button
           type="button"
           id="tab-iching"
           @click="activeTab = 'iching'"
-          class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer"
+          class="flex-1 min-w-0 flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-2 sm:px-4 rounded-lg text-xs sm:text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer whitespace-nowrap"
           :class="activeTab === 'iching' ? 'shadow-md scale-[1.02]' : 'hover:opacity-80'"
           :style="activeTab === 'iching' ? activeBtnStyle : inactiveBtnStyle"
         >
-          <UIcon name="i-heroicons-sparkles" class="w-4 h-4" />
-          <span>주역 周易</span>
+          <UIcon name="i-heroicons-sparkles" class="w-4 h-4 shrink-0" />
+          <span class="truncate">주역 周易</span>
+        </button>
+        <button
+          type="button"
+          id="tab-match"
+          @click="activeTab = 'match'"
+          class="flex-1 min-w-0 flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-2 sm:px-4 rounded-lg text-xs sm:text-sm font-bold font-serif-kr transition-all duration-200 border cursor-pointer whitespace-nowrap"
+          :class="activeTab === 'match' ? 'shadow-md scale-[1.02]' : 'hover:opacity-80'"
+          :style="activeTab === 'match' ? activeBtnStyle : inactiveBtnStyle"
+        >
+          <UIcon name="i-heroicons-heart" class="w-4 h-4 shrink-0 text-rose-500" />
+          <span class="truncate">사주 궁합</span>
         </button>
       </div>
 
       <!-- 탭 콘텐츠 -->
       <Transition name="fade-tab" mode="out-in">
         <GuideCardsSaju v-if="activeTab === 'saju'" key="saju" />
-        <GuideCardsIching v-else key="iching" />
+        <GuideCardsIching v-else-if="activeTab === 'iching'" key="iching" />
+        <GuideCardsMatch v-else key="match" />
       </Transition>
 
       <!-- FAQ 및 추가 학술 안내 -->

@@ -187,12 +187,14 @@ ${compResult.factSummaryText}
     // 3. AI 모델 호출
     let aiResponseText = ''
     let isAiGenerated = false
+    let modelName = ''
 
     try {
       const aiRes = await callAiModel(prompt, 'match')
       if (aiRes && aiRes.text) {
         aiResponseText = aiRes.text
         isAiGenerated = aiRes.isAiGenerated
+        modelName = aiRes.model || ''
       }
     } catch (aiErr: any) {
       console.warn('[Match API] AI Generation error, using structured fallback:', aiErr?.message)
@@ -287,7 +289,8 @@ ${compResult.indicators.elementSynergy.description}
       },
       parsedData,
       aiInterpretation: markdownReport,
-      isAiGenerated
+      isAiGenerated,
+      model: isAiGenerated ? (modelName || 'gemini-3.1-flash-lite') : 'Daily-Fortune 역학 엔진'
     }
   } catch (error: any) {
     console.error(`[${requestId}] Saju Match API Error:`, error)
