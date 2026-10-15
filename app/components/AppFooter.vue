@@ -67,6 +67,7 @@ const currentYear = new Date().getFullYear()
         >
           이용약관
         </NuxtLink>
+        <HiggsfieldBanner variant="footer" />
       </div>
 
     </div>

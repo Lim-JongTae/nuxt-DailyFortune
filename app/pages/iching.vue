@@ -1472,6 +1472,11 @@ const copyToClipboard = () => {
           <AdSense adSlot="8877665544" />
         </div>
 
+        <!-- 추천 AI 파트너 Higgsfield 배너 -->
+        <div v-if="result && result.aiInterpretation">
+          <HiggsfieldBanner variant="card" />
+        </div>
+
         <!-- 정적 서술형 주역 64괘 백과 및 가이드 섹션 (Googlebot 인덱싱 및 AdSense 정책 준수용) -->
         <div :class="['mt-12 p-6 sm:p-8 rounded-2xl border transition-colors shadow-sm', 'bg-amber-50/40 border-amber-200/60', 'dark:bg-[#12162B] dark:border-amber-900/30']">
           <div :class="['flex items-center gap-2 mb-4 pb-3 border-b', 'border-amber-200/50', 'dark:border-slate-700']">

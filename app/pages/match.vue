@@ -887,6 +887,9 @@ const displayModelName = computed(() => {
           </div>
         </section>
 
+        <!-- 추천 AI 파트너 Higgsfield 배너 -->
+        <HiggsfieldBanner variant="card" />
+
       </div>
 
       <!-- ================= 2인 사주 입력 폼 ================= -->

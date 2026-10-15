@@ -1474,8 +1474,11 @@ watch(result, (newVal) => {
         </div>
 
         <!-- AdSense: AI 결과가 있을 때만 표시 (Google 정책 준수) -->
-        <div v-if="result && result.aiInterpretation" class="flex justify-center my-4">
-          <AdSense adSlot="8877665544" />
+        <div v-if="result && result.aiInterpretation" class="space-y-4 my-4">
+          <div class="flex justify-center">
+            <AdSense adSlot="8877665544" />
+          </div>
+          <HiggsfieldBanner variant="card" />
         </div>
 
         <!-- 정적 서술형 명리학 백과 및 가이드 섹션 (Googlebot 인덱싱 및 AdSense 정책 준수용) -->
