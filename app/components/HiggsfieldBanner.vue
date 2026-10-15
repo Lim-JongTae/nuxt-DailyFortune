@@ -23,7 +23,7 @@ const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
       rel="noopener sponsored"
       :class="[
         'group relative block overflow-hidden rounded-2xl border p-4 sm:p-5 transition-all duration-300 hover:scale-[1.01] hover:shadow-xl',
-        'bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-indigo-500/10 border-amber-300/40 hover:border-amber-400',
+        'bg-linear-to-r from-amber-500/10 via-purple-500/10 to-indigo-500/10 border-amber-300/40 hover:border-amber-400',
         'dark:from-amber-950/30 dark:via-purple-950/30 dark:to-indigo-950/30 dark:border-amber-500/30 dark:hover:border-amber-400/60'
       ]"
     >
@@ -32,7 +32,7 @@ const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
         aria-hidden="true"
         :class="[
           'absolute -right-12 -top-12 w-40 h-40 rounded-full blur-3xl opacity-40 pointer-events-none transition-opacity group-hover:opacity-70',
-          'bg-gradient-to-br from-purple-400 to-amber-300',
+          'bg-linear-to-br from-purple-400 to-amber-300',
           'dark:from-purple-600 dark:to-amber-500'
         ]"
       />
@@ -43,7 +43,7 @@ const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
           <div
             :class="[
               'flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl shadow-md transition-transform duration-300 group-hover:scale-110',
-              'bg-gradient-to-br from-amber-500 via-rose-500 to-purple-600 text-white'
+              'bg-linear-to-br from-amber-500 via-rose-500 to-purple-600 text-white'
             ]"
           >
             <UIcon name="i-heroicons-sparkles" class="w-6 h-6 animate-pulse" />
