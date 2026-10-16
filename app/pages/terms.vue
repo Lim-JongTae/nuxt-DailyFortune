@@ -70,6 +70,16 @@ useHead({
             본 서비스가 자체 제작한 웹 디자인, 로고, 알고리즘, 설명 가이드 문서의 저작권은 'sajuapp.co.kr'에 귀속됩니다.
           </p>
         </section>
+
+        <section>
+          <h2 :class="['text-lg font-bold mb-3', 'text-amber-800', 'dark:text-amber-200']">제 6 조 (고객지원 및 문의처)</h2>
+          <p>
+            서비스 이용 중 불편 사항이나 오류 제보, 기타 문의 사항은 아래 공식 고객지원 창구로 접수해 주시기 바랍니다.
+          </p>
+          <p :class="['mt-2 font-medium', 'text-amber-700', 'dark:text-[#FFDE9E]']">
+            고객지원 이메일: <a href="mailto:support@sajuapp.co.kr" class="underline">support@sajuapp.co.kr</a>
+          </p>
+        </section>
       </div>
 
       <div :class="['mt-10 pt-6 border-t flex justify-center', 'border-amber-200/40', 'dark:border-slate-700/50']">

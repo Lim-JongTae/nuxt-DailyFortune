@@ -115,6 +115,38 @@ export default defineNuxtConfig({
     ],
     urls: [
       {
+        loc: '/',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '일일운세 ✦ 天命 메인 대표 이미지' }]
+      },
+      {
+        loc: '/about',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '일일운세 ✦ 天命 사이트 소개 이미지' }]
+      },
+      {
+        loc: '/saju',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '오늘의 사주명리학 운세 대표 이미지' }]
+      },
+      {
+        loc: '/iching',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '오늘의 주역 64괘 대표 이미지' }]
+      },
+      {
+        loc: '/match',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '인연 사주궁합 대표 이미지' }]
+      },
+      {
+        loc: '/talisman',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '오늘의 맞춤 부적 대표 이미지' }]
+      },
+      {
+        loc: '/privacy',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '개인정보처리방침' }]
+      },
+      {
+        loc: '/terms',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '서비스 이용약관' }]
+      },
+      {
         loc: '/guide',
         images: [
           {
@@ -122,6 +154,14 @@ export default defineNuxtConfig({
             title: '동양철학 명리 주역 실전 가이드 캘리그라피 서화 대표 이미지'
           }
         ]
+      },
+      {
+        loc: '/guide/saju',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '사주명리학 기초 가이드 이미지' }]
+      },
+      {
+        loc: '/guide/iching',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '주역 64괘 가이드 이미지' }]
       },
       {
         loc: '/guide/ten-gods',
@@ -159,60 +199,23 @@ export default defineNuxtConfig({
           }
         ]
       },
-      {
-        loc: '/guide/saju',
-        images: [
-          {
-            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
-            title: '사주명리학 기초 가이드 이미지'
-          }
-        ]
-      },
-      {
-        loc: '/guide/iching',
-        images: [
-          {
-            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
-            title: '주역 64괘 가이드 이미지'
-          }
-        ]
-      },
-      {
-        loc: '/',
-        images: [
-          {
-            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
-            title: '일일운세 ✦ 天命 메인 대표 이미지'
-          }
-        ]
-      },
-      {
-        loc: '/about',
-        images: [
-          {
-            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
-            title: '일일운세 ✦ 天命 사이트 소개 이미지'
-          }
-        ]
-      },
-      {
-        loc: '/saju',
-        images: [
-          {
-            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
-            title: '오늘의 사주명리학 운세 대표 이미지'
-          }
-        ]
-      },
-      {
-        loc: '/iching',
-        images: [
-          {
-            loc: 'https://sajuapp.co.kr/seo-1-edut.webp',
-            title: '오늘의 주역 64괘 대표 이미지'
-          }
-        ]
-      }
+      // 사주 60일주 실전 처세 백과사전 전체 정적 URL 자동 등록 (60개)
+      ...[
+        'gap-ja', 'eul-chuk', 'byeong-in', 'jeong-myo', 'mu-jin', 'gi-sa', 'gyeong-o', 'sin-mi', 'im-sin', 'gye-yu',
+        'gap-sul', 'eul-hae', 'byeong-ja', 'jeong-chuk', 'mu-in', 'gi-myo', 'gyeong-jin', 'sin-sa', 'im-o', 'gye-mi',
+        'gap-sin', 'eul-yu', 'byeong-sul', 'jeong-hae', 'mu-ja', 'gi-chuk', 'gyeong-in', 'sin-myo', 'im-jin', 'gye-sa',
+        'gap-o', 'eul-mi', 'byeong-sin', 'jeong-yu', 'mu-sul', 'gi-hae', 'gyeong-ja', 'sin-chuk', 'im-in', 'gye-myo',
+        'gap-jin', 'eul-sa', 'byeong-o', 'jeong-mi', 'mu-sin', 'gi-yu', 'gyeong-sul', 'sin-hae', 'im-ja', 'gye-chuk',
+        'gap-in', 'eul-myo', 'byeong-jin', 'jeong-sa', 'mu-o', 'gi-mi', 'gyeong-sin', 'sin-yu', 'im-sul', 'gye-hae'
+      ].map(code => ({
+        loc: `/guide/saju/ilju/${code}`,
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: `${code} 일주 가이드` }]
+      })),
+      // 주역 64괘 및 384효 실전 처세 비결 전체 정적 URL 자동 등록 (64개)
+      ...Array.from({ length: 64 }, (_, i) => ({
+        loc: `/guide/iching/${i + 1}`,
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: `주역 제${i + 1}괘 가이드` }]
+      }))
     ]
   }
 })
