@@ -81,7 +81,7 @@ const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
               차세대 AI 영상·이미지 스튜디오 ✦ Higgsfield
             </h4>
 
-            <p
+            <!-- <p
               :class="[
                 'text-xs leading-relaxed max-w-xl',
                 'text-slate-600',
@@ -89,7 +89,7 @@ const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
               ]"
             >
               오늘의 운세와 떠오르는 영감을 영화 같은 초고화질 AI 시네마틱 영상으로 만들어보세요.
-            </p>
+            </p> -->
           </div>
         </div>
 
