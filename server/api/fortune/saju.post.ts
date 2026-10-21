@@ -406,8 +406,9 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
 *조금 더 상세하고 개인화된 조언을 원하시면 나중에 다시 시도해 주세요.*`
     }
 
-    // Rate limit 기록 저장 (성공 시에만)
-    if (!isDev) {
+    // Rate limit 기록 저장 (정상 분석 성공 시에만 저장하여 오류 발생 시 즉시 재조회 가능하도록 보장)
+    const isAnalysisComplete = isAiGenerated && !!(parsedData?.categories?.wealth?.score && parsedData?.categories?.love?.score)
+    if (!isDev && isAnalysisComplete) {
       try {
         await prisma.fortuneRateLimit.create({
           data: {
@@ -425,12 +426,12 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
           })
         }
       }
-    }
 
-    setCookie(event, cookieName, String(now), {
-      maxAge: 10 * 24 * 60 * 60,
-      path: '/'
-    })
+      setCookie(event, cookieName, String(now), {
+        maxAge: 10 * 24 * 60 * 60,
+        path: '/'
+      })
+    }
 
     console.log(`[${requestId}] Saju API completed successfully`, {
       elapsed: `${Date.now() - parseInt(requestId.split('_')[1] || '0')}ms`,

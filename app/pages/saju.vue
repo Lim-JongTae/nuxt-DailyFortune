@@ -323,8 +323,21 @@ const startSajuFortune = async () => {
 
     if (res.success) {
       result.value = res
-      store.recordFortuneSuccess('saju')
-      store.saveToLocalStorage()
+      // 점수 데이터가 정상적으로 수신되었을 때만 12시간 쿨타임 성공 기록
+      const hasScores = !!(res.parsedData?.categories?.wealth?.score && res.parsedData?.categories?.love?.score)
+      if (hasScores) {
+        store.recordFortuneSuccess('saju')
+        store.saveToLocalStorage()
+      } else {
+        toast.clear()
+        toast.add({
+          title: '⚠️ 운세 분석 오류',
+          description: '분석 중 오류 발생, 다시 조회하시기 바랍니다.',
+          icon: 'i-heroicons-exclamation-triangle',
+          color: 'warning',
+          duration: 6000
+        })
+      }
     } else {
       alert(res.error || '오류가 발생했습니다.')
     }
@@ -432,7 +445,7 @@ const copyToClipboard = () => {
 
   const scoreDisplay = sajuScores.value.hasScores
     ? `${sajuScores.value.totalScore}점 (${sajuScores.value.rankText})`
-    : '자료가 없음'
+    : '분석 중 오류 발생, 다시 조회하시기 바랍니다.'
 
   const shareText = `🔮 [사주앱 - sajuapp.co.kr] 오늘의 사주명리 분석 보고서 🔮
 --------------------------------------
@@ -450,23 +463,26 @@ ${plainText}
     .catch(err => console.error(err))
 }
 
-const handleResetSaju = () => {
-  const coolTime = store.getRemainingCoolTime('saju')
-  if (coolTime.isLimited) {
-    toast.clear()
-    const timeText = coolTime.hours > 0 
-      ? (coolTime.minutes > 0 ? `${coolTime.hours}시간 ${coolTime.minutes}분` : `${coolTime.hours}시간`)
-      : `${coolTime.minutes}분`
-    toast.add({
-      title: '⏳ 사주 재조회 대기 시간 안내',
-      description: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 약 ${timeText} 후에 다시 입력 및 조회가 가능합니다.`,
-      icon: 'i-heroicons-clock',
-      color: 'warning',
-      duration: 6000
-    })
-    return
+const handleResetSaju = (force = false) => {
+  if (!force) {
+    const coolTime = store.getRemainingCoolTime('saju')
+    if (coolTime.isLimited) {
+      toast.clear()
+      const timeText = coolTime.hours > 0 
+        ? (coolTime.minutes > 0 ? `${coolTime.hours}시간 ${coolTime.minutes}분` : `${coolTime.hours}시간`)
+        : `${coolTime.minutes}분`
+      toast.add({
+        title: '⏳ 사주 재조회 대기 시간 안내',
+        description: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 약 ${timeText} 후에 다시 입력 및 조회가 가능합니다.`,
+        icon: 'i-heroicons-clock',
+        color: 'warning',
+        duration: 6000
+      })
+      return
+    }
   }
   store.clearSaju()
+  result.value = null
 }
 
 const sajuScores = computed(() => {
@@ -504,7 +520,7 @@ const sajuScores = computed(() => {
     return {
       hasScores: false,
       totalScore: 0,
-      rankText: '자료가 없음',
+      rankText: '다시 조회하시기 바랍니다',
       wealthScore: 0,
       loveScore: 0,
       healthScore: 0,
@@ -577,24 +593,24 @@ const sajuDynamicData = computed(() => {
   }
 
   return {
-    headline: sanitizeKoreanText(parsed?.headline) || `${birthGanzhi}일주와 오늘 ${shipsin} 기운의 조화`,
-    headlineSub: sanitizeKoreanText(parsed?.headlineSub) || `타고난 ${ilganElement} 기운의 본질을 바탕으로 오늘 ${shipsin}의 흐름을 지혜롭게 활용하는 날입니다.`,
+    headline: sanitizeKoreanText(parsed?.headline) || (sajuScores.value.hasScores ? `${birthGanzhi}일주와 오늘 ${shipsin} 기운의 조화` : '분석 중 오류 발생'),
+    headlineSub: sanitizeKoreanText(parsed?.headlineSub) || (sajuScores.value.hasScores ? `타고난 ${ilganElement} 기운의 본질을 바탕으로 오늘 ${shipsin}의 흐름을 지혜롭게 활용하는 날입니다.` : '분석 중 오류 발생, 다시 조회하시기 바랍니다.'),
     categories: {
       wealth: {
         score: sajuScores.value.wealthScore,
-        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || (sajuScores.value.hasScores ? `${birthGanzhi}일주에 ${shipsin} 기운이 작용하여 재물 흐름을 이끕니다.` : '자료가 없음')
+        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || (sajuScores.value.hasScores ? `${birthGanzhi}일주에 ${shipsin} 기운이 작용하여 재물 흐름을 이끕니다.` : '분석 중 오류 발생, 다시 조회하시기 바랍니다.')
       },
       love: {
         score: sajuScores.value.loveScore,
-        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || (sajuScores.value.hasScores ? `대인관계와 인연에서 ${shipsin}의 덕이 발휘됩니다.` : '자료가 없음')
+        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || (sajuScores.value.hasScores ? `대인관계와 인연에서 ${shipsin}의 덕이 발휘됩니다.` : '분석 중 오류 발생, 다시 조회하시기 바랍니다.')
       },
       health: {
         score: sajuScores.value.healthScore,
-        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || (sajuScores.value.hasScores ? `${ilganElement} 기운의 오행 균형을 이룰 수 있도록 안정을 취하세요.` : '자료가 없음')
+        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || (sajuScores.value.hasScores ? `${ilganElement} 기운의 오행 균형을 이룰 수 있도록 안정을 취하세요.` : '분석 중 오류 발생, 다시 조회하시기 바랍니다.')
       },
       business: {
         score: sajuScores.value.businessScore,
-        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || (sajuScores.value.hasScores ? `${shipsin}의 역량이 발휘되어 과업의 결실을 맺는 시기입니다.` : '자료가 없음')
+        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || (sajuScores.value.hasScores ? `${shipsin}의 역량이 발휘되어 과업의 결실을 맺는 시기입니다.` : '분석 중 오류 발생, 다시 조회하시기 바랍니다.')
       }
     },
     timeFlow: {
@@ -1149,6 +1165,25 @@ watch(result, (newVal) => {
           </div>
         </div>
 
+        <!-- 분석 오류 발생 시 상단 알림 배너 및 재조회 버튼 -->
+        <div v-if="!sajuScores.hasScores" class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center space-y-2.5 reveal-on-scroll">
+          <div class="flex items-center justify-center gap-1.5 text-amber-500 font-bold text-xs">
+            <UIcon name="i-heroicons-exclamation-triangle" class="w-4 h-4" />
+            <span>분석 중 오류 발생</span>
+          </div>
+          <p class="text-xs pg-text-muted font-medium">
+            분석 중 오류 발생, 다시 조회하시기 바랍니다.
+          </p>
+          <button
+            type="button"
+            @click="handleResetSaju(true)"
+            class="px-4 py-2 rounded-xl text-xs font-bold bg-linear-to-r from-[#FFE5A3] to-[#E8C170] text-[#0F1226] hover:brightness-110 active:scale-95 transition-all shadow-md inline-flex items-center gap-1.5 cursor-pointer"
+          >
+            <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 text-[#0F1226]" />
+            <span>운세 다시 조회하기</span>
+          </button>
+        </div>
+
         <!-- 2. 중앙 종합 점수 & 원형 게이지 링 카드 -->
         <div class="pg-card border rounded-3xl p-4 sm:p-6 text-center relative overflow-hidden shadow-2xl reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
@@ -1197,12 +1232,15 @@ watch(result, (newVal) => {
                   <span class="text-xs pg-text-gold font-bold">점</span>
                 </template>
                 <template v-else>
-                  <span class="text-sm font-bold pg-text-muted">
-                    자료가 없음
+                  <span class="text-sm font-bold text-amber-500">
+                    오류
                   </span>
                 </template>
               </div>
-              <span class="mt-1 text-[10px] px-2 py-0.5 rounded-full pg-card-inner pg-text-gold-bold border pg-border">
+              <span 
+                class="mt-1 text-[10px] px-2 py-0.5 rounded-full pg-card-inner border"
+                :class="sajuScores.hasScores ? 'pg-text-gold-bold pg-border' : 'text-amber-500/90 border-amber-500/30'"
+              >
                 {{ sajuScores.rankText }}
               </span>
             </div>
@@ -1233,8 +1271,8 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">💰</span>
-                  <span class="text-xs font-bold pg-text-gold">
-                    {{ sajuScores.hasScores ? `${animatedScores.wealthScore} 점` : '자료가 없음' }}
+                  <span class="text-xs font-bold" :class="sajuScores.hasScores ? 'pg-text-gold' : 'text-amber-500'">
+                    {{ sajuScores.hasScores ? `${animatedScores.wealthScore} 점` : '오류' }}
                   </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">재물운</h4>
@@ -1252,8 +1290,8 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">🕊️</span>
-                  <span class="text-xs font-bold pg-text-gold">
-                    {{ sajuScores.hasScores ? `${animatedScores.loveScore} 점` : '자료가 없음' }}
+                  <span class="text-xs font-bold" :class="sajuScores.hasScores ? 'pg-text-gold' : 'text-amber-500'">
+                    {{ sajuScores.hasScores ? `${animatedScores.loveScore} 점` : '오류' }}
                   </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">애정운</h4>
@@ -1271,8 +1309,8 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">🌿</span>
-                  <span class="text-xs font-bold pg-text-gold">
-                    {{ sajuScores.hasScores ? `${animatedScores.healthScore} 점` : '자료가 없음' }}
+                  <span class="text-xs font-bold" :class="sajuScores.hasScores ? 'pg-text-gold' : 'text-amber-500'">
+                    {{ sajuScores.hasScores ? `${animatedScores.healthScore} 점` : '오류' }}
                   </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">건강운</h4>
@@ -1290,8 +1328,8 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">📜</span>
-                  <span class="text-xs font-bold pg-text-gold">
-                    {{ sajuScores.hasScores ? `${animatedScores.businessScore} 점` : '자료가 없음' }}
+                  <span class="text-xs font-bold" :class="sajuScores.hasScores ? 'pg-text-gold' : 'text-amber-500'">
+                    {{ sajuScores.hasScores ? `${animatedScores.businessScore} 점` : '오류' }}
                   </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">직업·학업</h4>
