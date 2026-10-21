@@ -224,6 +224,8 @@ watch(birthYear, (newYear) => {
 watch([birthYear, birthMonth, birthDay], () => { validateInputs() })
 
 const loading = ref(false)
+const showCooldownNotice = ref(false)
+const cooldownTimeStr = ref('')
 
 onMounted(() => {
   store.loadFromLocalStorage()
@@ -232,6 +234,18 @@ onMounted(() => {
     birthYear.value = y || ''
     birthMonth.value = m ? String(parseInt(m, 10)) : ''
     birthDay.value = d ? String(parseInt(d, 10)) : ''
+  }
+
+  // 12시간 쿨다운 확인 및 이전 결과 자동 복원
+  if (store.hasRecentResult('saju')) {
+    if (!result.value && store.sajuResult) {
+      result.value = store.sajuResult
+    }
+    const cool = store.getRemainingCoolTime('saju')
+    if (cool.isLimited) {
+      showCooldownNotice.value = true
+      cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+    }
   }
 })
 
@@ -249,6 +263,11 @@ const startSajuFortune = async () => {
     store.loadFromLocalStorage(true)
     if (store.sajuResult) {
       result.value = store.sajuResult
+      const cool = store.getRemainingCoolTime('saju')
+      if (cool.isLimited) {
+        showCooldownNotice.value = true
+        cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+      }
       toast.clear()
       toast.add({
         title: '✦ 오늘의 운세 조회 안내',
@@ -362,6 +381,11 @@ const startSajuFortune = async () => {
       if (store.sajuResult) {
         result.value = store.sajuResult
       }
+      const cool = store.getRemainingCoolTime('saju')
+      if (cool.isLimited) {
+        showCooldownNotice.value = true
+        cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+      }
       toast.add({
         title: '✦ 오늘의 운세 조회 안내',
         description: statusMessage || '최근 12시간 이내에 이미 사주 운세를 조회하셨습니다. 이전 조회 결과를 보여드립니다.',
@@ -463,8 +487,9 @@ ${plainText}
     .catch(err => console.error(err))
 }
 
-const handleResetSaju = (force = false) => {
-  if (!force) {
+const handleResetSaju = (force: boolean = false) => {
+  const isForce = typeof force === 'boolean' ? force : false
+  if (!isForce) {
     const coolTime = store.getRemainingCoolTime('saju')
     if (coolTime.isLimited) {
       toast.clear()
@@ -481,6 +506,7 @@ const handleResetSaju = (force = false) => {
       return
     }
   }
+  showCooldownNotice.value = false
   store.clearSaju()
   result.value = null
 }
@@ -961,7 +987,7 @@ watch(result, (newVal) => {
           <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--fortune-gold);"></span>
           십이지신 및 명식
         </span>
-        <button type="button" @click="store.clearSaju()" class="text-xs pg-text-gold hover:pg-text-gold-light underline underline-offset-2">
+        <button type="button" @click="handleResetSaju(false)" class="text-xs pg-text-gold hover:pg-text-gold-light underline underline-offset-2">
           내 사주 변경
         </button>
       </div>
@@ -998,6 +1024,26 @@ watch(result, (newVal) => {
             <span>{{ z.name }}</span>
           </button>
         </template>
+      </div>
+
+      <!-- 12시간 쿨다운 알림 배너 (사주궁합과 1:1 통일) -->
+      <div 
+        v-if="showCooldownNotice && result" 
+        class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 text-xs sm:text-sm mb-4"
+      >
+        <div class="flex items-center gap-2.5">
+          <UIcon name="i-heroicons-information-circle" class="w-5 h-5 text-amber-500 shrink-0" />
+          <span class="pg-text-muted">
+            오늘 이미 조회하신 사주 결과입니다.<br> 다음 새로운 조회까지 <strong>{{ cooldownTimeStr }}</strong> 남았습니다.
+          </span>
+        </div>
+        <button 
+          type="button" 
+          @click="showCooldownNotice = false" 
+          class="text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer shrink-0"
+        >
+          닫기
+        </button>
       </div>
 
       <!-- ========================================== -->
@@ -1521,7 +1567,7 @@ watch(result, (newVal) => {
               'text-amber-900',
               'dark:text-amber-300'
             ]"
-            @click="handleResetSaju"
+            @click="handleResetSaju(false)"
           >
             <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
             <span>🔄 오늘 사주 다시 보기 (재조회 입력)</span>

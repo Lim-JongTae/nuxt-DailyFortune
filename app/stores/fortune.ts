@@ -124,7 +124,7 @@ export const useFortuneStore = defineStore('fortune', () => {
           sajuResult.value = null
         } else {
           sajuWorry.value = localStorage.getItem('fortune_sajuWorry') || ''
-          sajuResult.value = parseStoredJson('fortune_sajuResult')
+          sajuResult.value = parseStoredJson('fortune_sajuResult', 'fortune_backup_sajuResult')
         }
 
         // 주역 데이터 처리 (자정 경과 시 날짜/시간/결과 모두 정리)
@@ -138,7 +138,7 @@ export const useFortuneStore = defineStore('fortune', () => {
           ichingResult.value = null
         } else {
           ichingWorry.value = localStorage.getItem('fortune_ichingWorry') || ''
-          const storedIching = parseStoredJson('fortune_ichingResult')
+          const storedIching = parseStoredJson('fortune_ichingResult', 'fortune_backup_ichingResult')
           if (storedIching && storedIching.success === true && storedIching.hexagram) {
             ichingResult.value = storedIching as IChingResultResponse
           } else {
@@ -154,7 +154,7 @@ export const useFortuneStore = defineStore('fortune', () => {
           localStorage.removeItem('fortune_match_savedDate')
           matchResult.value = null
         } else {
-          matchResult.value = parseStoredJson('fortune_matchResult')
+          matchResult.value = parseStoredJson('fortune_matchResult', 'fortune_backup_matchResult')
         }
 
         // 공유 날짜 업데이트 (호환성 유지용)
@@ -180,26 +180,20 @@ export const useFortuneStore = defineStore('fortune', () => {
         localStorage.setItem('fortune_match_person2', JSON.stringify(matchPerson2.value))
         localStorage.setItem('fortune_match_relationType', matchRelationType.value)
 
-        // ✅ 실제 결과만 저장 (백업은 recordFortuneSuccess에서 관리)
+        // ✅ 실제 결과만 저장 (메모리가 비어있다고 해서 쿨다운 중인 기존 유효 결과를 삭제하지 않음)
         if (sajuResult.value) {
           const jsonStr = JSON.stringify(sajuResult.value)
           localStorage.setItem('fortune_sajuResult', jsonStr)
-        } else {
-          localStorage.removeItem('fortune_sajuResult')
         }
 
         if (ichingResult.value) {
           const jsonStr = JSON.stringify(ichingResult.value)
           localStorage.setItem('fortune_ichingResult', jsonStr)
-        } else {
-          localStorage.removeItem('fortune_ichingResult')
         }
 
         if (matchResult.value) {
           const jsonStr = JSON.stringify(matchResult.value)
           localStorage.setItem('fortune_matchResult', jsonStr)
-        } else {
-          localStorage.removeItem('fortune_matchResult')
         }
       } catch (e) {
         console.error('[Store] Error saving to localStorage:', e)

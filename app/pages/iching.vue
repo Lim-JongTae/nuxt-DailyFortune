@@ -188,6 +188,8 @@ const formattedInterpretation = computed(() => {
 
 const currentStep = ref(0)
 const loading = ref(false)
+const showCooldownNotice = ref(false)
+const cooldownTimeStr = ref('')
 const activeTab = ref('iching')
 const disclaimerModalRef = ref<{ openModal: () => void } | null>(null)
 
@@ -275,6 +277,16 @@ const initLineSticks = () => {
 
 onMounted(() => {
   store.loadFromLocalStorage()
+  if (store.hasRecentResult('iching')) {
+    if (!result.value && store.ichingResult) {
+      result.value = store.ichingResult
+    }
+    const cool = store.getRemainingCoolTime('iching')
+    if (cool.isLimited) {
+      showCooldownNotice.value = true
+      cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+    }
+  }
   if (result.value) {
     currentStep.value = 5
     if (result.value.hexagram) {
@@ -290,6 +302,11 @@ const startRitual = () => {
     if (store.ichingResult) {
       result.value = store.ichingResult
       currentStep.value = 5
+      const cool = store.getRemainingCoolTime('iching')
+      if (cool.isLimited) {
+        showCooldownNotice.value = true
+        cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+      }
       if (result.value.hexagram) {
         fetchLikeStats(result.value.hexagram.id, result.value.hexagram.lineNumber)
       }
@@ -383,6 +400,11 @@ const handleStickClick = async (stick: any) => {
             result.value = res
             store.recordFortuneSuccess('iching')
             store.saveToLocalStorage()
+            const cool = store.getRemainingCoolTime('iching')
+            if (cool.isLimited) {
+              showCooldownNotice.value = true
+              cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+            }
             currentStep.value = 5
             if (res.isAiGenerated) {
               toast.add({
@@ -430,6 +452,11 @@ const handleStickClick = async (stick: any) => {
           }
           if (result.value) {
             currentStep.value = 5
+            const cool = store.getRemainingCoolTime('iching')
+            if (cool.isLimited) {
+              showCooldownNotice.value = true
+              cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+            }
             if (result.value.hexagram) {
               fetchLikeStats(result.value.hexagram.id, result.value.hexagram.lineNumber)
             }
@@ -542,6 +569,7 @@ const resetAll = () => {
     })
     return
   }
+  showCooldownNotice.value = false
   store.clearIching()
   lowerTrigram.value = null
   upperTrigram.value = null
@@ -902,6 +930,26 @@ const copyToClipboard = () => {
         </div>
         <button type="button" class="p-1.5 rounded-full pg-text-muted hover:pg-text transition-colors">
           <UIcon name="i-heroicons-bookmark" class="w-5 h-5 text-(--fortune-text-soft)" />
+        </button>
+      </div>
+
+      <!-- 12시간 쿨다운 알림 배너 (사주궁합 화면과 1:1 통일) -->
+      <div 
+        v-if="showCooldownNotice && result" 
+        class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 text-xs sm:text-sm mb-4"
+      >
+        <div class="flex items-center gap-2.5">
+          <UIcon name="i-heroicons-information-circle" class="w-5 h-5 text-amber-500 shrink-0" />
+          <span class="pg-text-muted">
+            오늘 이미 조회하신 주역 결과입니다.<br> 다음 새로운 조회까지 <strong>{{ cooldownTimeStr }}</strong> 남았습니다.
+          </span>
+        </div>
+        <button 
+          type="button" 
+          @click="showCooldownNotice = false" 
+          class="text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer shrink-0"
+        >
+          닫기
         </button>
       </div>
 
