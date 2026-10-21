@@ -430,11 +430,15 @@ const copyToClipboard = () => {
     .replace(/### /g, '■ ')
     .replace(/## /g, '◈ ')
 
+  const scoreDisplay = sajuScores.value.hasScores
+    ? `${sajuScores.value.totalScore}점 (${sajuScores.value.rankText})`
+    : '자료가 없음'
+
   const shareText = `🔮 [사주앱 - sajuapp.co.kr] 오늘의 사주명리 분석 보고서 🔮
 --------------------------------------
 ● 내 일간: ${user.ilgan} (${user.ilganElement})
 ● 오늘의 일진: ${today.ganzhi}일 (${today.shipsin}의 날)
-● 운세 지수: ${sajuScores.value.totalScore}점 (${sajuScores.value.rankText})
+● 운세 지수: ${scoreDisplay}
 
 ${plainText}
 
@@ -468,6 +472,7 @@ const handleResetSaju = () => {
 const sajuScores = computed(() => {
   if (!result.value) {
     return {
+      hasScores: false,
       totalScore: 0,
       rankText: '추후 조회',
       wealthScore: 0,
@@ -480,21 +485,35 @@ const sajuScores = computed(() => {
 
   const parsedCat = result.value.parsedData?.categories
   
-  // 파싱된 점수 안전 추출 (숫자 변환, 하드코딩 가짜 점수 fallback 배치 금지)
-  const parseNumScore = (val: any, categoryName: string) => {
+  // 파싱된 점수 안전 추출 (숫자 변환, 하드코딩 가짜 점수 fallback 배치 금지, 누락 시 null 반환)
+  const parseNumScore = (val: any) => {
+    if (val === undefined || val === null || val === '') return null
     const n = parseInt(String(val), 10)
-    if (isNaN(n) || n <= 0 || n > 100) {
-      throw new Error(`[Saju Score Parse Error] ${categoryName} 운세 점수(${val})가 올바른 숫자 형태가 아닙니다.`)
-    }
+    if (isNaN(n) || n <= 0 || n > 100) return null
     return n
   }
 
-  const wealthScore = parseNumScore(parsedCat?.wealth?.score, '재물운')
-  const loveScore = parseNumScore(parsedCat?.love?.score, '애정운')
-  const healthScore = parseNumScore(parsedCat?.health?.score, '건강운')
-  const businessScore = parseNumScore(parsedCat?.business?.score, '직업운')
+  const wealthScore = parseNumScore(parsedCat?.wealth?.score)
+  const loveScore = parseNumScore(parsedCat?.love?.score)
+  const healthScore = parseNumScore(parsedCat?.health?.score)
+  const businessScore = parseNumScore(parsedCat?.business?.score)
 
-  const totalScore = Math.round((wealthScore + loveScore + healthScore + businessScore) / 4)
+  const hasScores = wealthScore !== null && loveScore !== null && healthScore !== null && businessScore !== null
+
+  if (!hasScores) {
+    return {
+      hasScores: false,
+      totalScore: 0,
+      rankText: '자료가 없음',
+      wealthScore: 0,
+      loveScore: 0,
+      healthScore: 0,
+      businessScore: 0,
+      strokeDash: 283
+    }
+  }
+
+  const totalScore = Math.round((wealthScore! + loveScore! + healthScore! + businessScore!) / 4)
 
   let rankText = '상위 50% 보통(平運)'
   if (totalScore >= 95) rankText = '상위 2% 최상대길(最上大吉)'
@@ -509,12 +528,13 @@ const sajuScores = computed(() => {
   const strokeDash = Math.round(283 * (1 - totalScore / 100))
 
   return {
+    hasScores: true,
     totalScore,
     rankText,
-    wealthScore,
-    loveScore,
-    healthScore,
-    businessScore,
+    wealthScore: wealthScore!,
+    loveScore: loveScore!,
+    healthScore: healthScore!,
+    businessScore: businessScore!,
     strokeDash
   }
 })
@@ -562,19 +582,19 @@ const sajuDynamicData = computed(() => {
     categories: {
       wealth: {
         score: sajuScores.value.wealthScore,
-        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || `${birthGanzhi}일주에 ${shipsin} 기운이 작용하여 재물 흐름을 이끕니다.`
+        summary: sanitizeKoreanText(parsed?.categories?.wealth?.summary) || (sajuScores.value.hasScores ? `${birthGanzhi}일주에 ${shipsin} 기운이 작용하여 재물 흐름을 이끕니다.` : '자료가 없음')
       },
       love: {
         score: sajuScores.value.loveScore,
-        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || `대인관계와 인연에서 ${shipsin}의 덕이 발휘됩니다.`
+        summary: sanitizeKoreanText(parsed?.categories?.love?.summary) || (sajuScores.value.hasScores ? `대인관계와 인연에서 ${shipsin}의 덕이 발휘됩니다.` : '자료가 없음')
       },
       health: {
         score: sajuScores.value.healthScore,
-        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || `${ilganElement} 기운의 오행 균형을 이룰 수 있도록 안정을 취하세요.`
+        summary: sanitizeKoreanText(parsed?.categories?.health?.summary) || (sajuScores.value.hasScores ? `${ilganElement} 기운의 오행 균형을 이룰 수 있도록 안정을 취하세요.` : '자료가 없음')
       },
       business: {
         score: sajuScores.value.businessScore,
-        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || `${shipsin}의 역량이 발휘되어 과업의 결실을 맺는 시기입니다.`
+        summary: sanitizeKoreanText(parsed?.categories?.business?.summary) || (sajuScores.value.hasScores ? `${shipsin}의 역량이 발휘되어 과업의 결실을 맺는 시기입니다.` : '자료가 없음')
       }
     },
     timeFlow: {
@@ -1170,10 +1190,17 @@ watch(result, (newVal) => {
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
               <span class="text-[12px] pg-text-soft font-bold mb-0.5">운세 지수</span>
               <div class="flex items-baseline gap-0.5">
-                <span class="text-3xl font-extrabold font-serif-kr pg-text tracking-tight">
-                  {{ animatedScores.totalScore }}
-                </span>
-                <span class="text-xs pg-text-gold font-bold">점</span>
+                <template v-if="sajuScores.hasScores">
+                  <span class="text-3xl font-extrabold font-serif-kr pg-text tracking-tight">
+                    {{ animatedScores.totalScore }}
+                  </span>
+                  <span class="text-xs pg-text-gold font-bold">점</span>
+                </template>
+                <template v-else>
+                  <span class="text-sm font-bold pg-text-muted">
+                    자료가 없음
+                  </span>
+                </template>
               </div>
               <span class="mt-1 text-[10px] px-2 py-0.5 rounded-full pg-card-inner pg-text-gold-bold border pg-border">
                 {{ sajuScores.rankText }}
@@ -1206,7 +1233,9 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">💰</span>
-                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.wealthScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">
+                    {{ sajuScores.hasScores ? `${animatedScores.wealthScore} 점` : '자료가 없음' }}
+                  </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">재물운</h4>
                 <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
@@ -1214,7 +1243,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.wealthScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated && sajuScores.hasScores ? `${sajuScores.wealthScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -1223,7 +1252,9 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">🕊️</span>
-                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.loveScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">
+                    {{ sajuScores.hasScores ? `${animatedScores.loveScore} 점` : '자료가 없음' }}
+                  </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">애정운</h4>
                 <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
@@ -1231,7 +1262,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.loveScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated && sajuScores.hasScores ? `${sajuScores.loveScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -1240,7 +1271,9 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">🌿</span>
-                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.healthScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">
+                    {{ sajuScores.hasScores ? `${animatedScores.healthScore} 점` : '자료가 없음' }}
+                  </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">건강운</h4>
                 <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
@@ -1248,7 +1281,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.healthScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated && sajuScores.hasScores ? `${sajuScores.healthScore}%` : '0%' }"></div>
               </div>
             </div>
 
@@ -1257,7 +1290,9 @@ watch(result, (newVal) => {
               <div>
                 <div class="flex justify-between items-center mb-2">
                   <span class="text-xl">📜</span>
-                  <span class="text-xs font-bold pg-text-gold">{{ animatedScores.businessScore }} 점</span>
+                  <span class="text-xs font-bold pg-text-gold">
+                    {{ sajuScores.hasScores ? `${animatedScores.businessScore} 점` : '자료가 없음' }}
+                  </span>
                 </div>
                 <h4 class="font-serif-kr text-xs font-bold pg-text mb-1">직업·학업</h4>
                 <p class="text-[11px] pg-text-muted font-bold line-clamp-2">
@@ -1265,7 +1300,7 @@ watch(result, (newVal) => {
                 </p>
               </div>
               <div class="w-full pg-card-inner h-1.5 rounded-full mt-3 overflow-hidden">
-                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated ? `${sajuScores.businessScore}%` : '0%' }"></div>
+                <div class="bg-linear-to-r from-[#FFE5A3] to-[#E8C170] h-full rounded-full transition-all duration-2000ms ease-out" :style="{ width: isAnimated && sajuScores.hasScores ? `${sajuScores.businessScore}%` : '0%' }"></div>
               </div>
             </div>
           </div>

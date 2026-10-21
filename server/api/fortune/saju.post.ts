@@ -259,40 +259,103 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
     let aiInterpretation = ''
 
     if (isAiGenerated && rawAiText) {
-      // 1. 닫힌 코드블록 시도 (```json ... ```)
-      const closedMatch = rawAiText.match(/```json\s*([\s\S]*?)\s*```/)
-      if (closedMatch && closedMatch[1]) {
+      // Helper: 안전한 JSON 파싱 (후행 쉼표 및 주석 제거 지원)
+      const tryParseJson = (rawStr: string) => {
+        if (!rawStr) return null
+        let s = rawStr.trim()
         try {
-          parsedData = JSON.parse(closedMatch[1])
-          aiInterpretation = rawAiText.replace(/```json\s*[\s\S]*?\s*```/, '').trim()
-        } catch (e: any) {
-          console.warn('[JSON Parse] Closed block failed:', e.message)
+          return JSON.parse(s)
+        } catch {}
+        try {
+          s = s
+            .replace(/^\uFEFF/, '')
+            .replace(/\/\/[^\n]*/g, '')
+            .replace(/\/\*[\s\S]*?\*\//g, '')
+            .replace(/,\s*([}\]])/g, '$1')
+          return JSON.parse(s)
+        } catch {}
+        return null
+      }
+
+      // 1. 코드블록 시도 (```json ... ``` 또는 ``` ... ```)
+      const codeBlockMatch = rawAiText.match(/```(?:json)?\s*([\s\S]*?)\s*```/i)
+      if (codeBlockMatch && codeBlockMatch[1]) {
+        parsedData = tryParseJson(codeBlockMatch[1])
+        if (parsedData) {
+          aiInterpretation = rawAiText.replace(/```(?:json)?\s*[\s\S]*?\s*```/i, '').trim()
         }
       }
 
       // 2. 닫히지 않은 코드블록 시도 (```json ...)
       if (!parsedData) {
-        const unclosedMatch = rawAiText.match(/```json\s*([\s\S]*)/)
+        const unclosedMatch = rawAiText.match(/```(?:json)?\s*([\s\S]*)/i)
         if (unclosedMatch && unclosedMatch[1]) {
           const jsonStr = unclosedMatch[1].split(/^(?=#|###|####|\*\*|\n\n)/m)[0] || ''
-          try {
-            parsedData = JSON.parse(jsonStr)
-            aiInterpretation = rawAiText.replace(/```json\s*[\s\S]*/, '').trim()
-          } catch (e: any) {
-            console.warn('[JSON Parse] Unclosed block failed:', e.message)
+          parsedData = tryParseJson(jsonStr)
+          if (parsedData) {
+            aiInterpretation = rawAiText.replace(/```(?:json)?\s*[\s\S]*/i, '').trim()
           }
         }
       }
 
-      // 3. 백틱 없이 생성된 생 JSON 시도 ({ "headline": ... })
+      // 3. 백틱 없이 생성된 생 JSON 시도 ({ ... })
       if (!parsedData) {
-        const rawJsonMatch = rawAiText.match(/^\s*(\{[\s\S]*?\})(?=\s*(\n\n|#|###|####|\*\*|$))/)
-        if (rawJsonMatch && rawJsonMatch[1]) {
-          try {
-            parsedData = JSON.parse(rawJsonMatch[1])
-            aiInterpretation = rawAiText.substring(rawJsonMatch[0].length).trim()
-          } catch (e: any) {
-            console.warn('[JSON Parse] Raw JSON match failed:', e.message)
+        const firstBrace = rawAiText.indexOf('{')
+        if (firstBrace !== -1) {
+          const headerMatch = rawAiText.search(/\n\s*#{1,4}\s/)
+          const searchRange = headerMatch !== -1 ? rawAiText.substring(0, headerMatch) : rawAiText
+          const lastBrace = searchRange.lastIndexOf('}')
+          if (lastBrace > firstBrace) {
+            const potentialJson = searchRange.substring(firstBrace, lastBrace + 1)
+            parsedData = tryParseJson(potentialJson)
+            if (parsedData) {
+              aiInterpretation = rawAiText.substring(lastBrace + 1).trim()
+            }
+          }
+        }
+      }
+
+      // 파싱된 데이터 구조 정규화 (LLM 응답 키/구조 변형 방어)
+      if (parsedData) {
+        if (!parsedData.headline && parsedData.title) {
+          parsedData.headline = parsedData.title
+        }
+
+        if (!parsedData.categories && parsedData.category) {
+          parsedData.categories = parsedData.category
+        }
+        if (!parsedData.categories && (parsedData.wealth || parsedData['재물운'] || parsedData.scores)) {
+          parsedData.categories = parsedData.scores || {
+            wealth: parsedData.wealth || parsedData['재물운'],
+            love: parsedData.love || parsedData['애정운'],
+            health: parsedData.health || parsedData['건강운'],
+            business: parsedData.business || parsedData.career || parsedData['직업운']
+          }
+        }
+
+        if (parsedData.categories) {
+          const cats = parsedData.categories
+          if (cats['재물운'] && !cats.wealth) cats.wealth = cats['재물운']
+          if (cats['재물'] && !cats.wealth) cats.wealth = cats['재물']
+          if (cats['애정운'] && !cats.love) cats.love = cats['애정운']
+          if (cats['애정'] && !cats.love) cats.love = cats['애정']
+          if (cats['건강운'] && !cats.health) cats.health = cats['건강운']
+          if (cats['건강'] && !cats.health) cats.health = cats['건강']
+          if (cats['직업운'] && !cats.business) cats.business = cats['직업운']
+          if (cats['사업운'] && !cats.business) cats.business = cats['사업운']
+          if (cats['직업'] && !cats.business) cats.business = cats['직업']
+
+          for (const k of ['wealth', 'love', 'health', 'business'] as const) {
+            const item = cats[k]
+            if (item !== undefined && item !== null) {
+              if (typeof item === 'number' || typeof item === 'string') {
+                cats[k] = { score: parseInt(String(item), 10) || 75, summary: '' }
+              } else if (typeof item === 'object') {
+                const num = parseInt(String(item.score), 10)
+                cats[k].score = isNaN(num) ? undefined : num
+                cats[k].summary = String(item.summary || '')
+              }
+            }
           }
         }
       }

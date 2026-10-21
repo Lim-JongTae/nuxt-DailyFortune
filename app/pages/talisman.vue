@@ -84,7 +84,7 @@ const generatedCategory = computed<TalismanCategory>(() => {
   if (hasSajuResult.value && sajuResult.value) {
     const cats = sajuResult.value.parsedData?.categories
     if (!cats) {
-      throw new Error('[Saju Talisman Error] 사주 분석 결과에 카테고리(parsedData.categories) 데이터가 존재하지 않습니다.')
+      return 'wealth'
     }
 
     let minScore = Infinity
@@ -94,13 +94,11 @@ const generatedCategory = computed<TalismanCategory>(() => {
       const rawScore = cats[k]?.score
       const numScore = parseInt(String(rawScore), 10)
 
-      if (isNaN(numScore) || numScore <= 0 || numScore > 100) {
-        throw new Error(`[Saju Talisman Error] ${k} 카테고리의 운세 점수(${rawScore})가 유효한 숫자 형태가 아닙니다.`)
-      }
-
-      if (numScore < minScore) {
-        minScore = numScore
-        worstCat = k
+      if (!isNaN(numScore) && numScore > 0 && numScore <= 100) {
+        if (numScore < minScore) {
+          minScore = numScore
+          worstCat = k
+        }
       }
     }
 
@@ -108,7 +106,7 @@ const generatedCategory = computed<TalismanCategory>(() => {
       return worstCat
     }
 
-    throw new Error('[Saju Talisman Error] 최저 점수 카테고리를 결정할 수 없습니다.')
+    return 'wealth'
   }
   return 'wealth'
 })
