@@ -1592,11 +1592,8 @@ watch(result, (newVal) => {
           </p>
         </div>
 
-        <!-- AdSense: AI 결과가 있을 때만 표시 (Google 정책 준수) -->
+        <!-- AI 결과 배너 -->
         <div v-if="result && result.aiInterpretation" class="space-y-4 my-4">
-          <div class="flex justify-center">
-            <AdSense adSlot="8877665544" />
-          </div>
           <HiggsfieldBanner variant="card" />
         </div>
 

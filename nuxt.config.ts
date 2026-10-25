@@ -81,6 +81,13 @@ export default defineNuxtConfig({
       link: [
         { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
         { rel: 'icon', type: 'image/png', href: '/favicon-badge.png' }
+      ],
+      script: [
+        {
+          async: true,
+          src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9938049374204211',
+          crossorigin: 'anonymous'
+        }
       ]
     }
   },
@@ -198,24 +205,7 @@ export default defineNuxtConfig({
             title: '10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지'
           }
         ]
-      },
-      // 사주 60일주 실전 처세 백과사전 전체 정적 URL 자동 등록 (60개)
-      ...[
-        'gap-ja', 'eul-chuk', 'byeong-in', 'jeong-myo', 'mu-jin', 'gi-sa', 'gyeong-o', 'sin-mi', 'im-sin', 'gye-yu',
-        'gap-sul', 'eul-hae', 'byeong-ja', 'jeong-chuk', 'mu-in', 'gi-myo', 'gyeong-jin', 'sin-sa', 'im-o', 'gye-mi',
-        'gap-sin', 'eul-yu', 'byeong-sul', 'jeong-hae', 'mu-ja', 'gi-chuk', 'gyeong-in', 'sin-myo', 'im-jin', 'gye-sa',
-        'gap-o', 'eul-mi', 'byeong-sin', 'jeong-yu', 'mu-sul', 'gi-hae', 'gyeong-ja', 'sin-chuk', 'im-in', 'gye-myo',
-        'gap-jin', 'eul-sa', 'byeong-o', 'jeong-mi', 'mu-sin', 'gi-yu', 'gyeong-sul', 'sin-hae', 'im-ja', 'gye-chuk',
-        'gap-in', 'eul-myo', 'byeong-jin', 'jeong-sa', 'mu-o', 'gi-mi', 'gyeong-sin', 'sin-yu', 'im-sul', 'gye-hae'
-      ].map(code => ({
-        loc: `/guide/saju/ilju/${code}`,
-        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: `${code} 일주 가이드` }]
-      })),
-      // 주역 64괘 및 384효 실전 처세 비결 전체 정적 URL 자동 등록 (64개)
-      ...Array.from({ length: 64 }, (_, i) => ({
-        loc: `/guide/iching/${i + 1}`,
-        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: `주역 제${i + 1}괘 가이드` }]
-      }))
+      }
     ]
   }
 })

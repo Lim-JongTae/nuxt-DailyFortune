@@ -43,13 +43,19 @@ useHead({
         </section>
 
         <section>
-          <h2 :class="['text-lg font-bold mb-3', 'text-amber-800', 'dark:text-amber-200']">3. 쿠키(Cookie) 및 브라우저 저장소 활용</h2>
+          <h2 :class="['text-lg font-bold mb-3', 'text-amber-800', 'dark:text-amber-200']">3. 쿠키(Cookie) 및 제3자 광고 사업자 정책</h2>
           <p class="mb-3">
             본 웹사이트는 사용자의 이용 편의성 향상과 서비스 정책 준수를 위해 웹 브라우저 쿠키 및 로컬 스토리지(LocalStorage)를 활용합니다.
           </p>
           <ul class="list-disc pl-5 space-y-2">
             <li><strong>일일 조회 제한 및 자정 리셋 쿠키:</strong> 과도한 서버 과부하 및 API 중복 호출을 방지하기 위해 한국 표준시(KST) 자정(00:00)을 기준으로 당일 운세 조회 상태를 기록하고 자동으로 초기화합니다.</li>
-            <li><strong>구글 애드센스(Google AdSense) 맞춤형 광고:</strong> 구글을 포함한 제3자 광고 사업자는 쿠키를 활용하여 사용자의 과거 웹사이트 방문 기록에 기반한 맞춤형 광고를 게재합니다. 사용자는 구글 광고 설정(<a href="https://adssettings.google.com" target="_blank" :class="['underline', 'text-amber-600', 'dark:text-amber-400']">adssettings.google.com</a>)에서 맞춤형 광고를 해제할 수 있습니다.</li>
+            <li><strong>구글 애드센스(Google AdSense) 광고 및 쿠키:</strong>
+              <ul class="list-circle pl-5 mt-1 space-y-1 text-xs sm:text-sm">
+                <li>Google을 포함한 제3자 광고 사업자는 쿠키를 활용하여 이용자의 과거 본 웹사이트 또는 다른 웹사이트 방문 기록을 기반으로 광고를 게재합니다.</li>
+                <li>Google의 광고 쿠키 사용을 통해 Google 및 파트너사는 인터넷상의 방문 기록을 바탕으로 적절한 맞춤형 광고를 제공할 수 있습니다.</li>
+                <li>이용자는 구글 광고 설정(<a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" :class="['underline font-semibold', 'text-amber-600', 'dark:text-amber-400']">adssettings.google.com</a>) 또는 미국 디지털 광고 협회(<a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" :class="['underline font-semibold', 'text-amber-600', 'dark:text-amber-400']">www.aboutads.info</a>)를 방문하여 맞춤형 광고에 사용되는 쿠키를 언제든지 선택 해제(Opt-out)할 수 있습니다.</li>
+              </ul>
+            </li>
           </ul>
         </section>
 

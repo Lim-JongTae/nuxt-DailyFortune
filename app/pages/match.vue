@@ -836,10 +836,6 @@ const displayModelName = computed(() => {
           </p>
         </section>
 
-        <!-- 애드센스 인피드 광고 슬롯 -->
-        <div class="my-6">
-          <AdSense adSlot="8877665544" />
-        </div>
 
         <!-- AI 심층 리포트 카드 (마크다운 파싱 렌더링) -->
         <section v-reveal class="gold-filament-card p-6 sm:p-8 space-y-6 relative overflow-hidden">
@@ -1146,10 +1142,6 @@ const displayModelName = computed(() => {
           </p>
         </div>
 
-        <!-- 하단 애드센스 슬롯 -->
-        <div class="pt-6">
-          <AdSense adSlot="8877665544" />
-        </div>
 
       </div>
 

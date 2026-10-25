@@ -1515,10 +1515,6 @@ const copyToClipboard = () => {
           ※ 주역점은 삶의 지혜와 마음을 가다듬기 위한 참고용이며, 최종 선택과 판단은 스스로 내려보세요.
         </p>
 
-        <!-- AdSense: AI 결과가 있을 때만 표시 (Google 정책 준수) -->
-        <div v-if="result && result.aiInterpretation" class="flex justify-center my-4">
-          <AdSense adSlot="8877665544" />
-        </div>
 
         <!-- 추천 AI 파트너 Higgsfield 배너 -->
         <div v-if="result && result.aiInterpretation">
