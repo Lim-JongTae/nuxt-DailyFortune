@@ -1397,7 +1397,7 @@ watch(result, (newVal) => {
                 </span>
               </div>
               <p class="text-[11px] pg-text leading-snug">
-                {{ result?.parsedData?.samjaeStatus?.advice || (result?.userSaju?.isSamjae ? '3년 삼재의 마지막 해로 묵은 액운이 빠져나가는 시기입니다. 중요한 계약과 투자는 신중을 기하세요.' : '2027년은 삼재의 액운이 미치지 않아 평안하고 순탄하게 기운을 펼칠 수 있습니다.') }}
+                {{ result?.parsedData?.samjaeStatus?.advice || (result?.userSaju?.isSamjae ? (result?.userSaju?.animal === '토끼' ? '날삼재에 해당하나 묘미 반합의 기운이 겹쳐 복삼재로 풀이될 수 있는 흐름입니다. 방심을 경계하되 협력과 인연의 기운을 차분히 살피세요.' : '3년 삼재의 마지막 해로 묵은 액운이 빠져나가는 시기입니다. 중요한 계약과 투자는 신중을 기하세요.') : '2027년은 삼재의 액운이 미치지 않아 평안하고 순탄하게 기운을 펼칠 수 있습니다.') }}
               </p>
             </div>
 
@@ -1417,7 +1417,7 @@ watch(result, (newVal) => {
                     'dark:text-amber-300'
                   ]"
                 >
-                  {{ result?.userSaju?.isYukhab ? '💖 오미(午未) 육합 길운' : (result?.userSaju?.isBanhab || result?.userSaju?.isSamhab) ? '🌟 묘미·해미 반합 길운' : result?.userSaju?.isBonmyeong ? '🐑 정미(丁未) 본명년 성찰' : result?.userSaju?.isChung ? '⚡ 축미(丑未) 충 변화수' : '🌿 세운 상생 조화' }}
+                  {{ result?.userSaju?.isYukhab ? '💖 오미(午未) 육합 길운' : result?.userSaju?.animal === '토끼' ? '🌟 묘미(卯未) 반합 · 복삼재' : (result?.userSaju?.isBanhab || result?.userSaju?.isSamhab) ? '🌟 해미(亥未) 반합 길운' : result?.userSaju?.isBonmyeong ? '🐑 정미(丁未) 본명년 성찰' : result?.userSaju?.isChung ? '⚡ 축미(丑未) 충 변화수' : '🌿 세운 상생 조화' }}
                 </span>
                 <span
                   :class="[
@@ -1430,7 +1430,7 @@ watch(result, (newVal) => {
                 </span>
               </div>
               <p class="text-[11px] pg-text leading-snug">
-                {{ result?.userSaju?.isYukhab ? '오미 육합의 기운으로 귀인의 조력과 인연의 화합이 기대되는 해로 풀이됩니다.' : (result?.userSaju?.isBanhab || result?.userSaju?.isSamhab) ? '세운과의 반합(半合) 기운으로 협력과 귀인의 조력이 따르는 길한 흐름으로 풀이됩니다.' : result?.userSaju?.isBonmyeong ? '자신의 띠와 세운이 마주하는 본명년으로 무리한 확장보다 내실을 다지는 것이 길합니다.' : result?.userSaju?.isChung ? '활동 무대, 직장, 거주지의 커다란 변화와 이동이 따르는 역동적인 해로 풀이됩니다.' : '정미년의 온화한 불과 흙 기운이 본연의 일주와 무난한 조화를 이룹니다.' }}
+                {{ result?.userSaju?.isYukhab ? '오미 육합의 기운으로 대인관계 협력과 인연의 기운이 기대되는 해로 풀이됩니다.' : result?.userSaju?.animal === '토끼' ? '날삼재의 마무리에 묘미 반합의 기운이 더해져 복삼재로 전환될 수 있는 흐름으로 풀이됩니다.' : (result?.userSaju?.isBanhab || result?.userSaju?.isSamhab) ? '세운과의 반합(半合) 기운으로 협력과 발전이 기대되는 흐름으로 풀이됩니다.' : result?.userSaju?.isBonmyeong ? '자신의 띠와 세운이 마주하는 본명년으로 무리한 확장보다 내실을 다지는 것이 길합니다.' : result?.userSaju?.isChung ? '활동 무대, 직장, 거주지의 커다란 변화와 이동이 따르는 역동적인 해로 풀이됩니다.' : '정미년의 온화한 불과 흙 기운이 본연의 일주와 무난한 조화를 이룹니다.' }}
               </p>
             </div>
           </div>
