@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/`
-const fortuneTitle = '일일운세 ✦ 天命'
-const fortuneDesc = '피흉추길(避凶趨吉·재앙을 피하고 길함을 쫓음)의 지혜. 사주명리와 주역 64괘로 보는 오늘의 맞춤 운세.'
+const fortuneTitle = '무료 일일운세 & 주역 64괘 AI 사주 리포트 (회원가입 없음)'
+const fortuneDesc = '회원가입 없이 즉시 보는 100% 무료 일일운세! 생년월일시 기반 정밀 일간·십신 AI 사주 분석과 주역 64괘 대나무 점대로 오늘의 피흉추길 비결을 확인하세요.'
 
 useSeoMeta({
   title: fortuneTitle,
@@ -26,7 +26,7 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: '일일운세 ✦ 天命',
+        name: '무료 일일운세 & 주역 64괘 AI 사주 - 사주앱',
         description: fortuneDesc,
         url: pageUrl,
         applicationCategory: 'LifestyleApplication',

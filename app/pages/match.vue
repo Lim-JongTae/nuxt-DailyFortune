@@ -94,13 +94,17 @@ interface MatchResultResponse {
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/match`
 
+const matchTitle = '무료 사주궁합 & 십신 조화 AI 인연 리포트 (회원가입 없음)'
+const matchDesc = '두 사람의 생년월일시로 분석하는 100% 무료 AI 정밀 사주궁합! 천간합·지지육합·십신 오행 조화와 깊이 있는 인연 비결을 확인하세요.'
+
 useSeoMeta({
-  title: 'AI 사주 궁합 ✦ 연인·인연 케미스트리 - 일일운세',
-  description: '정통 만세력과 60일주론, 천간합과 지지합충 기반으로 두 사람의 사주명리 궁합과 AI 심층 케미스트리 리포트를 확인하세요.',
-  ogTitle: 'AI 사주 궁합 ✦ 연인·인연 케미스트리 | 일일운세',
-  ogDescription: '정통 만세력과 60일주론, 천간합과 지지합충 기반으로 두 사람의 사주명리 궁합과 AI 심층 케미스트리 리포트를 확인하세요.',
-  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`,
+  title: matchTitle,
+  description: matchDesc,
+  ogTitle: matchTitle,
+  ogDescription: matchDesc,
+  ogType: 'website',
   ogUrl: pageUrl,
+  ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`,
   twitterCard: 'summary_large_image',
   twitterImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`
 })
@@ -113,8 +117,8 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: 'AI 사주 궁합',
-        description: '두 사람의 생년월일시 만세력 기반 4대 정통 역학 궁합 분석 및 AI 케미스트리 리포트',
+        name: matchTitle,
+        description: matchDesc,
         url: pageUrl
       })
     }

@@ -37,11 +37,14 @@ interface SajuResultResponse {
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/saju`
 
+const sajuTitle = '무료 사주팔자 & 오늘의 일일사주 AI 분석 (회원가입 없음)'
+const sajuDesc = '생년월일시 입력으로 나만의 일간(日干)과 오늘 일진의 십신 조화를 즉시 무료 분석하는 AI 사주명리 리포트.'
+
 useSeoMeta({
-  title: '일일 사주명리 - 오늘의 운세',
-  description: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
-  ogTitle: '일일 사주명리 - 오늘의 운세',
-  ogDescription: '생년월일시를 입력하여 나만의 일간(日干)과 오늘 일진의 십신 조화를 분석하고 맞춤 AI 사주 리포트를 확인하세요.',
+  title: sajuTitle,
+  description: sajuDesc,
+  ogTitle: sajuTitle,
+  ogDescription: sajuDesc,
   ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`,
   ogUrl: pageUrl,
   twitterCard: 'summary_large_image',

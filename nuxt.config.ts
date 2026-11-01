@@ -59,15 +59,15 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'ko'
       },
-      title: '일일운세 ✦ 天命 - 사주명리와 주역 64괘 맞춤 운세',
-      titleTemplate: '%s | 피흉추길(避凶趨吉)',
+      title: '무료 일일운세 & 주역 64괘 AI 사주 리포트 (회원가입 없음)',
+      titleTemplate: '%s | 사주앱',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '피흉추길(避凶趨吉·재앙을 피하고 길함을 쫓음)의 지혜. 사주명리와 주역 64괘로 보는 오늘의 맞춤 운세.' },
-        { name: 'keywords', content: '피흉추길, 오늘의 사주, 무료 사주팔자, 일일 운세 무료, 신년운세, 오늘의 주역, 사주 궁합, AI 사주, 사주명리 주역, 생년월일 운세, 띠별 오늘의 운세' },
-        { property: 'og:description', content: '피흉추길(避凶趨吉·재앙을 피하고 길함을 쫓음)의 지혜. 사주명리와 주역 64괘로 보는 오늘의 맞춤 운세.' },
-        { name: 'twitter:description', content: '피흉추길(避凶趨吉·재앙을 피하고 길함을 쫓음)의 지혜. 사주명리와 주역 64괘로 보는 오늘의 맞춤 운세.' },
+        { name: 'description', content: '회원가입 없이 즉시 보는 100% 무료 일일운세! 생년월일시 기반 정밀 일간·십신 AI 사주 분석과 주역 64괘 대나무 점대로 오늘의 피흉추길 비결을 확인하세요.' },
+        { name: 'keywords', content: '무료 일일운세, 무료 사주팔자, 일일사주, AI 사주, 주역 64괘, 오늘의 운세 무료, 사주앱, 사주 궁합, 신년운세, 피흉추길, 띠별 오늘의 운세' },
+        { property: 'og:description', content: '회원가입 없이 즉시 보는 100% 무료 일일운세! 생년월일시 기반 정밀 일간·십신 AI 사주 분석과 주역 64괘 대나무 점대로 오늘의 피흉추길 비결을 확인하세요.' },
+        { name: 'twitter:description', content: '회원가입 없이 즉시 보는 100% 무료 일일운세! 생년월일시 기반 정밀 일간·십신 AI 사주 분석과 주역 64괘 대나무 점대로 오늘의 피흉추길 비결을 확인하세요.' },
         { name: 'author', content: 'sajuapp.co.kr' },
         { name: 'theme-color', content: '#0F1226' },
         { name: 'mobile-web-app-capable', content: 'yes' },
@@ -79,8 +79,11 @@ export default defineNuxtConfig({
         { name: 'google-site-verification', content: '2CLnDz_vPIDxGXp7WFbJj7xJj2SNc0pnNVF-Wh7HwCI' }
       ],
       link: [
-        { rel: 'apple-touch-icon', href: '/favicon-badge.png' },
-        { rel: 'icon', type: 'image/png', href: '/favicon-badge.png' }
+        { rel: 'shortcut icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }
       ],
       script: [
         {

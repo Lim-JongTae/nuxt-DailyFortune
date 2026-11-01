@@ -7,9 +7,9 @@ import { getGanzhiOfDay } from '~/utils/saju'
 import type { TalismanCategory } from '~/components/TalismanCanvas.vue'
 
 useHead({
-  title: '오늘의 사주 맞춤 부적 | sajuapp.co.kr',
+  title: '무료 오늘의 맞춤 부적 & 행운 액막이 다운로드',
   meta: [
-    { name: 'description', content: '사주명리 일진과 오행 기운을 분석하여 오늘 당신에게 발급된 맞춤 행운 디지털 부적입니다.' }
+    { name: 'description', content: '사주명리 일진과 오행 기운을 분석하여 발급되는 무료 오늘의 맞춤 행운 디지털 부적 다운로드.' }
   ]
 })
 

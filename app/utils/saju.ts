@@ -2,6 +2,7 @@
  * 사주명리 간지(갑자) 및 오행 계산 유틸리티 (클라이언트 공유 - Single Source of Truth)
  * 모든 컴포넌트, 스토어 및 백엔드 유틸리티에서 이 단일 기준과 유틸리티 함수를 공유합니다.
  */
+import KoreanLunarCalendar from 'korean-lunar-calendar';
 
 export interface GanzhiResult {
   stem: string;          // 천간 (갑, 을, 병...)
@@ -239,23 +240,19 @@ export function getTodaySajuSummary(dateStr?: string): TodaySajuSummary {
 export function getTodayLunarDateString(inputDate: Date = new Date()): string {
   try {
     const validDate = isNaN(inputDate.getTime()) ? new Date() : inputDate;
-    const formatter = new Intl.DateTimeFormat('ko-KR-u-ca-chinese', {
-      timeZone: 'Asia/Seoul',
-      month: 'numeric',
-      day: 'numeric'
-    });
+    const kstDateStr = getKstTodayDateString(validDate);
+    const [yearStr, monthStr, dayStr] = kstDateStr.split('-');
+    const year = parseInt(yearStr || '2026', 10);
+    const month = parseInt(monthStr || '1', 10);
+    const day = parseInt(dayStr || '1', 10);
 
-    const parts = formatter.formatToParts(validDate);
-    let monthNum = 1;
-    let dayNum = 1;
+    const calendar = new KoreanLunarCalendar();
+    calendar.setSolarDate(year, month, day);
+    const lunar = calendar.getLunarCalendar();
 
-    for (const part of parts) {
-      if (part.type === 'month') {
-        monthNum = parseInt(part.value, 10) || 1;
-      } else if (part.type === 'day') {
-        dayNum = parseInt(part.value, 10) || 1;
-      }
-    }
+    const monthNum = lunar.month;
+    const dayNum = lunar.day;
+    const isIntercalation = !!lunar.intercalation;
 
     const hanjaMonths = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"];
     const hanjaDays = [
@@ -266,10 +263,12 @@ export function getTodayLunarDateString(inputDate: Date = new Date()): string {
 
     const mHanja = hanjaMonths[(monthNum - 1) % 12] || `${monthNum}`;
     const dHanja = hanjaDays[(dayNum - 1) % 30] || `${dayNum}日`;
+    const hanjaPrefix = isIntercalation ? '閏' : '';
+    const koreanPrefix = isIntercalation ? '윤' : '';
 
-    return `陰曆 ${mHanja}月 ${dHanja} · 음력 ${monthNum}월 ${dayNum}일`;
+    return `陰曆 ${hanjaPrefix}${mHanja}月 ${dHanja} · 음력 ${koreanPrefix}${monthNum}월 ${dayNum}일`;
   } catch (e) {
-    // 7. 음력 산출 예외 시 빈 문자열 대신 안전 Fallback 제공 (UI 레이아웃 유지)
+    // 음력 산출 예외 시 빈 문자열 대신 안전 Fallback 제공 (UI 레이아웃 유지)
     console.warn('[Lunar Date Error] Failed to calculate lunar date:', e);
     const d = inputDate || new Date();
     const safeMonth = !isNaN(d.getTime()) ? d.getMonth() + 1 : new Date().getMonth() + 1;

@@ -5,11 +5,14 @@ import { storeToRefs } from 'pinia'
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/iching`
 
+const ichingTitle = '무료 주역점 & 오늘의 64괘 비결 AI 운세 (회원가입 없음)'
+const ichingDesc = '3단계 대나무 점대로 뽑는 주역 64괘와 변효 풀이! 오늘의 길흉화복과 마음의 고민에 대한 AI 처세 조언.'
+
 useSeoMeta({
-  title: '주역점 - 하늘과 땅의 64괘',
-  description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
-  ogTitle: '주역점 - 하늘과 땅의 64괘',
-  ogDescription: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
+  title: ichingTitle,
+  description: ichingDesc,
+  ogTitle: ichingTitle,
+  ogDescription: ichingDesc,
   ogImage: `${runtimeConfig.public?.siteUrl || ''}/seo-1-edut.webp`,
   ogUrl: pageUrl,
   twitterCard: 'summary_large_image',
@@ -26,8 +29,8 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: '주역점 - 하늘과 땅의 64괘',
-        description: '마음에 품은 고민을 주역 64괘와 변효로 풀이하여 깊은 가르침과 3가지 처세 조언을 드립니다.',
+        name: ichingTitle,
+        description: ichingDesc,
         url: pageUrl,
         isPartOf: {
           '@type': 'WebSite',
