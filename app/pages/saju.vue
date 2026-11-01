@@ -92,6 +92,16 @@ const {
 
 const toast = useToast()
 const router = useRouter()
+const route = useRoute()
+const isNewYearMode = ref(route.query.type === 'newyear')
+
+watch(() => route.query.type, (newType) => {
+  isNewYearMode.value = newType === 'newyear'
+})
+
+const setFortuneMode = (mode: 'daily' | 'newyear') => {
+  isNewYearMode.value = mode === 'newyear'
+}
 
 const goToTalisman = () => {
   if (!result.value || !result.value.userSaju) {
@@ -332,7 +342,8 @@ const startSajuFortune = async () => {
         birthDate: birthDate.value,
         birthTime: birthTime.value,
         gender: gender.value,
-        worry: worry.value
+        worry: worry.value,
+        fortuneType: isNewYearMode.value ? 'newyear' : 'daily'
       }
     })
 
@@ -1050,6 +1061,36 @@ watch(result, (newVal) => {
       </div>
 
       <!-- ========================================== -->
+      <!-- 운세 모드 선택 토글 (일일운세 vs 2027 신년운세) -->
+      <!-- ========================================== -->
+      <div v-if="!result && !loading" class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-black/20 border pg-border mb-4 font-serif-kr text-xs">
+        <button
+          type="button"
+          @click="setFortuneMode('daily')"
+          :class="[
+            'py-2 px-3 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1.5',
+            !isNewYearMode
+              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+              : 'pg-text-muted hover:pg-text'
+          ]"
+        >
+          <span>🔮 오늘의 일일운세</span>
+        </button>
+        <button
+          type="button"
+          @click="setFortuneMode('newyear')"
+          :class="[
+            'py-2 px-3 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1.5',
+            isNewYearMode
+              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+              : 'pg-text-muted hover:pg-text'
+          ]"
+        >
+          <span>✨ 2027 신년운세</span>
+        </button>
+      </div>
+
+      <!-- ========================================== -->
       <!-- 생년월일시 입력 폼 (결과가 없을 때) -->
       <!-- ========================================== -->
       <div v-if="!result && !loading" class="pg-card border rounded-3xl p-5 sm:p-6 shadow-xl mb-6 relative overflow-hidden">
@@ -1061,13 +1102,13 @@ watch(result, (newVal) => {
         <div class="relative z-10">
           <div class="text-center py-2 mb-4">
           <span class="inline-block px-3 py-1 rounded-full bg-(--fortune-gold)/10 border border-(--fortune-gold)/30 pg-text-gold text-xs font-bold font-serif-kr mb-2">
-            🔮 일일 사주명리
+            {{ isNewYearMode ? '✨ 2027 정미년(丁未年) 신년운세' : '🔮 일일 사주명리' }}
           </span>
           <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text mb-2">
-            오늘 나의 명식과 일진 분석
+            {{ isNewYearMode ? '2027 정미년 신년 대운 & 삼재 비결' : '오늘 나의 명식과 일진 분석' }}
           </h2>
           <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-light">
-            태어난 연월일시를 입력하면 본인의 일간(日干)과 오늘 일진의 십신 상호작용을 정밀 계산합니다.
+            {{ isNewYearMode ? '생년월일시를 바탕으로 붉은 양의 해(정미년) 1년 총운과 날삼재, 대길 대운의 흐름을 분석합니다.' : '태어난 연월일시를 입력하면 본인의 일간(日干)과 오늘 일진의 십신 상호작용을 정밀 계산합니다.' }}
           </p>
         </div>
 
@@ -1146,12 +1187,12 @@ watch(result, (newVal) => {
           <!-- 고민 질문 -->
           <div>
             <label for="worry-saju" class="block text-xs font-bold pg-text-gold mb-2 font-serif-kr">
-              오늘의 특정 고민이나 운세 질문 (선택)
+              {{ isNewYearMode ? '2027년 신년 고민이나 소망 (선택)' : '오늘의 특정 고민이나 운세 질문 (선택)' }}
             </label>
             <textarea
               id="worry-saju"
               v-model="worry"
-              placeholder="예: 오늘 중요한 조율이 있는데 금전운 흐름이 어떨까요?"
+              :placeholder="isNewYearMode ? '예: 2027년 이직/사업운과 재물운 흐름이 궁금합니다.' : '예: 오늘 중요한 조율이 있는데 금전운 흐름이 어떨까요?'"
               rows="2"
               class="saju-input w-full py-2.5 px-4 rounded-xl text-xs resize-none"
             ></textarea>
@@ -1163,7 +1204,7 @@ watch(result, (newVal) => {
             @click="startSajuFortune"
           >
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#0F1226]" />
-            오늘의 사주명리 분석 시작
+            {{ isNewYearMode ? '2027 정미년 신년 대운 무료 분석 시작' : '오늘의 사주명리 분석 시작' }}
           </button>
         </div>
       </div>
@@ -1244,7 +1285,7 @@ watch(result, (newVal) => {
             <!-- 상단 뱃지 -->
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-deep pg-border text-[11px] font-semibold pg-text-gold-light mb-5">
             <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--fortune-gold);"></span>
-            오늘의 천기누설 · 총평 ✦
+            {{ result?.fortuneType === 'newyear' || isNewYearMode ? '2027 정미년(丁未年) 신년 총운 ✦' : '오늘의 천기누설 · 총평 ✦' }}
           </div>
 
           <!-- 원형 프로그레스 게이지 (Score Circle Gauge) -->
@@ -1272,7 +1313,9 @@ watch(result, (newVal) => {
             </svg>
 
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span class="text-[12px] pg-text-soft font-bold mb-0.5">운세 지수</span>
+              <span class="text-[12px] pg-text-soft font-bold mb-0.5">
+                {{ result?.fortuneType === 'newyear' || isNewYearMode ? '2027 신년 지수' : '운세 지수' }}
+              </span>
               <div class="flex items-baseline gap-0.5">
                 <template v-if="sajuScores.hasScores">
                   <span class="text-3xl font-extrabold font-serif-kr pg-text tracking-tight">
@@ -1304,6 +1347,72 @@ watch(result, (newVal) => {
           </p>
         </div>
       </div>
+
+        <!-- 2-1. 2027 정미년 신년운세 전용 하이라이트 (삼재 & 대운 & 황금의 달) -->
+        <div v-if="result?.fortuneType === 'newyear' || isNewYearMode" class="pg-card border rounded-3xl p-5 shadow-xl mb-4 relative overflow-hidden reveal-on-scroll">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-lg">✨</span>
+            <h3 class="font-serif-kr text-sm sm:text-base font-bold pg-text-gold">
+              2027 정미년(丁未年) 세운 특별 진단
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            <!-- 삼재 진단 카드 -->
+            <div
+              :class="[
+                'p-3.5 rounded-2xl border transition-all',
+                result?.userSaju?.isSamjae
+                  ? 'bg-rose-950/20 border-rose-800/40'
+                  : 'bg-emerald-950/20 border-emerald-800/40'
+              ]"
+            >
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold font-serif-kr" :class="result?.userSaju?.isSamjae ? 'text-rose-300' : 'text-emerald-300'">
+                  {{ result?.userSaju?.isSamjae ? '⚠️ 2027년 출삼재 (날삼재)' : '✨ 2027년 삼재 비해당' }}
+                </span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/30 pg-text-muted">
+                  {{ result?.userSaju?.zodiacName || '내 띠' }}
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-300 leading-snug">
+                {{ result?.parsedData?.samjaeStatus?.advice || (result?.userSaju?.isSamjae ? '3년 삼재의 마지막 해로 묵은 액운이 빠져나가는 시기입니다. 중요한 계약과 투자는 신중을 기하세요.' : '2027년은 삼재의 액운이 미치지 않아 평안하고 순탄하게 기운을 펼칠 수 있습니다.') }}
+              </p>
+            </div>
+
+            <!-- 대운 합충 카드 -->
+            <div class="p-3.5 rounded-2xl border bg-amber-950/20 border-amber-800/40">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold font-serif-kr text-amber-300">
+                  {{ result?.userSaju?.isYukhab ? '💖 오미(午未) 육합 대운' : result?.userSaju?.isSamhab ? '🌟 해묘미(亥卯未) 삼합 대운' : result?.userSaju?.isChung ? '⚡ 축미(丑未) 충 변화수' : '🌿 세운 상생 조화' }}
+                </span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/30 text-amber-200">
+                  丁未年 기운
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-300 leading-snug">
+                {{ result?.userSaju?.isYukhab ? '귀인과의 합(合)이 들어와 좋은 인연과 문서운이 성사되는 최고의 해입니다.' : result?.userSaju?.isSamhab ? '삼합의 기운으로 재물과 사업 영역이 크게 확장되는 대길 대운입니다.' : result?.userSaju?.isChung ? '활동 무대, 직장, 거주지의 커다란 변화와 이동이 따르는 역동적인 해입니다.' : '정미년의 온화한 불과 흙 기운이 본연의 일주를 보좌합니다.' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- 황금 대운의 달 (Best Months) -->
+          <div v-if="result?.parsedData?.bestMonths && result.parsedData.bestMonths.length" class="p-3 rounded-2xl bg-black/20 border pg-border">
+            <span class="text-[11px] font-bold pg-text-gold block mb-1.5">
+              🗓️ 2027년 가장 운이 트이는 '황금의 달'
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div
+                v-for="(bm, bIdx) in result.parsedData.bestMonths"
+                :key="bIdx"
+                class="text-[11px] text-slate-300 flex items-start gap-1.5 bg-black/20 p-2 rounded-xl"
+              >
+                <span class="text-amber-400 font-bold shrink-0">✦ {{ bm.month }}:</span>
+                <span class="leading-tight text-slate-300">{{ bm.reason }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- 3. 영역별 세부 운세 2x2 Grid (이미지 2 1:1) -->
         <div class="space-y-2.5 reveal-on-scroll">

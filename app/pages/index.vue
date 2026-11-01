@@ -370,6 +370,9 @@ onMounted(async () => {
           <span>누적 방문 <span class="font-bold pg-text-gold">{{ totalViews.toLocaleString() }}</span>회</span>
         </div>
       </footer>
+
+      <!-- 6. 2027 정미년 신년운세 팝업 모달 -->
+      <NewYearPopupModal />
     </main>
   </div>
 </template>

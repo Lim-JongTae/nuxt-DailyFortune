@@ -1,0 +1,38 @@
+{
+  "enabled": true,
+  "config": {
+    "startDate": "2026-11-01T00:00:00+09:00",
+    "endDate": "2027-02-28T23:59:59+09:00",
+    "targetYear": 2027,
+    "yearName": "정미년(丁未年)",
+    "yearSymbol": "붉은 양의 해",
+    "storageKey": "hide_new_year_popup_2027"
+  },
+  "badge": "✦ 2027 정미년(丁未年) 신년운세 특별 오픈",
+  "title": "2027 정미년 신년 대운 & 삼재 비결",
+  "subtitle": "붉은 양의 해, 나의 재물운과 피흉추길(避凶趨吉) 비결을 미리 확인하세요",
+  "heroImage": "/seo-newyear-2027.webp",
+  "zodiacHighlights": [
+    {
+      "category": "출삼재 (날삼재)",
+      "badgeColor": "rose",
+      "icon": "⚠️",
+      "zodiacs": ["뱀띠", "닭띠", "소띠"],
+      "title": "3년 삼재의 마지막 '날삼재(出三災)'",
+      "description": "액운이 빠져나가는 마지막 관문! 이별과 재물 손실을 막는 피흉추길 비결이 필수입니다."
+    },
+    {
+      "category": "대길 (대운 띠)",
+      "badgeColor": "amber",
+      "icon": "✨",
+      "zodiacs": ["말띠", "토끼띠", "돼지띠"],
+      "title": "정미년 천생연분 & 삼합 대운",
+      "description": "오미(午未) 육합과 해묘미(亥卯未) 삼합이 들어와 재물 금고가 열리고 귀인이 돕는 대운의 해!"
+    }
+  ],
+  "ctaButton": {
+    "text": "2027 나의 신년운세 & 대운 무료 분석하기",
+    "link": "/saju?type=newyear"
+  },
+  "footerNotice": "회원가입 없이 100% 무료로 AI 사주와 주역 64괘 비결을 분석해 드립니다."
+}
