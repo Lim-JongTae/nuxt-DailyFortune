@@ -5,43 +5,21 @@ interface VisitStatsResponse {
   error?: string
 }
 
-// 진행 중인 네트워크 요청 Promise 싱글톤 캐시 (중복 호출 병합 및 타임아웃 방지)
-let pendingPromise: Promise<VisitStatsResponse | null> | null = null
-
 export const useVisitorStats = () => {
-  const stats = useState<VisitStatsResponse | null>('visitorStats', () => null)
-
-  const fetchStats = async (): Promise<VisitStatsResponse | null> => {
-    // 1. 이미 로드된 캐시 데이터가 있으면 즉시 반환
-    if (stats.value) return stats.value
-
-    // 2. 다른 컴포넌트(헤더, 본문 등)에서 이미 요청 중이면 동일한 Promise 공유 대기
-    if (pendingPromise) {
-      return await pendingPromise
+  // useAsyncData를 통해 SSR 시점에 서버에서 1회 조회 후 클라이언트에 자동 hydration
+  // 헤더, 메인 등 모든 컴포넌트가 'visitor-site-stats' 키로 단일 인스턴스 공유
+  const { data: stats, refresh: fetchStats, status } = useAsyncData<VisitStatsResponse>(
+    'visitor-site-stats',
+    () => $fetch<VisitStatsResponse>('/api/stats/visit'),
+    {
+      default: () => ({ success: true, todayViews: 0, totalViews: 0 }),
+      lazy: false
     }
-
-    // 3. 신규 요청 실행 (단 1회만 호출)
-    pendingPromise = (async () => {
-      try {
-        const res = await $fetch<VisitStatsResponse>('/api/stats/visit')
-        if (res?.success) {
-          stats.value = res
-          return res
-        }
-        return null
-      } catch (e) {
-        console.warn('Failed to fetch visitor stats:', e)
-        return null
-      } finally {
-        pendingPromise = null
-      }
-    })()
-
-    return await pendingPromise
-  }
+  )
 
   return {
     stats,
-    fetchStats
+    fetchStats,
+    status
   }
 }

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const todayViews = ref(0)
 const isGuideMenuOpen = ref(false)
 const guideMenuRef = ref<HTMLElement | null>(null)
 let hoverTimeout: ReturnType<typeof setTimeout> | null = null
@@ -43,39 +42,11 @@ const handleClickOutside = (e: MouseEvent) => {
   }
 }
 
-onMounted(async () => {
+const { stats } = useVisitorStats()
+const displayTodayViews = computed(() => stats.value?.todayViews ?? 0)
+
+onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-
-  const animateHeaderStats = (target: number) => {
-    if (todayViews.value > 0) return
-    const duration = 1200
-    const start = performance.now()
-
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1)
-      const easeOut = 1 - Math.pow(1 - progress, 3)
-      todayViews.value = Math.round(target * easeOut)
-      if (progress < 1) {
-        requestAnimationFrame(step)
-      }
-    }
-    requestAnimationFrame(step)
-  }
-
-  try {
-    const { stats, fetchStats } = useVisitorStats()
-
-    if (stats.value?.todayViews) {
-      animateHeaderStats(stats.value.todayViews)
-    }
-
-    const res = await fetchStats()
-    if (res?.success && typeof res.todayViews === 'number') {
-      animateHeaderStats(res.todayViews)
-    }
-  } catch (err) {
-    console.warn('Failed to load header visitor stats:', err)
-  }
 })
 
 onUnmounted(() => {
@@ -100,14 +71,14 @@ onUnmounted(() => {
         </div>
       </NuxtLink>
 
-      <!-- 중앙: 오늘 방문자 수 (0명 시작 카운트업) -->
+      <!-- 중앙: 오늘 방문자 수 (SSR 즉시 로딩 및 고정 선명 렌더링) -->
       <div :class="['flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border shadow-xs text-xs', 'bg-amber-500/10 border-amber-500/20 text-slate-700', 'dark:bg-[#FFDE9E]/10 dark:border-[#FFDE9E]/20 dark:text-[#FFDE9E]/90']">
         <span class="relative flex h-2 w-2 shrink-0">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
         <span class="font-medium text-[11px] sm:text-xs tracking-tight">
-          오늘 방문자 <span :class="['font-bold animate-pulse', 'text-amber-600', 'dark:text-[#FFDE9E]']">{{ todayViews.toLocaleString() }}</span> 명
+          오늘 방문자 <span :class="['font-bold', 'text-amber-600', 'dark:text-[#FFDE9E]']">{{ displayTodayViews.toLocaleString() }}</span> 명
         </span>
       </div>
 

@@ -102,52 +102,17 @@ const inactiveBtnStyle = computed(() => isDark.value
   : { borderColor: 'rgba(0, 0, 0, 0.12)', color: '#64748b' }
 )
 
-// 실시간 방문자 수 및 누적 방문 카운터 (0명 시작)
-const todayViews = ref(0)
-const totalViews = ref(0)
+// 실시간 방문자 수 및 누적 방문 카운터 (useVisitorStats 싱글톤 연동)
+const { stats } = useVisitorStats()
+const displayTotalViews = computed(() => stats.value?.totalViews ?? 0)
 
 // 브라우저 마운트 완료 후 괘 애니메이션 시작 제어 (SSR 미리 동작 방지)
 const isAnimated = ref(false)
 
-onMounted(async () => {
+onMounted(() => {
   setTimeout(() => {
     isAnimated.value = true
   }, 100)
-
-  // 방문자 통계 카운트업 애니메이션 실행 헬퍼
-  const animateStats = (targetTotal: number, targetToday: number = 0) => {
-    if (totalViews.value > 0) return // 이미 애니메이션 실행 완료됨
-    const duration = 1200
-    const start = performance.now()
-
-    const step = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1)
-      const easeOut = 1 - Math.pow(1 - progress, 3)
-      todayViews.value = Math.round(targetToday * easeOut)
-      totalViews.value = Math.round(targetTotal * easeOut)
-      if (progress < 1) {
-        requestAnimationFrame(step)
-      }
-    }
-    requestAnimationFrame(step)
-  }
-
-  // 방문자 통계 데이터 로드 (useVisitorStats 컴포저블 싱글톤 공유로 중복 API 호출 방지)
-  try {
-    const { stats, fetchStats } = useVisitorStats()
-
-    // 이미 캐시된 데이터가 있다면 즉시 애니메이션 시작
-    if (stats.value?.totalViews) {
-      animateStats(stats.value.totalViews, stats.value.todayViews || 0)
-    }
-
-    const res = await fetchStats()
-    if (res?.success && typeof res.totalViews === 'number') {
-      animateStats(res.totalViews, res.todayViews || 0)
-    }
-  } catch (e) {
-    console.warn('Failed to fetch visitor stats:', e)
-  }
 
   // 150ms 지연 후 0도(0%)에서 시작하여 88%까지 부드럽게 채워짐
   setTimeout(() => {
@@ -367,7 +332,7 @@ onMounted(async () => {
       <footer v-reveal class="flex justify-end items-center pt-4 pb-2 border-t pg-border text-xs">
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-inner border pg-border pg-text-muted shadow-2xs">
           <span class="w-1.5 h-1.5 rounded-full bg-amber-500/80"></span>
-          <span>누적 방문 <span class="font-bold pg-text-gold">{{ totalViews.toLocaleString() }}</span>회</span>
+          <span>누적 방문 <span class="font-bold pg-text-gold">{{ displayTotalViews.toLocaleString() }}</span>회</span>
         </div>
       </footer>
 
