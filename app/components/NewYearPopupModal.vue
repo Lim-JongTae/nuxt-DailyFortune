@@ -107,9 +107,9 @@ const handleCtaClick = () => {
                   {{ popupData.subtitle }}
                 </p>
 
-                <!-- 날삼재 & 대길 대운 띠 하이라이트 카드 그리드 -->
+                <!-- 날삼재 & 길한 세운 띠 하이라이트 카드 그리드 -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <!-- 날삼재 카드 -->
+                  <!-- 하이라이트 카드 -->
                   <div
                     v-for="(item, idx) in popupData.zodiacHighlights"
                     :key="idx"
@@ -156,6 +156,19 @@ const handleCtaClick = () => {
                       {{ item.description }}
                     </p>
                   </div>
+                </div>
+
+                <!-- 함께 보세요 주의 포인트 -->
+                <div
+                  v-if="popupData.cautionPoint"
+                  class="px-3.5 py-2.5 rounded-xl bg-slate-800/50 border border-slate-700/60 flex items-center justify-between text-xs"
+                >
+                  <span class="text-amber-300 font-bold flex items-center gap-1.5 shrink-0">
+                    <span>📌</span> {{ popupData.cautionPoint.title }}
+                  </span>
+                  <span class="text-slate-300 font-medium truncate ml-2">
+                    {{ popupData.cautionPoint.text }}
+                  </span>
                 </div>
 
                 <!-- 무료 CTA 버튼 -->

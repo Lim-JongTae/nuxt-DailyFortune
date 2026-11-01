@@ -1111,10 +1111,10 @@ watch(result, (newVal) => {
             {{ isNewYearMode ? '✨ 2027 정미년(丁未年) 신년운세' : '🔮 일일 사주명리' }}
           </span>
           <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text mb-2">
-            {{ isNewYearMode ? '2027 정미년 신년 대운 & 삼재 비결' : '오늘 나의 명식과 일진 분석' }}
+            {{ isNewYearMode ? '2027 정미년 신년운세 & 삼재 비결' : '오늘 나의 명식과 일진 분석' }}
           </h2>
           <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-bold">
-            {{ isNewYearMode ? '생년월일시를 바탕으로 붉은 양의 해(정미년) 1년 총운과 날삼재, 대길 대운의 흐름을 분석합니다.' : '태어난 연월일시를 입력하면 본인의 일간(日干)과 오늘 일진의 십신 상호작용을 정밀 계산합니다.' }}
+            {{ isNewYearMode ? '생년월일시를 바탕으로 붉은 양의 해(정미년) 1년 총운과 날삼재, 길한 세운의 흐름을 분석합니다.' : '태어난 연월일시를 입력하면 본인의 일간(日干)과 오늘 일진의 십신 상호작용을 정밀 계산합니다.' }}
           </p>
         </div>
 
@@ -1210,7 +1210,7 @@ watch(result, (newVal) => {
             @click="startSajuFortune"
           >
             <UIcon name="i-heroicons-sparkles" class="w-5 h-5 text-[#0F1226]" />
-            {{ isNewYearMode ? '2027 정미년 신년 대운 무료 분석 시작' : '오늘의 사주명리 분석 시작' }}
+            {{ isNewYearMode ? '2027 정미년 신년운세 무료 분석 시작' : '오늘의 사주명리 분석 시작' }}
           </button>
         </div>
       </div>
@@ -1369,52 +1369,97 @@ watch(result, (newVal) => {
               :class="[
                 'p-3.5 rounded-2xl border transition-all',
                 result?.userSaju?.isSamjae
-                  ? 'bg-rose-950/20 border-rose-800/40'
-                  : 'bg-emerald-950/20 border-emerald-800/40'
+                  ? 'bg-rose-50 border-rose-200 text-rose-950'
+                  : 'bg-emerald-50 border-emerald-200 text-emerald-950',
+                result?.userSaju?.isSamjae
+                  ? 'dark:bg-rose-950/25 dark:border-rose-800/40 dark:text-rose-200'
+                  : 'dark:bg-emerald-950/25 dark:border-emerald-800/40 dark:text-emerald-200'
               ]"
             >
               <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-bold font-serif-kr" :class="result?.userSaju?.isSamjae ? 'text-rose-300' : 'text-emerald-300'">
+                <span
+                  :class="[
+                    'text-xs font-bold font-serif-kr',
+                    result?.userSaju?.isSamjae ? 'text-rose-700' : 'text-emerald-700',
+                    result?.userSaju?.isSamjae ? 'dark:text-rose-300' : 'dark:text-emerald-300'
+                  ]"
+                >
                   {{ result?.userSaju?.isSamjae ? '⚠️ 2027년 출삼재 (날삼재)' : '✨ 2027년 삼재 비해당' }}
                 </span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/30 pg-text-muted">
+                <span
+                  :class="[
+                    'text-[10px] px-1.5 py-0.5 rounded pg-text-muted font-bold',
+                    'bg-black/5',
+                    'dark:bg-black/30'
+                  ]"
+                >
                   {{ result?.userSaju?.zodiacName || '내 띠' }}
                 </span>
               </div>
-              <p class="text-[11px] text-slate-300 leading-snug">
+              <p class="text-[11px] pg-text leading-snug">
                 {{ result?.parsedData?.samjaeStatus?.advice || (result?.userSaju?.isSamjae ? '3년 삼재의 마지막 해로 묵은 액운이 빠져나가는 시기입니다. 중요한 계약과 투자는 신중을 기하세요.' : '2027년은 삼재의 액운이 미치지 않아 평안하고 순탄하게 기운을 펼칠 수 있습니다.') }}
               </p>
             </div>
 
-            <!-- 대운 합충 카드 -->
-            <div class="p-3.5 rounded-2xl border bg-amber-950/20 border-amber-800/40">
+            <!-- 세운 합충 카드 -->
+            <div
+              :class="[
+                'p-3.5 rounded-2xl border transition-all',
+                'bg-amber-50 border-amber-200',
+                'dark:bg-amber-950/25 dark:border-amber-800/40'
+              ]"
+            >
               <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-bold font-serif-kr text-amber-300">
-                  {{ result?.userSaju?.isYukhab ? '💖 오미(午未) 육합 대운' : result?.userSaju?.isSamhab ? '🌟 해묘미(亥卯未) 삼합 대운' : result?.userSaju?.isChung ? '⚡ 축미(丑未) 충 변화수' : '🌿 세운 상생 조화' }}
+                <span
+                  :class="[
+                    'text-xs font-bold font-serif-kr',
+                    'text-amber-800',
+                    'dark:text-amber-300'
+                  ]"
+                >
+                  {{ result?.userSaju?.isYukhab ? '💖 오미(午未) 육합 길운' : (result?.userSaju?.isBanhab || result?.userSaju?.isSamhab) ? '🌟 묘미·해미 반합 길운' : result?.userSaju?.isBonmyeong ? '🐑 정미(丁未) 본명년 성찰' : result?.userSaju?.isChung ? '⚡ 축미(丑未) 충 변화수' : '🌿 세운 상생 조화' }}
                 </span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/30 text-amber-200">
+                <span
+                  :class="[
+                    'text-[10px] px-1.5 py-0.5 rounded font-bold',
+                    'bg-amber-100 text-amber-900 border border-amber-300/60',
+                    'dark:bg-black/30 dark:text-amber-200 dark:border-transparent'
+                  ]"
+                >
                   丁未年 기운
                 </span>
               </div>
-              <p class="text-[11px] text-slate-300 leading-snug">
-                {{ result?.userSaju?.isYukhab ? '귀인과의 합(合)이 들어와 좋은 인연과 문서운이 성사되는 최고의 해입니다.' : result?.userSaju?.isSamhab ? '삼합의 기운으로 재물과 사업 영역이 크게 확장되는 대길 대운입니다.' : result?.userSaju?.isChung ? '활동 무대, 직장, 거주지의 커다란 변화와 이동이 따르는 역동적인 해입니다.' : '정미년의 온화한 불과 흙 기운이 본연의 일주를 보좌합니다.' }}
+              <p class="text-[11px] pg-text leading-snug">
+                {{ result?.userSaju?.isYukhab ? '오미 육합의 기운으로 귀인의 조력과 인연의 화합이 기대되는 해로 풀이됩니다.' : (result?.userSaju?.isBanhab || result?.userSaju?.isSamhab) ? '세운과의 반합(半合) 기운으로 협력과 귀인의 조력이 따르는 길한 흐름으로 풀이됩니다.' : result?.userSaju?.isBonmyeong ? '자신의 띠와 세운이 마주하는 본명년으로 무리한 확장보다 내실을 다지는 것이 길합니다.' : result?.userSaju?.isChung ? '활동 무대, 직장, 거주지의 커다란 변화와 이동이 따르는 역동적인 해로 풀이됩니다.' : '정미년의 온화한 불과 흙 기운이 본연의 일주와 무난한 조화를 이룹니다.' }}
               </p>
             </div>
           </div>
 
           <!-- 황금 대운의 달 (Best Months) -->
-          <div v-if="result?.parsedData?.bestMonths && result.parsedData.bestMonths.length" class="p-3 rounded-2xl bg-black/20 border pg-border">
-            <span class="text-[11px] font-bold pg-text-gold block mb-1.5">
+          <div v-if="result?.parsedData?.bestMonths && result.parsedData.bestMonths.length" class="p-3.5 rounded-2xl pg-card-inner border pg-border shadow-xs">
+            <span class="text-[11px] font-bold pg-text-gold block mb-1.5 font-serif-kr">
               🗓️ 2027년 가장 운이 트이는 '황금의 달'
             </span>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div
                 v-for="(bm, bIdx) in result.parsedData.bestMonths"
                 :key="bIdx"
-                class="text-[11px] text-slate-300 flex items-start gap-1.5 bg-black/20 p-2 rounded-xl"
+                :class="[
+                  'text-[11px] flex items-start gap-1.5 p-2.5 rounded-xl shadow-xs',
+                  'bg-white/90 border border-slate-200/80 text-slate-700',
+                  'dark:bg-black/30 dark:border-transparent dark:text-slate-300'
+                ]"
               >
-                <span class="text-amber-400 font-bold shrink-0">✦ {{ bm.month }}:</span>
-                <span class="leading-tight text-slate-300">{{ bm.reason }}</span>
+                <span
+                  :class="[
+                    'font-bold shrink-0',
+                    'text-amber-700',
+                    'dark:text-amber-400'
+                  ]"
+                >
+                  ✦ {{ bm.month }}:
+                </span>
+                <span class="leading-tight">{{ bm.reason }}</span>
               </div>
             </div>
           </div>

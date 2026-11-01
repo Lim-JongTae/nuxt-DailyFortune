@@ -121,13 +121,14 @@ export default defineEventHandler(async (event) => {
     const birthYearNum = parseInt(birthDate.split('-')[0] || '2000', 10)
     const userYearSaju = getGanzhiOfYear(birthYearNum)
 
-    // 2027 정미년(丁未年) 기준 역학 분석 (삼재 및 합충)
-    const samjaeZodiacs = ['뱀', '닭', '소']
+    // 2027 정미년(丁未年 未토) 기준 역학 분석 (삼재 및 세운 합충)
+    const samjaeZodiacs = ['돼지', '토끼', '양'] // 亥卯未 삼합의 날삼재(出三災)
     const isSamjae = samjaeZodiacs.includes(userYearSaju.animal)
     const samjaeType = isSamjae ? '날삼재(出三災)' : '삼재 비해당'
-    const isYukhab = userYearSaju.animal === '말'
-    const isSamhab = ['토끼', '돼지'].includes(userYearSaju.animal)
-    const isChung = userYearSaju.animal === '소'
+    const isYukhab = userYearSaju.animal === '말' // 午未 육합
+    const isBanhab = ['토끼', '돼지'].includes(userYearSaju.animal) // 卯未 / 亥未 반합
+    const isChung = userYearSaju.animal === '소' // 丑未 충
+    const isBonmyeong = userYearSaju.animal === '양' // 未未 본명년 (동갑띠)
 
     // 2. 오늘의 일진 계산 (KST 기준 날짜 계산)
     const todayStr = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(new Date())
@@ -210,8 +211,8 @@ export default defineEventHandler(async (event) => {
 
 [2027년 정미년(丁未年) 세운 역학 매칭]
 - 세운: 2027년 정미년(丁未年 - 붉은 양의 해, 丁화·未토)
-- 삼재 분석: ${isSamjae ? `${userYearSaju.zodiacName}는 2027년이 3년 삼재의 마지막인 '날삼재(出三災)'에 해당합니다. 묵은 액운이 빠져나가는 길목이므로 이별수와 재물 손실을 막는 피흉추길 조언이 필수입니다.` : `${userYearSaju.zodiacName}는 2027년 삼재에 해당하지 않아 운세가 안정적입니다.`}
-- 합충(合沖) 분석: ${isYukhab ? '오미(午未) 육합 형성으로 최고의 귀인운과 문서합 대운' : isSamhab ? '해묘미(亥卯未) 삼합 형성으로 재물과 확장의 대길 대운' : isChung ? '축미(丑未) 충 형성으로 직장, 거주지, 활동 무대의 커다란 변화와 이동수' : '정미년 세운과의 조화로운 기운 교류'}
+- 삼재 분석: ${isSamjae ? `${userYearSaju.zodiacName}는 2027년이 3년 삼재의 마지막인 '날삼재(出三災)'에 해당합니다. 묵은 액운이 빠져나가는 마지막 관문이므로 방심하지 않고 재물과 인간관계를 점검하는 피흉추길 조언이 필수적입니다.` : `${userYearSaju.zodiacName}는 2027년 삼재에 해당하지 않아 세운 흐름이 안정적입니다.`}
+- 합충(合沖) 및 세운 분석: ${isYukhab ? '오미(午未) 육합 형성으로 협력과 귀인의 기운이 기대되는 길한 흐름' : isBanhab ? '묘미(卯未) 또는 해미(亥未) 반합 형성으로 귀인의 조력과 성장의 기운이 깃드는 해' : isBonmyeong ? '정미(丁未) 본명년(동갑띠)으로 자신을 성찰하고 내실을 다져야 하는 전환기' : isChung ? '축미(丑未) 충 형성으로 직장, 거주지, 환경의 커다란 변화와 이동수' : '정미년 세운과의 조화로운 기운 교류'}
 
 [사용자의 신년 고민 및 소망]
 ${worry || "2027년 정미년 한 해의 총운과 재물, 커리어, 건강, 인간관계의 흐름에 대해 묻습니다."}
@@ -251,9 +252,9 @@ ${worry || "2027년 정미년 한 해의 총운과 재물, 커리어, 건강, �
 종합 신년 분석 보고서 작성 지침 (각 섹션별 2~3문장으로 명료하고 품격 있게 작성):
 ### 1. 2027년 정미년(丁未年) 붉은 양의 해 총운
 - ${userSaju.fullName}일주와 2027년 丁未 세운 간의 오행 생극제화 및 1년 전체의 큰 흐름 해설.
-### 2. 2027년 삼재(날삼재) 및 합충(合沖) 정밀 진단
-- ${userYearSaju.zodiacName}의 ${samjaeType} 영향력과 ${isYukhab ? '육합 대운' : isSamhab ? '삼합 대운' : isChung ? '충극 변화' : '세운 조화'} 기운을 극대화하는 방비책.
-### 3. 상반기 vs 하반기 흐름과 황금 대운의 달
+### 2. 2027년 삼재(날삼재) 및 세운 합충(合沖) 정밀 진단
+- ${userYearSaju.zodiacName}의 ${samjaeType} 영향력과 ${isYukhab ? '육합 길운' : isBanhab ? '반합 협력 기운' : isBonmyeong ? '본명년 수신' : isChung ? '충극 변화' : '세운 조화'} 기운을 살피는 피흉추길 방비책.
+### 3. 상반기 vs 하반기 흐름과 올해의 황금 달
 - 상반기(1~6월)와 하반기(7~12월)의 기운 전환점 및 추천하는 기회의 달 활용법.
 ### 4. 분야별(재물·직업·애정·건강) 실전 처세 비결
 - 재물, 직업, 애정, 건강 4대 영역에서 정미년 한 해 동안 실천할 구체적인 행동 지침.`
@@ -469,7 +470,7 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
 ### 나의 일주(日柱): ${userSaju.fullName} (${ilganData?.element} 기운) & ${userYearSaju.zodiacName}
 * **2027 정미년(丁未年) 세운:** 천간 丁화(음화)와 지지 未토(음토)의 붉은 양의 해
 * **삼재 진단:** ${isSamjae ? `${userYearSaju.zodiacName}는 2027년이 '날삼재(出三災)'입니다. 3년 삼재의 마무리를 맞아 신중한 처세와 자산 관리가 길합니다.` : `${userYearSaju.zodiacName}는 2027년 삼재에 해당하지 않아 평안한 흐름입니다.`}
-* **합충 기운:** ${isYukhab ? '오미(午未) 육합으로 귀인운과 인연 합운이 강합니다.' : isSamhab ? '해묘미(亥卯未) 삼합으로 결실과 확장의 기운입니다.' : isChung ? '축미(丑未) 충으로 이직/이사 등 환경 변화수가 큽니다.' : '세운과 무난한 조화를 이룹니다.'}
+* **합충 기운:** ${isYukhab ? '오미(午未) 육합으로 귀인운과 인연의 화합이 기대됩니다.' : isBanhab ? '묘미/해미 반합으로 협력과 발전의 기운이 따릅니다.' : isBonmyeong ? '본명년으로 무리한 확장보다 내실을 다지는 것이 좋습니다.' : isChung ? '축미(丑未) 충으로 이직/이사 등 환경 변화수가 큽니다.' : '세운과 무난한 조화를 이룹니다.'}
 
 *정밀한 개인화 1년 심층 리포트를 원하시면 잠시 후 다시 확인해 주세요.*`
       } else {
@@ -538,8 +539,10 @@ ${worry || "오늘 하루의 종합적인 운세 흐름과 나아갈 길에 대�
         isSamjae,
         samjaeType,
         isYukhab,
-        isSamhab,
-        isChung
+        isBanhab,
+        isSamhab: isBanhab, // 하위 호환성 유지
+        isChung,
+        isBonmyeong
       },
       todaySaju: {
         ganzhi: todaySaju.fullName,
