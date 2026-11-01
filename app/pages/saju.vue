@@ -1063,15 +1063,18 @@ watch(result, (newVal) => {
       <!-- ========================================== -->
       <!-- 운세 모드 선택 토글 (일일운세 vs 2027 신년운세) -->
       <!-- ========================================== -->
-      <div v-if="!result && !loading" class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-black/20 border pg-border mb-4 font-serif-kr text-xs">
+      <div v-if="!result && !loading" class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl pg-card-inner border pg-border mb-4 font-serif-kr text-xs shadow-xs">
         <button
           type="button"
           @click="setFortuneMode('daily')"
           :class="[
-            'py-2 px-3 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1.5',
+            'py-2.5 px-3 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer',
             !isNewYearMode
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
-              : 'pg-text-muted hover:pg-text'
+              ? 'bg-amber-100 text-amber-950 border border-amber-300/80 shadow-xs'
+              : 'pg-text-muted hover:pg-text hover:bg-black/5',
+            !isNewYearMode
+              ? 'dark:bg-amber-500/20 dark:text-amber-200 dark:border-amber-400/40 dark:shadow-none'
+              : 'dark:hover:bg-white/5'
           ]"
         >
           <span>🔮 오늘의 일일운세</span>
@@ -1080,10 +1083,13 @@ watch(result, (newVal) => {
           type="button"
           @click="setFortuneMode('newyear')"
           :class="[
-            'py-2 px-3 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1.5',
+            'py-2.5 px-3 rounded-xl font-bold transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer',
             isNewYearMode
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
-              : 'pg-text-muted hover:pg-text'
+              ? 'bg-amber-100 text-amber-950 border border-amber-300/80 shadow-xs'
+              : 'pg-text-muted hover:pg-text hover:bg-black/5',
+            isNewYearMode
+              ? 'dark:bg-amber-500/20 dark:text-amber-200 dark:border-amber-400/40 dark:shadow-none'
+              : 'dark:hover:bg-white/5'
           ]"
         >
           <span>✨ 2027 신년운세</span>
@@ -1107,7 +1113,7 @@ watch(result, (newVal) => {
           <h2 class="font-serif-kr text-xl sm:text-2xl font-bold pg-text mb-2">
             {{ isNewYearMode ? '2027 정미년 신년 대운 & 삼재 비결' : '오늘 나의 명식과 일진 분석' }}
           </h2>
-          <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-light">
+          <p class="text-xs pg-text-muted max-w-xs mx-auto leading-relaxed font-bold">
             {{ isNewYearMode ? '생년월일시를 바탕으로 붉은 양의 해(정미년) 1년 총운과 날삼재, 대길 대운의 흐름을 분석합니다.' : '태어난 연월일시를 입력하면 본인의 일간(日干)과 오늘 일진의 십신 상호작용을 정밀 계산합니다.' }}
           </p>
         </div>

@@ -89,7 +89,7 @@ const handleCtaClick = () => {
                   :alt="popupData.title"
                   class="w-full h-full object-cover object-center filter brightness-95"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0F1226] via-transparent to-black/30" />
+                <div class="absolute inset-0 bg-linear-to-t from-[#0F1226] via-transparent to-black/30" />
                 
                 <div class="absolute bottom-3 left-4 right-4">
                   <span class="inline-block px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40 backdrop-blur-xs mb-1.5">
