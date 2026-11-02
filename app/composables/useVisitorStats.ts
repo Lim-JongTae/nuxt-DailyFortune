@@ -13,6 +13,7 @@ export const useVisitorStats = () => {
     () => $fetch<VisitStatsResponse>('/api/stats/visit'),
     {
       default: () => ({ success: true, todayViews: 0, totalViews: 0 }),
+      getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] || nuxtApp.static.data[key],
       lazy: false
     }
   )

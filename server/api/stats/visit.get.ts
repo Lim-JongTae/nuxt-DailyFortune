@@ -1,18 +1,57 @@
-import { defineEventHandler, getCookie, setCookie } from 'h3'
+import { defineEventHandler, getCookie, setCookie, getHeader, getRequestIP } from 'h3'
 import prisma from '../../utils/prisma'
 import { recordDailyVisit } from '../../utils/stats'
 
+// 검색 로봇 및 크롤러 User-Agent 패턴
+const BOT_USER_AGENTS = /bot|spider|crawl|slurp|google|bing|yeti|daumoa|semrush|ahrefs|facebookexternalhit|twitterbot|pinterest|curl|wget|python|postman|lighthouse/i
+
+// 최근 5초 이내 방문 카운트가 집계된 클라이언트 IP 캐시 (SSR 동시 요청 및 연쇄 호출 방어)
+const recentVisits = new Map<string, number>()
+
 export default defineEventHandler(async (event) => {
   try {
+    const userAgent = getHeader(event, 'user-agent') || ''
+    const isBot = BOT_USER_AGENTS.test(userAgent)
+
+    // 1. 검색엔진 봇/크롤러인 경우: 통계 카운트를 증가시키지 않고 현재 수치만 읽어서 반환
+    if (isBot) {
+      const stats = await prisma.siteStats.findUnique({
+        where: { id: 1 }
+      })
+      return {
+        success: true,
+        todayViews: stats?.todayViews ?? 0,
+        totalViews: stats?.totalViews ?? 0
+      }
+    }
+
     const nowUtc = Date.now()
     const kstOffset = 9 * 60 * 60 * 1000 // KST UTC+9
     const todayKstStr = new Date(nowUtc + kstOffset).toISOString().split('T')[0] || ''
 
+    // 2. 최근 5초 내 동일 IP 연속 요청 체크 (SSR 및 컴포넌트 동시 렌더링 중복 방어)
+    const clientIp = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
+    const now = Date.now()
+
+    // 5초 지난 캐시 정리
+    if (recentVisits.size > 500) {
+      for (const [key, timestamp] of recentVisits.entries()) {
+        if (now - timestamp > 5000) {
+          recentVisits.delete(key)
+        }
+      }
+    }
+
+    const lastVisitTime = recentVisits.get(clientIp)
+    const isBurstDuplicate = !!(lastVisitTime && now - lastVisitTime < 5000)
+
     // 중복 카운트 방지 쿠키 확인 (저장된 날짜 string)
     const cookieName = 'fortune_visited_today'
     const visitedDateCookie = getCookie(event, cookieName)
-    // 오늘 첫 방문 여부 (쿠키가 없거나, 저장된 날짜가 오늘 KST 날짜와 다를 때)
-    const isNewVisitToday = !visitedDateCookie || visitedDateCookie !== todayKstStr
+    // 오늘 첫 방문 여부 (쿠키가 없거나 오늘 KST 날짜와 다르고, 5초 내 동시 요청이 아닐 때)
+    const isNewVisitToday = (!visitedDateCookie || visitedDateCookie !== todayKstStr) && !isBurstDuplicate
+
+    const COOKIE_MAX_AGE = 2 * 60 * 60 // 2시간 (2시간 동안 중복 카운트 방지, 이후 재방문 시 새 세션 카운트)
 
     let stats = await prisma.siteStats.findUnique({
       where: { id: 1 }
@@ -30,10 +69,11 @@ export default defineEventHandler(async (event) => {
       })
 
       setCookie(event, cookieName, todayKstStr, {
-        maxAge: 30 * 60, // 30분 동안 중복 카운트 방지
+        maxAge: COOKIE_MAX_AGE,
         path: '/'
       })
 
+      recentVisits.set(clientIp, now)
       await recordDailyVisit(true)
 
       console.log('[Visit Stats] Initial create:', {
@@ -64,9 +104,10 @@ export default defineEventHandler(async (event) => {
 
       if (isNewVisitToday) {
         setCookie(event, cookieName, todayKstStr, {
-          maxAge: 30 * 60, // 30분 동안 중복 카운트 방지
+          maxAge: COOKIE_MAX_AGE,
           path: '/'
         })
+        recentVisits.set(clientIp, now)
       }
 
       await recordDailyVisit(isNewVisitToday)
@@ -96,10 +137,11 @@ export default defineEventHandler(async (event) => {
       })
 
       setCookie(event, cookieName, todayKstStr, {
-        maxAge: 30 * 60, // 30분 동안 중복 카운트 방지
+        maxAge: COOKIE_MAX_AGE,
         path: '/'
       })
 
+      recentVisits.set(clientIp, now)
       await recordDailyVisit(true)
 
       console.log('[Visit Stats] New visitor today:', {
