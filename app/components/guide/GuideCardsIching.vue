@@ -1,6 +1,14 @@
 <script setup lang="ts">
 const ichingGuides = [
   {
+    title: '상황별 주역 인생 처세 나침반',
+    path: '/guide/iching/lessons',
+    category: '인생 처세 고전',
+    icon: 'i-heroicons-book-open',
+    iconCustom: '🧭',
+    desc: '주역을 점(占)이 아닌 지혜(智)로 읽는다! 사업(이섭대천), 부(이유유왕), 자문(십붕지구), 연애, 건강·자기관리(신언절식), 위기 극복의 6대 상황별 실전 행동 수칙을 안내합니다.'
+  },
+  {
     title: '주역 64괘와 변효 가이드',
     path: '/guide/iching',
     category: '주역 점학',
@@ -20,7 +28,7 @@ const ichingGuides = [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
     <NuxtLink
       v-for="(g, idx) in ichingGuides"
       :key="g.path"

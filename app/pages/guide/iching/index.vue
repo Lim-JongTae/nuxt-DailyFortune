@@ -197,7 +197,7 @@ const filteredList = computed(() => {
           </p>
 
           <!-- 상단 quick 링크 -->
-          <div class="mt-4 pt-3 border-t pg-border flex justify-between items-center text-xs">
+          <div class="mt-4 pt-3 border-t pg-border flex flex-wrap gap-2 justify-between items-center text-xs">
             <span class="pg-text-soft">오늘 나의 주역 괘가 궁금하시다면?</span>
             <NuxtLink to="/iching" class="pg-text-gold font-bold hover:underline flex items-center gap-1">
               오늘의 주역 점치기 ➔
@@ -205,6 +205,33 @@ const filteredList = computed(() => {
           </div>
         </div>
       </div>
+
+      <!-- 상황별 주역 인생 처세 나침반 추천 배너 -->
+      <NuxtLink
+        to="/guide/iching/lessons"
+        v-reveal
+        class="block p-4 sm:p-5 rounded-2xl border border-amber-300/80 dark:border-amber-400/40 bg-linear-to-r from-amber-500/10 via-amber-400/5 to-transparent dark:from-amber-400/10 dark:via-amber-500/5 dark:to-transparent mb-6 hover:border-amber-400 transition-all shadow-sm group"
+      >
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+              <UIcon name="i-heroicons-compass" class="w-6 h-6" />
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="text-[10px] font-bold px-2 py-0.2 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">
+                  NEW 처세 고전
+                </span>
+                <span class="text-xs font-serif-kr font-bold pg-text">상황별 주역 인생 처세 나침반</span>
+              </div>
+              <p class="text-xs pg-text-muted leading-tight">
+                사업(이섭대천), 부(이유유왕), 자문(십붕지구), 연애, 건강·자기관리(신언절식), 위기 극복 실천 가이드 ➔
+              </p>
+            </div>
+          </div>
+          <UIcon name="i-heroicons-chevron-right" class="w-5 h-5 pg-text-gold group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+        </div>
+      </NuxtLink>
 
       <!-- 검색 및 카테고리 탭 -->
       <div v-reveal class="space-y-3 mb-6">

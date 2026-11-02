@@ -451,6 +451,25 @@ watch(hexId, () => {
           </div>
         </section>
 
+        <!-- 상황별 인생 처세 나침반 바로가기 배너 -->
+        <NuxtLink
+          to="/guide/iching/lessons"
+          v-reveal
+          class="block p-3.5 sm:p-4 rounded-2xl border border-amber-300/70 dark:border-amber-400/30 bg-linear-to-r from-amber-500/10 via-amber-400/5 to-transparent hover:border-amber-400 transition-all shadow-xs group"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <UIcon name="i-heroicons-compass" class="w-5 h-5" />
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-amber-800 dark:text-amber-300 block">3,000년 동양 의사결정학</span>
+                <span class="text-xs font-serif-kr font-bold pg-text">사업·부·사랑·직장·건강·위기 극복 상황별 주역 교훈 전체보기</span>
+              </div>
+            </div>
+            <UIcon name="i-heroicons-chevron-right" class="w-4 h-4 pg-text-gold group-hover:translate-x-1 transition-transform shrink-0" />
+          </div>
+        </NuxtLink>
 
         <!-- [카드 5] 6개 효사(爻辭) 원문 및 현대적 처세 조언 -->
         <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3.5">
