@@ -99,6 +99,10 @@ watch(() => route.query.type, (newType) => {
   isNewYearMode.value = newType === 'newyear'
 })
 
+const isNewYearFortune = computed(() => {
+  return result.value?.fortuneType === 'newyear' || isNewYearMode.value
+})
+
 const setFortuneMode = (mode: 'daily' | 'newyear') => {
   isNewYearMode.value = mode === 'newyear'
 }
@@ -485,7 +489,21 @@ const copyToClipboard = () => {
     ? `${sajuScores.value.totalScore}점 (${sajuScores.value.rankText})`
     : '분석 중 오류 발생, 다시 조회하시기 바랍니다.'
 
-  const shareText = `🔮 [사주앱 - sajuapp.co.kr] 오늘의 사주명리 분석 보고서 🔮
+  const isNY = isNewYearFortune.value
+
+  const shareText = isNY
+    ? `✨ [사주앱 - sajuapp.co.kr] 2027 정미년(丁未年) 신년운세 & 삼재 비결 보고서 ✨
+--------------------------------------
+● 내 출생: ${user.zodiacName || userZodiacInfo.value?.zodiacName || '-'}
+● 내 일간: ${user.ilgan} (${user.ilganElement})
+● 2027 세운: 정미(丁未)년 (붉은 양의 해) · ${user.isSamjae ? '날삼재' : '삼재 비해당'}
+● 신년 지수: ${scoreDisplay}
+
+${plainText}
+
+--------------------------------------
+내 2027 신년운세 직접 보기: https://sajuapp.co.kr/saju?type=newyear`
+    : `🔮 [사주앱 - sajuapp.co.kr] 오늘의 사주명리 분석 보고서 🔮
 --------------------------------------
 ● 내 일간: ${user.ilgan} (${user.ilganElement})
 ● 오늘의 일진: ${today.ganzhi}일 (${today.shipsin}의 날)
@@ -497,7 +515,7 @@ ${plainText}
 내 일일 사주 직접 보기: https://sajuapp.co.kr/saju`
 
   navigator.clipboard.writeText(shareText)
-    .then(() => alert('오늘의 사주명리 결과 보고서가 복사되었습니다. 카카오톡이나 SNS에 공유해 보세요!'))
+    .then(() => alert(isNY ? '2027 신년운세 결과 보고서가 복사되었습니다. 카카오톡이나 SNS에 공유해 보세요!' : '오늘의 사주명리 결과 보고서가 복사되었습니다. 카카오톡이나 SNS에 공유해 보세요!'))
     .catch(err => console.error(err))
 }
 
@@ -669,12 +687,12 @@ const sajuDynamicData = computed(() => {
       }
     },
     luckyItems: {
-      colorName: sanitizeKoreanText(parsed?.luckyItems?.colorName) || "기운 보완 색상",
+      colorName: sanitizeKoreanText(parsed?.luckyItems?.colorName) || (isNewYearFortune.value ? "2027년 수호 색상" : "기운 보완 색상"),
       colorHex: parsed?.luckyItems?.colorHex || "#10B981",
-      number: sanitizeKoreanText(parsed?.luckyItems?.number) || "상생의 수 3 과 8",
+      number: sanitizeKoreanText(parsed?.luckyItems?.number) || "상생의 수",
       direction: sanitizeKoreanText(parsed?.luckyItems?.direction) || "길한 방위"
     },
-    wisdom: sanitizeKoreanText(parsed?.wisdom) || `${birthGanzhi}일주의 지혜로 오늘 ${shipsin}의 흐름을 바르고 신중하게 다스리세요.`
+    wisdom: sanitizeKoreanText(parsed?.wisdom) || (isNewYearFortune.value ? "2027년 정미년 한 해의 지혜를 가슴에 새기고 나아가세요." : `${birthGanzhi}일주의 지혜로 오늘 ${shipsin}의 흐름을 바르고 신중하게 다스리세요.`)
   }
 })
 
@@ -1254,9 +1272,11 @@ watch(result, (newVal) => {
             </strong>
           </div>
           <div class="pg-card-inner p-2 rounded-xl border">
-            <span class="text-[10px] pg-text-bold block mb-0.5">오늘의 일진</span>
+            <span class="text-[10px] pg-text-bold block mb-0.5">
+              {{ isNewYearFortune ? '2027년 세운' : '오늘의 일진' }}
+            </span>
             <strong class="text-xs pg-text-gold font-serif-kr block">
-              {{ result.todaySaju?.ganzhi }}일 ({{ result.todaySaju?.shipsin }})
+              {{ isNewYearFortune ? '정미(丁未)년 붉은 양' : `${result.todaySaju?.ganzhi}일 (${result.todaySaju?.shipsin})` }}
             </strong>
           </div>
         </div>
@@ -1291,7 +1311,7 @@ watch(result, (newVal) => {
             <!-- 상단 뱃지 -->
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-deep pg-border text-[11px] font-semibold pg-text-gold-light mb-5">
             <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--fortune-gold);"></span>
-            {{ result?.fortuneType === 'newyear' || isNewYearMode ? '2027 정미년(丁未年) 신년 총운 ✦' : '오늘의 천기누설 · 총평 ✦' }}
+            {{ isNewYearFortune ? '2027 정미년(丁未年) 신년 총운 ✦' : '오늘의 천기누설 · 총평 ✦' }}
           </div>
 
           <!-- 원형 프로그레스 게이지 (Score Circle Gauge) -->
@@ -1320,7 +1340,7 @@ watch(result, (newVal) => {
 
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
               <span class="text-[12px] pg-text-soft font-bold mb-0.5">
-                {{ result?.fortuneType === 'newyear' || isNewYearMode ? '2027 신년 지수' : '운세 지수' }}
+                {{ isNewYearFortune ? '2027 신년 지수' : '운세 지수' }}
               </span>
               <div class="flex items-baseline gap-0.5">
                 <template v-if="sajuScores.hasScores">
@@ -1355,7 +1375,7 @@ watch(result, (newVal) => {
       </div>
 
         <!-- 2-1. 2027 정미년 신년운세 전용 하이라이트 (삼재 & 대운 & 황금의 달) -->
-        <div v-if="result?.fortuneType === 'newyear' || isNewYearMode" class="pg-card border rounded-3xl p-5 shadow-xl mb-4 relative overflow-hidden reveal-on-scroll">
+        <div v-if="isNewYearFortune" class="pg-card border rounded-3xl p-5 shadow-xl mb-4 relative overflow-hidden reveal-on-scroll">
           <div class="flex items-center gap-2 mb-3">
             <span class="text-lg">✨</span>
             <h3 class="font-serif-kr text-sm sm:text-base font-bold pg-text-gold">
@@ -1553,8 +1573,8 @@ watch(result, (newVal) => {
           </div>
         </div>
 
-        <!-- 4. 시간대별 일진(日辰) 흐름 (이미지 2 1:1) -->
-        <div class="pg-card border rounded-3xl p-5 shadow-lg reveal-on-scroll">
+        <!-- 4. 시간대별 일진(日辰) 흐름 (일일운세 전용 - 신년운세 모드 시 숨김) -->
+        <div v-if="!isNewYearFortune" class="pg-card border rounded-3xl p-5 shadow-lg reveal-on-scroll">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-serif-kr text-xs font-bold pg-text flex items-center gap-1.5">
               <UIcon name="i-heroicons-clock" class="w-4 h-4 pg-text-gold" />
@@ -1593,22 +1613,22 @@ watch(result, (newVal) => {
           </div>
         </div>
 
-        <!-- 5. 오늘의 조력 기운 (이미지 2 1:1) -->
+        <!-- 5. 조력 기운 (신년운세 vs 일일운세 동적 분기) -->
         <div class="space-y-2 reveal-on-scroll">
           <span class="text-xs font-bold pg-text-muted flex items-center gap-1 px-1">
-            <UIcon name="i-heroicons-chevron-left" class="w-3.5 h-3.5" />
-            오늘의 조력 기운
+            <UIcon :name="isNewYearFortune ? 'i-heroicons-sparkles' : 'i-heroicons-chevron-left'" class="w-3.5 h-3.5" :class="isNewYearFortune ? 'pg-text-gold' : ''" />
+            {{ isNewYearFortune ? '✨ 2027년 한 해를 돕는 조력 기운' : '오늘의 조력 기운' }}
           </span>
 
           <div class="grid grid-cols-3 gap-2.5">
             <div class="pg-card border rounded-2xl p-3 text-center">
-              <span class="text-[10px] pg-text-bold block mb-2">행운의 색</span>
+              <span class="text-[10px] pg-text-bold block mb-2">{{ isNewYearFortune ? '1년 수호 색상' : '행운의 색' }}</span>
               <div class="w-8 h-8 rounded-full mx-auto mb-2 border border-white/20 shadow-md" :style="{ backgroundColor: sajuDynamicData.luckyItems.colorHex }"></div>
               <span class="text-xs font-bold pg-text block truncate">{{ sajuDynamicData.luckyItems.colorName }}</span>
             </div>
 
             <div class="pg-card border rounded-2xl p-3 text-center">
-              <span class="text-[10px] pg-text-bold block mb-2">행운의 수</span>
+              <span class="text-[10px] pg-text-bold block mb-2">{{ isNewYearFortune ? '1년 행운의 수' : '행운의 수' }}</span>
               <div class="w-8 h-8 rounded-full pg-card-deep pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold text-xs font-bold">
                 #
               </div>
@@ -1616,7 +1636,7 @@ watch(result, (newVal) => {
             </div>
 
             <div class="pg-card border rounded-2xl p-3 text-center">
-              <span class="text-[10px] pg-text-bold block mb-2">행운의 방위</span>
+              <span class="text-[10px] pg-text-bold block mb-2">{{ isNewYearFortune ? '1년 길한 방위' : '행운의 방위' }}</span>
               <div class="w-8 h-8 rounded-full pg-card-deep border pg-border mx-auto mb-2 flex items-center justify-center pg-text-gold shadow-xs">
                 <svg class="w-6 h-6 text-(--fortune-gold)" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
@@ -1628,22 +1648,22 @@ watch(result, (newVal) => {
           </div>
         </div>
 
-        <!-- 6. 오늘의 지혜 카드 (이미지 2 1:1) -->
+        <!-- 6. 지혜 카드 (신년운세 vs 일일운세 동적 분기) -->
         <div class="pg-card-deep border pg-border-strong rounded-2xl p-5 shadow-lg reveal-on-scroll">
           <span class="text-xs font-bold pg-text-gold flex items-center gap-1 mb-2 font-serif-kr">
-            ◆ 오늘의 지혜
+            {{ isNewYearFortune ? '◆ 2027년 신년 지혜의 화두' : '◆ 오늘의 지혜' }}
           </span>
           <p class="font-serif-kr text-sm pg-text italic leading-relaxed mb-3">
             "{{ sajuDynamicData.wisdom }}"
           </p>
           <p class="text-right text-[11px] pg-text-bold font-serif-kr">
-            — 마음에 새기는 화두
+            {{ isNewYearFortune ? '— 2027년 정미년(丁未年) 마음에 새기는 화두' : '— 마음에 새기는 화두' }}
           </p>
         </div>
 
         <!-- 7. 세부 AI 보고서 본문 컴포넌트 -->
         <FortuneReportContent
-          title="AI 맞춤 사주명리 보고서"
+          :title="isNewYearFortune ? '2027 정미년 AI 신년운세 심층 보고서' : 'AI 맞춤 사주명리 보고서'"
           :ai-interpretation="result?.aiInterpretation"
           :is-ai-generated="result?.isAiGenerated"
           watermark-text="命"
@@ -1652,7 +1672,7 @@ watch(result, (newVal) => {
         <!-- 7-1. 운세 공감 / 좋아요 반응 박스 -->
         <div class="p-4 rounded-2xl pg-card-inner border pg-border flex items-center justify-between shadow-xs reveal-on-scroll">
           <div class="flex items-center gap-2">
-            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold pg-text-gold">{{ likeCount }}</span>명의 방문자가 사주명리 운세 조언에 공감했습니다.</span>
+            <span class="text-xs pg-text font-medium">❤️ 오늘 <span class="font-bold pg-text-gold">{{ likeCount }}</span>명의 방문자가 {{ isNewYearFortune ? '2027 신년운세' : '사주명리' }} 조언에 공감했습니다.</span>
           </div>
           <div class="relative group shrink-0" @click="handleLikeClick">
             <!-- 1.5초 후 사라지는 이벤트 말풍선 (Tooltip Bubble) -->
@@ -1698,7 +1718,7 @@ watch(result, (newVal) => {
               ]"
             >
               <UIcon name="i-heroicons-sparkles" class="w-4 h-4" :class="result && result.userSaju ? 'text-[#0F1226]' : 'pg-text-gold'" />
-              <span>📜 맞춤 부적 발급</span>
+              <span>{{ isNewYearFortune ? '📜 2027 신년 수호부적 발급' : '📜 맞춤 부적 발급' }}</span>
             </button>
 
             <button
@@ -1717,11 +1737,11 @@ watch(result, (newVal) => {
           <!-- 부적 다운로드 완료 시 서브 안내 뱃지 -->
           <div v-if="isTalismanDownloaded" class="flex items-center justify-center px-3.5 py-2 rounded-xl pg-card-deep border pg-border text-[11px] pg-text-muted">
             <span class="flex items-center gap-1 font-semibold">
-              <span>✨ 오늘 맞춤 부적 저장 완료</span>
+              <span>✨ {{ isNewYearFortune ? '2027 신년 수호부적' : '오늘 맞춤 부적' }} 저장 완료</span>
             </span>
           </div>
 
-          <!-- 12시간 경과 또는 날짜 변경 시에만 노출되는 '오늘 사주 다시 보기' 버튼 -->
+          <!-- 12시간 경과 또는 날짜 변경 시에만 노출되는 재조회 버튼 -->
           <button
             v-if="!store.getRemainingCoolTime('saju').isLimited"
             type="button"
@@ -1733,7 +1753,7 @@ watch(result, (newVal) => {
             @click="handleResetSaju(false)"
           >
             <UIcon name="i-heroicons-arrow-path" class="w-4 h-4 pg-text-gold" />
-            <span>🔄 오늘 사주 다시 보기 (재조회 입력)</span>
+            <span>{{ isNewYearFortune ? '🔄 2027 신년운세 다시 보기 (재조회 입력)' : '🔄 오늘 사주 다시 보기 (재조회 입력)' }}</span>
           </button>
 
           <!-- 2행: 미설치 사용자에게만 우측 하단 동적 소형 노출 -->
@@ -1765,7 +1785,7 @@ watch(result, (newVal) => {
           <div :class="['flex items-center gap-2 mb-4 pb-3 border-b', 'border-amber-200/50', 'dark:border-slate-700']">
             <UIcon name="i-heroicons-academic-cap" :class="['w-6 h-6', 'text-amber-700', 'dark:text-[#FFDE9E]']" />
             <h2 :class="['font-serif-kr text-[18] sm:text-lg font-bold', 'text-amber-900', 'dark:text-[#FFDE9E]']">
-              오늘의 사주명리학(四柱命理學) 원리와 해설
+              {{ isNewYearFortune ? '2027 정미년 신년운세와 사주명리학(四柱命理學) 원리' : '오늘의 사주명리학(四柱命理學) 원리와 해설' }}
             </h2>
           </div>
 
