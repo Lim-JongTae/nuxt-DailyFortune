@@ -1,4 +1,4 @@
-import { defineEventHandler, getCookie, setCookie, getHeader, getRequestIP } from 'h3'
+import { defineEventHandler, getCookie, setCookie, getHeader, getRequestIP, setHeader } from 'h3'
 import prisma from '../../utils/prisma'
 import { recordDailyVisit } from '../../utils/stats'
 
@@ -10,24 +10,40 @@ const recentVisits = new Map<string, number>()
 
 export default defineEventHandler(async (event) => {
   try {
-    const userAgent = getHeader(event, 'user-agent') || ''
-    const isBot = BOT_USER_AGENTS.test(userAgent)
-
-    // 1. 검색엔진 봇/크롤러인 경우: 통계 카운트를 증가시키지 않고 현재 수치만 읽어서 반환
-    if (isBot) {
-      const stats = await prisma.siteStats.findUnique({
-        where: { id: 1 }
-      })
-      return {
-        success: true,
-        todayViews: stats?.todayViews ?? 0,
-        totalViews: stats?.totalViews ?? 0
-      }
-    }
+    // 캐시 방지 헤더 설정 (자정 00:00 갱신 수치 실시간 보장)
+    setHeader(event, 'cache-control', 'no-store, no-cache, must-revalidate')
 
     const nowUtc = Date.now()
     const kstOffset = 9 * 60 * 60 * 1000 // KST UTC+9
     const todayKstStr = new Date(nowUtc + kstOffset).toISOString().split('T')[0] || ''
+
+    const userAgent = getHeader(event, 'user-agent') || ''
+    const isBot = BOT_USER_AGENTS.test(userAgent)
+
+    // 1. 검색엔진 봇/크롤러인 경우: 카운트는 올리지 않되, 날짜가 바뀌었으면 DB 일자 갱신 및 todayViews 0으로 초기화
+    if (isBot) {
+      let stats = await prisma.siteStats.findUnique({
+        where: { id: 1 }
+      })
+
+      if (stats && stats.todayDate !== todayKstStr) {
+        stats = await prisma.siteStats.update({
+          where: { id: 1 },
+          data: {
+            todayViews: 0,
+            todayDate: todayKstStr
+          }
+        })
+        await recordDailyVisit(false)
+      }
+
+      return {
+        success: true,
+        todayViews: stats?.todayViews ?? 0,
+        totalViews: stats?.totalViews ?? 0,
+        todayDate: stats?.todayDate ?? todayKstStr
+      }
+    }
 
     // 2. 최근 5초 내 동일 IP 연속 요청 체크 (SSR 및 컴포넌트 동시 렌더링 중복 방어)
     const clientIp = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
@@ -84,7 +100,8 @@ export default defineEventHandler(async (event) => {
       return {
         success: true,
         todayViews: stats.todayViews,
-        totalViews: stats.totalViews
+        totalViews: stats.totalViews,
+        todayDate: stats.todayDate
       }
     }
 
@@ -122,7 +139,8 @@ export default defineEventHandler(async (event) => {
       return {
         success: true,
         todayViews: stats.todayViews,
-        totalViews: stats.totalViews
+        totalViews: stats.totalViews,
+        todayDate: stats.todayDate
       }
     }
 

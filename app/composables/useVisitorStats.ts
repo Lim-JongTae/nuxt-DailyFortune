@@ -2,6 +2,7 @@ interface VisitStatsResponse {
   success: boolean
   todayViews?: number
   totalViews?: number
+  todayDate?: string
   error?: string
 }
 
@@ -13,7 +14,16 @@ export const useVisitorStats = () => {
     () => $fetch<VisitStatsResponse>('/api/stats/visit'),
     {
       default: () => ({ success: true, todayViews: 0, totalViews: 0 }),
-      getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] || nuxtApp.static.data[key],
+      getCachedData: (key, nuxtApp) => {
+        const cached = nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+        if (!cached) return undefined
+        // KST 기준 오늘 날짜가 바뀌었으면 캐시를 무효화하여 서버에서 최신 일일 카운트를 가져오도록 보장
+        const nowKst = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0]
+        if (cached.todayDate && cached.todayDate !== nowKst) {
+          return undefined
+        }
+        return cached
+      },
       lazy: false
     }
   )
