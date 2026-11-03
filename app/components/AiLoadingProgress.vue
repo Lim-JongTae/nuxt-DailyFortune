@@ -98,22 +98,32 @@ onUnmounted(() => {
     <Transition name="fade-slide">
       <div
         v-if="show"
-        class="fixed inset-x-4 bottom-6 z-9999 mx-auto max-w-lg rounded-2xl border border-green-500/30 dark:border-green-400/30 bg-green-50/95 dark:bg-green-950/90 p-5 backdrop-blur-xl shadow-2xl shadow-green-200/40 dark:shadow-green-950/40 text-green-900 dark:text-green-50"
+        :class="[
+          'fixed inset-x-4 bottom-6 z-9999 mx-auto max-w-lg rounded-2xl border p-5 backdrop-blur-xl shadow-2xl',
+          'border-green-500/30 bg-green-50/95 shadow-green-200/40 text-green-900',
+          'dark:border-green-400/30 dark:bg-green-950/90 dark:shadow-green-950/40 dark:text-green-50'
+        ]"
       >
         <!-- 상단 타이틀 & 헤더 -->
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/30 dark:from-green-500/20 dark:to-emerald-600/30 border border-green-400/40 dark:border-green-400/40 text-2xl animate-pulse">
+            <div
+              :class="[
+                'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br border text-2xl animate-pulse',
+                'from-green-500/20 to-emerald-600/30 border-green-400/40',
+                'dark:from-green-500/20 dark:to-emerald-600/30 dark:border-green-400/40'
+              ]"
+            >
               {{ icon }}
             </div>
             <div>
-              <h4 class="font-bold text-base text-green-700 dark:text-green-200 tracking-wide flex items-center gap-2">
+              <h4 :class="['font-bold text-base tracking-wide flex items-center gap-2', 'text-green-700', 'dark:text-green-200']">
                 {{ title }}
-                <span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-400/10 px-2 py-0.5 text-xs font-semibold text-green-700 dark:text-green-300 border border-green-300 dark:border-green-400/20">
+                <span :class="['inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold border', 'bg-green-100 text-green-700 border-green-300', 'dark:bg-green-400/10 dark:text-green-300 dark:border-green-400/20']">
                   약 {{ remainingSeconds }}초 남음
                 </span>
               </h4>
-              <p class="mt-0.5 text-xs text-green-600 dark:text-green-300 leading-snug">
+              <p :class="['mt-0.5 text-xs leading-snug', 'text-green-600', 'dark:text-green-300']">
                 {{ subtitle }}
               </p>
             </div>
@@ -122,15 +132,19 @@ onUnmounted(() => {
 
         <!-- 실시간 프로그레스 바 -->
         <div class="mt-4">
-          <div class="flex items-center justify-between text-xs font-medium text-green-700 dark:text-green-300/80 mb-1.5">
+          <div :class="['flex items-center justify-between text-xs font-medium mb-1.5', 'text-green-700', 'dark:text-green-300/80']">
             <span>정밀 인공지능 명리 해석 중...</span>
-            <span class="font-mono font-bold text-green-700 dark:text-green-300">{{ progressPercent }}%</span>
+            <span :class="['font-mono font-bold', 'text-green-700', 'dark:text-green-300']">{{ progressPercent }}%</span>
           </div>
 
           <!-- Progress track & fill -->
-          <div class="h-2.5 w-full overflow-hidden rounded-full bg-green-200 dark:bg-green-900/80 p-0.5 border border-green-300 dark:border-green-700/50">
+          <div :class="['h-2.5 w-full overflow-hidden rounded-full p-0.5 border', 'bg-green-200 border-green-300', 'dark:bg-green-900/80 dark:border-green-700/50']">
             <div
-              class="h-full rounded-full bg-gradient-to-r from-green-500 via-green-400 to-emerald-300 dark:from-green-500 dark:via-green-400 dark:to-emerald-400 transition-all duration-700 ease-out shadow-sm shadow-green-400/50 relative"
+              :class="[
+                'h-full rounded-full bg-gradient-to-r transition-all duration-700 ease-out shadow-sm shadow-green-400/50 relative',
+                'from-green-500 via-green-400 to-emerald-300',
+                'dark:from-green-500 dark:via-green-400 dark:to-emerald-400'
+              ]"
               :style="{ width: `${progressPercent}%` }"
             >
               <!-- 빛나는 에지 효과 -->
@@ -140,10 +154,10 @@ onUnmounted(() => {
         </div>
 
         <!-- 팁 롤링 카러셀 -->
-        <div v-if="currentTip" class="mt-3.5 pt-3 border-t border-green-200 dark:border-green-800/80 flex items-center gap-2 text-xs text-green-600 dark:text-green-300">
-          <span class="shrink-0 text-green-600 dark:text-green-400/80">✨</span>
+        <div v-if="currentTip" :class="['mt-3.5 pt-3 border-t flex items-center gap-2 text-xs', 'border-green-200 text-green-600', 'dark:border-green-800/80 dark:text-green-300']">
+          <span :class="['shrink-0', 'text-green-600', 'dark:text-green-400/80']">✨</span>
           <Transition name="tip-fade" mode="out-in">
-            <p :key="currentTipIndex" class="truncate font-light text-green-600 dark:text-green-300">
+            <p :key="currentTipIndex" :class="['truncate font-light', 'text-green-600', 'dark:text-green-300']">
               {{ currentTip }}
             </p>
           </Transition>
