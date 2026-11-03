@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import {
   ichingLessonsList,
   famousQuoteHighlights,
   lessonCategories,
-  type IchingLessonItem
+  type IchingLessonItem,
+  type FamousQuoteHighlight
 } from '~/data/ichingLessonsData'
 
 const runtimeConfig = useRuntimeConfig()
@@ -114,10 +115,27 @@ const filteredLessons = computed(() => {
   })
 })
 
-// 명언 클릭 시 해당 카테고리로 필터링 및 검색어 세팅
-function selectQuote(quote: typeof famousQuoteHighlights[0]) {
+const selectedQuoteId = ref<number | null>(null)
+
+// 카테고리 탭 변경 (탭 클릭 시 기존 검색어 초기화하여 카테고리 전체 목록 보장)
+function changeCategory(catId: string) {
+  selectedCategory.value = catId
+  searchKeyword.value = ''
+  selectedQuoteId.value = null
+}
+
+// 명언 클릭 시 해당 카테고리로 필터링, 검색어 세팅 및 해당 괘 상세 위치로 화면 스크롤 이동
+function selectQuote(quote: FamousQuoteHighlight) {
+  selectedQuoteId.value = quote.hexagramId
   selectedCategory.value = quote.category
-  searchKeyword.value = quote.idiomKorean.split(' ')[0]
+  searchKeyword.value = quote.idiomKorean.split(' ')[0] ?? ''
+
+  nextTick(() => {
+    const target = document.getElementById(`lesson-hex-${quote.hexagramId}`) || document.getElementById('lessons-search-section')
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  })
 }
 </script>
 
@@ -189,24 +207,51 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
           <span class="text-[10px] pg-text-muted">클릭 시 해당 교훈으로 이동</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <button
             v-for="quote in famousQuoteHighlights"
             :key="quote.idiomHanja"
             type="button"
             @click="selectQuote(quote)"
-            class="text-left p-3.5 rounded-2xl border pg-border pg-card-inner hover:border-amber-400 hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+            class="relative overflow-hidden text-left p-4 rounded-2xl border transition-all duration-300 cursor-pointer group flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl active:scale-[0.99]"
+            :class="selectedQuoteId === quote.hexagramId
+              ? [
+                  'border-amber-400 ring-2 ring-amber-400/40 shadow-lg',
+                  'bg-linear-to-b from-amber-50/90 to-amber-100/40',
+                  'dark:from-amber-950/40 dark:to-slate-900/60 dark:border-amber-400'
+                ]
+              : [
+                  'pg-border pg-card-inner hover:border-amber-400/80',
+                  'hover:bg-amber-50/30 dark:hover:bg-amber-950/20'
+                ]"
           >
+            <!-- 상단 은은한 골드 액센트 탑 라인 -->
+            <div class="absolute top-0 left-0 right-0 h-0.75 bg-linear-to-r from-amber-400 via-yellow-400 to-amber-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+
             <div>
-              <div class="flex items-center justify-between text-[10px] mb-1">
-                <span class="font-bold pg-text-gold">{{ quote.categoryName }}</span>
-                <span class="text-[9px] pg-text-muted font-serif-kr">제{{ quote.hexagramId }}괘 {{ quote.hexagramName }}</span>
+              <!-- 상단 카테고리 뱃지 & 괘 정보 -->
+              <div class="flex items-center justify-between text-[11px] mb-2">
+                <span :class="['inline-flex items-center gap-1 font-bold px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/25 text-amber-800', 'dark:text-amber-300']">
+                  <UIcon name="i-heroicons-sparkles" class="w-3 h-3 text-amber-500" />
+                  <span>{{ quote.categoryName }}</span>
+                </span>
+                <span class="text-[10px] pg-text-muted font-serif-kr group-hover:pg-text transition-colors">
+                  제{{ quote.hexagramId }}괘 {{ quote.hexagramName }}
+                </span>
               </div>
-              <div class="font-serif-kr font-bold text-sm sm:text-base pg-text group-hover:pg-text-gold transition-colors flex items-center gap-1">
-                <span>{{ quote.idiomHanja }}</span>
-                <span class="text-[11px] font-normal opacity-85">({{ quote.idiomKorean }})</span>
+
+              <!-- 핵심 사자성어 -->
+              <div class="mb-1.5 flex items-baseline gap-1.5">
+                <span :class="['font-serif-kr font-extrabold text-base sm:text-lg pg-text transition-colors tracking-wide group-hover:text-amber-600', 'dark:group-hover:text-amber-400']">
+                  {{ quote.idiomHanja }}
+                </span>
+                <span :class="['text-[11px] font-semibold font-serif-kr text-amber-700', 'dark:text-amber-300']">
+                  ({{ quote.idiomKorean }})
+                </span>
               </div>
-              <p class="text-[11px] pg-text-muted mt-1 leading-snug">
+
+              <!-- 한 줄 해석 요약 -->
+              <p class="text-xs pg-text-muted leading-relaxed line-clamp-2">
                 {{ quote.meaning }}
               </p>
             </div>
@@ -214,17 +259,31 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
             <!-- 고전 비하인드 위트 팁 (십붕 조개껍데기 화폐, 신언절식 양생법 등) -->
             <div
               v-if="quote.funFact"
-              class="mt-2.5 pt-2 border-t pg-border text-[10px] sm:text-[11px] text-amber-900 dark:text-amber-200 bg-amber-500/10 dark:bg-amber-400/10 p-2 rounded-xl leading-relaxed"
+              :class="[
+                'mt-3 pt-2.5 border-t pg-border text-[11px] p-2.5 rounded-xl leading-relaxed',
+                'text-amber-900 bg-amber-500/10',
+                'dark:text-amber-200 dark:bg-amber-400/10'
+              ]"
             >
-              <span class="font-bold text-amber-700 dark:text-amber-300">💡 고전 비하인드:</span>
-              <span>{{ quote.funFact }}</span>
+              <div class="flex items-center gap-1 font-bold mb-0.5">
+                <span :class="['text-amber-700', 'dark:text-amber-300']">💡 고전 비하인드:</span>
+              </div>
+              <p class="text-[10.5px] leading-snug opacity-90">
+                {{ quote.funFact }}
+              </p>
+            </div>
+
+            <!-- 하단 이동 유도 액션 인디케이터 -->
+            <div class="mt-2.5 pt-2 border-t pg-border flex items-center justify-between text-[10px] pg-text-gold font-bold">
+              <span class="group-hover:underline">상세 교훈 및 3단계 수칙 보기</span>
+              <UIcon name="i-heroicons-arrow-down-right" class="w-3.5 h-3.5 text-amber-500 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
             </div>
           </button>
         </div>
       </div>
 
       <!-- 검색 인풋 및 카테고리 탭 -->
-      <div v-reveal class="space-y-3 mb-6">
+      <div id="lessons-search-section" v-reveal class="space-y-3 mb-6 scroll-mt-20">
         <!-- 검색창 -->
         <div class="relative">
           <input
@@ -244,14 +303,14 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
           </button>
         </div>
 
-        <!-- 6대 카테고리 탭 (수평 스크롤 지원) -->
-        <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+        <!-- 6대 카테고리 탭 (모든 화면에서 100% 한눈에 노출되는 줄바꿈 래핑 구조) -->
+        <div class="flex flex-wrap gap-1.5 sm:gap-2">
           <button
             v-for="cat in lessonCategories"
             :key="cat.id"
             type="button"
-            @click="selectedCategory = cat.id"
-            class="py-2 px-3 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5 cursor-pointer select-none"
+            @click="changeCategory(cat.id)"
+            class="py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5 cursor-pointer select-none"
             :class="selectedCategory === cat.id
               ? [
                   'bg-linear-to-r from-amber-200 via-amber-300 to-yellow-400',
@@ -267,7 +326,9 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
             <span>{{ cat.name }}</span>
             <span
               class="text-[10px] px-1.5 py-0.2 rounded-full"
-              :class="selectedCategory === cat.id ? 'bg-amber-950/20 text-amber-950 font-bold' : 'bg-slate-200/60 dark:bg-slate-800 text-slate-500'"
+              :class="selectedCategory === cat.id
+                ? ['bg-amber-950/20 text-amber-950 font-bold']
+                : ['bg-slate-200/60 text-slate-500', 'dark:bg-slate-800']"
             >
               {{ categoryCounts[cat.id] || 0 }}
             </span>
@@ -276,105 +337,146 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
       </div>
 
       <!-- 상황별 교훈 카드 리스트 -->
-      <div v-if="filteredLessons.length > 0" class="space-y-5">
+      <div v-if="filteredLessons.length > 0" class="space-y-6">
         <article
           v-for="(item, idx) in filteredLessons"
           :key="item.id"
+          :id="`lesson-hex-${item.hexagramId}`"
           v-reveal="{ delay: (idx % 6) * 50 }"
-          class="pg-card border rounded-3xl p-5 sm:p-6 shadow-md transition-all hover:border-amber-400/80"
+          class="relative overflow-hidden pg-card border rounded-3xl p-5 sm:p-7 shadow-lg transition-all duration-300 hover:shadow-2xl hover:border-amber-400/90 hover:-translate-y-1 group scroll-mt-20"
         >
+          <!-- 카드 상단 은은한 골드 탑 라인 -->
+          <div class="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-amber-400/80 via-yellow-400/90 to-amber-500/80 opacity-70 group-hover:opacity-100 transition-opacity" />
+
+          <!-- 우측 상단 괘명 한자 워터마크 -->
+          <div :class="['absolute -right-2 top-2 font-serif-kr text-6xl sm:text-7xl font-black select-none pointer-events-none pg-text opacity-4', 'dark:opacity-6']">
+            {{ item.hexagramNameHanji }}
+          </div>
+
           <!-- 카드 상단: 카테고리 뱃지 & 64괘 기호/이름 -->
-          <div class="flex items-start justify-between gap-2 pb-3 border-b pg-border mb-3">
-            <div class="flex flex-wrap items-center gap-1.5">
-              <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.8 rounded-full pg-chip pg-text-gold border pg-border">
-                <UIcon :name="item.categoryIcon" class="w-3.5 h-3.5" />
+          <div class="flex items-start justify-between gap-2 pb-3.5 border-b pg-border mb-4 relative z-10">
+            <div class="flex flex-wrap items-center gap-2">
+              <span :class="['inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 shadow-xs text-amber-900', 'dark:text-amber-200']">
+                <UIcon :name="item.categoryIcon" class="w-3.5 h-3.5 text-amber-500" />
                 <span>{{ item.categoryName }}</span>
               </span>
-              <span class="text-xs font-serif-kr font-bold pg-text">
-                제{{ item.hexagramId }}괘 {{ item.hexagramNameKorean }}
-                <span class="text-[11px] font-normal opacity-75">({{ item.hexagramNameHanji }})</span>
+              <span class="text-xs sm:text-sm font-serif-kr font-bold pg-text">
+                제{{ item.hexagramId }}괘 <strong class="pg-text-gold font-extrabold">{{ item.hexagramNameKorean }}</strong>
+                <span class="text-[11px] font-normal opacity-70 ml-1">({{ item.hexagramNameHanji }})</span>
               </span>
             </div>
 
-            <!-- 상/하괘 기호 -->
-            <div class="flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-lg pg-card-inner border pg-border">
-              <span class="text-lg leading-none font-serif-kr text-amber-600 dark:text-amber-400" title="상괘">
-                {{ getHexagramSymbols(item.hexagramId).upperSymbol }}
-              </span>
-              <span class="text-lg leading-none font-serif-kr text-amber-600 dark:text-amber-400" title="하괘">
-                {{ getHexagramSymbols(item.hexagramId).lowerSymbol }}
-              </span>
+            <!-- 상/하괘 기호 목판 인장 스타일 박스 -->
+            <div class="flex items-center gap-2 px-3 py-1 rounded-xl pg-card-inner border pg-border shadow-xs group-hover:border-amber-400/60 transition-colors shrink-0">
+              <div class="flex flex-col items-center leading-none text-center">
+                <span
+                  :class="['text-sm font-serif-kr font-bold text-amber-600', 'dark:text-amber-400']"
+                  title="상괘"
+                >
+                  {{ getHexagramSymbols(item.hexagramId).upperSymbol }}
+                </span>
+                <span class="text-[9px] pg-text-muted font-serif-kr mt-0.5">
+                  {{ getHexagramSymbols(item.hexagramId).upperName }}
+                </span>
+              </div>
+              <div class="w-px h-5 bg-amber-500/25" />
+              <div class="flex flex-col items-center leading-none text-center">
+                <span
+                  :class="['text-sm font-serif-kr font-bold text-amber-600', 'dark:text-amber-400']"
+                  title="하괘"
+                >
+                  {{ getHexagramSymbols(item.hexagramId).lowerSymbol }}
+                </span>
+                <span class="text-[9px] pg-text-muted font-serif-kr mt-0.5">
+                  {{ getHexagramSymbols(item.hexagramId).lowerName }}
+                </span>
+              </div>
             </div>
           </div>
 
           <!-- 핵심 사자성어 및 대표 한 줄 교훈 -->
-          <div class="mb-4">
-            <div class="flex flex-wrap items-baseline gap-2 mb-1">
-              <h3 class="font-serif-kr text-lg sm:text-xl font-extrabold pg-text tracking-wide">
+          <div class="mb-4 relative z-10">
+            <div class="flex flex-wrap items-baseline gap-2 mb-1.5">
+              <h3 :class="['font-serif-kr text-xl sm:text-2xl font-black pg-text tracking-wide transition-colors group-hover:text-amber-600', 'dark:group-hover:text-amber-400']">
                 {{ item.idiomHanja }}
               </h3>
-              <span class="text-xs sm:text-sm font-semibold pg-text-gold font-serif-kr">
+              <span :class="['text-xs sm:text-sm font-bold font-serif-kr text-amber-700', 'dark:text-amber-300']">
                 {{ item.idiomKorean }}
               </span>
             </div>
-            <p class="font-serif-kr text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-300 leading-snug">
-              "{{ item.coreMeaning }}"
-            </p>
+            <div :class="['p-3 sm:p-3.5 rounded-2xl border-l-4 border-l-amber-500 bg-amber-50/70 border-y border-r border-amber-200/50', 'dark:bg-amber-950/25 dark:border-amber-900/30']">
+              <p :class="['font-serif-kr text-xs sm:text-sm font-extrabold leading-relaxed text-amber-900', 'dark:text-amber-200']">
+                “{{ item.coreMeaning }}”
+              </p>
+            </div>
           </div>
 
           <!-- 직면 상황 요약 박스 -->
-          <div class="p-3.5 rounded-2xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 mb-3.5">
-            <div class="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-200 mb-1">
-              <UIcon name="i-heroicons-question-mark-circle" class="w-4 h-4 text-amber-600" />
-              <span>이 교훈이 필요한 결정적 상황</span>
+          <div
+            :class="[
+              'p-3.5 sm:p-4 rounded-2xl border mb-3.5',
+              'bg-slate-50/80 border-slate-200/80',
+              'dark:bg-slate-900/40 dark:border-slate-800'
+            ]"
+          >
+            <div :class="['flex items-center gap-1.5 text-xs font-bold mb-1.5 text-slate-700', 'dark:text-slate-300']">
+              <UIcon name="i-heroicons-question-mark-circle" class="w-4 h-4 text-amber-500 shrink-0" />
+              <span>이 교훈이 필요한 결정적 순간</span>
             </div>
-            <p class="text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p :class="['text-xs sm:text-[13px] leading-relaxed text-slate-600', 'dark:text-slate-300']">
               {{ item.situationSummary }}
             </p>
           </div>
 
           <!-- 현대적 해법 본문 -->
-          <div class="mb-4">
-            <div class="flex items-center gap-1.5 text-xs font-bold pg-text mb-1">
-              <UIcon name="i-heroicons-light-bulb" class="w-4 h-4 text-amber-500" />
+          <div class="p-4 rounded-2xl pg-card-inner border pg-border mb-3.5">
+            <div class="flex items-center gap-1.5 text-xs font-bold pg-text mb-1.5">
+              <UIcon name="i-heroicons-light-bulb" class="w-4 h-4 text-amber-500 shrink-0" />
               <span>3,000년 고전의 현대적 해법</span>
             </div>
-            <p class="text-xs sm:text-[13px] pg-text-muted leading-relaxed">
+            <p class="text-xs sm:text-[13px] pg-text-muted leading-relaxed mb-2.5">
               {{ item.modernLesson }}
             </p>
-            <div class="mt-2 text-[10px] pg-text-soft font-serif-kr flex items-center gap-1">
-              <span class="font-bold">고전 원문:</span>
-              <span>{{ item.originQuote }}</span>
+            <!-- 고전 원문 인용 블록 -->
+            <div :class="['p-2.5 rounded-xl border pg-border flex flex-wrap items-center gap-2 text-xs font-serif-kr bg-amber-50/50', 'dark:bg-amber-950/20']">
+              <span :class="['px-2 py-0.5 rounded-md bg-amber-500/20 text-[10px] font-bold shrink-0 text-amber-800', 'dark:text-amber-300']">고전 원문</span>
+              <span class="pg-text-muted italic text-[11px] sm:text-xs tracking-wide">{{ item.originQuote }}</span>
             </div>
           </div>
 
           <!-- 지금 즉시 실천할 3단계 액션 가이드 -->
-          <div class="p-4 rounded-2xl pg-card-inner border pg-border mb-4">
-            <h4 class="text-xs font-bold pg-text-gold mb-2.5 flex items-center gap-1.5">
-              <UIcon name="i-heroicons-check-circle" class="w-4 h-4" />
+          <div class="p-4 sm:p-5 rounded-2xl border pg-border pg-card-inner mb-4">
+            <h4 class="text-xs sm:text-sm font-bold pg-text-gold mb-3 flex items-center gap-1.5">
+              <UIcon name="i-heroicons-check-circle" class="w-4 h-4 text-amber-500" />
               <span>지금 즉시 실천할 3단계 행동 수칙</span>
             </h4>
-            <ol class="space-y-2 text-xs sm:text-[13px] pg-text leading-relaxed">
-              <li
+            <div class="space-y-2">
+              <div
                 v-for="(step, sIdx) in item.actionSteps"
                 :key="sIdx"
-                class="flex items-start gap-2"
+                :class="[
+                  'p-2.5 rounded-xl border pg-border hover:border-amber-400/50 transition-colors flex items-start gap-2.5 bg-white/60',
+                  'dark:bg-slate-900/40'
+                ]"
               >
-                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300 text-[10px] font-bold shrink-0 mt-0.5">
+                <span class="w-5 h-5 rounded-full bg-linear-to-br from-amber-400 to-yellow-500 text-amber-950 font-black text-xs flex items-center justify-center shrink-0 shadow-xs mt-0.5">
                   {{ sIdx + 1 }}
                 </span>
-                <span>{{ step }}</span>
-              </li>
-            </ol>
+                <span class="text-xs sm:text-[13px] pg-text leading-relaxed">{{ step }}</span>
+              </div>
+            </div>
           </div>
 
           <!-- 카드 하단: 상세 6효사 가이드 연결 링크 -->
-          <div class="pt-3 border-t pg-border flex justify-between items-center text-xs">
-            <div class="flex flex-wrap gap-1">
+          <div class="pt-3 border-t pg-border flex flex-wrap justify-between items-center gap-2 text-xs">
+            <div class="flex flex-wrap gap-1.5">
               <span
                 v-for="kw in item.searchKeywords.slice(0, 3)"
                 :key="kw"
-                class="text-[10px] px-2 py-0.5 rounded-full pg-card-inner border pg-border pg-text-soft"
+                :class="[
+                  'text-[10px] px-2.5 py-1 rounded-full pg-card-inner border pg-border pg-text-soft hover:border-amber-400/60 transition-colors hover:text-amber-600',
+                  'dark:hover:text-amber-400'
+                ]"
               >
                 #{{ kw }}
               </span>
@@ -382,10 +484,13 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
 
             <NuxtLink
               :to="`/guide/iching/${item.hexagramId}`"
-              class="font-bold pg-text-gold hover:underline flex items-center gap-1 group text-xs shrink-0"
+              :class="[
+                'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-amber-400/40 bg-amber-500/10 hover:bg-amber-500/20 font-bold text-xs transition-all hover:translate-x-0.5 hover:shadow-xs group/btn text-amber-800',
+                'dark:text-amber-300'
+              ]"
             >
               <span>제{{ item.hexagramId }}괘 전체 6효사 해설</span>
-              <UIcon name="i-heroicons-chevron-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              <UIcon name="i-heroicons-chevron-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
             </NuxtLink>
           </div>
         </article>
@@ -402,7 +507,7 @@ function selectQuote(quote: typeof famousQuoteHighlights[0]) {
         </p>
         <button
           type="button"
-          @click="selectedCategory = 'all'; searchKeyword = ''"
+          @click="selectedCategory = 'all'; searchKeyword = ''; selectedQuoteId = null"
           class="btn-gold-action inline-flex items-center gap-1 text-xs"
         >
           <UIcon name="i-heroicons-arrow-path" class="w-4 h-4" />

@@ -1,4 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+// 사주 60일주 전체 코드 및 주역 64괘 ID (Sitemap & Pre-render 자동 등록용)
+const ILJU_CODES = [
+  'gap-ja', 'eul-chuk', 'byeong-in', 'jeong-myo', 'mu-jin', 'gi-sa', 'gyeong-o', 'sin-mi', 'im-sin', 'gye-yu',
+  'gap-sul', 'eul-hae', 'byeong-ja', 'jeong-chuk', 'mu-in', 'gi-myo', 'gyeong-jin', 'sin-sa', 'im-o', 'gye-mi',
+  'gap-sin', 'eul-yu', 'byeong-sul', 'jeong-hae', 'mu-ja', 'gi-chuk', 'gyeong-in', 'sin-myo', 'im-jin', 'gye-sa',
+  'gap-o', 'eul-mi', 'byeong-sin', 'jeong-yu', 'mu-sul', 'gi-hae', 'gyeong-ja', 'sin-chuk', 'im-in', 'gye-myo',
+  'gap-jin', 'eul-sa', 'byeong-o', 'jeong-mi', 'mu-sin', 'gi-yu', 'gyeong-sul', 'sin-hae', 'im-ja', 'gye-chuk',
+  'gap-in', 'eul-myo', 'byeong-jin', 'jeong-sa', 'mu-o', 'gi-mi', 'gyeong-sin', 'sin-yu', 'im-sul', 'gye-hae'
+]
+const ICHING_IDS = Array.from({ length: 64 }, (_, i) => i + 1)
+
 export default defineNuxtConfig({
   srcDir: 'app/',
   compatibilityDate: '2025-07-15',
@@ -208,7 +220,41 @@ export default defineNuxtConfig({
             title: '10천간 12지간 60갑자 백과 캘리그라피 서화 대표 이미지'
           }
         ]
-      }
+      },
+      {
+        loc: '/guide/iching/lessons',
+        images: [
+          {
+            loc: 'https://res.cloudinary.com/hoopoe/image/upload/v1790989116/Adding_Korean_calligraphy_to_image_20261003095702_lyx8pn.jpg',
+            title: '주역 64괘 인생 처세와 지혜 명언 가이드 대표 이미지'
+          }
+        ]
+      },
+      ...ICHING_IDS.map(id => ({ loc: `/guide/iching/${id}` })),
+      ...ILJU_CODES.map(code => ({ loc: `/guide/saju/ilju/${code}` }))
     ]
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/about',
+        '/saju',
+        '/iching',
+        '/match',
+        '/talisman',
+        '/guide',
+        '/guide/saju',
+        '/guide/iching',
+        '/guide/iching/lessons',
+        '/guide/ten-gods',
+        '/guide/five-elements',
+        '/guide/hexagrams',
+        '/guide/stems-branches',
+        ...ICHING_IDS.map(id => `/guide/iching/${id}`),
+        ...ILJU_CODES.map(code => `/guide/saju/ilju/${code}`)
+      ]
+    }
   }
 })

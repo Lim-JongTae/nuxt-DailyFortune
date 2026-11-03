@@ -328,6 +328,9 @@ onMounted(() => {
         </div>
       </section>
 
+      <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: 승인 완료 후 아래 한 줄만 삭제하시면 완전히 제거됩니다] -->
+      <AdsenseVerificationSection />
+
       <!-- 5. FOOTER STATS: 누적 방문 수 (화면 제일 아래 우측 배치) -->
       <footer v-reveal class="flex justify-end items-center pt-4 pb-2 border-t pg-border text-xs">
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full pg-card-inner border pg-border pg-text-muted shadow-2xs">

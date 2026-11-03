@@ -77,3 +77,4 @@ Get-Process | Where-Object {$_.Modules.ModuleName -like "*query_engine*"} | Stop
 3. **API 어뷰징 방지**: 사주 및 주역 API 호출 시 12시간 이내 재요청은 DB IP 및 쿠키 기반으로 차단 조치합니다.
 4. **자정 자동 초기화**: 스토어(`fortune.ts`)에 기록된 조회 결과는 자정(00:00) 경과 시 자동 초기화되어 사용자가 매일 새로운 운세를 볼 수 있게 합니다.
 5. **안전한 코드 수정**: 기존 소스 변경 및 이관 시 기존 파일 백업 및 타입 검사(`nuxt typecheck`)를 준수합니다.
+6. **Tailwind CSS Linter 경고 방지**: 다크모드(`dark:`) 수식어는 단일 `class="..."` 문자열에 혼용하지 않고 반드시 Vue 동적 `:class="[...]"` 배열 형태로 분리 작성하여 속성 충돌 경고(`applies the same CSS properties`)를 원천 차단합니다.

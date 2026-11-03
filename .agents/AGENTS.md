@@ -12,8 +12,11 @@
   - 대체값 또는 null/누락 데이터의 fallback은 반드시 **"자료가 없음"**으로 표기하여 개발자와 사용자가 즉시 데이터 누락을 인지하고 조치할 수 있도록 한다.
   - 배포 후 백엔드/AI 데이터가 없거나 조회가 불가능한 예외 상황 시, 가짜 데이터를 노출하는 대신 "운세 분석 자료를 불러오는 중입니다. 잠시 후 다시 조회해 주세요." 또는 "자료가 없음"과 같은 명확하고 정직한 안내 문구로 대체하거나 100% 실제 데이터 기반으로만 노출한다.
 
-- **Tailwind CSS 클래스 작성 및 Linter 충돌 방지 규칙**:
-  - 단일 `class` 문자열 내에서 라이트 모드 유틸리티 클래스와 `dark:` 다크 모드 수식어 클래스가 동일 CSS 속성(`background-color`, `color`, `border-color` 등)을 다루어 IDE/Linter에서 충돌 오진 경고가 발생하는 경우, Vue 동적 `:class="[...]"` 배열 형태로 일반 클래스와 `dark:` 클래스를 분리하여 작성한다.
-  - `<UIcon>` 등 자식 컴포넌트 요소는 부모 요소의 텍스트 색상(`currentColor`)을 자동으로 상속받으므로, 부모와 동일한 중복 텍스트 색상 클래스(`text-*`, `dark:text-*`) 작성을 지양하고 상속을 활용한다.
-  - `border-r last:border-r-0`처럼 동일 속성(`border-right-width`)을 중복 지정해 Linter 경고가 발생하는 경우, Tailwind v4 수식어인 `not-last:border-r` 클래스를 활용해 마지막 요소 분기 충돌 경고를 원천 차단한다.
-  - 테두리 및 배경 색상 충돌 방지를 위해 프로젝트 공통 테마 클래스(`pg-border`, `pg-bg`, `pg-text` 등) 및 CSS 변수를 최우선 적용한다.
+- **Tailwind CSS 클래스 작성 및 Linter 경고 방지 절대 원칙 (CSS Warning Prevention)**:
+  - **다크모드(`dark:`) 클래스 작성 시 단일 문자열 사용 금지**: 단일 `class` 문자열 내에서 라이트 모드 클래스와 `dark:` 다크 모드 수식어 클래스가 동일 CSS 속성(`color`, `background-color`, `border-color`, `opacity` 등) 또는 가상 선택자(`hover:*`, `group-hover:*` 등)를 다루면 IDE/Linter에서 `applies the same CSS properties as ...` 충돌 경고가 발생하므로, **다크모드 수식어가 포함된 모든 요소는 반드시 Vue 동적 `:class="[...]"` 배열 형태로 분리하여 작성**한다.
+    - 예시 (올바른 작성법): `:class="['text-amber-700 bg-amber-500/10 group-hover:text-amber-600', 'dark:text-amber-300 dark:bg-amber-400/10 dark:group-hover:text-amber-400']"`
+    - 예시 (금지 작성법): `class="text-amber-700 dark:text-amber-300 bg-amber-500/10 dark:bg-amber-400/10"` ❌
+  - **자식 컴포넌트 텍스트 색상 상속(`currentColor`) 활용**: `<UIcon>` 등 자식 컴포넌트 요소는 부모 요소의 텍스트 색상(`currentColor`)을 자동으로 상속받으므로, 부모와 동일한 중복 텍스트 색상 클래스(`text-*`, `dark:text-*`) 작성을 지양하고 상속을 활용한다.
+  - **마지막 요소 분기 충돌 방지**: `border-r last:border-r-0`처럼 동일 속성(`border-right-width`)을 중복 지정해 Linter 경고가 발생하는 경우, Tailwind v4 수식어인 `not-last:border-r` 클래스를 활용해 마지막 요소 분기 충돌 경고를 원천 차단한다.
+  - **프로젝트 공통 테마 클래스 최우선 적용**: 테두리 및 배경 색상 충돌 방지를 위해 프로젝트 공통 테마 클래스(`pg-border`, `pg-bg`, `pg-text`, `pg-card`, `pg-card-inner` 등) 및 CSS 변수를 최우선 적용한다.
+  - **코드 작성 및 수정 완료 시 자체 검수**: 파일 저장 및 수정 완료 전, 단일 `class="..."` 문자열 내에 `dark:` 클래스가 포함되어 있는지 정규식/검색으로 전수 검수하여 경고가 발생하지 않는 상태를 유지한다.
