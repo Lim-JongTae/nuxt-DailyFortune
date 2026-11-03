@@ -578,7 +578,7 @@ const displayModelName = computed(() => {
         <button 
           type="button" 
           @click="showCooldownNotice = false" 
-          class="text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 dark:hover:bg-white/5"
+          :class="['text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5', 'dark:hover:bg-white/5']"
         >
           닫기
         </button>
@@ -733,7 +733,7 @@ const displayModelName = computed(() => {
             <button 
               type="button" 
               @click="resetMatchForm" 
-              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border pg-border pg-card-inner text-xs font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+              :class="['inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border pg-border pg-card-inner text-xs font-medium hover:bg-black/5 transition-colors cursor-pointer', 'dark:hover:bg-white/5']"
             >
               <UIcon name="i-heroicons-arrow-path" class="w-4 h-4" />
               <span>다른 인연 확인하기</span>

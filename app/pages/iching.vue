@@ -950,7 +950,7 @@ const copyToClipboard = () => {
         <button 
           type="button" 
           @click="showCooldownNotice = false" 
-          class="text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer shrink-0"
+          :class="['text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 cursor-pointer shrink-0', 'dark:hover:bg-white/5']"
         >
           닫기
         </button>
@@ -1332,7 +1332,7 @@ const copyToClipboard = () => {
               <button
                 type="button"
                 @click="toggleAccordion('total')"
-                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                :class="['w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 transition-colors', 'dark:hover:bg-white/5']"
               >
                 <span class="flex items-center gap-2">
                   <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">괘사 (卦辭)</span>
@@ -1360,7 +1360,7 @@ const copyToClipboard = () => {
               <button
                 type="button"
                 @click="toggleAccordion('line')"
-                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                :class="['w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 transition-colors', 'dark:hover:bg-white/5']"
               >
                 <span class="flex items-center gap-2">
                   <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">효사 (爻辭)</span>
@@ -1400,7 +1400,7 @@ const copyToClipboard = () => {
               <button
                 type="button"
                 @click="toggleAccordion('symbol')"
-                class="w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                :class="['w-full p-4 flex justify-between items-center text-left text-xs font-bold pg-text hover:bg-black/5 transition-colors', 'dark:hover:bg-white/5']"
               >
                 <span class="flex items-center gap-2">
                   <span class="px-2 py-0.5 rounded pg-chip pg-text-gold border pg-border text-[10px]">상전 (象傳)</span>
@@ -1431,7 +1431,7 @@ const copyToClipboard = () => {
         <!-- 4. 괘도 핵심 요약 -->
         <div class="pg-card border rounded-2xl p-5 shadow-lg relative overflow-hidden reveal-on-scroll">
           <!-- Background Watermark (z-0) -->
-          <div class="absolute -right-3 -top-5 text-slate-400/20 dark:text-[#E8C170]/08 text-8xl font-serif-kr select-none pointer-events-none z-0">
+          <div :class="['absolute -right-3 -top-5 text-8xl font-serif-kr select-none pointer-events-none z-0', 'text-slate-400/20', 'dark:text-[#E8C170]/08']">
             易
           </div>
 
@@ -1524,10 +1524,10 @@ const copyToClipboard = () => {
           <HiggsfieldBanner variant="card" />
         </div>
 
-        <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: 승인 완료 후 아래 한 줄만 삭제하시면 완전히 제거됩니다] -->
-        <AdsenseVerificationSection />
-
       </div>
+
+      <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: 승인 완료 후 아래 한 줄만 삭제하시면 완전히 제거됩니다] -->
+      <AdsenseVerificationSection />
 
     </div>
 

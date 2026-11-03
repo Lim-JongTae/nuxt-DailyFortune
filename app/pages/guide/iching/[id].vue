@@ -455,15 +455,19 @@ watch(hexId, () => {
         <NuxtLink
           to="/guide/iching/lessons"
           v-reveal
-          class="block p-3.5 sm:p-4 rounded-2xl border border-amber-300/70 dark:border-amber-400/30 bg-linear-to-r from-amber-500/10 via-amber-400/5 to-transparent hover:border-amber-400 transition-all shadow-xs group"
+          :class="[
+            'block p-3.5 sm:p-4 rounded-2xl border bg-linear-to-r transition-all shadow-xs group',
+            'border-amber-300/70 from-amber-500/10 via-amber-400/5 to-transparent hover:border-amber-400',
+            'dark:border-amber-400/30 dark:hover:border-amber-400/60'
+          ]"
         >
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+              <div :class="['w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center shrink-0', 'text-amber-600', 'dark:text-amber-400']">
                 <UIcon name="i-heroicons-compass" class="w-5 h-5" />
               </div>
               <div>
-                <span class="text-[10px] font-bold text-amber-800 dark:text-amber-300 block">3,000년 동양 의사결정학</span>
+                <span :class="['text-[10px] font-bold block', 'text-amber-800', 'dark:text-amber-300']">3,000년 동양 의사결정학</span>
                 <span class="text-xs font-serif-kr font-bold pg-text">사업·부·사랑·직장·건강·위기 극복 상황별 주역 교훈 전체보기</span>
               </div>
             </div>

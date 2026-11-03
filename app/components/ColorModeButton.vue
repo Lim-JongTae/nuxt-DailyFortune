@@ -51,7 +51,10 @@ const startViewTransition = (event: MouseEvent) => {
       color="neutral"
       variant="ghost"
       size="md"
-      class="rounded-full text-amber-700 hover:text-amber-900 hover:bg-amber-100/60 dark:text-[#FFDE9E] dark:hover:text-white dark:hover:bg-[#26293e]/60 transition-colors p-2"
+      :class="[
+        'rounded-full transition-colors p-2 text-amber-700 hover:text-amber-900 hover:bg-amber-100/60',
+        'dark:text-[#FFDE9E] dark:hover:text-white dark:hover:bg-[#26293e]/60'
+      ]"
       @click="startViewTransition"
     />
     <template #fallback>

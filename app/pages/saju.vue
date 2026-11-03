@@ -1072,7 +1072,7 @@ watch(result, (newVal) => {
         <button 
           type="button" 
           @click="showCooldownNotice = false" 
-          class="text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer shrink-0"
+          :class="['text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 cursor-pointer shrink-0', 'dark:hover:bg-white/5']"
         >
           닫기
         </button>
@@ -1780,10 +1780,10 @@ watch(result, (newVal) => {
           <HiggsfieldBanner variant="card" />
         </div>
 
-        <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: 승인 완료 후 아래 한 줄만 삭제하시면 완전히 제거됩니다] -->
-        <AdsenseVerificationSection />
-
       </div>
+
+      <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: 승인 완료 후 아래 한 줄만 삭제하시면 완전히 제거됩니다] -->
+      <AdsenseVerificationSection />
 
     </div>
 

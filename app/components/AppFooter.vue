@@ -33,7 +33,7 @@ const currentYear = new Date().getFullYear()
         <p :class="['text-[11px] mt-1 flex flex-wrap items-center gap-x-2', 'text-slate-400', 'dark:text-slate-500']">
           <span>© {{ currentYear }} sajuapp.co.kr. All rights reserved.</span>
           <span>·</span>
-          <span>고객지원: <a href="mailto:support@sajuapp.co.kr" class="underline hover:text-amber-600 dark:hover:text-[#FFDE9E]">support@sajuapp.co.kr</a></span>
+          <span>고객지원: <a href="mailto:support@sajuapp.co.kr" :class="['underline hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']">support@sajuapp.co.kr</a></span>
         </p>
       </div>
 

@@ -78,8 +78,8 @@ useHead({
           </p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
             <div :class="['p-3 rounded-lg border', 'bg-amber-50/40 border-amber-200/50', 'dark:bg-[#0F1226]/50 dark:border-slate-700/60']">
-              <div class="font-bold text-amber-800 dark:text-amber-300 mb-1">📜 사주명리학(四柱命理學) 원전</div>
-              <ul class="list-disc pl-4 space-y-0.5 text-slate-600 dark:text-slate-300">
+              <div :class="['font-bold mb-1', 'text-amber-800', 'dark:text-amber-300']">📜 사주명리학(四柱命理學) 원전</div>
+              <ul :class="['list-disc pl-4 space-y-0.5', 'text-slate-600', 'dark:text-slate-300']">
                 <li>《연해자평(淵海子平)》 정통 자평명리 규격</li>
                 <li>《자평진전(子平眞詮)》 격국과 상신·구신 체계</li>
                 <li>《적천수(滴天髓)》 오행 생극제화와 한난조습</li>
@@ -87,8 +87,8 @@ useHead({
               </ul>
             </div>
             <div :class="['p-3 rounded-lg border', 'bg-amber-50/40 border-amber-200/50', 'dark:bg-[#0F1226]/50 dark:border-slate-700/60']">
-              <div class="font-bold text-amber-800 dark:text-amber-300 mb-1">📜 주역(周易) 64괘 원전</div>
-              <ul class="list-disc pl-4 space-y-0.5 text-slate-600 dark:text-slate-300">
+              <div :class="['font-bold mb-1', 'text-amber-800', 'dark:text-amber-300']">📜 주역(周易) 64괘 원전</div>
+              <ul :class="['list-disc pl-4 space-y-0.5', 'text-slate-600', 'dark:text-slate-300']">
                 <li>《역경(易經)》 본문 괘사(卦辭) 및 384효 효사(爻辭)</li>
                 <li>공자 십익(十翼) 중 단전(彖傳)·상전(象傳)·계사전(繫辭傳)</li>
                 <li>변효(動爻) 중심의 현대적 실전 처세 조언</li>
@@ -123,17 +123,17 @@ useHead({
             <UIcon name="i-heroicons-envelope" :class="['w-5 h-5', 'text-amber-600', 'dark:text-[#FFDE9E]']" />
             <span>운영 주체 및 고객지원 안내</span>
           </h2>
-          <div class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+          <div :class="['space-y-2 text-xs sm:text-sm', 'text-slate-600', 'dark:text-slate-300']">
             <p>
-              <strong>서비스 명칭:</strong> 일일운세 ✦ 天命 (<a href="https://sajuapp.co.kr" class="underline text-amber-700 dark:text-amber-300">sajuapp.co.kr</a>)
+              <strong>서비스 명칭:</strong> 일일운세 ✦ 天命 (<a href="https://sajuapp.co.kr" :class="['underline', 'text-amber-700', 'dark:text-amber-300']">sajuapp.co.kr</a>)
             </p>
             <p>
               <strong>운영 목적:</strong> 전통 동양철학(사주명리 및 주역)의 처세 지혜를 대중에게 올바르고 유익하게 보급하고, 일상 속 긍정적인 자기 성찰을 돕는 무료 공공 지식 서비스
             </p>
             <p>
-              <strong>공식 문의 및 고객지원:</strong> <a href="mailto:support@sajuapp.co.kr" class="font-bold underline text-amber-700 dark:text-[#FFDE9E]">support@sajuapp.co.kr</a>
+              <strong>공식 문의 및 고객지원:</strong> <a href="mailto:support@sajuapp.co.kr" :class="['font-bold underline', 'text-amber-700', 'dark:text-[#FFDE9E]']">support@sajuapp.co.kr</a>
             </p>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 pt-1">
+            <p :class="['text-[11px] pt-1', 'text-slate-500', 'dark:text-slate-400']">
               ※ 서비스 개선 제안, 콘텐츠 오류 제보, 기술적 문의 등은 위 고객지원 이메일로 접수해 주시면 영업일 기준 24~48시간 이내에 성심성의껏 답변드립니다.
             </p>
           </div>
