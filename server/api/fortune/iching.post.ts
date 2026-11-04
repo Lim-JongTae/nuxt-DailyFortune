@@ -33,7 +33,8 @@ export default defineEventHandler(async (event) => {
           const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
           throw createError({
             statusCode: 429,
-            statusMessage: `최근 12시간 이내에 이미 주역 괘를 확인하셨습니다. 주역/사주는 하루에 한 번 정성껏 확인하는 것이 좋습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+            statusMessage: 'Too Many Requests',
+            message: `최근 12시간 이내에 이미 주역 괘를 확인하셨습니다. 주역/사주는 하루에 한 번 정성껏 확인하는 것이 좋습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
           })
         }
       }
@@ -78,7 +79,8 @@ export default defineEventHandler(async (event) => {
             const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
             throw createError({
               statusCode: 429,
-              statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 주역 괘를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+              statusMessage: 'Too Many Requests',
+              message: `최근 12시간 이내에 동일한 IP에서 이미 주역 괘를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
             })
           }
         }
@@ -110,7 +112,8 @@ export default defineEventHandler(async (event) => {
     if (!hexagram) {
       throw createError({
         statusCode: 404,
-        statusMessage: '주역 괘 데이터를 찾을 수 없습니다.'
+        statusMessage: 'Not Found',
+        message: '주역 괘 데이터를 찾을 수 없습니다.'
       })
     }
 

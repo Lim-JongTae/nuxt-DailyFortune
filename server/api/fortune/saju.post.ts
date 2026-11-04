@@ -27,7 +27,8 @@ export default defineEventHandler(async (event) => {
     if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
       throw createError({
         statusCode: 400,
-        statusMessage: '올바른 생년월일 형식(YYYY-MM-DD)이 아닙니다.'
+        statusMessage: 'Bad Request',
+        message: '올바른 생년월일 형식(YYYY-MM-DD)이 아닙니다.'
       })
     }
 
@@ -55,7 +56,8 @@ export default defineEventHandler(async (event) => {
           const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
           throw createError({
             statusCode: 429,
-            statusMessage: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 주역/사주는 하루에 한 번 정성껏 확인하는 것이 좋습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+            statusMessage: 'Too Many Requests',
+            message: `최근 12시간 이내에 이미 사주 운세를 확인하셨습니다. 주역/사주는 하루에 한 번 정성껏 확인하는 것이 좋습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
           })
         }
       }
@@ -100,7 +102,8 @@ export default defineEventHandler(async (event) => {
             const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
             throw createError({
               statusCode: 429,
-              statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 사주 운세를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+              statusMessage: 'Too Many Requests',
+              message: `최근 12시간 이내에 동일한 IP에서 이미 사주 운세를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
             })
           }
         }
@@ -249,15 +252,15 @@ ${worry || "2027년 정미년 한 해의 총운과 재물, 커리어, 건강, �
 }
 \`\`\`
 
-종합 신년 분석 보고서 작성 지침 (각 섹션별 2~3문장으로 명료하고 품격 있게 작성):
+종합 신년 분석 보고서 작성 지침 (군더더기 없이 각 섹션별 1~2문장으로 핵심과 피흉추길 비결을 명료하게 작성):
 ### 1. 2027년 정미년(丁未年) 붉은 양의 해 총운
-- ${userSaju.fullName}일주와 2027년 丁未 세운 간의 오행 생극제화 및 1년 전체의 큰 흐름 해설.
+- ${userSaju.fullName}일주와 2027년 丁未 세운 간의 오행 생극제화 및 1년 전체 흐름 핵심 요약 (1~2문장).
 ### 2. 2027년 삼재(날삼재) 및 세운 합충(合沖) 정밀 진단
-- ${userYearSaju.zodiacName}의 ${samjaeType} 영향력과 ${isYukhab ? '육합 길운' : isBanhab ? '반합 협력 기운' : isBonmyeong ? '본명년 수신' : isChung ? '충극 변화' : '세운 조화'} 기운을 살피는 피흉추길 방비책.
+- ${userYearSaju.zodiacName}의 ${samjaeType} 및 세운 조화에 따른 실전 피흉추길 처세술 (1~2문장).
 ### 3. 상반기 vs 하반기 흐름과 올해의 황금 달
-- 상반기(1~6월)와 하반기(7~12월)의 기운 전환점 및 추천하는 기회의 달 활용법.
+- 상·하반기 기운의 전환점과 가장 길한 달의 실천법 (1~2문장).
 ### 4. 분야별(재물·직업·애정·건강) 실전 처세 비결
-- 재물, 직업, 애정, 건강 4대 영역에서 정미년 한 해 동안 실천할 구체적인 행동 지침.`
+- 재물·직업·애정·건강 영역에서 정미년 한 해 동안 반드시 기억할 핵심 행동 지침 (1~2문장).`
       : `당신은 60일주론과 오행 생극제화에 정통한 고결한 역학자입니다.
 사용자의 사주 일주와 오늘 일진 정보, 고민을 바탕으로 품격 있고 정밀한 명리 보고서를 작성하십시오. 장황한 수사여구는 배제하고 군더더기 없이 명료하며 깊이 있는 언어로 조언하십시오.
 

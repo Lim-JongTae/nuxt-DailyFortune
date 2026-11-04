@@ -17,14 +17,16 @@ export default defineEventHandler(async (event) => {
     if (!person1?.birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(person1.birthDate)) {
       throw createError({
         statusCode: 400,
-        statusMessage: '본인의 올바른 생년월일 형식(YYYY-MM-DD)을 입력해 주세요.'
+        statusMessage: 'Bad Request',
+        message: '본인의 올바른 생년월일 형식(YYYY-MM-DD)을 입력해 주세요.'
       })
     }
 
     if (!person2?.birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(person2.birthDate)) {
       throw createError({
         statusCode: 400,
-        statusMessage: '상대방의 올바른 생년월일 형식(YYYY-MM-DD)을 입력해 주세요.'
+        statusMessage: 'Bad Request',
+        message: '상대방의 올바른 생년월일 형식(YYYY-MM-DD)을 입력해 주세요.'
       })
     }
 
@@ -52,7 +54,8 @@ export default defineEventHandler(async (event) => {
           const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
           throw createError({
             statusCode: 429,
-            statusMessage: `최근 12시간 이내에 이미 궁합 운세를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+            statusMessage: 'Too Many Requests',
+            message: `최근 12시간 이내에 이미 궁합 운세를 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
           })
         }
       }
@@ -88,7 +91,8 @@ export default defineEventHandler(async (event) => {
             const remainingHours = Math.max(1, Math.ceil((limitDurationMs - timeDiff) / (1000 * 60 * 60)))
             throw createError({
               statusCode: 429,
-              statusMessage: `최근 12시간 이내에 동일한 IP에서 이미 궁합을 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
+              statusMessage: 'Too Many Requests',
+              message: `최근 12시간 이내에 동일한 IP에서 이미 궁합을 확인하셨습니다. 약 ${remainingHours}시간 후에 다시 확인해 주세요.`
             })
           }
         }

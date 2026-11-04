@@ -444,7 +444,7 @@ const handleStickClick = async (stick: any) => {
         loading.value = false
         const errObj = error as Record<string, any>
         const statusCode = errObj?.statusCode || errObj?.status || errObj?.response?.status
-        const statusMessage = errObj?.statusMessage || errObj?.data?.statusMessage || errObj?.data?.message || errObj?.message || ''
+        const statusMessage = errObj?.data?.message || errObj?.message || errObj?.data?.statusMessage || errObj?.statusMessage || ''
 
         if (statusCode === 429) {
           toast.clear()

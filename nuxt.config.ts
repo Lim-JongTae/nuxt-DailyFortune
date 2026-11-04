@@ -56,6 +56,7 @@ export default defineNuxtConfig({
     workbox: {
       navigateFallback: '/',
       navigateFallbackAllowlist: [/^\/$/],
+      navigateFallbackDenylist: [/^\/api\//],
       globPatterns: ['**/*.{js,css,html,png,svg,ico}']
     },
     client: {
@@ -235,6 +236,11 @@ export default defineNuxtConfig({
     ]
   },
   nitro: {
+    vercel: {
+      functions: {
+        maxDuration: 60
+      }
+    },
     prerender: {
       crawlLinks: true,
       routes: [
