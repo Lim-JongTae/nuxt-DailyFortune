@@ -1312,7 +1312,7 @@ watch(result, (newVal) => {
               {{ isNewYearFortune ? '2027년 세운' : '오늘의 일진' }}
             </span>
             <strong class="text-xs pg-text-gold font-serif-kr block">
-              {{ isNewYearFortune ? '정미(丁未)년 붉은 양' : `${result.todaySaju?.ganzhi}일 (${result.todaySaju?.shipsin})` }}
+              {{ isNewYearFortune ? '정미(丁未)년 붉은양' : `${result.todaySaju?.ganzhi}일 (${result.todaySaju?.shipsin})` }}
             </strong>
           </div>
         </div>
@@ -1401,7 +1401,7 @@ watch(result, (newVal) => {
           </div>
 
           <!-- 메인 총평 문구 (무조건 1줄 고정) -->
-          <h2 class="font-serif-kr text-[13px] sm:text-base md:text-xl font-bold pg-text-gold mb-2 leading-snug tracking-tighter whitespace-nowrap">
+          <h2 class="font-serif-kr text-base sm:text-lg md:text-xl font-bold pg-text-gold mb-2 leading-snug break-keep px-2">
             "{{ sajuDynamicData.headline }}"
           </h2>
           <p class="text-xs pg-text-muted font-bold max-w-sm mx-auto leading-relaxed">
@@ -1419,8 +1419,8 @@ watch(result, (newVal) => {
             </h3>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-            <!-- 삼재 진단 카드 -->
+          <div class="grid grid-cols-1 gap-3 mb-3">
+            <!-- 삼재 진단 카드 (한 줄에 1개씩 배치) -->
             <div
               :class="[
                 'p-3.5 rounded-2xl border transition-all',
@@ -1496,7 +1496,7 @@ watch(result, (newVal) => {
             <span class="text-[11px] font-bold pg-text-gold block mb-1.5 font-serif-kr">
               🗓️ 2027년 가장 운이 트이는 '황금의 달'
             </span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="grid grid-cols-1 gap-2.5">
               <div
                 v-for="(bm, bIdx) in result.parsedData.bestMonths"
                 :key="bIdx"
