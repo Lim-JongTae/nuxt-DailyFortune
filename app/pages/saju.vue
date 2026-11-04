@@ -253,15 +253,15 @@ onMounted(() => {
     birthDay.value = d ? String(parseInt(d, 10)) : ''
   }
 
-  // 12시간 쿨다운 확인 및 이전 결과 자동 복원
+  // 12시간 쿨다운 확인 및 이전 결과 자동 복원 (신년운세 진입 시 일일운세 강제 덮어쓰기 방지)
+  const cool = store.getRemainingCoolTime('saju')
+  if (cool.isLimited) {
+    showCooldownNotice.value = true
+    cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
+  }
   if (store.hasRecentResult('saju')) {
-    if (!result.value && store.sajuResult) {
+    if (!result.value && store.sajuResult && !isNewYearMode.value) {
       result.value = store.sajuResult
-    }
-    const cool = store.getRemainingCoolTime('saju')
-    if (cool.isLimited) {
-      showCooldownNotice.value = true
-      cooldownTimeStr.value = `${cool.hours}시간 ${cool.minutes}분`
     }
   }
 })
@@ -1058,24 +1058,39 @@ watch(result, (newVal) => {
         </template>
       </div>
 
-      <!-- 12시간 쿨다운 알림 배너 (사주궁합과 1:1 통일) -->
+      <!-- 12시간 쿨다운 알림 배너 (조회 전·후 상시 노출 및 이전 결과 보기 지원) -->
       <div 
-        v-if="showCooldownNotice && result" 
+        v-if="showCooldownNotice" 
         class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 text-xs sm:text-sm mb-4"
       >
         <div class="flex items-center gap-2.5">
           <UIcon name="i-heroicons-information-circle" class="w-5 h-5 text-amber-500 shrink-0" />
-          <span class="pg-text-muted">
-            오늘 이미 조회하신 사주 결과입니다.<br> 다음 새로운 조회까지 <strong>{{ cooldownTimeStr }}</strong> 남았습니다.
+          <span class="pg-text-muted leading-relaxed">
+            {{ result ? '오늘 이미 조회하신 사주 결과입니다.' : '최근 12시간 이내에 이미 사주 운세를 조회하셨습니다.' }}<br>
+            다음 새로운 조회까지 <strong>{{ cooldownTimeStr }}</strong> 남았습니다.
           </span>
         </div>
-        <button 
-          type="button" 
-          @click="showCooldownNotice = false" 
-          :class="['text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 cursor-pointer shrink-0', 'dark:hover:bg-white/5']"
-        >
-          닫기
-        </button>
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            v-if="!result && store.sajuResult"
+            type="button"
+            @click="result = store.sajuResult"
+            :class="[
+              'text-xs px-2.5 py-1 rounded-lg font-bold border transition-colors cursor-pointer shrink-0',
+              'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200',
+              'dark:bg-amber-500/20 dark:text-amber-300 dark:border-amber-400/40 dark:hover:bg-amber-500/30'
+            ]"
+          >
+            이전 결과 보기
+          </button>
+          <button 
+            type="button" 
+            @click="showCooldownNotice = false" 
+            :class="['text-xs px-2.5 py-1 rounded-lg border pg-border hover:bg-black/5 cursor-pointer shrink-0', 'dark:hover:bg-white/5']"
+          >
+            닫기
+          </button>
+        </div>
       </div>
 
       <!-- ========================================== -->
@@ -1220,6 +1235,27 @@ watch(result, (newVal) => {
               rows="2"
               class="saju-input w-full py-2.5 px-4 rounded-xl text-xs resize-none"
             ></textarea>
+          </div>
+
+          <!-- 조회 버튼 바로 위 쿨다운 사전 알림 뱃지 -->
+          <div
+            v-if="store.getRemainingCoolTime('saju').isLimited"
+            class="mb-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-2 text-xs"
+          >
+            <div class="flex items-center gap-1.5 font-medium">
+              <UIcon name="i-heroicons-clock" class="w-4 h-4 text-amber-500 shrink-0" />
+              <span :class="['text-amber-800', 'dark:text-amber-300']">
+                12시간 쿨다운 중 (잔여: <strong>{{ cooldownTimeStr }}</strong>)
+              </span>
+            </div>
+            <button
+              v-if="store.sajuResult"
+              type="button"
+              @click="result = store.sajuResult"
+              :class="['text-[11px] underline font-bold cursor-pointer shrink-0', 'text-amber-800 hover:text-amber-950', 'dark:text-amber-300 dark:hover:text-amber-100']"
+            >
+              이전 결과 바로보기
+            </button>
           </div>
 
           <button
