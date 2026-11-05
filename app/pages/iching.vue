@@ -1526,9 +1526,11 @@ const copyToClipboard = () => {
 
       </div>
 
-      <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: 승인 완료 후 아래 한 줄만 삭제하시면 완전히 제거됩니다] -->
-      <AdsenseVerificationSection />
+    </div>
 
+    <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: PC 대형 화면에서 넉넉한 너비(max-w-5xl) 제공] -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
+      <AdsenseVerificationSection />
     </div>
 
     <!-- 하단 탭바 -->
