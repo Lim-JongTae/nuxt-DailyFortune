@@ -9,14 +9,18 @@ const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide/saju/ilju/${codePa
 
 // FAQ 아코디언 상태 관리 (검색엔진 크롤러 및 초기 로드 시 디폴트 전체 열림 보장)
 const openFaqIndexes = ref<Set<number>>(new Set([0, 1, 2, 3, 4, 5]))
-const toggleFaq = (idx: number) => {
-  if (openFaqIndexes.value.has(idx)) {
-    openFaqIndexes.value.delete(idx)
+const toggleFaq = (idx: number | string) => {
+  const n = typeof idx === 'number' ? idx : Number(idx)
+  if (openFaqIndexes.value.has(n)) {
+    openFaqIndexes.value.delete(n)
   } else {
-    openFaqIndexes.value.add(idx)
+    openFaqIndexes.value.add(n)
   }
 }
-const isFaqOpen = (idx: number) => openFaqIndexes.value.has(idx)
+const isFaqOpen = (idx: number | string) => {
+  const n = typeof idx === 'number' ? idx : Number(idx)
+  return openFaqIndexes.value.has(n)
+}
 
 interface IljuNavSummary {
   code: string
@@ -321,7 +325,7 @@ useHead(() => {
               >
                 <div class="flex items-center gap-1.5 font-bold pg-text-soft">
                   <UIcon name="i-heroicons-chat-bubble-bottom-center-text" class="w-3.5 h-3.5 pg-text-gold shrink-0" />
-                  <span>장면 {{ scIdx + 1 }}</span>
+                  <span>장면 {{ (Number(scIdx) || 0) + 1 }}</span>
                 </div>
                 <p class="pg-text font-normal leading-relaxed text-[11px] sm:text-xs pl-5">
                   {{ scene }}
@@ -350,14 +354,19 @@ useHead(() => {
               </div>
 
               <!-- 재물 및 자산 관리 -->
-              <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-1.5">
-                <div class="flex items-center gap-1.5">
-                  <UIcon name="i-heroicons-banknotes" class="w-4 h-4 pg-text-gold" />
-                  <strong class="pg-text-gold text-xs">재물 · 투자 및 자산 관리</strong>
+              <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border flex flex-col justify-between space-y-1.5">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <UIcon name="i-heroicons-banknotes" class="w-4 h-4 pg-text-gold" />
+                    <strong class="pg-text-gold text-xs">재물 · 투자 및 자산 관리</strong>
+                  </div>
+                  <p class="pg-text font-normal leading-relaxed text-[11px] sm:text-xs">
+                    {{ iljuData.content.fields.wealth }}
+                  </p>
                 </div>
-                <p class="pg-text font-normal leading-relaxed text-[11px] sm:text-xs">
-                  {{ iljuData.content.fields.wealth }}
-                </p>
+                <div :class="['mt-2 pt-1.5 border-t text-[10px] sm:text-[11px] leading-relaxed', 'border-slate-200/70 text-slate-500', 'dark:border-slate-800/70 dark:text-slate-400']">
+                  ※ 본 재물 운세는 사주명리학의 상징적 풀이이며 특정 금융상품의 매매 권유가 아닙니다. 모든 재정 판단은 본인의 책임과 신중한 검토하에 결정하시기 바랍니다.
+                </div>
               </div>
 
               <!-- 연애 및 대인관계 -->
@@ -458,7 +467,7 @@ useHead(() => {
           <section v-reveal class="pg-card border rounded-2xl p-3.5 sm:p-5 shadow-md space-y-2.5 sm:space-y-3">
             <div class="flex items-center gap-2 border-b pg-border pb-2 sm:pb-2.5">
               <UIcon name="i-heroicons-shield-exclamation" class="w-5 h-5 pg-text-gold" />
-              <h3 class="font-serif-kr text-sm sm:text-base font-bold pg-text">6. 세간의 편견과 단식 판단 바로잡기</h3>
+              <h3 class="font-serif-kr text-sm sm:text-base font-bold pg-text">6. 일주론의 오해와 진실 (전체 명식 해석의 중요성)</h3>
             </div>
 
             <div

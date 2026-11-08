@@ -211,14 +211,18 @@ const isHexAnimated = ref(false)
 
 // FAQ 아코디언 상태 관리 (검색엔진 크롤러 및 초기 로드 시 디폴트 전체 열림 보장)
 const openFaqIndexes = ref<Set<number>>(new Set([0, 1, 2, 3, 4, 5]))
-const toggleFaq = (idx: number) => {
-  if (openFaqIndexes.value.has(idx)) {
-    openFaqIndexes.value.delete(idx)
+const toggleFaq = (idx: number | string) => {
+  const n = typeof idx === 'number' ? idx : Number(idx)
+  if (openFaqIndexes.value.has(n)) {
+    openFaqIndexes.value.delete(n)
   } else {
-    openFaqIndexes.value.add(idx)
+    openFaqIndexes.value.add(n)
   }
 }
-const isFaqOpen = (idx: number) => openFaqIndexes.value.has(idx)
+const isFaqOpen = (idx: number | string) => {
+  const n = typeof idx === 'number' ? idx : Number(idx)
+  return openFaqIndexes.value.has(n)
+}
 
 const triggerHexAnimation = () => {
   isHexAnimated.value = false
@@ -540,14 +544,19 @@ watch(hexId, () => {
               </div>
 
               <!-- 재물·투자 -->
-              <div :class="['p-5 rounded-2xl border', 'bg-slate-50/60 border-slate-200/70', 'dark:bg-[#0E1326] dark:border-slate-800/60']">
-                <div class="flex items-center gap-2 mb-2.5">
-                  <span class="text-base">💰</span>
-                  <h3 :class="['text-sm font-bold font-serif-kr text-amber-800', 'dark:text-amber-300']">재물 및 투자 관리</h3>
+              <div :class="['p-5 rounded-2xl border flex flex-col justify-between', 'bg-slate-50/60 border-slate-200/70', 'dark:bg-[#0E1326] dark:border-slate-800/60']">
+                <div>
+                  <div class="flex items-center gap-2 mb-2.5">
+                    <span class="text-base">💰</span>
+                    <h3 :class="['text-sm font-bold font-serif-kr text-amber-800', 'dark:text-amber-300']">재물 및 투자 관리</h3>
+                  </div>
+                  <p :class="['text-xs sm:text-sm leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
+                    {{ hexData.content.fields.wealth }}
+                  </p>
                 </div>
-                <p :class="['text-xs sm:text-sm leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
-                  {{ hexData.content.fields.wealth }}
-                </p>
+                <div :class="['mt-3.5 pt-2.5 border-t text-[11px] leading-relaxed', 'border-slate-200/70 text-slate-600', 'dark:border-slate-800/70 dark:text-slate-400']">
+                  ※ 본 재물 운세 및 자산 관리 조언은 전통 역학의 상징적 풀이이며 특정 금융상품의 매매 권유가 아닙니다. 모든 재정 및 투자 판단은 본인의 책임과 신중한 검토하에 결정하시기 바랍니다.
+                </div>
               </div>
 
               <!-- 애정·관계 -->
@@ -811,7 +820,7 @@ watch(hexId, () => {
               <div v-for="(src, sIdx) in hexData.content.sources" :key="sIdx">• {{ src }}</div>
             </div>
             <div :class="['pt-2 border-t pg-border text-[11px] flex justify-between items-center text-slate-600', 'dark:text-slate-400']">
-              <NuxtLink to="/about" class="hover:underline flex items-center gap-1 text-slate-500 hover:text-amber-600 dark:hover:text-amber-400">
+              <NuxtLink to="/about" :class="['hover:underline flex items-center gap-1 text-slate-500 hover:text-amber-600', 'dark:hover:text-amber-400']">
                 <UIcon name="i-heroicons-information-circle" class="w-3.5 h-3.5" />
                 <span>콘텐츠 편찬 및 편집 원칙</span>
               </NuxtLink>

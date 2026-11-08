@@ -16,15 +16,15 @@ export interface HexagramContent {
   lineOverview: string;       // 200~250자 (여섯 효가 하나의 시간 흐름으로 이어지는 방식)
   lines: {
     n: number;
-    nameHanja: string;
-    nameKorean: string;
-    textHanja: string;
-    textKorean: string;
-    traditionalInterp: string; // 전통 해석
+    nameHanja?: string;
+    nameKorean?: string;
+    textHanja?: string;
+    textKorean?: string;
+    traditionalInterp?: string; // 전통 해석 (iching384LinesData에서 자동 병합)
     scene: string;             // scene: 구체 장면 한 줄
     modernAdvice: string;      // 현대 조언
   }[];
-  compareWith: { id: number; name: string; diff: string }[];
+  compareWith: { id: number; name?: string; diff: string }[];
   misconceptions: string;     // 150~200자
   faq: { q: string; a: string }[]; // 3~4개, 본문과 다른 질문
   sources: string[];

@@ -60,13 +60,24 @@ export function getEnhancedHexagramDetail(id: number): any {
       `정약용 『주역사전(周易四箋)』 ${hex.nameKorean}괘`
     ]
 
+    // 비교 괘(compareWith)의 name이 누락된 경우 대상 괘 메타데이터로부터 자동 보강
+    const enrichedCompareWith = (hex.content?.compareWith || []).map((item: any) => {
+      if (item.name) return item
+      const target = getLegacyHexagramDetail(item.id)
+      return {
+        ...item,
+        name: target ? `${target.nameKorean}(${target.nameHanji})` : `괘 ${item.id}`
+      }
+    })
+
     return {
       ...hex,
       isEnhanced: true,
       content: hex.content ? {
         ...hex.content,
         sources: dynamicSources,
-        lines: mergedLines
+        lines: mergedLines,
+        compareWith: enrichedCompareWith
       } : undefined,
       prevHexagram: prevLegacy ? { id: prevLegacy.id, nameKorean: prevLegacy.nameKorean, slug: prevLegacy.slug } : null,
       nextHexagram: nextLegacy ? { id: nextLegacy.id, nameKorean: nextLegacy.nameKorean, slug: nextLegacy.slug } : null
