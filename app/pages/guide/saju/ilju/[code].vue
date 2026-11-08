@@ -7,11 +7,16 @@ const codeParam = computed(() => String(route.params.code || 'gap-ja').toLowerCa
 const runtimeConfig = useRuntimeConfig()
 const pageUrl = `${runtimeConfig.public?.siteUrl || ''}/guide/saju/ilju/${codeParam.value}`
 
-// FAQ 아코디언 상태 관리 (초기 진입 시 모두 닫힘 디폴트 보장)
-const openFaqIndex = ref<number | null>(null)
+// FAQ 아코디언 상태 관리 (검색엔진 크롤러 및 초기 로드 시 디폴트 전체 열림 보장)
+const openFaqIndexes = ref<Set<number>>(new Set([0, 1, 2, 3, 4, 5]))
 const toggleFaq = (idx: number) => {
-  openFaqIndex.value = openFaqIndex.value === idx ? null : idx
+  if (openFaqIndexes.value.has(idx)) {
+    openFaqIndexes.value.delete(idx)
+  } else {
+    openFaqIndexes.value.add(idx)
+  }
 }
+const isFaqOpen = (idx: number) => openFaqIndexes.value.has(idx)
 
 interface IljuNavSummary {
   code: string
@@ -68,10 +73,9 @@ const pageTitle = computed(() => {
 
 const pageDesc = computed(() => {
   if (!iljuData.value) return '사주명리 60일주 정통 물상론, 지장간, 십신, 4대 운세 및 처세 조언 해설'
-  if (isEnhanced.value && iljuData.value.content?.summary) {
-    return `${iljuData.value.ganzhi}일주(${iljuData.value.ganzhiHanja}) - ${iljuData.value.content.summary.slice(0, 140)}...`
-  }
-  return `${iljuData.value.ganzhi}일주(${iljuData.value.ganzhiHanja}) - ${iljuData.value.mulsang || ''}. 천간 ${iljuData.value.stemElement}과 지지 ${iljuData.value.branchElement}의 결합. 직업, 재물, 애정, 건강 운세와 실전 개운법.`
+  const name = iljuData.value.ganzhi || ''
+  const hanja = iljuData.value.ganzhiHanja ? `(${iljuData.value.ganzhiHanja})` : ''
+  return `${name}일주${hanja} 정통 명리학 해설. 천간과 지지의 역학적 결합 원리, 3대 현실 행동 장면과 4대 분야 실전 처세 가이드를 제공합니다.`
 })
 
 useSeoMeta({
@@ -477,11 +481,12 @@ useHead(() => {
                 v-for="(faq, fIdx) in iljuData.content.faq"
                 :key="fIdx"
                 class="rounded-xl pg-card-inner border pg-border overflow-hidden transition-colors"
-                :class="openFaqIndex === fIdx ? 'border-amber-500/40' : ''"
+                :class="isFaqOpen(fIdx) ? 'border-amber-500/40' : ''"
               >
                 <button
                   type="button"
                   class="w-full p-3 sm:p-3.5 font-bold text-xs pg-text flex items-center justify-between text-left cursor-pointer hover:bg-white/5 transition-colors"
+                  :aria-expanded="isFaqOpen(fIdx) ? 'true' : 'false'"
                   @click="toggleFaq(fIdx)"
                 >
                   <span class="flex items-center gap-2">
@@ -491,11 +496,11 @@ useHead(() => {
                   <UIcon
                     name="i-heroicons-chevron-down"
                     class="w-4 h-4 pg-text-gold transition-transform duration-200 shrink-0"
-                    :class="openFaqIndex === fIdx ? 'rotate-180' : ''"
+                    :class="isFaqOpen(fIdx) ? 'rotate-180' : ''"
                   />
                 </button>
                 <div
-                  v-if="openFaqIndex === fIdx"
+                  v-show="isFaqOpen(fIdx)"
                   class="p-3 sm:p-3.5 pt-0 border-t pg-border text-xs pg-text-muted leading-relaxed font-normal"
                 >
                   <div class="pt-2">
@@ -521,7 +526,11 @@ useHead(() => {
                 {{ src }}
               </li>
             </ul>
-            <div class="pt-2 border-t pg-border text-right text-[11px] pg-text-muted">
+            <div class="pt-2 border-t pg-border flex justify-between items-center text-[11px] pg-text-muted">
+              <NuxtLink to="/about" class="hover:underline flex items-center gap-1 hover:text-(--fortune-gold) transition-colors">
+                <UIcon name="i-heroicons-information-circle" class="w-3.5 h-3.5" />
+                <span>콘텐츠 편찬 및 편집 원칙</span>
+              </NuxtLink>
               <span>작성일: {{ iljuData.content.reviewedAt }}</span>
             </div>
           </section>
@@ -619,7 +628,7 @@ useHead(() => {
                 v-for="(faq, idx) in iljuData.faqList"
                 :key="idx"
                 class="rounded-xl pg-card-inner border pg-border overflow-hidden transition-colors"
-                :class="openFaqIndex === idx ? 'border-amber-500/40' : ''"
+                :class="isFaqOpen(idx) ? 'border-amber-500/40' : ''"
               >
                 <button
                   type="button"
@@ -633,11 +642,11 @@ useHead(() => {
                   <UIcon
                     name="i-heroicons-chevron-down"
                     class="w-4 h-4 pg-text-gold transition-transform duration-200 shrink-0"
-                    :class="openFaqIndex === idx ? 'rotate-180' : ''"
+                    :class="isFaqOpen(idx) ? 'rotate-180' : ''"
                   />
                 </button>
                 <div
-                  v-if="openFaqIndex === idx"
+                  v-show="isFaqOpen(idx)"
                   class="p-3 sm:p-3.5 pt-0 border-t pg-border text-xs pg-text-muted leading-relaxed font-normal"
                 >
                   <div class="pt-2">

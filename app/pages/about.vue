@@ -98,6 +98,25 @@ useHead({
           </div>
         </section>
 
+        <!-- 콘텐츠 편찬 및 학술 검수 원칙 (Editorial Principles & EEAT) -->
+        <section :class="['p-5 sm:p-6 rounded-xl border', 'bg-white border-amber-200/60', 'dark:bg-[#1A203C] dark:border-slate-700']">
+          <h2 :class="['text-xl font-serif-kr font-bold mb-3 flex items-center gap-2', 'text-amber-900', 'dark:text-[#FFDE9E]']">
+            <UIcon name="i-heroicons-document-check" :class="['w-5 h-5', 'text-amber-600', 'dark:text-[#FFDE9E]']" />
+            <span>콘텐츠 편찬 및 학술 검수 원칙</span>
+          </h2>
+          <div :class="['space-y-2.5 text-xs sm:text-sm', 'text-slate-600', 'dark:text-slate-300']">
+            <p>
+              sajuapp.co.kr은 이용자에게 신뢰할 수 있는 철학적 가이드를 제공하기 위해 다음과 같은 엄격한 편집 원칙을 준수합니다.
+            </p>
+            <ul :class="['list-disc pl-5 space-y-1.5 leading-relaxed', 'text-slate-700', 'dark:text-slate-300']">
+              <li><strong>원전(原典) 직접 대조 원칙:</strong> 사주 60일주 및 주역 64괘의 모든 해설은 『주역』 본문·십익, 『이천역전』, 『주역본의』, 『자평진전』, 『적천수』 등 실존하는 고전 서적을 직접 대조하여 편찬하며, 검증되지 않은 가공의 논문명이나 소제목 인용을 배제합니다.</li>
+              <li><strong>단식 판단 및 과장 배제:</strong> 살(煞)에 대한 공포 마케팅이나 확정적 미래 예언을 지양하며, 모든 괘와 일주를 '처세와 자기 성찰의 관점'에서 객관적으로 서술합니다.</li>
+              <li><strong>의료·재정 독립성 및 면책:</strong> 건강과 재물에 관한 해설은 동양철학의 상징적 비유일 뿐 전문적인 진단이나 투자 권유가 아님을 분명히 밝히며, 질환이나 법률·금융 문제는 반드시 공인된 전문가의 상담을 받도록 안내합니다.</li>
+              <li><strong>상시 정정 및 피드백 반영:</strong> 역학적 오류나 해석상 불명확한 점은 고객지원 채널을 통해 상시 접수받아 사실 확인 후 즉각 개정하고 있습니다.</li>
+            </ul>
+          </div>
+        </section>
+
         <!-- 이용 팁 및 안내 (FAQ) -->
         <section>
           <h2 :class="['text-lg font-bold mb-3', 'text-amber-800', 'dark:text-amber-200']">자주 묻는 질문 (FAQ)</h2>

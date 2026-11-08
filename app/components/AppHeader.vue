@@ -71,7 +71,8 @@ onUnmounted(() => {
         </div>
       </NuxtLink>
 
-      <!-- 중앙: 오늘 방문자 수 (SSR 즉시 로딩 및 고정 선명 렌더링) -->
+      <!-- 중앙: 오늘 방문자 수 (신뢰도 및 심사 가이드에 따라 기본 숨김 유지) -->
+      <!--
       <div :class="['flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border shadow-xs text-xs', 'bg-amber-500/10 border-amber-500/20 text-slate-700', 'dark:bg-[#FFDE9E]/10 dark:border-[#FFDE9E]/20 dark:text-[#FFDE9E]/90']">
         <span class="relative flex h-2 w-2 shrink-0">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -81,6 +82,7 @@ onUnmounted(() => {
           오늘 방문자 <span :class="['font-bold', 'text-amber-600', 'dark:text-[#FFDE9E]']">{{ displayTodayViews.toLocaleString() }}</span> 명
         </span>
       </div>
+      -->
 
       <!-- 우측: 안내 메뉴 드롭다운 & 컬러모드 버튼 -->
       <div class="flex items-center gap-2 shrink-0">

@@ -96,11 +96,11 @@ const pageTitle = computed(() => {
 })
 
 const pageDesc = computed(() => {
-  if (!hexData.value) return '주역 64괘 해설 및 384효 실전 처세 가이드'
-  if (hexData.value.content?.summary) {
-    return `${hexData.value.nameKorean}(${hexData.value.nameHanji}) - ${hexData.value.content.summary.slice(0, 140)}...`
-  }
-  return `${hexData.value.nameKorean}(${hexData.value.nameHanji}) - ${hexData.value.desc}. 괘사, 단전, 상전, 4대 부문별 운세와 6개 효사 원문 및 현대적 실전 처세 조언.`
+  if (!hexData.value) return '주역 64괘 정통 해설과 384효 실전 처세 가이드'
+  const name = hexData.value.nameKorean || `제${hexId.value}괘`
+  const hanja = hexData.value.nameHanji ? `(${hexData.value.nameHanji})` : ''
+  const desc = hexData.value.desc ? `${hexData.value.desc}. ` : ''
+  return `제${hexId.value}괘 ${name}${hanja} 정통 해설. ${desc}괘사·단전·상전의 역학적 원리와 6효사별 현실 행동 지침 및 4대 분야 실전 처세 가이드를 확인하세요.`
 })
 
 useSeoMeta({
@@ -209,11 +209,16 @@ const nextHexId = computed(() => (hexId.value < 64 ? hexId.value + 1 : 1))
 const selectedLineTab = ref<number>(0)
 const isHexAnimated = ref(false)
 
-// FAQ 아코디언 상태 (처음에는 모두 닫힘: null)
-const openFaqIndex = ref<number | null>(null)
+// FAQ 아코디언 상태 관리 (검색엔진 크롤러 및 초기 로드 시 디폴트 전체 열림 보장)
+const openFaqIndexes = ref<Set<number>>(new Set([0, 1, 2, 3, 4, 5]))
 const toggleFaq = (idx: number) => {
-  openFaqIndex.value = openFaqIndex.value === idx ? null : idx
+  if (openFaqIndexes.value.has(idx)) {
+    openFaqIndexes.value.delete(idx)
+  } else {
+    openFaqIndexes.value.add(idx)
+  }
 }
+const isFaqOpen = (idx: number) => openFaqIndexes.value.has(idx)
 
 const triggerHexAnimation = () => {
   isHexAnimated.value = false
@@ -230,7 +235,7 @@ onMounted(() => {
 
 watch(hexId, () => {
   triggerHexAnimation()
-  openFaqIndex.value = null
+  openFaqIndexes.value = new Set([0, 1, 2, 3, 4, 5])
 })
 </script>
 
@@ -458,7 +463,7 @@ watch(hexId, () => {
             </div>
           </section>
 
-          <!-- 4. 고사성어와 역사적 배경 -->
+          <!-- 4. 괘의 핵심 구절과 고전 성어 -->
           <section
             v-if="hexData.content.idioms && hexData.content.idioms.length"
             :class="[
@@ -473,9 +478,9 @@ watch(hexId, () => {
               </div>
               <div>
                 <h2 :class="['text-lg sm:text-xl font-serif-kr font-bold', 'text-slate-900', 'dark:text-[#FFDE9E]']">
-                  괘에서 유래한 고사성어와 지혜
+                  괘에서 나온 핵심 구절 및 고전 성어
                 </h2>
-                <p class="text-xs pg-text-muted mt-0.5">수천 년을 관통해 일상에 살아 숨 쉬는 명언</p>
+                <p class="text-xs pg-text-muted mt-0.5">주역 원전의 핵심 명구와 역사적 고사성어의 교훈</p>
               </div>
             </div>
 
@@ -748,7 +753,7 @@ watch(hexId, () => {
                   'dark:bg-[#0E1326] dark:border-slate-800/70'
                 ]"
               >
-                <!-- 아코디언 헤더 버튼 (처음은 모두 닫힘: openFaqIndex === null) -->
+                <!-- 아코디언 헤더 버튼 (디폴트 전체 열림) -->
                 <button
                   type="button"
                   @click="toggleFaq(fIdx)"
@@ -757,7 +762,7 @@ watch(hexId, () => {
                     'hover:bg-slate-100/70',
                     'dark:hover:bg-slate-800/40'
                   ]"
-                  :aria-expanded="openFaqIndex === fIdx ? 'true' : 'false'"
+                  :aria-expanded="isFaqOpen(fIdx) ? 'true' : 'false'"
                 >
                   <div class="flex items-center gap-2.5">
                     <span :class="['text-xs font-bold text-amber-600 shrink-0', 'dark:text-amber-400']">Q.</span>
@@ -767,15 +772,14 @@ watch(hexId, () => {
                     name="i-heroicons-chevron-down"
                     :class="[
                       'w-4 h-4 shrink-0 transition-transform duration-200 text-slate-400',
-                      openFaqIndex === fIdx ? 'rotate-180 text-amber-600' : '',
-                      openFaqIndex === fIdx ? 'dark:text-amber-400' : ''
+                      isFaqOpen(fIdx) ? 'rotate-180 text-amber-600 dark:text-amber-400' : ''
                     ]"
                   />
                 </button>
 
-                <!-- 아코디언 답변 본문 (클릭한 항목만 열림) -->
+                <!-- 아코디언 답변 본문 (v-show로 초기 HTML 100% 렌더링 보장) -->
                 <div
-                  v-if="openFaqIndex === fIdx"
+                  v-show="isFaqOpen(fIdx)"
                   :class="[
                     'px-4 sm:px-5 pb-4 sm:pb-5 pt-1 border-t',
                     'border-slate-200/50',
@@ -805,7 +809,11 @@ watch(hexId, () => {
             <div class="space-y-0.5">
               <div v-for="(src, sIdx) in hexData.content.sources" :key="sIdx">• {{ src }}</div>
             </div>
-            <div :class="['pt-2 border-t pg-border text-[11px] flex justify-end items-center text-slate-600', 'dark:text-slate-400']">
+            <div :class="['pt-2 border-t pg-border text-[11px] flex justify-between items-center text-slate-600', 'dark:text-slate-400']">
+              <NuxtLink to="/about" class="hover:underline flex items-center gap-1 text-slate-500 hover:text-amber-600 dark:hover:text-amber-400">
+                <UIcon name="i-heroicons-information-circle" class="w-3.5 h-3.5" />
+                <span>콘텐츠 편찬 및 편집 원칙</span>
+              </NuxtLink>
               <span>작성일: {{ hexData.content.reviewedAt }}</span>
             </div>
           </footer>

@@ -8,6 +8,7 @@ import { hexagrams41_48 } from './hexagrams41_48'
 import { hexagrams49_56 } from './hexagrams49_56'
 import { hexagrams57_64 } from './hexagrams57_64'
 import { getIChingHexagramDetail as getLegacyHexagramDetail } from '../ichingData'
+import { ichingLinesByHexagram } from '../iching384LinesData'
 
 const enhancedHexagramsMap: Record<number, HexagramDetailData> = {
   ...hexagrams1_8,
@@ -30,9 +31,31 @@ export function getEnhancedHexagramDetail(id: number): any {
     const prevLegacy = getLegacyHexagramDetail(prevId)
     const nextLegacy = getLegacyHexagramDetail(nextId)
 
+    // 384효 원천 데이터(한자/한글 이름, 효사 한자/한글 원문, 전통 원문 해석)를 100% 자동 병합
+    const baseLines = ichingLinesByHexagram[id] || []
+    const mergedLines = (hex.content?.lines || []).map((l: any, idx: number) => {
+      const base = baseLines[idx] || {}
+      return {
+        ...base,
+        ...l,
+        n: l.n || base.lineNumber || idx + 1,
+        nameHanja: l.nameHanja || base.nameHanja || '',
+        nameKorean: l.nameKorean || base.nameKorean || '',
+        textHanja: l.textHanja || base.textHanja || '',
+        textKorean: l.textKorean || base.textKorean || '',
+        traditionalInterp: l.traditionalInterp || base.traditionalInterp || '',
+        scene: l.scene || '',
+        modernAdvice: l.modernAdvice || base.modernAdvice || ''
+      }
+    })
+
     return {
       ...hex,
       isEnhanced: true,
+      content: hex.content ? {
+        ...hex.content,
+        lines: mergedLines
+      } : undefined,
       prevHexagram: prevLegacy ? { id: prevLegacy.id, nameKorean: prevLegacy.nameKorean, slug: prevLegacy.slug } : null,
       nextHexagram: nextLegacy ? { id: nextLegacy.id, nameKorean: nextLegacy.nameKorean, slug: nextLegacy.slug } : null
     }
