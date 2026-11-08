@@ -1,5 +1,5 @@
 import { defineEventHandler, getRouterParam } from 'h3'
-import { getIChingHexagramDetail } from '../../utils/ichingData'
+import { getEnhancedHexagramDetail } from '../../utils/iching/index'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -13,8 +13,8 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // AI 호출 및 DB 지연 없이 인메모리에서 0.001초 만에 64괘 고전 정통 데이터 및 6효사 조회
-    const data = getIChingHexagramDetail(hexagramId)
+    // 0.001초 인메모리 고속 조회 (고밀도 학술 데이터 우선)
+    const data = getEnhancedHexagramDetail(hexagramId)
 
     if (!data) {
       return {
@@ -30,8 +30,7 @@ export default defineEventHandler(async (event) => {
   } catch (error: any) {
     return {
       success: false,
-      message: error.message || '괘 정보를 불러오는 데 실패했습니다.'
+      message: error.message || '괘 정보를 불러오는 중 오류가 발생했습니다.'
     }
   }
 })
-

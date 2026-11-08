@@ -1,5 +1,5 @@
 import { defineEventHandler, getRouterParam } from 'h3'
-import { getIljuDetailByCode, getIljuDetailByOrder } from '../../../utils/sajuIljuData'
+import { getEnhancedIljuDetail } from '../../../utils/saju/index'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -11,8 +11,8 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // 0.001초 인메모리 고속 조회
-    const data = getIljuDetailByCode(codeParam)
+    // 0.001초 인메모리 고속 조회 (고밀도 학술 데이터 우선 반환)
+    const data = getEnhancedIljuDetail(codeParam)
 
     if (!data) {
       return {
@@ -21,19 +21,9 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    const prevOrder = data.order > 1 ? data.order - 1 : 60
-    const nextOrder = data.order < 60 ? data.order + 1 : 1
-
-    const prevItem = getIljuDetailByOrder(prevOrder)
-    const nextItem = getIljuDetailByOrder(nextOrder)
-
     return {
       success: true,
-      data: {
-        ...data,
-        prevIlju: prevItem ? { code: prevItem.code, ganzhi: prevItem.ganzhi, ganzhiHanja: prevItem.ganzhiHanja, order: prevItem.order } : null,
-        nextIlju: nextItem ? { code: nextItem.code, ganzhi: nextItem.ganzhi, ganzhiHanja: nextItem.ganzhiHanja, order: nextItem.order } : null
-      }
+      data
     }
   } catch (error: any) {
     return {

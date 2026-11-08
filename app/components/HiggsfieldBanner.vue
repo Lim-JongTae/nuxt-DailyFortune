@@ -7,10 +7,14 @@ withDefaults(defineProps<Props>(), {
   variant: 'card'
 })
 
+// [제휴 배너 노출 스위치]
+// 필요 시 아래 값을 true로 변경하면 푸터 및 결과 페이지의 Higgsfield 배너가 즉시 다시 활성화됩니다.
+const SHOW_HIGGSFIELD_BANNER = false
 const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
 </script>
 
 <template>
+  <div v-if="SHOW_HIGGSFIELD_BANNER">
   <!-- 1. 기본 카드형 배너 (사주/주역/궁합 결과지 하단, 메인 페이지 본문용) -->
   <aside
     v-if="variant === 'card'"
@@ -159,4 +163,5 @@ const HIGGSFIELD_AFFILIATE_URL = 'https://higgsfield.ai?fpr=mfrjl5'
     <span>AI 파트너: Higgsfield</span>
     <UIcon name="i-heroicons-arrow-top-right-on-square" class="w-3 h-3 opacity-70" />
   </a>
+  </div>
 </template>
