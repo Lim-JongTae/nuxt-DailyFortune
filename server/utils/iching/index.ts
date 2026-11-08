@@ -8,7 +8,7 @@ import { hexagrams41_48 } from './hexagrams41_48'
 import { hexagrams49_56 } from './hexagrams49_56'
 import { hexagrams57_64 } from './hexagrams57_64'
 import { getIChingHexagramDetail as getLegacyHexagramDetail } from '../ichingData'
-import { ichingLinesByHexagram } from '../iching384LinesData'
+import { ichingLinesByHexagram, type IChingLine } from '../iching384LinesData'
 
 const enhancedHexagramsMap: Record<number, HexagramDetailData> = {
   ...hexagrams1_8,
@@ -34,7 +34,7 @@ export function getEnhancedHexagramDetail(id: number): any {
     // 384효 원천 데이터(한자/한글 이름, 효사 한자/한글 원문, 전통 원문 해석)를 100% 자동 병합
     const baseLines = ichingLinesByHexagram[id] || []
     const mergedLines = (hex.content?.lines || []).map((l: any, idx: number) => {
-      const base = baseLines[idx] || {}
+      const base: Partial<IChingLine> = baseLines[idx] || {}
       return {
         ...base,
         ...l,
@@ -43,17 +43,29 @@ export function getEnhancedHexagramDetail(id: number): any {
         nameKorean: l.nameKorean || base.nameKorean || '',
         textHanja: l.textHanja || base.textHanja || '',
         textKorean: l.textKorean || base.textKorean || '',
-        traditionalInterp: l.traditionalInterp || base.traditionalInterp || '',
+        // 정통 소상전(象曰) 원문이 포함된 원천 데이터를 최우선으로 반영
+        traditionalInterp: (base.traditionalInterp && base.traditionalInterp.includes('象曰'))
+          ? base.traditionalInterp
+          : (l.traditionalInterp || base.traditionalInterp || ''),
         scene: l.scene || '',
         modernAdvice: l.modernAdvice || base.modernAdvice || ''
       }
     })
+
+    // 참고 문헌(sources)을 해당 괘의 정확한 이름(hex.nameKorean) 변수로 100% 자동 동적 생성
+    const dynamicSources = [
+      `『주역(周易)』 ${hex.nameKorean}괘 괘사·단전·상전·효사`,
+      `정이 『이천역전(伊川易傳)』 ${hex.nameKorean}괘`,
+      `주희 『주역본의(周易本義)』 ${hex.nameKorean}괘`,
+      `정약용 『주역사전(周易四箋)』 ${hex.nameKorean}괘`
+    ]
 
     return {
       ...hex,
       isEnhanced: true,
       content: hex.content ? {
         ...hex.content,
+        sources: dynamicSources,
         lines: mergedLines
       } : undefined,
       prevHexagram: prevLegacy ? { id: prevLegacy.id, nameKorean: prevLegacy.nameKorean, slug: prevLegacy.slug } : null,

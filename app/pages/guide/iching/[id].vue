@@ -495,7 +495,7 @@ watch(hexId, () => {
                 ]"
               >
                 <div>
-                  <h3 :class="['text-base font-serif-kr font-bold text-amber-800 dark:text-amber-300']">
+                  <h3 :class="['text-base font-serif-kr font-bold text-amber-800', 'dark:text-amber-300']">
                     {{ item.phrase }}
                   </h3>
                   <div class="text-[11px] pg-text-muted mt-0.5">{{ item.source }}</div>
@@ -771,8 +771,9 @@ watch(hexId, () => {
                   <UIcon
                     name="i-heroicons-chevron-down"
                     :class="[
-                      'w-4 h-4 shrink-0 transition-transform duration-200 text-slate-400',
-                      isFaqOpen(fIdx) ? 'rotate-180 text-amber-600 dark:text-amber-400' : ''
+                      'w-4 h-4 shrink-0 transition-transform duration-200',
+                      isFaqOpen(fIdx) ? 'rotate-180 text-amber-600' : 'text-slate-400',
+                      isFaqOpen(fIdx) ? 'dark:text-amber-400' : 'dark:text-slate-500'
                     ]"
                   />
                 </button>

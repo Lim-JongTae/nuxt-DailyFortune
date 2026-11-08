@@ -2645,8 +2645,8 @@ export const ichingLinesByHexagram: Record<number, IChingLine[]> = {
       "hexagramNameHanja": "地火明夷",
       "hexagramNameKorean": "지화명이",
       "nameHanja": "六四",
-      "textHanja": "六四 入于左腹，獲明夷之心，出于門庭。",
-      "textKorean": "육사: 입우좌복 획명이지심 출우문정 - 권력자의 속마음을 꿰뚫어보고 위험의 실체를 파악한 뒤 문을 박차고 탈출한다.",
+      "textHanja": "六四 入于左腹，獲明夷之心，于出門庭。",
+      "textKorean": "육사: 입우좌복 획명이지심 우출문정 - 권력자의 속마음을 꿰뚫어보고 위험의 실체를 파악한 뒤 문을 박차고 탈출한다.",
       "modernAdvice": "권력자의 진정한 의도와 조직의 위험 신호를 감지했다면, 더 이상 머물 이유가 없습니다. 미련을 버리고 안전한 환경으로 즉시 이동하십시오. 직감과 경고 신호를 무시하고 남아있으려는 욕심이 더 큰 피해를 초래합니다.",
       "nameKorean": "육사",
       "traditionalInterp": "象曰: 入于左腹，獲心意也。(상전에 이르길: 마음속을 꿰뚫어본다는 것은, 상대방의 위험한 음모와 실체를 간파했기 때문이다.)"
