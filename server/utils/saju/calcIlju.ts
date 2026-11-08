@@ -58,6 +58,31 @@ export function isStemGeuk(a: string, b: string): boolean {
   return (STEM_GEUK_MAP[a]?.includes(b) || STEM_GEUK_MAP[b]?.includes(a)) ?? false
 }
 
+export const STEM_ELEM: Record<string, string> = {
+  '갑': '목', '을': '목',
+  '병': '화', '정': '화',
+  '무': '토', '기': '토',
+  '경': '금', '신': '금',
+  '임': '수', '계': '수'
+}
+
+export function isStemSangsaeng(s1: string, s2: string): boolean {
+  const e1 = STEM_ELEM[s1]
+  const e2 = STEM_ELEM[s2]
+  if (!e1 || !e2 || e1 === e2) return false
+  return (
+    (e1 === '목' && e2 === '화') || (e2 === '목' && e1 === '화') ||
+    (e1 === '화' && e2 === '토') || (e2 === '화' && e1 === '토') ||
+    (e1 === '토' && e2 === '금') || (e2 === '토' && e1 === '금') ||
+    (e1 === '금' && e2 === '수') || (e2 === '금' && e1 === '수') ||
+    (e1 === '수' && e2 === '목') || (e2 === '수' && e1 === '목')
+  )
+}
+
+export function isStemSameElem(s1: string, s2: string): boolean {
+  return (STEM_ELEM[s1] && STEM_ELEM[s1] === STEM_ELEM[s2]) || false
+}
+
 // 6. 지지 육합 (6합)
 export const BRANCH_YUKHAP: Record<string, string> = {
   '자': '축', '축': '자',
@@ -260,10 +285,24 @@ export function getRecommendedGoodMatches(myGanzhi: string) {
       reason = `천간은 ${rel.stemText}, 지지는 ${rel.branchText}으로 만나는 천지합덕(天地合德)의 천생연분입니다. 서로의 부족한 점을 온전히 채워주며 백년해로의 깊은 신뢰를 이룹니다.`
     } else if (rel.branchRelation === '육합') {
       score = 80
-      reason = `지지가 ${rel.branchText}을 이루고 천간에 거스름이 없어, 정서적 유대감이 깊고 일상과 가치관에서 편안한 화합을 이룹니다.`
+      if (isStemSangsaeng(myS, otherS)) {
+        reason = `지지가 ${rel.branchText}을 이루고 천간 또한 상생의 순류를 타므로, 정서적 교감이 깊고 함께할수록 시너지가 배가되는 훌륭한 인연입니다.`
+      } else if (isStemSameElem(myS, otherS)) {
+        reason = `지지가 ${rel.branchText}을 이루고 천간의 기운이 서로 공명하여, 말하지 않아도 마음이 통하고 서로의 입장을 가장 잘 헤아려주는 편안한 동반자입니다.`
+      } else if (rel.stemRelation === '극') {
+        reason = `천간에서는 ${rel.stemText}의 긴장감이 돌지만 지지가 ${rel.branchText}으로 단단히 결속되어, 서로의 부족한 점을 채우고 현실적 실리를 이끌어내는 생산적인 파트너십을 이룹니다.`
+      } else {
+        reason = `지지가 ${rel.branchText}의 깊은 조화를 이루어, 차이점을 포용하고 일상과 가치관에서 따뜻한 유대감을 형성하는 좋은 인연입니다.`
+      }
     } else if (rel.branchRelation === '삼합') {
       score = 70
-      reason = `지지가 ${rel.branchText}을 이루어 함께 목표를 도모할 때 막강한 시너지와 결속력을 발휘하는 든든한 동반자입니다.`
+      if (isStemSangsaeng(myS, otherS)) {
+        reason = `지지가 ${rel.branchText}을 이루고 천간 또한 상생으로 순환하여, 함께 원대한 비전을 도모할 때 막강한 결속력과 성취를 발휘하는 동반자입니다.`
+      } else if (rel.stemRelation === '극') {
+        reason = `천간에서는 ${rel.stemText}의 견제 작용이 있으나 지지가 ${rel.branchText}으로 힘을 합쳐, 공동의 프로젝트나 비즈니스에서 탁월한 상호 보완을 이룹니다.`
+      } else {
+        reason = `지지가 ${rel.branchText}의 강력한 결속을 이루어, 함께 목표를 추진할 때 흔들리지 않는 연대감을 발휘하는 든든한 파트너입니다.`
+      }
     } else if (rel.stemRelation === '합') {
       score = 60
       reason = `천간이 ${rel.stemText}을 이루어 첫인상부터 호감을 느끼고 대화와 가치관이 자연스럽게 통하는 좋은 인연입니다.`

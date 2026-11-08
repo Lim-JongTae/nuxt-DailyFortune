@@ -419,7 +419,7 @@ useHead(() => {
               <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
                 <div :class="['flex items-center gap-1.5 font-bold text-emerald-600', 'dark:text-emerald-400']">
                   <UIcon name="i-heroicons-check-circle" class="w-4 h-4" />
-                  <span>최고의 조화를 이루는 인연 (天地德合 · 三合)</span>
+                  <span>최고의 조화를 이루는 인연 (天地合德 · 六合)</span>
                 </div>
                 <div class="space-y-1.5 pl-1">
                   <div
@@ -442,7 +442,7 @@ useHead(() => {
               <div class="p-3 sm:p-3.5 rounded-xl pg-card-inner border pg-border space-y-2">
                 <div :class="['flex items-center gap-1.5 font-bold text-rose-600', 'dark:text-rose-400']">
                   <UIcon name="i-heroicons-exclamation-triangle" class="w-4 h-4" />
-                  <span>각별한 배려가 필요한 관계 (天沖地沖 · 刑)</span>
+                  <span>각별한 배려가 필요한 관계 (天沖·天剋 · 地沖)</span>
                 </div>
                 <div class="space-y-1.5 pl-1">
                   <div
