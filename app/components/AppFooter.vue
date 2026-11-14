@@ -58,6 +58,12 @@ const currentYear = new Date().getFullYear()
           사주✦주역 가이드
         </NuxtLink>
         <NuxtLink
+          to="/articles"
+          :class="['transition-colors', 'hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']"
+        >
+          역학 칼럼
+        </NuxtLink>
+        <NuxtLink
           to="/privacy"
           :class="['transition-colors', 'hover:text-amber-600', 'dark:hover:text-[#FFDE9E]']"
         >

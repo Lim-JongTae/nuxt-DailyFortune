@@ -29,13 +29,13 @@ const featuredIljus = [
 
 // 핵심 명리 및 주역 가이드 링크
 const guideLinks = [
+  { to: '/articles', title: '정통 역학 칼럼', badge: '심층 학술 매거진', icon: 'i-heroicons-document-text' },
   { to: '/guide/saju', title: '사주명리학 입문', badge: '원리와 일간', icon: 'i-heroicons-academic-cap' },
   { to: '/guide/iching', title: '주역 64괘 총론', badge: '괘상과 효사', icon: 'i-heroicons-book-open' },
   { to: '/guide/iching/lessons', title: '주역 64괘 처세 명언', badge: '실전 인생 지침', icon: 'i-heroicons-sparkles' },
   { to: '/guide/ten-gods', title: '십신(十神) 백과', badge: '10대 성향 분석', icon: 'i-heroicons-user-group' },
   { to: '/guide/five-elements', title: '오행 상생상극', badge: '목화토금수 균형', icon: 'i-heroicons-fire' },
   { to: '/guide/stems-branches', title: '간지 60갑자', badge: '10천간 12지간', icon: 'i-heroicons-calendar' },
-  { to: '/guide/hexagrams', title: '주역 64괘 색인', badge: '전체 괘 조견표', icon: 'i-heroicons-squares-2x2' },
   { to: '/about', title: '서비스 철학 소개', badge: '天命의 가치관', icon: 'i-heroicons-heart' }
 ]
 </script>

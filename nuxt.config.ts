@@ -10,6 +10,13 @@ const ILJU_CODES = [
   'gap-in', 'eul-myo', 'byeong-jin', 'jeong-sa', 'mu-o', 'gi-mi', 'gyeong-sin', 'sin-yu', 'im-sul', 'gye-hae'
 ]
 const ICHING_IDS = Array.from({ length: 64 }, (_, i) => i + 1)
+const ARTICLE_SLUGS = [
+  '2027-jeongmi-year',
+  'finding-yongshin-guide',
+  'samjae-truth-and-wisdom',
+  'iching-divination-mindset',
+  'five-elements-fengshui-lifestyle'
+]
 
 export default defineNuxtConfig({
   srcDir: 'app/',
@@ -232,7 +239,12 @@ export default defineNuxtConfig({
         ]
       },
       ...ICHING_IDS.map(id => ({ loc: `/guide/iching/${id}` })),
-      ...ILJU_CODES.map(code => ({ loc: `/guide/saju/ilju/${code}` }))
+      ...ILJU_CODES.map(code => ({ loc: `/guide/saju/ilju/${code}` })),
+      {
+        loc: '/articles',
+        images: [{ loc: 'https://sajuapp.co.kr/seo-1-edut.webp', title: '정통 역학 칼럼 & 처세 매거진 대표 이미지' }]
+      },
+      ...ARTICLE_SLUGS.map(slug => ({ loc: `/articles/${slug}` }))
     ]
   },
   nitro: {
@@ -250,6 +262,7 @@ export default defineNuxtConfig({
         '/iching',
         '/match',
         '/talisman',
+        '/articles',
         '/guide',
         '/guide/saju',
         '/guide/iching',
@@ -259,7 +272,8 @@ export default defineNuxtConfig({
         '/guide/hexagrams',
         '/guide/stems-branches',
         ...ICHING_IDS.map(id => `/guide/iching/${id}`),
-        ...ILJU_CODES.map(code => `/guide/saju/ilju/${code}`)
+        ...ILJU_CODES.map(code => `/guide/saju/ilju/${code}`),
+        ...ARTICLE_SLUGS.map(slug => `/articles/${slug}`)
       ]
     }
   }

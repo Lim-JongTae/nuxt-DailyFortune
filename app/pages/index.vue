@@ -65,6 +65,9 @@ import { getTodaySajuSummary } from '~/utils/saju'
 
 const sajuSummary = computed(() => getTodaySajuSummary())
 
+import { ARTICLES_DATA } from '~/data/articles'
+const featuredArticles = computed(() => ARTICLES_DATA.slice(0, 3))
+
 const todayGanzhiText = computed(() => sajuSummary.value.ganzhi)
 const todayElementSentence = computed(() => sajuSummary.value.todayElementSentence)
 const elementBadge = computed(() => sajuSummary.value.elementBadge)
@@ -325,6 +328,64 @@ onMounted(() => {
             <HomeGuidanceMatch v-else-if="activeTab === 'match'" key="guidance-match" />
             <HomeGuidanceSaju v-else key="guidance-saju" />
           </Transition>
+        </div>
+      </section>
+
+      <!-- 4. REPUTABLE EDITORIAL ARTICLES: 추천 정통 역학 칼럼 섹션 (AdSense 고품질 텍스트 미디어 보강) -->
+      <section v-reveal class="space-y-6">
+        <div class="flex items-center justify-between pb-2 border-b pg-border">
+          <div class="flex items-center gap-2">
+            <UIcon name="i-heroicons-document-text" class="w-5 h-5 text-amber-600 dark:text-[#FFDE9E]" />
+            <h3 :class="['text-base sm:text-xl font-bold font-serif-kr', 'text-slate-900', 'dark:text-[#FFDE9E]']">
+              천명(天命) 추천 역학 칼럼 & 처세 매거진
+            </h3>
+          </div>
+          <NuxtLink
+            to="/articles"
+            :class="['text-xs font-medium hover:underline flex items-center gap-1', 'text-amber-700', 'dark:text-[#FFDE9E]']"
+          >
+            <span>전체 칼럼 보기</span>
+            <UIcon name="i-heroicons-arrow-right" class="w-3.5 h-3.5" />
+          </NuxtLink>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <article
+            v-for="art in featuredArticles"
+            :key="art.slug"
+            :class="[
+              'rounded-2xl border transition-all duration-300 p-5 flex flex-col justify-between group shadow-2xs hover:shadow-md hover:-translate-y-1',
+              'bg-white border-slate-200 hover:border-amber-400',
+              'dark:bg-[#151C35] dark:border-slate-800 dark:hover:border-amber-500/60'
+            ]"
+          >
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <span :class="['text-[11px] font-bold px-2 py-0.5 rounded-full border', 'bg-amber-50 text-amber-800 border-amber-200', 'dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/40']">
+                  {{ art.category }}
+                </span>
+                <span class="text-[11px] pg-text-muted">{{ art.readTime }}</span>
+              </div>
+              <NuxtLink :to="`/articles/${art.slug}`" class="block mb-2">
+                <h4 :class="['font-serif-kr text-sm sm:text-base font-bold leading-snug group-hover:text-amber-600 transition-colors', 'text-slate-900', 'dark:text-slate-100 dark:group-hover:text-[#FFDE9E]']">
+                  {{ art.title }}
+                </h4>
+              </NuxtLink>
+              <p :class="['text-xs leading-relaxed line-clamp-3 mb-3', 'text-slate-600', 'dark:text-slate-300']">
+                {{ art.summary }}
+              </p>
+            </div>
+            <div class="pt-3 border-t pg-border flex items-center justify-between text-xs">
+              <span class="text-slate-400 dark:text-slate-500">{{ art.date }}</span>
+              <NuxtLink
+                :to="`/articles/${art.slug}`"
+                :class="['font-bold flex items-center gap-0.5 hover:underline', 'text-amber-700', 'dark:text-amber-400']"
+              >
+                <span>읽어보기</span>
+                <UIcon name="i-heroicons-chevron-right" class="w-3.5 h-3.5" />
+              </NuxtLink>
+            </div>
+          </article>
         </div>
       </section>
 
