@@ -110,7 +110,7 @@ const navLinks = [
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
           <span class="tracking-tight whitespace-nowrap">
-            오늘 <span :class="['font-bold', 'text-amber-700', 'dark:text-[#FFDE9E]']">{{ displayTodayViews.toLocaleString() }}</span>명
+            오늘 방문자: <span :class="['font-bold', 'text-amber-700', 'dark:text-[#FFDE9E]']">{{ displayTodayViews.toLocaleString() }}</span>명
           </span>
         </div>
         
