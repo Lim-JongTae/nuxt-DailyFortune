@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+
+const { stats } = useVisitorStats()
+const displayTodayViews = computed(() => stats.value?.todayViews ?? 0)
 
 const isMobileMenuOpen = ref(false)
 const isGuideMenuOpen = ref(false)
@@ -97,8 +100,19 @@ const navLinks = [
         </NuxtLink>
       </nav>
 
-      <!-- 우측: 모바일 메뉴 토글 & 더보기 드롭다운 & 컬러모드 버튼 -->
-      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+      <!-- 우측: 오늘 방문자 수 & 모바일 메뉴 토글 & 더보기 드롭다운 & 컬러모드 버튼 -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        
+        <!-- 오늘 방문자 수 배지 -->
+        <div :class="['flex items-center gap-1.5 px-2.5 py-1 rounded-full border shadow-2xs text-[11px] sm:text-xs font-medium', 'bg-amber-500/10 border-amber-500/20 text-slate-700', 'dark:bg-[#FFDE9E]/10 dark:border-[#FFDE9E]/20 dark:text-[#FFDE9E]/90']">
+          <span class="relative flex h-2 w-2 shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="tracking-tight whitespace-nowrap">
+            오늘 <span :class="['font-bold', 'text-amber-700', 'dark:text-[#FFDE9E]']">{{ displayTodayViews.toLocaleString() }}</span>명
+          </span>
+        </div>
         
         <!-- 상단 '더보기' 드롭다운 버튼 (약관, 방침 등) -->
         <div
