@@ -173,7 +173,8 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       todayViews: stats.todayViews,
-      totalViews: stats.totalViews
+      totalViews: stats.totalViews,
+      todayDate: stats.todayDate
     }
   } catch (error: any) {
     console.error('[Visit Stats] Error:', {
@@ -196,7 +197,8 @@ export default defineEventHandler(async (event) => {
           return {
             success: true,
             todayViews: stats.todayViews,
-            totalViews: stats.totalViews
+            totalViews: stats.totalViews,
+            todayDate: stats.todayDate
           }
         }
       } catch (retryError: any) {
@@ -214,7 +216,8 @@ export default defineEventHandler(async (event) => {
         return {
           success: true,
           todayViews: stats.todayViews,
-          totalViews: stats.totalViews
+          totalViews: stats.totalViews,
+          todayDate: stats.todayDate
         }
       }
     } catch (fallbackError) {
@@ -225,6 +228,7 @@ export default defineEventHandler(async (event) => {
       success: false,
       todayViews: 0,
       totalViews: 0,
+      todayDate: todayKstStr,
       error: 'Failed to fetch visit stats',
       details: process.env.NODE_ENV === 'production' ? undefined : {
         message: error.message,
