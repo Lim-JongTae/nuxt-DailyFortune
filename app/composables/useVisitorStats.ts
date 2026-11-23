@@ -10,21 +10,46 @@ let isMidnightTimerRegistered = false
 let isInitialClientCheckDone = false
 
 export const useVisitorStats = () => {
-  // useAsyncData를 통해 SSR 시점에 서버에서 1회 조회 후 클라이언트에 자동 hydration
-  // 헤더, 메인 등 모든 컴포넌트가 'visitor-site-stats' 키로 단일 인스턴스 공유
-  const { data: stats, refresh: fetchStats, status } = useAsyncData<VisitStatsResponse>(
+  // useAsyncData를 통해 SSR/빌드 시점 1회 데이터 확보 및 클라이언트 hydration
+  const { data: stats, status } = useAsyncData<VisitStatsResponse>(
     'visitor-site-stats',
     () => $fetch<VisitStatsResponse>('/api/stats/visit'),
     {
       default: () => ({ success: true, todayViews: 0, totalViews: 0 }),
-      getCachedData: (key, nuxtApp) => {
-        // 캐시 데이터가 있으면 우선 반환하여 컴포넌트 마운트 시 0으로 깜빡이는 현상 방지
+      getCachedData: (key, nuxtApp, ctx: any) => {
+        // 수동 refresh() 시에는 캐시를 반환하지 않고 반드시 서버 API를 재호출하도록 보장
+        if (ctx?.cause && ctx.cause !== 'initial') {
+          return undefined
+        }
+        // 초기 렌더링 시에는 빌드/캐시 데이터를 우선 반환하여 0 깜빡임 방지
         const cached = nuxtApp.payload.data[key] || nuxtApp.static.data[key]
         return cached
       },
       lazy: false
     }
   )
+
+  // 실시간 백엔드 방문자 API 직접 호출 함수 (Nuxt 캐시 우회 보장)
+  const fetchStats = async () => {
+    if (!import.meta.client) return
+    try {
+      const res = await $fetch<VisitStatsResponse>('/api/stats/visit', {
+        headers: { 'cache-control': 'no-cache' }
+      })
+      if (res && res.success) {
+        if (stats.value) {
+          stats.value.todayViews = res.todayViews
+          stats.value.totalViews = res.totalViews
+          stats.value.todayDate = res.todayDate
+        } else {
+          stats.value = res
+        }
+      }
+      return res
+    } catch (err) {
+      console.warn('[VisitorStats] Realtime sync failed:', err)
+    }
+  }
 
   // 클라이언트 환경에서의 실시간 동기화 및 라이프사이클 처리
   if (import.meta.client) {
@@ -38,16 +63,13 @@ export const useVisitorStats = () => {
         const nowKst = getKstDate()
         const cachedDate = stats.value?.todayDate
 
-        // 캐시된 날짜가 오늘과 다르거나(과거 정적 빌드/어제 데이터) 아직 데이터가 불완전하면 즉시 실시간 fetch
+        // 캐시된 날짜가 오늘과 다르거나(과거 정적 빌드/어제 데이터) 초기 로드 시 백엔드 실제 값 동기화
         if (!cachedDate || cachedDate !== nowKst) {
-          fetchStats().catch((err) => {
-            console.warn('[VisitorStats] Initial sync failed:', err)
-          })
+          fetchStats()
         }
       }
 
-      // 즉시 동기화 실행 (Microtask/NextTick)
-      syncLatestStats()
+      // Vue hydration 완료 후 즉시 백그라운드 실시간 동기화
       setTimeout(syncLatestStats, 50)
     }
 
@@ -84,7 +106,7 @@ export const useVisitorStats = () => {
         if (document.visibilityState === 'visible') {
           const nowKst = getKstDate()
           if (!stats.value?.todayDate || stats.value.todayDate !== nowKst) {
-            fetchStats().catch(() => {})
+            fetchStats()
           }
         }
       })

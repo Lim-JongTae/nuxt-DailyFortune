@@ -1,5 +1,5 @@
 {
-  "enabled": false,
+  "enabled": true,
   "config": {
     "startDate": "2026-11-01T00:00:00+09:00",
     "endDate": "2027-02-28T23:59:59+09:00",
