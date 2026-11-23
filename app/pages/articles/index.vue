@@ -40,7 +40,10 @@ useHead({
 })
 
 const selectedCategory = ref('전체')
-const categories = ['전체', '신년운세 & 세운', '사주명리 심층', '정통 역학 상식', '주역 & 심리학', '생활 풍수 & 오행']
+const categories = computed(() => {
+  const set = new Set(ARTICLES_DATA.map(a => a.category))
+  return ['전체', ...Array.from(set)]
+})
 
 const filteredArticles = computed(() => {
   if (selectedCategory.value === '전체') {

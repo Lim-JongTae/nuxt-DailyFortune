@@ -15,7 +15,17 @@ const ARTICLE_SLUGS = [
   'finding-yongshin-guide',
   'samjae-truth-and-wisdom',
   'iching-divination-mindset',
-  'five-elements-fengshui-lifestyle'
+  'five-elements-fengshui-lifestyle',
+  '2026-byeongo-year',
+  'shipsin-career-success',
+  'twelve-earthly-branches-synergy',
+  'twelve-stages-of-life-destiny',
+  'saju-wealth-accumulation',
+  'iching-trigrams-philosophy',
+  'hidden-stems-jijanggan',
+  'yin-yang-health-balance',
+  'chung-and-pa-overcoming',
+  'noble-stars-cheonul'
 ]
 
 export default defineNuxtConfig({
@@ -23,6 +33,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   routeRules: {
+    '/guide/saju/ilju': { redirect: { to: '/guide/saju', statusCode: 301 } },
     '/ko/iching/:slug': { redirect: '/guide/iching/:slug' },
     '/ko/saju/**': { redirect: '/guide/saju' }
   },
@@ -265,6 +276,7 @@ export default defineNuxtConfig({
         '/articles',
         '/guide',
         '/guide/saju',
+        '/guide/saju/ilju',
         '/guide/iching',
         '/guide/iching/lessons',
         '/guide/ten-gods',

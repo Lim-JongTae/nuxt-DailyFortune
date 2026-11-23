@@ -1822,6 +1822,7 @@ watch(result, (newVal) => {
 
     <!-- [Google AdSense 인증용 정적 SEO 콘텐츠: PC 대형 화면에서 넉넉한 너비(max-w-5xl) 제공] -->
     <div class="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
+      <SajuGuideSection />
       <AdsenseVerificationSection />
     </div>
 
