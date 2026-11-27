@@ -37,13 +37,8 @@ export const useVisitorStats = () => {
         headers: { 'cache-control': 'no-cache' }
       })
       if (res && res.success) {
-        if (stats.value) {
-          stats.value.todayViews = res.todayViews
-          stats.value.totalViews = res.totalViews
-          stats.value.todayDate = res.todayDate
-        } else {
-          stats.value = res
-        }
+        // Nuxt 4 useAsyncData defaults to shallowRef, so replace the entire object reference to trigger reactivity
+        stats.value = { ...res }
       }
       return res
     } catch (err) {
@@ -55,22 +50,14 @@ export const useVisitorStats = () => {
   if (import.meta.client) {
     const getKstDate = () => new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0]
 
-    // 1. 클라이언트 첫 진입 시: 캐시된 날짜가 오늘(KST)과 다르거나 초기 로드 시 즉시 최신 실시간 방문자 수 동기화
+    // 1. 클라이언트 첫 진입 시: 날짜와 무관하게 무조건 1회 실시간 방문자 수 동기화 (배포 당일 포함)
     if (!isInitialClientCheckDone) {
       isInitialClientCheckDone = true
 
-      const syncLatestStats = () => {
-        const nowKst = getKstDate()
-        const cachedDate = stats.value?.todayDate
-
-        // 캐시된 날짜가 오늘과 다르거나(과거 정적 빌드/어제 데이터) 초기 로드 시 백엔드 실제 값 동기화
-        if (!cachedDate || cachedDate !== nowKst) {
-          fetchStats()
-        }
-      }
-
       // Vue hydration 완료 후 즉시 백그라운드 실시간 동기화
-      setTimeout(syncLatestStats, 50)
+      setTimeout(() => {
+        fetchStats()
+      }, 50)
     }
 
     // 2. 자정(00:00:02 KST) 도달 시 자동 리셋 타이머 등록 (앱 라이프사이클 중 1회만 등록)
